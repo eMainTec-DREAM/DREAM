@@ -1,0 +1,34 @@
+CREATE FUNCTION [dbo].[SFAEQASMB_ALL]
+(
+      @PCOMP_NO NVARCHAR(40)
+    , @P_EQASMB_ID BIGINT
+)
+RETURNS TABLE 
+AS
+RETURN(
+    WITH DATATABLE AS ( 
+        SELECT 
+             A.COMP_NO 
+           , A.EQASMB_ID
+           , A.P_EQASMB_ID
+           , 1 AS LVL
+           , A.DESCRIPTION
+		   , CONVERT(VARCHAR, A.EQASMB_ID) AS SORT
+        FROM TAEQASMB A
+        WHERE 1=1
+            and COMP_NO  = @PCOMP_NO
+			and P_EQASMB_ID = @P_EQASMB_ID
+        UNION ALL 
+        SELECT 
+             B.COMP_NO 
+           , B.EQASMB_ID
+           , B.P_EQASMB_ID
+           , C.LVL+ 1
+           , B.DESCRIPTION
+		   , CONVERT(VARCHAR, C.SORT + '-' + CONVERT(VARCHAR, B.EQASMB_ID)) AS SORT
+        FROM TAEQASMB B INNER JOIN DATATABLE C  ON B.COMP_NO = C.COMP_NO AND B.P_EQASMB_ID = C.EQASMB_ID AND B.COMP_NO= @PCOMP_NO
+        WHERE 1=1
+    )
+    SELECT TOP (SELECT COUNT(*) FROM DATATABLE) * FROM DATATABLE
+	ORDER BY SORT
+)

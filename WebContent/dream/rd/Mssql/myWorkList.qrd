@@ -1,0 +1,38 @@
+$
+SELECT 
+		(SELECT a.description FROM TADEPT a WHERE a.comp_no = '^param1' AND a.dept_id = '^param2' ) deptDesc
+        ,'^param5'+ ' ~ ' +'^param6' workDate
+        , (SELECT a.emp_name FROM TAEMP a WHERE a.comp_no = '^param1' AND a.emp_id = '^param3' ) empName
+        , ISNULL((SELECT count(1)
+			FROM TAWORKORDER x 
+			WHERE x.comp_no = '^param1'
+			AND x.dept_id = '^param2'
+			AND x.emp_id = '^param3'
+			AND x.wkor_date BETWEEN REPLACE('^param5','-','') AND REPLACE('^param6','-','')
+			GROUP BY x.comp_no ,x.dept_id, x.emp_id ),'0')
+	FROM DUAL
+/
+$
+SELECT 
+		ROW_NUMBER() OVER(ORDER BY x.dept_id, x.description)	no
+		,CASE WHEN aa.wkor_date IS NOT NULL THEN
+	        SUBSTRING(aa.wkor_date, 1,4)+ '-' +
+	        SUBSTRING(aa.wkor_date,5,2)+ '-' +
+	        SUBSTRING(aa.wkor_date,7,2) ELSE '-' END workDate
+		,dbo.SFACODE_TO_DESC(x.wo_type,'WO_TYPE','SYS','','^param4') woType
+		,x.description workDesc
+		,(STUFF((SELECT ',' + b.description
+						FROM tawoequip a, taequipment b       
+						WHERE a.comp_no = b.comp_no
+                        AND a.equip_id = b.equip_id
+						AND a.comp_no = x.comp_no
+						AND a.wkor_id = x.wkor_id
+						FOR XML PATH('')
+						), 1, 1, '')) equip
+FROM TAWORKORDER x 
+WHERE x.comp_no = '^param1'
+AND x.dept_id = ^param2
+AND x.emp_id = ^param3
+AND x.wkor_date BETWEEN REPLACE('^param5','-','') AND REPLACE('^param6','-','')
+
+/

@@ -1,0 +1,631 @@
+$
+SELECT 
+		 TO_CHAR(to_date('^param3','yyyy-mm'), 'YYYY-MM') mmyyyy
+		,TO_CHAR(sysdate,'yyyy. mm. dd') yyyymmdd
+from dual
+/
+$
+select * from (
+SELECT x.description locDesc
+            ,'100%' planMonth
+            ,(SELECT 
+                        TO_CHAR(ROUND(nvl(count(decode(a.pmsched_status,'C',1))/decode(count(1),0,NULL,count(1)),0)*100,2),'FM9999990D00')||'%' resultMonth
+                FROM tapminssched a
+                WHERE a.comp_no = '^param1'
+                AND a.sched_date LIKE substr('^param3',0,4)||substr('^param3',6,2)||'%'
+                AND a.equip_id IN (
+                SELECT b.equip_id 
+                FROM taequipment b
+                WHERE b.eqloc_id IN (
+                        SELECT c.eqloc_id
+                           FROM taeqloc c 
+                           WHERE c.comp_no = '^param1'
+                           start WITH c.eqloc_id = x.eqloc_id
+                           connect BY PRIOR c.eqloc_id = c.p_eqloc_id)
+                                           )) resultMonth
+            ,'100%' planYear
+            ,(SELECT 
+                        TO_CHAR(ROUND(nvl(count(decode(a.pmsched_status,'C',1))/decode(count(1),0,NULL,count(1)),0)*100,2),'FM9999990D00')||'%' resultYear
+                FROM tapminssched a
+                WHERE a.comp_no = '^param1'
+                AND a.sched_date LIKE substr('^param3',0,4)||'%'
+                AND a.equip_id IN (
+                SELECT b.equip_id 
+                FROM taequipment b
+                WHERE b.eqloc_id IN (
+                        SELECT c.eqloc_id
+                           FROM taeqloc c 
+                           WHERE c.comp_no = '^param1'
+                           start WITH c.eqloc_id = x.eqloc_id
+                           connect BY PRIOR c.eqloc_id = c.p_eqloc_id)
+                                           )) resultYear
+            ,(SELECT 
+                        count(1)
+                FROM tapminssched a
+                WHERE a.comp_no = '^param1'
+                AND a.sched_date LIKE to_char(add_months(to_date(substr('^param3',0,4)||substr('^param3',6,2),'yyyymm'), 1),'yyyymm')||'%'
+                AND a.equip_id IN (
+                SELECT b.equip_id 
+                FROM taequipment b
+                WHERE b.eqloc_id IN (
+                        SELECT c.eqloc_id
+                           FROM taeqloc c 
+                           WHERE c.comp_no = '^param1'
+                           start WITH c.eqloc_id = x.eqloc_id
+                           connect BY PRIOR c.eqloc_id = c.p_eqloc_id)
+                                           )) planNext
+            ,substr('^param3',0,4) yyyy
+            ,substr('^param3',6,2) mm
+            ,TO_CHAR(add_months(to_date('^param3'||'01','yyyy-mmdd'),1), 'mm') nextmm
+FROM taeqloc x
+WHERE x.eqloc_lvl_type='L2'
+AND x.plant = '^param5'
+AND x.comp_no = '^param1'
+ORDER BY x.ord_no
+)
+UNION ALL
+SELECT '' locDesc
+            ,'100%' planMonth
+            ,(SELECT 
+                        TO_CHAR(ROUND(nvl(count(decode(a.pmsched_status,'C',1))/decode(count(1),0,NULL,count(1)),0)*100,2),'FM9999990D00')||'%' resultMonth
+                FROM tapminssched a
+                WHERE a.comp_no = '^param1'
+                AND a.sched_date LIKE substr('^param3',0,4)||substr('^param3',6,2)||'%'
+                AND a.equip_id IN (
+                SELECT b.equip_id 
+                FROM taequipment b
+                WHERE b.eqloc_id IN (
+                        SELECT c.eqloc_id
+                           FROM taeqloc c 
+                           WHERE c.comp_no = '^param1'
+                           AND c.plant =  '^param5')
+                                           )) resultMonth
+            ,'100%' planYear
+            ,(SELECT 
+                        TO_CHAR(ROUND(nvl(count(decode(a.pmsched_status,'C',1))/decode(count(1),0,NULL,count(1)),0)*100,2),'FM9999990D00')||'%' resultYear
+                FROM tapminssched a
+                WHERE a.comp_no = '^param1'
+                AND a.sched_date LIKE substr('^param3',0,4)||'%'
+                AND a.equip_id IN (
+                SELECT b.equip_id 
+                FROM taequipment b
+                WHERE b.eqloc_id IN (
+                        SELECT c.eqloc_id
+                           FROM taeqloc c 
+                           WHERE c.comp_no = '^param1'
+                           AND c.plant =  '^param5')
+                                           )) resultYear
+            ,(SELECT 
+                        count(1)
+                FROM tapminssched a
+                WHERE a.comp_no = '^param1'
+                AND a.sched_date LIKE to_char(add_months(to_date(substr('^param3',0,4)||substr('^param3',6,2),'yyyymm'), 1),'yyyymm')||'%'
+                AND a.equip_id IN (
+                SELECT b.equip_id 
+                FROM taequipment b
+                WHERE b.eqloc_id IN (
+                        SELECT c.eqloc_id
+                           FROM taeqloc c 
+                           WHERE c.comp_no = '^param1'
+                           AND c.plant =  '^param5')
+                                           )) planNext
+            ,substr('^param3',0,4) yyyy
+            ,substr('^param3',6,2) mm
+            ,TO_CHAR(add_months(to_date('^param3'||'01','yyyy-mmdd'),1), 'mm') nextmm
+  FROM dual
+/
+$
+SELECT TO_CHAR(to_date(x.tmonth||'01','yyyymmdd'), 'YYYY-MM') MONTH
+           ,100 PLAN
+           ,TO_CHAR(NVL(ROUND(y.completeCnt/DECODE(y.planCnt,0,NULL,y.planCnt)*100,2),0),'FM9999990D00') result
+FROM TAMONTH x, (SELECT 
+                substr(a.sched_date,0,6) planMonth
+                ,count(1) planCnt
+                ,count(decode(a.pmsched_status,'C',1)) completeCnt
+                FROM tapminssched a
+                WHERE a.comp_no = '^param1'
+                AND a.sched_date LIKE substr('^param3',0,4)||'%'
+                AND a.equip_id IN (
+                SELECT b.equip_id 
+                FROM taequipment b
+                WHERE b.eqloc_id IN (
+                        SELECT c.eqloc_id
+                           FROM taeqloc c 
+                           WHERE c.comp_no = '^param1'
+                           AND c.plant =  '^param5')
+                                           )
+   GROUP BY a.comp_no , substr(a.sched_date,0,6)) y
+WHERE x.tmonth = y.planMonth(+)
+AND x.tyyyy  = substr('^param3',0,4)
+ORDER BY x.tmonth
+/
+$
+SELECT * FROM (
+SELECT x.description locDesc
+            ,'100%' planMonth
+            ,(SELECT 
+                        TO_CHAR(ROUND(nvl(count(decode(a.wo_status,'C',1))/decode(count(1),0,NULL,count(1)),0)*100,2),'FM9999990D00')||'%' resultMonth
+                FROM taworkorder a INNER JOIN tawoequip aa
+                ON a.comp_no = aa.comp_no
+                AND a.wkor_id = aa.wkor_id
+                WHERE a.comp_no = '^param1'
+                AND a.wo_type <> 'PMC'
+                AND a.wo_type <> 'PMI'
+                AND a.wkor_date LIKE substr('^param3',0,4)||substr('^param3',6,2)||'%'
+                AND aa.equip_id IN (
+                SELECT b.equip_id 
+                FROM taequipment b
+                WHERE b.eqloc_id IN (
+                        SELECT c.eqloc_id
+                           FROM taeqloc c 
+                           WHERE c.comp_no = '^param1'
+                           start WITH c.eqloc_id = x.eqloc_id
+                           connect BY PRIOR c.eqloc_id = c.p_eqloc_id)
+                                           )) resultMonth
+            ,'100%' planYear
+            ,(SELECT 
+                        TO_CHAR(ROUND(nvl(count(decode(a.wo_status,'C',1))/decode(count(1),0,NULL,count(1)),0)*100,2),'FM9999990D00')||'%' resultYear
+                FROM taworkorder a INNER JOIN tawoequip aa
+                ON a.comp_no = aa.comp_no
+                AND a.wkor_id = aa.wkor_id
+                WHERE a.comp_no = '^param1'
+                AND a.wo_type <> 'PMC'
+                AND a.wo_type <> 'PMI'
+                AND a.wkor_date LIKE substr('^param3',0,4)||'%'
+                AND aa.equip_id IN (
+                SELECT b.equip_id 
+                FROM taequipment b
+                WHERE b.eqloc_id IN (
+                        SELECT c.eqloc_id
+                           FROM taeqloc c 
+                           WHERE c.comp_no = '^param1'
+                           start WITH c.eqloc_id = x.eqloc_id
+                           connect BY PRIOR c.eqloc_id = c.p_eqloc_id)
+                                           )) resultYear
+            ,(SELECT 
+                        count(1)
+                FROM taworkorder a INNER JOIN tawoequip aa
+                ON a.comp_no = aa.comp_no
+                AND a.wkor_id = aa.wkor_id
+                WHERE a.comp_no = '^param1'
+                AND a.wo_type <> 'PMC'
+                AND a.wo_type <> 'PMI'
+                AND a.wkor_date LIKE to_char(add_months(to_date(substr('^param3',0,4)||substr('^param3',6,2),'yyyymm'), 1),'yyyymm')||'%'
+                AND aa.equip_id IN (
+                SELECT b.equip_id 
+                FROM taequipment b
+                WHERE b.eqloc_id IN (
+                        SELECT c.eqloc_id
+                           FROM taeqloc c 
+                           WHERE c.comp_no = '^param1'
+                           start WITH c.eqloc_id = x.eqloc_id
+                           connect BY PRIOR c.eqloc_id = c.p_eqloc_id)
+                                           )) planNext
+            ,substr('^param3',0,4) yyyy
+            ,substr('^param3',6,2) mm
+            ,TO_CHAR(add_months(to_date('^param3'||'01','yyyy-mmdd'),1), 'mm') nextmm
+FROM taeqloc x
+WHERE x.eqloc_lvl_type='L2'
+AND x.plant = '^param5'
+AND x.comp_no = '^param1'
+ORDER BY x.ord_no
+)
+UNION ALL
+SELECT '' locDesc
+            ,'100%' planMonth
+            ,(SELECT 
+                        TO_CHAR(ROUND(nvl(count(decode(a.wo_status,'C',1))/decode(count(1),0,NULL,count(1)),0)*100,2),'FM9999990D00')||'%' resultMonth
+                FROM taworkorder a INNER JOIN tawoequip aa
+                ON a.comp_no = aa.comp_no
+                AND a.wkor_id = aa.wkor_id
+                WHERE a.comp_no = '^param1'
+                AND a.wo_type <> 'PMC'
+                AND a.wo_type <> 'PMI'
+                AND a.wkor_date LIKE substr('^param3',0,4)||substr('^param3',6,2)||'%'
+                AND aa.equip_id IN (
+                SELECT b.equip_id 
+                FROM taequipment b
+                WHERE b.eqloc_id IN (
+                        SELECT c.eqloc_id
+                           FROM taeqloc c 
+                           WHERE c.comp_no = '^param1'
+                           AND c.plant =  '^param5')
+                                           )) resultMonth
+            ,'100%' planYear
+            ,(SELECT 
+                        TO_CHAR(ROUND(nvl(count(decode(a.wo_status,'C',1))/decode(count(1),0,NULL,count(1)),0)*100,2),'FM9999990D00')||'%' resultYear
+                FROM taworkorder a INNER JOIN tawoequip aa
+                ON a.comp_no = aa.comp_no
+                AND a.wkor_id = aa.wkor_id
+                WHERE a.comp_no = '^param1'
+                AND a.wo_type <> 'PMC'
+                AND a.wo_type <> 'PMI'
+                AND a.wkor_date LIKE substr('^param3',0,4)||'%'
+                AND aa.equip_id IN (
+                SELECT b.equip_id 
+                FROM taequipment b
+                WHERE b.eqloc_id IN (
+                        SELECT c.eqloc_id
+                           FROM taeqloc c 
+                           WHERE c.comp_no = '^param1'
+                           AND c.plant =  '^param5')
+                                           )) resultYear
+            ,(SELECT 
+                        count(1)
+                FROM taworkorder a INNER JOIN tawoequip aa
+                ON a.comp_no = aa.comp_no
+                AND a.wkor_id = aa.wkor_id
+                WHERE a.comp_no = '^param1'
+                AND a.wo_type <> 'PMC'
+                AND a.wo_type <> 'PMI'
+                AND a.wkor_date LIKE to_char(add_months(to_date(substr('^param3',0,4)||substr('^param3',6,2),'yyyymm'), 1),'yyyymm')||'%'
+                AND aa.equip_id IN (
+                SELECT b.equip_id 
+                FROM taequipment b
+                WHERE b.eqloc_id IN (
+                        SELECT c.eqloc_id
+                           FROM taeqloc c 
+                           WHERE c.comp_no = '^param1'
+                           AND c.plant =  '^param5')
+                                           )) planNext
+            ,substr('^param3',0,4) yyyy
+            ,substr('^param3',6,2) mm
+            ,TO_CHAR(add_months(to_date('^param3'||'01','yyyy-mmdd'),1), 'mm') nextmm
+  FROM dual
+/
+$
+SELECT TO_CHAR(to_date(x.tmonth||'01','yyyymmdd'), 'YYYY-MM') MONTH
+           ,100 PLAN
+           ,TO_CHAR(NVL(ROUND(y.completeCnt/DECODE(y.planCnt,0,NULL,y.planCnt)*100,2),0),'FM9999990D00') result
+FROM TAMONTH x, (SELECT 
+                substr(a.wkor_date,0,6) planMonth
+                ,count(1) planCnt
+                ,count(decode(a.wo_status,'C',1)) completeCnt
+                FROM taworkorder a INNER JOIN tawoequip aa
+                ON a.comp_no = aa.comp_no
+                AND a.wkor_id = aa.wkor_id
+                WHERE a.comp_no = '^param1'
+                AND a.wo_type <> 'PMC'
+                AND a.wo_type <> 'PMI'
+                AND a.wkor_date LIKE substr('^param3',0,4)||'%'
+                AND aa.equip_id IN (
+                SELECT b.equip_id 
+                FROM taequipment b
+                WHERE b.eqloc_id IN (
+                        SELECT c.eqloc_id
+                           FROM taeqloc c 
+                           WHERE c.comp_no = '^param1'
+                           AND c.plant =  '^param5')
+                                           )
+   GROUP BY a.comp_no , substr(a.wkor_date,0,6)) y
+WHERE x.tmonth = y.planMonth(+)
+AND x.tyyyy  = substr('^param3',0,4)
+ORDER BY x.tmonth
+/2),'FM9999990D00')
+            FROM TAWORKORDER a INNER JOIN tawoequip b
+            ON a.comp_no = b.comp_no
+            AND a.wkor_id = b.wkor_id
+            WHERE 1=1
+            AND a.wkor_date LIKE substr('^param3',0,4)||substr('^param3',6,2)||'%'
+            AND a.comp_no = '^param1'
+            AND a.wo_type <> 'PMC'
+            AND a.wo_type <> 'PMI'
+            AND a.wo_status = 'C'
+            AND b.equip_id IN (
+                            SELECT c.equip_id 
+                            FROM taequipment c
+                            WHERE c.eqloc_id IN (
+                                    SELECT d.eqloc_id
+                                       FROM TAEQLOC d 
+                                       WHERE d.comp_no = '^param1'
+                                       start WITH d.eqloc_id = x.eqloc_id
+                                       connect BY PRIOR d.eqloc_id = d.p_eqloc_id)
+                                           )) resultMonth
+            ,(SELECT TO_CHAR(ROUND(NVL(sum(a.work_time)/decode(count(1),0,NULL,count(1)),0),2),'FM9999990D00')
+            FROM TAWORKORDER a INNER JOIN tawoequip b
+            ON a.comp_no = b.comp_no
+            AND a.wkor_id = b.wkor_id
+            WHERE 1=1
+            AND a.wkor_date LIKE substr('^param3',0,4)||'%'
+            AND a.comp_no = '^param1'
+            AND a.wo_type <> 'PMC'
+            AND a.wo_type <> 'PMI'
+            AND a.wo_status = 'C'
+            AND b.equip_id IN (
+                            SELECT c.equip_id 
+                            FROM taequipment c
+                            WHERE c.eqloc_id IN (
+                                    SELECT d.eqloc_id
+                                       FROM TAEQLOC d 
+                                       WHERE d.comp_no = '^param1'
+                                       start WITH d.eqloc_id = x.eqloc_id
+                                       connect BY PRIOR d.eqloc_id = d.p_eqloc_id)
+                                           )) resultYear
+            ,substr('^param3',0,4) yyyy
+            ,substr('^param3',6,2) mm
+FROM taeqloc x
+WHERE x.eqloc_lvl_type='L2'
+AND x.plant = '^param5'
+AND x.comp_no = '^param1'
+ORDER BY x.ord_no
+)
+UNION ALL 
+SELECT '' locDesc
+            ,(SELECT 
+                        TO_CHAR(ROUND(NVL(sum(a.work_time)/decode(count(1),0,NULL,count(1)),0),2),'FM9999990D00')
+            FROM TAWORKORDER a INNER JOIN tawoequip b
+            ON a.comp_no = b.comp_no
+            AND a.wkor_id = b.wkor_id
+            WHERE 1=1
+            AND a.wkor_date LIKE substr('^param3',0,4)||substr('^param3',6,2)||'%'
+            AND a.comp_no = '^param1'
+            AND a.wo_type <> 'PMC'
+            AND a.wo_type <> 'PMI'
+            AND a.wo_status = 'C'
+            AND b.equip_id IN (
+                            SELECT c.equip_id 
+                            FROM taequipment c
+                            WHERE c.eqloc_id IN (
+                                    SELECT d.eqloc_id
+                                       FROM TAEQLOC d 
+                                       WHERE d.comp_no = '^param1')
+                                           ) ) resultMonth
+            ,(SELECT 
+                        TO_CHAR(ROUND(NVL(sum(a.work_time)/decode(count(1),0,NULL,count(1)),0),2),'FM9999990D00')
+            FROM TAWORKORDER a INNER JOIN tawoequip b
+            ON a.comp_no = b.comp_no
+            AND a.wkor_id = b.wkor_id
+            WHERE 1=1
+            AND a.wkor_date LIKE substr('^param3',0,4)||'%'
+            AND a.comp_no = '^param1'
+            AND a.wo_type <> 'PMC'
+            AND a.wo_type <> 'PMI'
+            AND a.wo_status = 'C'
+            AND b.equip_id IN (
+                            SELECT c.equip_id 
+                            FROM taequipment c
+                            WHERE c.eqloc_id IN (
+                                    SELECT d.eqloc_id
+                                       FROM TAEQLOC d 
+                                       WHERE d.comp_no = '^param1')
+                                           )) resultYear
+            ,substr('^param3',0,4) yyyy
+            ,substr('^param3',6,2) mm
+FROM dual
+/
+$
+SELECT TO_CHAR(to_date(x.tmonth||'01','yyyymmdd'), 'YYYY-MM') MONTH
+           ,TO_CHAR(ROUND(NVL(y.workTime/decode(y.planCnt,0,NULL,y.planCnt),0),2),'FM9999990D00') result
+FROM TAMONTH x, (SELECT 
+                substr(a.wkor_date,0,6) planMonth
+                ,count(1) planCnt
+                ,sum(a.work_time) workTime
+                FROM taworkorder a INNER JOIN tawoequip aa
+                ON a.comp_no = aa.comp_no
+                AND a.wkor_id = aa.wkor_id
+                WHERE a.comp_no = '^param1'
+                AND a.wo_type <> 'PMC'
+                AND a.wo_type <> 'PMI'
+                AND a.wo_status = 'C'
+                AND a.wkor_date LIKE substr('^param3',0,4)||'%'
+                AND aa.equip_id IN (
+                SELECT b.equip_id 
+                FROM taequipment b
+                WHERE b.eqloc_id IN (
+                        SELECT c.eqloc_id
+                           FROM taeqloc c 
+                           WHERE c.comp_no = '^param1'
+                           AND c.plant =  '^param5')
+                                           )
+   GROUP BY a.comp_no , substr(a.wkor_date,0,6)) y
+WHERE x.tmonth = y.planMonth(+)
+AND x.tyyyy  = substr('^param3',0,4)
+ORDER BY x.tmonth
+/
+$
+SELECT * FROM (
+SELECT x.description locDesc
+            , (SELECT to_char(round(nvl(((count((SELECT count(1) FROM TADAY aa WHERE aa.tmonth = substr('^param3',0,4)||substr('^param3',6,2) )) * 1440- sum(a.work_time) )  / decode(count(1),0,NULL,count(1))),0),2),'FM9999990D00')
+            FROM TAWORKORDER a INNER JOIN tawoequip b
+            ON a.comp_no = b.comp_no
+            AND a.wkor_id = b.wkor_id
+            WHERE 1=1
+            AND a.wkor_date LIKE substr('^param3',0,4)||substr('^param3',6,2)||'%'
+            AND a.comp_no = '^param1'
+            AND a.wo_type <> 'PMC'
+            AND a.wo_type <> 'PMI'
+            AND a.wo_status = 'C'
+            AND b.equip_id IN (
+                            SELECT c.equip_id 
+                            FROM taequipment c
+                            WHERE c.eqloc_id IN (
+                                    SELECT d.eqloc_id
+                                       FROM TAEQLOC d 
+                                       WHERE d.comp_no = '^param1'
+                                       start WITH d.eqloc_id = x.eqloc_id
+                                       connect BY PRIOR d.eqloc_id = d.p_eqloc_id)
+                                           )) resultMonth
+            , (SELECT to_char(round(nvl(((count((SELECT count(1) FROM TADAY aa WHERE aa.tyyyy = substr('^param3',0,4) )) * 1440- sum(a.work_time) )  / decode(count(1),0,NULL,count(1))),0),2),'FM9999990D00')
+            FROM TAWORKORDER a INNER JOIN tawoequip b
+            ON a.comp_no = b.comp_no
+            AND a.wkor_id = b.wkor_id
+            WHERE 1=1
+            AND a.wkor_date LIKE substr('^param3',0,4)||'%'
+            AND a.comp_no = '^param1'
+            AND a.wo_type <> 'PMC'
+            AND a.wo_type <> 'PMI'
+            AND a.wo_status = 'C'
+            AND b.equip_id IN (
+                            SELECT c.equip_id 
+                            FROM taequipment c
+                            WHERE c.eqloc_id IN (
+                                    SELECT d.eqloc_id
+                                       FROM TAEQLOC d 
+                                       WHERE d.comp_no = '^param1'
+                                       start WITH d.eqloc_id = x.eqloc_id
+                                       connect BY PRIOR d.eqloc_id = d.p_eqloc_id)
+                                           )) resultYear
+            ,substr('^param3',0,4) yyyy
+            ,substr('^param3',6,2) mm
+FROM taeqloc x
+WHERE x.eqloc_lvl_type='L2'
+AND x.plant = '^param5'
+AND x.comp_no = '^param1'
+ORDER BY x.ord_no
+)
+UNION ALL 
+SELECT '' locDesc
+            , (SELECT to_char(round(nvl(((count((SELECT count(1) FROM TADAY aa WHERE aa.tmonth = substr('^param3',0,4)||substr('^param3',6,2) )) * 1440- sum(a.work_time) )  / decode(count(1),0,NULL,count(1))),0),2),'FM9999990D00')
+            FROM TAWORKORDER a INNER JOIN tawoequip b
+            ON a.comp_no = b.comp_no
+            AND a.wkor_id = b.wkor_id
+            WHERE 1=1
+            AND a.wkor_date LIKE substr('^param3',0,4)||substr('^param3',6,2)||'%'
+            AND a.comp_no = '^param1'
+            AND a.wo_type <> 'PMC'
+            AND a.wo_type <> 'PMI'
+            AND a.wo_status = 'C'
+            AND b.equip_id IN (
+                            SELECT c.equip_id 
+                            FROM taequipment c
+                            WHERE c.eqloc_id IN (
+                                    SELECT d.eqloc_id
+                                       FROM TAEQLOC d 
+                                       WHERE d.comp_no = '^param1')
+                                           ) ) resultMonth
+            , (SELECT to_char(round(nvl(((count((SELECT count(1) FROM TADAY aa WHERE aa.tyyyy = substr('^param3',0,4) )) * 1440- sum(a.work_time) )  / decode(count(1),0,NULL,count(1))),0),2),'FM9999990D00')
+            FROM TAWORKORDER a INNER JOIN tawoequip b
+            ON a.comp_no = b.comp_no
+            AND a.wkor_id = b.wkor_id
+            WHERE 1=1
+            AND a.wkor_date LIKE substr('^param3',0,4)||'%'
+            AND a.comp_no = '^param1'
+            AND a.wo_type <> 'PMC'
+            AND a.wo_type <> 'PMI'
+            AND a.wo_status = 'C'
+            AND b.equip_id IN (
+                            SELECT c.equip_id 
+                            FROM taequipment c
+                            WHERE c.eqloc_id IN (
+                                    SELECT d.eqloc_id
+                                       FROM TAEQLOC d 
+                                       WHERE d.comp_no = '^param1')
+                                           )) resultYear
+            ,substr('^param3',0,4) yyyy
+            ,substr('^param3',6,2) mm
+FROM dual
+/
+$
+SELECT TO_CHAR(to_date(x.tmonth||'01','yyyymmdd'), 'YYYY-MM') MONTH
+                ,TO_CHAR(ROUND(NVL(((SELECT count(1) FROM taday a WHERE a.tmonth = x.tmonth)*1440 - y. workTime)
+                     / DECODE(y.bmCnt,0,NULL,y.bmCnt),0),2),'FM9999990D00') result
+FROM TAMONTH x, (SELECT 
+                substr(a.wkor_date,0,6) planMonth
+                ,count(1) bmCnt
+                ,sum(a.work_time) workTime
+                FROM taworkorder a INNER JOIN tawoequip aa
+                ON a.comp_no = aa.comp_no
+                AND a.wkor_id = aa.wkor_id
+                WHERE a.comp_no = '^param1'
+                AND a.wo_type <> 'PMC'
+                AND a.wo_type <> 'PMI'
+                AND a.wo_status = 'C'
+                AND a.wkor_date LIKE substr('^param3',0,4)||'%'
+                AND aa.equip_id IN (
+                SELECT b.equip_id 
+                FROM taequipment b
+                WHERE b.eqloc_id IN (
+                        SELECT c.eqloc_id
+                           FROM taeqloc c 
+                           WHERE c.comp_no = '^param1'
+                           AND c.plant =  '^param5')
+                                           )
+                    GROUP BY a.comp_no , substr(a.wkor_date,0,6)) y
+WHERE x.tmonth = y.planMonth(+)
+AND x.tyyyy  = substr('^param3',0,4)
+ORDER BY x.tmonth
+/
+$
+SELECT 
+		 TO_CHAR(to_date('^param3','yyyy-mm'), 'YYYY-MM') yyyymm
+from dual
+/
+$
+SELECT ROWNUM seqNo
+            ,(SELECT aa.full_desc
+                FROM TAEQLOC aa
+                WHERE aa.comp_no = a.compNo
+                AND aa.eqloc_id = (SELECT bb.eqloc_id
+                                                FROM TAEQUIPMENT bb
+                                                WHERE bb.comp_no = a.compNo
+                                                AND bb.equip_id = a.equip)
+              ) eqLoc
+              ,(SELECT bb.description
+                                                FROM TAEQUIPMENT bb
+                                                WHERE bb.comp_no = a.compNo
+                                                AND bb.equip_id = a.equip) equip
+              ,a.bmCnt
+              ,a.bmTime
+FROM
+(
+SELECT x.comp_no compNo
+            ,y.equip_id equip
+            ,count(y.equip_id) bmCnt
+            ,sum(x.work_time) bmTime
+FROM taworkorder x INNER JOIN tawoequip y
+ON x.comp_no = y.comp_no
+AND x.wkor_id = y.wkor_id
+WHERE 1=1
+AND x.comp_no = '^param1'
+AND x.wkor_date LIKE substr('^param3',0,4)||substr('^param3',6,2)||'%'
+AND x.wo_type <> 'PMC'
+AND x.wo_type <> 'PMI'
+AND x.wo_status = 'C'
+and y.equip_id in (SELECT equip_id FROM TAEQUIPMENT where comp_no = '^param1' and plant = '^param5')
+GROUP BY x.comp_no, y.equip_id
+ORDER BY count(y.equip_id) desc, sum(x.work_time) desc
+) a
+WHERE ROWNUM < 11
+/
+$
+SELECT 
+		 TO_CHAR(to_date('^param3','yyyy-mm'), 'YYYY') yyyy
+from dual
+/
+$
+SELECT ROWNUM seqNo
+            ,(SELECT aa.full_desc
+                FROM TAEQLOC aa
+                WHERE aa.comp_no = a.compNo
+                AND aa.eqloc_id = (SELECT bb.eqloc_id
+                                                FROM TAEQUIPMENT bb
+                                                WHERE bb.comp_no = a.compNo
+                                                AND bb.equip_id = a.equip)
+              ) eqLoc
+              ,(SELECT bb.description
+                                                FROM TAEQUIPMENT bb
+                                                WHERE bb.comp_no = a.compNo
+                                                AND bb.equip_id = a.equip) equip
+              ,a.bmCnt
+              ,a.bmTime
+FROM
+(
+SELECT x.comp_no compNo
+            ,y.equip_id equip
+            ,count(y.equip_id) bmCnt
+            ,sum(x.work_time) bmTime
+FROM taworkorder x INNER JOIN tawoequip y
+ON x.comp_no = y.comp_no
+AND x.wkor_id = y.wkor_id
+WHERE 1=1
+AND x.comp_no = '^param1'
+AND x.wkor_date LIKE substr('^param3',0,4)||'%'
+AND x.wo_type <> 'PMC'
+AND x.wo_type <> 'PMI'
+AND x.wo_status = 'C'
+and y.equip_id in (SELECT equip_id FROM TAEQUIPMENT where comp_no = '^param1' and plant = '^param5')
+GROUP BY x.comp_no, y.equip_id
+ORDER BY count(y.equip_id) desc, sum(x.work_time) desc
+) a
+WHERE ROWNUM < 11
+/

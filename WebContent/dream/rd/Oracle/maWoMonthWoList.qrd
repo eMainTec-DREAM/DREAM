@@ -1,0 +1,513 @@
+$
+	SELECT NVL((SELECT a.description 
+			FROM TADEPT a 
+			WHERE 1=1 
+			AND a.comp_no = '^param1' 
+			AND a.dept_id = '^param4'),'') as deptDesc
+	, substr('^param5',0,4) as yyyy, substr('^param5',6,2) as mm 
+	from dual
+/
+$
+WITH monthTaday AS (
+SELECT tday, week, dow, rank
+FROM (
+SELECT tday, week,dow, DENSE_RANK() OVER(order by week asc) rank   FROM (SELECT tday, CEIL((TO_NUMBER(SUBSTRB(tday, -2, 2)) + 7 - to_number(TO_CHAR(TO_DATE(tday,'YYYYMMDD'),'D')))/7) week, dow,tmonth FROM TADAY)
+WHERE tmonth = substr('^param5',0,4)||substr('^param5',6,2) 
+ORDER BY TDAY
+) 
+WHERE 1=1
+AND  rank =1 
+)
+SELECT 
+(SELECT LISTAGG('-'||substr(description,0,10),'*()*') WITHIN GROUP (ORDER BY description) as  sunday
+FROM taworkorder 
+WHERE 1=1
+AND comp_no = '^param1'
+AND wkor_date  = (select tday from monthTaday where dow=1)
+AND wo_status<>'C'
+AND plant = '^param6'
+@AND(dept_id, ^param4)
+AND is_deleted='N' ) dow1
+,(select substr(tday,7,2) from monthTaday where dow=1) day1
+,(SELECT LISTAGG('-'||substr(description,0,10),'*()*') WITHIN GROUP (ORDER BY description) as  sunday
+FROM taworkorder 
+WHERE 1=1
+AND comp_no = '^param1'
+AND wkor_date  = (select tday from monthTaday where dow=2)
+AND wo_status<>'C'
+AND plant = '^param6'
+@AND(dept_id, ^param4)
+AND is_deleted='N' ) dow2
+,(select substr(tday,7,2) from monthTaday where dow=2) day2
+,(SELECT LISTAGG('-'||substr(description,0,10),'*()*') WITHIN GROUP (ORDER BY description) as  sunday
+FROM taworkorder 
+WHERE 1=1
+AND comp_no = '^param1'
+AND wkor_date  = (select tday from monthTaday where dow=3)
+AND wo_status<>'C'
+AND plant = '^param6'
+@AND(dept_id, ^param4)
+AND is_deleted='N' ) dow3
+,(select substr(tday,7,2) from monthTaday where dow=3) day3
+,(SELECT LISTAGG('-'||substr(description,0,10),'*()*') WITHIN GROUP (ORDER BY description) as  sunday
+FROM taworkorder 
+WHERE 1=1
+AND comp_no = '^param1'
+AND wkor_date  = (select tday from monthTaday where dow=4)
+AND wo_status<>'C'
+AND plant = '^param6'
+@AND(dept_id, ^param4)
+AND is_deleted='N' ) dow4
+,(select substr(tday,7,2) from monthTaday where dow=4) day4
+,(SELECT LISTAGG('-'||substr(description,0,10),'*()*') WITHIN GROUP (ORDER BY description) as  sunday
+FROM taworkorder 
+WHERE 1=1
+AND comp_no = '^param1'
+AND wkor_date  = (select tday from monthTaday where dow=5)
+AND wo_status<>'C'
+AND plant = '^param6'
+@AND(dept_id, ^param4)
+AND is_deleted='N' ) dow5
+,(select substr(tday,7,2) from monthTaday where dow=5) day5
+,(SELECT LISTAGG('-'||substr(description,0,10),'*()*') WITHIN GROUP (ORDER BY description) as  sunday
+FROM taworkorder 
+WHERE 1=1
+AND comp_no = '^param1'
+AND wkor_date  = (select tday from monthTaday where dow=6)
+AND wo_status<>'C'
+AND plant = '^param6'
+@AND(dept_id, ^param4)
+AND is_deleted='N' ) dow6
+,(select substr(tday,7,2) from monthTaday where dow=6) day6
+,(SELECT LISTAGG('-'||substr(description,0,10),'*()*') WITHIN GROUP (ORDER BY description) as  sunday
+FROM taworkorder 
+WHERE 1=1
+AND comp_no = '^param1'
+AND wkor_date  = (select tday from monthTaday where dow=7)
+AND wo_status<>'C'
+AND plant = '^param6'
+@AND(dept_id, ^param4)
+AND is_deleted='N' ) dow7
+,(select substr(tday,7,2) from monthTaday where dow=7) day7
+FROM DUAL
+/
+$
+WITH monthTaday AS (
+SELECT tday, week, dow, rank
+FROM (
+SELECT tday, week,dow, DENSE_RANK() OVER(order by week asc) rank   FROM (SELECT tday, CEIL((TO_NUMBER(SUBSTRB(tday, -2, 2)) + 7 - to_number(TO_CHAR(TO_DATE(tday,'YYYYMMDD'),'D')))/7) week, dow,tmonth FROM TADAY)
+WHERE tmonth = substr('^param5',0,4)||substr('^param5',6,2)
+ORDER BY TDAY
+) 
+WHERE 1=1
+AND  rank =2
+)
+SELECT 
+(SELECT LISTAGG('-'||substr(description,0,10),'*()*') WITHIN GROUP (ORDER BY description) as  sunday
+FROM taworkorder 
+WHERE 1=1
+AND comp_no = '^param1'
+AND wkor_date  = (select tday from monthTaday where dow=1)
+AND wo_status<>'C'
+AND plant = '^param6'
+@AND(dept_id, ^param4)
+AND is_deleted='N' ) dow1
+,(select substr(tday,7,2) from monthTaday where dow=1) day1
+,(SELECT LISTAGG('-'||substr(description,0,10),'*()*') WITHIN GROUP (ORDER BY description) as  sunday
+FROM taworkorder 
+WHERE 1=1
+AND comp_no = '^param1'
+AND wkor_date  = (select tday from monthTaday where dow=2)
+AND wo_status<>'C'
+AND plant = '^param6'
+@AND(dept_id, ^param4)
+AND is_deleted='N' ) dow2
+,(select substr(tday,7,2) from monthTaday where dow=2) day2
+,(SELECT LISTAGG('-'||substr(description,0,10),'*()*') WITHIN GROUP (ORDER BY description) as  sunday
+FROM taworkorder 
+WHERE 1=1
+AND comp_no = '^param1'
+AND wkor_date  = (select tday from monthTaday where dow=3)
+AND wo_status<>'C'
+AND plant = '^param6'
+@AND(dept_id, ^param4)
+AND is_deleted='N' ) dow3
+,(select substr(tday,7,2) from monthTaday where dow=3) day3
+,(SELECT LISTAGG('-'||substr(description,0,10),'*()*') WITHIN GROUP (ORDER BY description) as  sunday
+FROM taworkorder 
+WHERE 1=1
+AND comp_no = '^param1'
+AND wkor_date  = (select tday from monthTaday where dow=4)
+AND wo_status<>'C'
+AND plant = '^param6'
+@AND(dept_id, ^param4)
+AND is_deleted='N' ) dow4
+,(select substr(tday,7,2) from monthTaday where dow=4) day4
+,(SELECT LISTAGG('-'||substr(description,0,10),'*()*') WITHIN GROUP (ORDER BY description) as  sunday
+FROM taworkorder 
+WHERE 1=1
+AND comp_no = '^param1'
+AND wkor_date  = (select tday from monthTaday where dow=5)
+AND wo_status<>'C'
+AND plant = '^param6'
+@AND(dept_id, ^param4)
+AND is_deleted='N' ) dow5
+,(select substr(tday,7,2) from monthTaday where dow=5) day5
+,(SELECT LISTAGG('-'||substr(description,0,10),'*()*') WITHIN GROUP (ORDER BY description) as  sunday
+FROM taworkorder 
+WHERE 1=1
+AND comp_no = '^param1'
+AND wkor_date  = (select tday from monthTaday where dow=6)
+AND wo_status<>'C'
+AND plant = '^param6'
+@AND(dept_id, ^param4)
+AND is_deleted='N' ) dow6
+,(select substr(tday,7,2) from monthTaday where dow=6) day6
+,(SELECT LISTAGG('-'||substr(description,0,10),'*()*') WITHIN GROUP (ORDER BY description) as  sunday
+FROM taworkorder 
+WHERE 1=1
+AND comp_no = '^param1'
+AND wkor_date  = (select tday from monthTaday where dow=7)
+AND wo_status<>'C'
+AND plant = '^param6'
+@AND(dept_id, ^param4)
+AND is_deleted='N' ) dow7
+,(select substr(tday,7,2) from monthTaday where dow=7) day7
+FROM DUAL
+/
+$
+WITH monthTaday AS (
+SELECT tday, week, dow, rank
+FROM (
+SELECT tday, week,dow, DENSE_RANK() OVER(order by week asc) rank   FROM (SELECT tday, CEIL((TO_NUMBER(SUBSTRB(tday, -2, 2)) + 7 - to_number(TO_CHAR(TO_DATE(tday,'YYYYMMDD'),'D')))/7) week, dow,tmonth FROM TADAY)
+WHERE tmonth = substr('^param5',0,4)||substr('^param5',6,2)
+ORDER BY TDAY
+) 
+WHERE 1=1
+AND  rank =3
+)
+SELECT 
+(SELECT LISTAGG('-'||substr(description,0,10),'*()*') WITHIN GROUP (ORDER BY description) as  sunday
+FROM taworkorder 
+WHERE 1=1
+AND comp_no = '^param1'
+AND wkor_date  = (select tday from monthTaday where dow=1)
+AND wo_status<>'C'
+AND plant = '^param6'
+@AND(dept_id, ^param4)
+AND is_deleted='N' ) dow1
+,(select substr(tday,7,2) from monthTaday where dow=1) day1
+,(SELECT LISTAGG('-'||substr(description,0,10),'*()*') WITHIN GROUP (ORDER BY description) as  sunday
+FROM taworkorder 
+WHERE 1=1
+AND comp_no = '^param1'
+AND wkor_date  = (select tday from monthTaday where dow=2)
+AND wo_status<>'C'
+AND plant = '^param6'
+@AND(dept_id, ^param4)
+AND is_deleted='N' ) dow2
+,(select substr(tday,7,2) from monthTaday where dow=2) day2
+,(SELECT LISTAGG('-'||substr(description,0,10),'*()*') WITHIN GROUP (ORDER BY description) as  sunday
+FROM taworkorder 
+WHERE 1=1
+AND comp_no = '^param1'
+AND wkor_date  = (select tday from monthTaday where dow=3)
+AND wo_status<>'C'
+AND plant = '^param6'
+@AND(dept_id, ^param4)
+AND is_deleted='N' ) dow3
+,(select substr(tday,7,2) from monthTaday where dow=3) day3
+,(SELECT LISTAGG('-'||substr(description,0,10),'*()*') WITHIN GROUP (ORDER BY description) as  sunday
+FROM taworkorder 
+WHERE 1=1
+AND comp_no = '^param1'
+AND wkor_date  = (select tday from monthTaday where dow=4)
+AND wo_status<>'C'
+AND plant = '^param6'
+@AND(dept_id, ^param4)
+AND is_deleted='N' ) dow4
+,(select substr(tday,7,2) from monthTaday where dow=4) day4
+,(SELECT LISTAGG('-'||substr(description,0,10),'*()*') WITHIN GROUP (ORDER BY description) as  sunday
+FROM taworkorder 
+WHERE 1=1
+AND comp_no = '^param1'
+AND wkor_date  = (select tday from monthTaday where dow=5)
+AND wo_status<>'C'
+AND plant = '^param6'
+@AND(dept_id, ^param4)
+AND is_deleted='N' ) dow5
+,(select substr(tday,7,2) from monthTaday where dow=5) day5
+,(SELECT LISTAGG('-'||substr(description,0,10),'*()*') WITHIN GROUP (ORDER BY description) as  sunday
+FROM taworkorder 
+WHERE 1=1
+AND comp_no = '^param1'
+AND wkor_date  = (select tday from monthTaday where dow=6)
+AND wo_status<>'C'
+AND plant = '^param6'
+@AND(dept_id, ^param4)
+AND is_deleted='N' ) dow6
+,(select substr(tday,7,2) from monthTaday where dow=6) day6
+,(SELECT LISTAGG('-'||substr(description,0,10),'*()*') WITHIN GROUP (ORDER BY description) as  sunday
+FROM taworkorder 
+WHERE 1=1
+AND comp_no = '^param1'
+AND wkor_date  = (select tday from monthTaday where dow=7)
+AND wo_status<>'C'
+AND plant = '^param6'
+@AND(dept_id, ^param4)
+AND is_deleted='N' ) dow7
+,(select substr(tday,7,2) from monthTaday where dow=7) day7
+FROM DUAL
+/
+$
+WITH monthTaday AS (
+SELECT tday, week, dow, rank
+FROM (
+SELECT tday, week,dow, DENSE_RANK() OVER(order by week asc) rank   FROM (SELECT tday, CEIL((TO_NUMBER(SUBSTRB(tday, -2, 2)) + 7 - to_number(TO_CHAR(TO_DATE(tday,'YYYYMMDD'),'D')))/7) week, dow,tmonth FROM TADAY)
+WHERE tmonth = substr('^param5',0,4)||substr('^param5',6,2)
+ORDER BY TDAY
+) 
+WHERE 1=1
+AND  rank =4
+)
+SELECT 
+(SELECT LISTAGG('-'||substr(description,0,10),'*()*') WITHIN GROUP (ORDER BY description) as  sunday
+FROM taworkorder 
+WHERE 1=1
+AND comp_no = '^param1'
+AND wkor_date  = (select tday from monthTaday where dow=1)
+AND wo_status<>'C'
+AND plant = '^param6'
+@AND(dept_id, ^param4)
+AND is_deleted='N' ) dow1
+,(select substr(tday,7,2) from monthTaday where dow=1) day1
+,(SELECT LISTAGG('-'||substr(description,0,10),'*()*') WITHIN GROUP (ORDER BY description) as  sunday
+FROM taworkorder 
+WHERE 1=1
+AND comp_no = '^param1'
+AND wkor_date  = (select tday from monthTaday where dow=2)
+AND wo_status<>'C'
+AND plant = '^param6'
+@AND(dept_id, ^param4)
+AND is_deleted='N' ) dow2
+,(select substr(tday,7,2) from monthTaday where dow=2) day2
+,(SELECT LISTAGG('-'||substr(description,0,10),'*()*') WITHIN GROUP (ORDER BY description) as  sunday
+FROM taworkorder 
+WHERE 1=1
+AND comp_no = '^param1'
+AND wkor_date  = (select tday from monthTaday where dow=3)
+AND wo_status<>'C'
+AND plant = '^param6'
+@AND(dept_id, ^param4)
+AND is_deleted='N' ) dow3
+,(select substr(tday,7,2) from monthTaday where dow=3) day3
+,(SELECT LISTAGG('-'||substr(description,0,10),'*()*') WITHIN GROUP (ORDER BY description) as  sunday
+FROM taworkorder 
+WHERE 1=1
+AND comp_no = '^param1'
+AND wkor_date  = (select tday from monthTaday where dow=4)
+AND wo_status<>'C'
+AND plant = '^param6'
+@AND(dept_id, ^param4)
+AND is_deleted='N' ) dow4
+,(select substr(tday,7,2) from monthTaday where dow=4) day4
+,(SELECT LISTAGG('-'||substr(description,0,10),'*()*') WITHIN GROUP (ORDER BY description) as  sunday
+FROM taworkorder 
+WHERE 1=1
+AND comp_no = '^param1'
+AND wkor_date  = (select tday from monthTaday where dow=5)
+AND wo_status<>'C'
+AND plant = '^param6'
+@AND(dept_id, ^param4)
+AND is_deleted='N' ) dow5
+,(select substr(tday,7,2) from monthTaday where dow=5) day5
+,(SELECT LISTAGG('-'||substr(description,0,10),'*()*') WITHIN GROUP (ORDER BY description) as  sunday
+FROM taworkorder 
+WHERE 1=1
+AND comp_no = '^param1'
+AND wkor_date  = (select tday from monthTaday where dow=6)
+AND wo_status<>'C'
+AND plant = '^param6'
+@AND(dept_id, ^param4)
+AND is_deleted='N' ) dow6
+,(select substr(tday,7,2) from monthTaday where dow=6) day6
+,(SELECT LISTAGG('-'||substr(description,0,10),'*()*') WITHIN GROUP (ORDER BY description) as  sunday
+FROM taworkorder 
+WHERE 1=1
+AND comp_no = '^param1'
+AND wkor_date  = (select tday from monthTaday where dow=7)
+AND wo_status<>'C'
+AND plant = '^param6'
+@AND(dept_id, ^param4)
+AND is_deleted='N' ) dow7
+,(select substr(tday,7,2) from monthTaday where dow=7) day7
+FROM DUAL
+/
+$
+WITH monthTaday AS (
+SELECT tday, week, dow, rank
+FROM (
+SELECT tday, week,dow, DENSE_RANK() OVER(order by week asc) rank   FROM (SELECT tday, CEIL((TO_NUMBER(SUBSTRB(tday, -2, 2)) + 7 - to_number(TO_CHAR(TO_DATE(tday,'YYYYMMDD'),'D')))/7) week, dow,tmonth FROM TADAY)
+WHERE tmonth = substr('^param5',0,4)||substr('^param5',6,2)
+ORDER BY TDAY
+) 
+WHERE 1=1
+AND  rank =5
+)
+SELECT 
+(SELECT LISTAGG('-'||substr(description,0,10),'*()*') WITHIN GROUP (ORDER BY description) as  sunday
+FROM taworkorder 
+WHERE 1=1
+AND comp_no = '^param1'
+AND wkor_date  = (select tday from monthTaday where dow=1)
+AND wo_status<>'C'
+AND plant = '^param6'
+@AND(dept_id, ^param4)
+AND is_deleted='N' ) dow1
+,(select substr(tday,7,2) from monthTaday where dow=1) day1
+,(SELECT LISTAGG('-'||substr(description,0,10),'*()*') WITHIN GROUP (ORDER BY description) as  sunday
+FROM taworkorder 
+WHERE 1=1
+AND comp_no = '^param1'
+AND wkor_date  = (select tday from monthTaday where dow=2)
+AND wo_status<>'C'
+AND plant = '^param6'
+@AND(dept_id, ^param4)
+AND is_deleted='N' ) dow2
+,(select substr(tday,7,2) from monthTaday where dow=2) day2
+,(SELECT LISTAGG('-'||substr(description,0,10),'*()*') WITHIN GROUP (ORDER BY description) as  sunday
+FROM taworkorder 
+WHERE 1=1
+AND comp_no = '^param1'
+AND wkor_date  = (select tday from monthTaday where dow=3)
+AND wo_status<>'C'
+AND plant = '^param6'
+@AND(dept_id, ^param4)
+AND is_deleted='N' ) dow3
+,(select substr(tday,7,2) from monthTaday where dow=3) day3
+,(SELECT LISTAGG('-'||substr(description,0,10),'*()*') WITHIN GROUP (ORDER BY description) as  sunday
+FROM taworkorder 
+WHERE 1=1
+AND comp_no = '^param1'
+AND wkor_date  = (select tday from monthTaday where dow=4)
+AND wo_status<>'C'
+AND plant = '^param6'
+@AND(dept_id, ^param4)
+AND is_deleted='N' ) dow4
+,(select substr(tday,7,2) from monthTaday where dow=4) day4
+,(SELECT LISTAGG('-'||substr(description,0,10),'*()*') WITHIN GROUP (ORDER BY description) as  sunday
+FROM taworkorder 
+WHERE 1=1
+AND comp_no = '^param1'
+AND wkor_date  = (select tday from monthTaday where dow=5)
+AND wo_status<>'C'
+AND plant = '^param6'
+@AND(dept_id, ^param4)
+AND is_deleted='N' ) dow5
+,(select substr(tday,7,2) from monthTaday where dow=5) day5
+,(SELECT LISTAGG('-'||substr(description,0,10),'*()*') WITHIN GROUP (ORDER BY description) as  sunday
+FROM taworkorder 
+WHERE 1=1
+AND comp_no = '^param1'
+AND wkor_date  = (select tday from monthTaday where dow=6)
+AND wo_status<>'C'
+AND plant = '^param6'
+@AND(dept_id, ^param4)
+AND is_deleted='N' ) dow6
+,(select substr(tday,7,2) from monthTaday where dow=6) day6
+,(SELECT LISTAGG('-'||substr(description,0,10),'*()*') WITHIN GROUP (ORDER BY description) as  sunday
+FROM taworkorder 
+WHERE 1=1
+AND comp_no = '^param1'
+AND wkor_date  = (select tday from monthTaday where dow=7)
+AND wo_status<>'C'
+AND plant = '^param6'
+@AND(dept_id, ^param4)
+AND is_deleted='N' ) dow7
+,(select substr(tday,7,2) from monthTaday where dow=7) day7
+FROM DUAL
+/
+$
+WITH monthTaday AS (
+SELECT tday, week, dow, rank
+FROM (
+SELECT tday, week,dow, DENSE_RANK() OVER(order by week asc) rank   FROM (SELECT tday, CEIL((TO_NUMBER(SUBSTRB(tday, -2, 2)) + 7 - to_number(TO_CHAR(TO_DATE(tday,'YYYYMMDD'),'D')))/7) week, dow,tmonth FROM TADAY)
+WHERE tmonth = substr('^param5',0,4)||substr('^param5',6,2)
+ORDER BY TDAY
+) 
+WHERE 1=1
+AND  rank =6
+)
+SELECT 
+(SELECT LISTAGG('-'||substr(description,0,10),'*()*') WITHIN GROUP (ORDER BY description) as  sunday
+FROM taworkorder 
+WHERE 1=1
+AND comp_no = '^param1'
+AND wkor_date  = (select tday from monthTaday where dow=1)
+AND wo_status<>'C'
+AND plant = '^param6'
+@AND(dept_id, ^param4)
+AND is_deleted='N' ) dow1
+,(select substr(tday,7,2) from monthTaday where dow=1) day1
+,(SELECT LISTAGG('-'||substr(description,0,10),'*()*') WITHIN GROUP (ORDER BY description) as  sunday
+FROM taworkorder 
+WHERE 1=1
+AND comp_no = '^param1'
+AND wkor_date  = (select tday from monthTaday where dow=2)
+AND wo_status<>'C'
+AND plant = '^param6'
+@AND(dept_id, ^param4)
+AND is_deleted='N' ) dow2
+,(select substr(tday,7,2) from monthTaday where dow=2) day2
+,(SELECT LISTAGG('-'||substr(description,0,10),'*()*') WITHIN GROUP (ORDER BY description) as  sunday
+FROM taworkorder 
+WHERE 1=1
+AND comp_no = '^param1'
+AND wkor_date  = (select tday from monthTaday where dow=3)
+AND wo_status<>'C'
+AND plant = '^param6'
+@AND(dept_id, ^param4)
+AND is_deleted='N' ) dow3
+,(select substr(tday,7,2) from monthTaday where dow=3) day3
+,(SELECT LISTAGG('-'||substr(description,0,10),'*()*') WITHIN GROUP (ORDER BY description) as  sunday
+FROM taworkorder 
+WHERE 1=1
+AND comp_no = '^param1'
+AND wkor_date  = (select tday from monthTaday where dow=4)
+AND wo_status<>'C'
+AND plant = '^param6'
+@AND(dept_id, ^param4)
+AND is_deleted='N' ) dow4
+,(select substr(tday,7,2) from monthTaday where dow=4) day4
+,(SELECT LISTAGG('-'||substr(description,0,10),'*()*') WITHIN GROUP (ORDER BY description) as  sunday
+FROM taworkorder 
+WHERE 1=1
+AND comp_no = '^param1'
+AND wkor_date  = (select tday from monthTaday where dow=5)
+AND wo_status<>'C'
+AND plant = '^param6'
+@AND(dept_id, ^param4)
+AND is_deleted='N' ) dow5
+,(select substr(tday,7,2) from monthTaday where dow=5) day5
+,(SELECT LISTAGG('-'||substr(description,0,10),'*()*') WITHIN GROUP (ORDER BY description) as  sunday
+FROM taworkorder 
+WHERE 1=1
+AND comp_no = '^param1'
+AND wkor_date  = (select tday from monthTaday where dow=6)
+AND wo_status<>'C'
+AND plant = '^param6'
+@AND(dept_id, ^param4)
+AND is_deleted='N' ) dow6
+,(select substr(tday,7,2) from monthTaday where dow=6) day6
+,(SELECT LISTAGG('-'||substr(description,0,10),'*()*') WITHIN GROUP (ORDER BY description) as  sunday
+FROM taworkorder 
+WHERE 1=1
+AND comp_no = '^param1'
+AND wkor_date  = (select tday from monthTaday where dow=7)
+AND wo_status<>'C'
+AND plant = '^param6'
+@AND(dept_id, ^param4)
+AND is_deleted='N' ) dow7
+,(select substr(tday,7,2) from monthTaday where dow=7) day7
+FROM DUAL
+/

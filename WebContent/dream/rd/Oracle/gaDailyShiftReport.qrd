@@ -1,0 +1,79 @@
+$
+SELECT 
+		 TO_CHAR(to_Date(substr('^param3',0,4)||substr('^param3',6,2)||substr('^param3',9,2),'yyyymmdd'), 'DD-MON-YYYY', 'NLS_DATE_LANGUAGE=ENGLISH') today
+from dual
+/
+$
+SELECT  (SELECT TO_CHAR(WM_CONCAT(b.description))                                      
+                    FROM tawoequip a, taequipment b                                                   
+                    WHERE a.comp_no = b.comp_no
+                        AND a.equip_id = b.equip_id
+                        AND a.wkor_id = x.wkor_id                                       
+                        AND a.comp_no = x.comp_no                                     
+                    GROUP BY a.comp_no, a.wkor_id    ) woName
+            ,x.work_time workTime
+            ,x.perform perform
+            ,SFACODE_TO_DESC(x.pm_type,x.wo_type||'_TYPE','SYS','','^param2') status
+            ,(SELECT a.emp_name FROM TAEMP a where a.comp_no = x.comp_no AND a.emp_id = x.emp_id) craft
+FROM TAWORKORDER x, TAWOFAIL y
+WHERE x.comp_no =y.comp_no
+AND x.wkor_id = y.wkor_id
+AND x.comp_no = '^param1'
+AND x.start_date||x.start_time >= substr('^param3',0,4)||substr('^param3',6,2)||substr('^param3',9,2)||substr('^param4',0,2)||substr('^param4',4,2)
+AND x.start_date||x.start_time <= TO_CHAR(to_date(substr('^param3',0,4)||substr('^param3',6,2)||substr('^param3',9,2)||substr('^param4',0,2)||substr('^param4',4,2),'yyyy-mm-ddhh24mi')+0.9999,'yyyymmddhh24mi')
+AND x.wo_type in ('BM','CM','PMW')
+AND x.shift_type='DAY'
+/
+$
+select 'Target Head Count : '||count(1)||'    Actual Head Count : '||sum(decode(x.wo_status,'C',1,0))||'    Production Stop Time : '||sum(y.lndn_work_time)||'Min' aa
+FROM TAWORKORDER x, TAWOFAIL y
+WHERE x.comp_no =y.comp_no
+AND x.wkor_id = y.wkor_id
+AND   x.comp_no = '^param1'
+AND x.start_date||x.start_time >= substr('^param3',0,4)||substr('^param3',6,2)||substr('^param3',9,2)||substr('^param4',0,2)||substr('^param4',4,2)
+AND x.start_date||x.start_time <= TO_CHAR(to_date(substr('^param3',0,4)||substr('^param3',6,2)||substr('^param3',9,2)||substr('^param4',0,2)||substr('^param4',4,2),'yyyy-mm-ddhh24mi')+0.9999,'yyyymmddhh24mi')
+AND x.wo_type in ('BM','CM','PMW')
+AND x.shift_type='DAY'
+/
+$
+SELECT  (SELECT TO_CHAR(WM_CONCAT(b.description))                                      
+                    FROM tawoequip a, taequipment b                                                   
+                    WHERE a.comp_no = b.comp_no
+                        AND a.equip_id = b.equip_id
+                        AND a.wkor_id = x.wkor_id                                       
+                        AND a.comp_no = x.comp_no                                     
+                    GROUP BY a.comp_no, a.wkor_id    ) woName
+            ,x.work_time workTime
+            ,x.perform perform
+            ,SFACODE_TO_DESC(x.pm_type,x.wo_type||'_TYPE','SYS','','^param2') status
+            ,(SELECT a.emp_name FROM TAEMP a where a.comp_no = x.comp_no AND a.emp_id = x.emp_id) craft
+FROM TAWORKORDER x, TAWOFAIL y
+WHERE x.comp_no =y.comp_no
+AND x.wkor_id = y.wkor_id
+AND x.comp_no = '^param1'
+AND x.start_date||x.start_time >= substr('^param3',0,4)||substr('^param3',6,2)||substr('^param3',9,2)||substr('^param4',0,2)||substr('^param4',4,2)
+AND x.start_date||x.start_time <= TO_CHAR(to_date(substr('^param3',0,4)||substr('^param3',6,2)||substr('^param3',9,2)||substr('^param4',0,2)||substr('^param4',4,2),'yyyy-mm-ddhh24mi')+0.9999,'yyyymmddhh24mi')
+AND x.wo_type in ('BM','CM','PMW')
+AND x.shift_type='NIGHT'
+/
+$
+select 'Target Head Count : '||count(1)||'    Actual Head Count : '||sum(decode(x.wo_status,'C',1,0))||'    Production Stop Time : '||sum(y.lndn_work_time)||'Min' aa
+FROM TAWORKORDER x, TAWOFAIL y
+WHERE x.comp_no =y.comp_no
+AND x.wkor_id = y.wkor_id
+AND   x.comp_no = '^param1'
+AND x.start_date||x.start_time >= substr('^param3',0,4)||substr('^param3',6,2)||substr('^param3',9,2)||substr('^param4',0,2)||substr('^param4',4,2)
+AND x.start_date||x.start_time <= TO_CHAR(to_date(substr('^param3',0,4)||substr('^param3',6,2)||substr('^param3',9,2)||substr('^param4',0,2)||substr('^param4',4,2),'yyyy-mm-ddhh24mi')+0.9999,'yyyymmddhh24mi')
+AND x.wo_type in ('BM','CM','PMW')
+AND x.shift_type='NIGHT'
+/
+$
+select 'Target Head Count : '||count(1)||'    Actual Head Count : '||sum(decode(x.wo_status,'C',1,0))||'    Production Stop Time : '||sum(y.lndn_work_time)||'Min' aa
+FROM TAWORKORDER x, TAWOFAIL y
+WHERE x.comp_no =y.comp_no
+AND x.wkor_id = y.wkor_id
+AND   x.comp_no = '^param1'
+AND x.start_date||x.start_time >= substr('^param3',0,4)||substr('^param3',6,2)||substr('^param3',9,2)||substr('^param4',0,2)||substr('^param4',4,2)
+AND x.start_date||x.start_time <= TO_CHAR(to_date(substr('^param3',0,4)||substr('^param3',6,2)||substr('^param3',9,2)||substr('^param4',0,2)||substr('^param4',4,2),'yyyy-mm-ddhh24mi')+0.9999,'yyyymmddhh24mi')
+AND x.wo_type in ('BM','CM','PMW')
+/

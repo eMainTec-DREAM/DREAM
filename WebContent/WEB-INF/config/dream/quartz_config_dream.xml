@@ -1,0 +1,392 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE beans PUBLIC
+    "-//SPRING//DTD BEAN//EN"
+    "http://www.springframework.org/dtd/spring-beans.dtd">
+
+	
+<beans default-autowire="no" default-lazy-init="false"
+	default-dependency-check="none">
+	<!-- JNDI DataSource for J2EE environments -->
+	<!-- 스케줄링 시작 -->
+	<!-- 스케쥴러 Object 설정 -->
+	<!-- 스케쥴러 Object를 가지고 JobDetail 생성 -->
+	<!-- MethodInvoing 방식 - 스케쥴러에서 실행할 객체와 메소드를 지정한다. -->
+	<!-- 생성된 trigger 를 가지고 SchedulerFactoryBean 을 생성한다. -->
+	<!-- JobDetail 로 CronTrigger 생성 -->
+    <!-- cronExpression 에서는 주기를 설정한다. 이 부분은 Quartz trigger 부분을 참고할 것 -->
+    <!-- 0 1:분(0~59) 2:시(0~23) 3:일(0~31) 4:월(1~12) 5:요일(0~7,7:일요일, 1:월요일)  -->
+    <!-- Seconds    0-59    , - * / 
+		Minutes    0-59    , - * / 
+		Hours    0-23    , - * / 
+		Day-of-month    1-31    , - * ? / L W 
+		Month    1-12 or JAN-DEC    , - * / 
+		Day-of-Week    1-7 or SUN-SAT    , - * ? / L # 
+		Year (Optional)    empty, 1970-2099    , - * / 
+		자릿수마다 의미는 위와 같다.
+		순서대로 초/분/시/한달중 몇번째일/월/요일중몇번째요일/년도. -->
+		
+	<!-- Batch DTO(Manual 실행 시 파라미터로 사용) -->
+	<bean id="commonBatchDTO" class="intf.common.batch.dto.CommonBatchDTO"></bean>
+	
+    <!-- DREAM회사 문자 서비스.( 매 10분 마다 실행 ) -->
+    <bean id="dreamSmsMessageListServiceMethod" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject"><ref bean="dreamBatchService" /></property>
+        <property name="targetMethod"><value>sendSmsMessageList</value></property>
+        <property name="concurrent"><value>false</value></property>
+    </bean>
+    <bean id="dreamSmsMessageListService" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail"><ref bean="dreamSmsMessageListServiceMethod" /></property>
+        <property name="cronExpression"><value>0 0,10,20,30,40,50 * * * ?</value></property>
+    </bean>
+    <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="triggers">
+            <list>
+                <ref bean="dreamSmsMessageListService"/>
+            </list>
+        </property>
+    </bean>
+    
+    <!-- 메일링 서비스.( 매 10분 마다 실행 ) -->
+    <bean id="mailMessageListServiceMethod" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject"><ref bean="schAutoSchCommonService" /></property>
+        <property name="targetMethod"><value>sendMailMessageList</value></property>
+        <property name="concurrent"><value>false</value></property>
+    </bean>
+    <bean id="mailMessageListService" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail"><ref bean="mailMessageListServiceMethod" /></property>
+        <property name="cronExpression"><value>0 0,10,20,30,40,50 * * * ?</value></property>
+    </bean>
+    <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="triggers">
+            <list>
+                <ref bean="mailMessageListService"/>
+            </list>
+        </property>
+    </bean>
+	
+    <!-- 메일링 스케쥴링.( 매 20분 마다 실행 ) -->
+    <bean id="maMailDetailServiceMethod" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject"><ref bean="maMailDetailService" /></property>
+        <property name="targetMethod"><value>sendMessageAll</value></property>
+        <property name="concurrent"><value>false</value></property>
+    </bean>
+    <bean id="maMailDetailServiceService" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail"><ref bean="maMailDetailServiceMethod" /></property>
+        <property name="cronExpression"><value>0 0,20,40 * * * ?</value></property>
+    </bean>
+    <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="triggers">
+            <list>
+                <ref bean="maMailDetailServiceService"/>
+            </list>
+        </property>
+    </bean>
+		
+    <!-- 예방작업 전체일정을 생성하는 프로그램.( 매일 1회 01시 ) -->
+    <bean id="maBatchMakeScheduleAllMethod" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject"><ref bean="schAutoSchCommonService" /></property>
+        <property name="targetMethod"><value>SP_PM_MAKE_SCHEDULE_BYALL</value></property>
+        <property name="concurrent"><value>false</value></property>
+    </bean>
+    <bean id="maBatchMakeScheduleAllSchedule" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail"><ref bean="maBatchMakeScheduleAllMethod" /></property>
+        <property name="cronExpression"><value>0 0 1 * * ?</value></property>
+    </bean>
+    <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="triggers">
+            <list>
+                <ref bean="maBatchMakeScheduleAllSchedule"/>
+            </list>
+        </property>
+    </bean>
+    <!-- 예방작업 일정에서 작업서(WO)를 자동으로 발행해 주는 프로그램.( 매일 1회 01시 30분 ) -->
+    <bean id="maBatchMakeWorkOrderMethod" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject"><ref bean="schAutoSchCommonService" /></property>
+        <property name="targetMethod"><value>SP_PM_MAKE_TO_ALLSCHED</value></property>
+        <property name="concurrent"><value>false</value></property>
+    </bean>
+    <bean id="maBatchMakeWorkOrderSchedule" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail"><ref bean="maBatchMakeWorkOrderMethod" /></property>
+        <property name="cronExpression"><value>0 30 1 * * ?</value></property>
+    </bean>
+    <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="triggers">
+            <list>
+                <ref bean="maBatchMakeWorkOrderSchedule"/>
+            </list>
+        </property>
+    </bean>
+    <!-- 일별로 사용현황모니터링 데이터를 집계해주는 프로그램.( 매일 1회 04시 00분 ) -->
+    <bean id="maBatchUpdUsrPtDayMethod" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject"><ref bean="schAutoSchCommonService" /></property>
+        <property name="targetMethod"><value>SP_MAKE_USE_MONITORING</value></property>
+        <property name="concurrent"><value>false</value></property>
+    </bean>
+    <bean id="maBatchUpdUsrPtDaySchedule" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail"><ref bean="maBatchUpdUsrPtDayMethod" /></property>
+        <property name="cronExpression"><value>0 0 4 * * ?</value></property>
+    </bean>
+    <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="triggers">
+            <list>
+                <ref bean="maBatchUpdUsrPtDaySchedule"/>
+            </list>
+        </property>
+    </bean>
+    <!-- default  보전목표를 셋팅해주는 프로그램.( 매일 1회 03시 30분 ) -->
+    <bean id="maBatchPmMakeMtPointMethod" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject"><ref bean="schAutoSchCommonService" /></property>
+        <property name="targetMethod"><value>SP_PM_MAKE_TAMTPOINT</value></property>
+        <property name="concurrent"><value>false</value></property>
+    </bean>
+    <bean id="maBatchPmMakeMtPointSchedule" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail"><ref bean="maBatchPmMakeMtPointMethod" /></property>
+        <property name="cronExpression"><value>0 30 3 * * ?</value></property>
+    </bean>
+    <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="triggers">
+            <list>
+                <ref bean="maBatchPmMakeMtPointSchedule"/>
+            </list>
+        </property>
+    </bean>
+    <!-- default  투자금액을 셋팅해주는 프로그램.( 매일 1회 03시 20분 ) -->
+    <bean id="maBatchPmMakeInvestAmtMethod" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject"><ref bean="schAutoSchCommonService" /></property>
+        <property name="targetMethod"><value>SP_MAKE_TAINVESTAMT</value></property>
+        <property name="concurrent"><value>false</value></property>
+    </bean>
+    <bean id="maBatchPmMakeInvestAmtSchedule" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail"><ref bean="maBatchPmMakeInvestAmtMethod" /></property>
+        <property name="cronExpression"><value>0 20 3 * * ?</value></property>
+    </bean>
+    <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="triggers">
+            <list>
+                <ref bean="maBatchPmMakeInvestAmtSchedule"/>
+            </list>
+        </property>
+    </bean>
+    <!-- default  라인가동시간을 셋팅해주는 프로그램.( 매일 1회 03시 10분 ) -->
+    <bean id="maBatchPmMakeLnWrkTimeMethod" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject"><ref bean="schAutoSchCommonService" /></property>
+        <property name="targetMethod"><value>SP_MAKE_TALNWRKTIME</value></property>
+        <property name="concurrent"><value>false</value></property>
+    </bean>
+    <bean id="maBatchPmMakeLnWrkTimeSchedule" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail"><ref bean="maBatchPmMakeLnWrkTimeMethod" /></property>
+        <property name="cronExpression"><value>0 10 3 * * ?</value></property>
+    </bean>
+    <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="triggers">
+            <list>
+                <ref bean="maBatchPmMakeLnWrkTimeSchedule"/>
+            </list>
+        </property>
+    </bean>
+    <!-- 공장 가동카렌다를 default로 만들어주는 프로그램.( 매일새벽 3시 40분에 실행 ) -->
+    <bean id="maBatchSetWorkCalendarMethod" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject"><ref bean="schAutoSchCommonService" /></property>
+        <property name="targetMethod"><value>SP_SETDEFAULT_DUMYDAYS</value></property>
+        <property name="concurrent"><value>false</value></property>
+    </bean>
+    <bean id="maBatchSetWorkCalendarSchedule" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail"><ref bean="maBatchSetWorkCalendarMethod" /></property>
+        <property name="cronExpression"><value>0 40 3 * * ?</value></property>
+    </bean>
+    <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="triggers">
+            <list>
+                <ref bean="maBatchSetWorkCalendarSchedule"/>
+            </list>
+        </property>
+    </bean>
+    <!-- 일별고장율 데이터를 집계하는 프로그램[전월 1일부터 오늘까지 재생성].( 매일새벽 3시 50분에 실행 ) -->
+    <bean id="maBatchKpiMakeTakpidlocdnMethod" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject"><ref bean="schAutoSchCommonService" /></property>
+        <property name="targetMethod"><value>SP_KPI_MAKE_TAKPIDLOCDN</value></property>
+        <property name="concurrent"><value>false</value></property>
+    </bean>
+    <bean id="maBatchKpiMakeTakpidlocdnSchedule" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail"><ref bean="maBatchKpiMakeTakpidlocdnMethod" /></property>
+        <property name="cronExpression"><value>0 50 3 * * ?</value></property>
+    </bean>
+    <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="triggers">
+            <list>
+                <ref bean="maBatchKpiMakeTakpidlocdnSchedule"/>
+            </list>
+        </property>
+    </bean>
+    <!-- 월별고장율 데이터를 집계하는 프로그램[전월,당월 재생성].( 매일새벽 4시에 실행 ) -->
+    <bean id="maBatchKpiMakeTakpimlocdnMethod" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject"><ref bean="schAutoSchCommonService" /></property>
+        <property name="targetMethod"><value>SP_KPI_MAKE_TAKPIMLOCDN</value></property>
+        <property name="concurrent"><value>false</value></property>
+    </bean>
+    <bean id="maBatchKpiMakeTakpimlocdnSchedule" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail"><ref bean="maBatchKpiMakeTakpimlocdnMethod" /></property>
+        <property name="cronExpression"><value>0 5 4 * * ?</value></property>
+    </bean>
+    <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="triggers">
+            <list>
+                <ref bean="maBatchKpiMakeTakpimlocdnSchedule"/>
+            </list>
+        </property>
+    </bean>
+    <!-- 설비종류별고장율 데이터를 집계하는 프로그램[전월 1일부터 오늘까지 재생성].( 매일새벽 4시 10분에 실행 ) -->
+    <bean id="maBatchKpiMakeTakpidlocctgdnMethod" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject"><ref bean="schAutoSchCommonService" /></property>
+        <property name="targetMethod"><value>SP_KPI_MAKE_TAKPIDLOCCTGDN</value></property>
+        <property name="concurrent"><value>false</value></property>
+    </bean>
+    <bean id="maBatchKpiMakeTakpidlocctgdnSchedule" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail"><ref bean="maBatchKpiMakeTakpidlocctgdnMethod" /></property>
+        <property name="cronExpression"><value>0 10 4 * * ?</value></property>
+    </bean>
+    <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="triggers">
+            <list>
+                <ref bean="maBatchKpiMakeTakpidlocctgdnSchedule"/>
+            </list>
+        </property>
+    </bean>
+    <!-- 설비종류별 고장율 데이터를 월별로 집계.( 매일새벽 4시 20분에 실행 ) -->
+    <bean id="maBatchKpiMakeTakpimlocctgdnMethod" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject"><ref bean="schAutoSchCommonService" /></property>
+        <property name="targetMethod"><value>SP_KPI_MAKE_TAKPIMLOCCTGDN</value></property>
+        <property name="concurrent"><value>false</value></property>
+    </bean>
+    <bean id="maBatchKpiMakeTakpimlocctgdnSchedule" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail"><ref bean="maBatchKpiMakeTakpimlocctgdnMethod" /></property>
+        <property name="cronExpression"><value>0 20 4 * * ?</value></property>
+    </bean>
+    <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="triggers">
+            <list>
+                <ref bean="maBatchKpiMakeTakpimlocctgdnSchedule"/>
+            </list>
+        </property>
+    </bean>
+    <!-- 월간보전항목 지표 데이터를 생성하는 프로그램.( 매일새벽 4시 30분에 실행 ) -->
+    <bean id="maBatchKpiMakeTakpimmpointMethod" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject"><ref bean="schAutoSchCommonService" /></property>
+        <property name="targetMethod"><value>SP_KPI_MAKE_TAKPIMMPOINT</value></property>
+        <property name="concurrent"><value>false</value></property>
+    </bean>
+    <bean id="maBatchKpiMakeTakpimmpointSchedule" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail"><ref bean="maBatchKpiMakeTakpimmpointMethod" /></property>
+        <property name="cronExpression"><value>0 30 4 * * ?</value></property>
+    </bean>
+    <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="triggers">
+            <list>
+                <ref bean="maBatchKpiMakeTakpimmpointSchedule"/>
+            </list>
+        </property>
+    </bean>
+    <!-- 주간단위 고장지표 데이터를 생성하는 프로그램.( 매일새벽 4시 40분에 실행 ) -->
+    <bean id="maBatchKpiMakeTakpiwmpointMethod" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject"><ref bean="schAutoSchCommonService" /></property>
+        <property name="targetMethod"><value>SP_KPI_MAKE_TAKPIWMPOINT</value></property>
+        <property name="concurrent"><value>false</value></property>
+    </bean>
+    <bean id="maBatchKpiMakeTakpiwmpointSchedule" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail"><ref bean="maBatchKpiMakeTakpiwmpointMethod" /></property>
+        <property name="cronExpression"><value>0 40 4 * * ?</value></property>
+    </bean>
+    <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="triggers">
+            <list>
+                <ref bean="maBatchKpiMakeTakpiwmpointSchedule"/>
+            </list>
+        </property>
+    </bean>
+    <!-- 월간교육계획 지표 데이터를 생성하는 프로그램.( 매일새벽 4시 50분에 실행 ) -->
+    <bean id="maBatchKpiMakeTakpimeduMethod" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject"><ref bean="schAutoSchCommonService" /></property>
+        <property name="targetMethod"><value>SP_KPI_MAKE_TAKPIMEDU</value></property>
+        <property name="concurrent"><value>false</value></property>
+    </bean>
+    <bean id="maBatchKpiMakeTakpimeduSchedule" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail"><ref bean="maBatchKpiMakeTakpimeduMethod" /></property>
+        <property name="cronExpression"><value>0 50 4 * * ?</value></property>
+    </bean>
+    <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="triggers">
+            <list>
+                <ref bean="maBatchKpiMakeTakpimeduSchedule"/>
+            </list>
+        </property>
+    </bean>
+    <!-- 월간 수불부를 생성하는 프로그램.( 매일새벽 5시 00분에 실행 ) -->
+    <bean id="maBatchKpiMakeTaptmonthlystockMethod" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject"><ref bean="schAutoSchCommonService" /></property>
+        <property name="targetMethod"><value>SP_KPI_MAKE_TAPTMONTHLYSTOCK</value></property>
+        <property name="concurrent"><value>false</value></property>
+    </bean>
+    <bean id="maBatchKpiMakeTaptmonthlystockSchedule" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail"><ref bean="maBatchKpiMakeTaptmonthlystockMethod" /></property>
+        <property name="cronExpression"><value>0 0 5 * * ?</value></property>
+    </bean>
+    <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="triggers">
+            <list>
+                <ref bean="maBatchKpiMakeTaptmonthlystockSchedule"/>
+            </list>
+        </property>
+    </bean>
+    <!-- DREAM회사 URL 이미지 서버로 업로드 서비스.( 매일 1회 05시 10분 ) -->
+    <bean id="dreamGetImageFromUrlServiceMethod" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject"><ref bean="dreamBatchService" /></property>
+        <property name="targetMethod"><value>getImageFromUrl</value></property>
+        <property name="concurrent"><value>false</value></property>
+    </bean>
+    <bean id="dreamGetImageFromUrlService" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail"><ref bean="dreamGetImageFromUrlServiceMethod" /></property>
+        <property name="cronExpression"><value>0 10 5 * * ?</value></property>
+    </bean>
+    <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="triggers">
+            <list>
+                <ref bean="dreamGetImageFromUrlService"/>
+            </list>
+        </property>
+    </bean>
+    <!-- 4Weeks PM Generator ( 매일 새벽 1시 35분에 실행 ) -->
+    <bean id="maBatchFourWeekMethod" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject"><ref bean="schAutoSchCommonService" /></property>
+        <property name="targetMethod"><value>SP_WOMAKE_4WP_BYALL</value></property>
+        <property name="concurrent"><value>false</value></property>
+    </bean>
+    <bean id="maBatchFourWeekchedule" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail"><ref bean="maBatchFourWeekMethod" /></property>
+        <property name="cronExpression"><value>0 35 1 * * ?</value></property>
+    </bean>
+    <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="triggers">
+            <list>
+                <ref bean="maBatchFourWeekchedule"/>
+            </list>
+        </property>
+    </bean>
+    <!-- 공장 종합 인터페이스 - 프로시저  ( 매일 새벽 1시 45분에 실행 ) -->
+    <bean id="maBatchCompInterfaceMethod" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject"><ref bean="schAutoSchCommonService" /></property>
+        <property name="targetMethod"><value>COMP_INTERFACE</value></property>
+        <property name="concurrent"><value>false</value></property>
+    </bean>
+    <bean id="maBatchCompInterfaceschedule" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail"><ref bean="maBatchCompInterfaceMethod" /></property>
+        <property name="cronExpression"><value>0 45 1 * * ?</value></property>
+    </bean>
+    <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="triggers">
+            <list>
+                <ref bean="maBatchCompInterfaceschedule"/>
+            </list>
+        </property>
+    </bean>
+</beans>

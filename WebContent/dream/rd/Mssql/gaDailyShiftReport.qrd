@@ -1,0 +1,90 @@
+$
+SELECT 
+		 replace(convert(char(10),convert(date,substring('^param3',1,4)+substring('^param3',6,2)+substring('^param3',9,2)),106),' ','-') today
+/
+$
+SELECT  (SELECT STUFF((SELECT ',' + bb.description
+						FROM tawoequip aa, taequipment bb       
+						WHERE aa.comp_no = bb.comp_no
+                        AND aa.equip_id = bb.equip_id
+						AND aa.comp_no = a.comp_no
+						AND aa.wkor_id = a.wkor_id
+						FOR XML PATH('')
+						), 1, 1, '')
+		  FROM tawoequip a, taequipment b 
+		  WHERE a.comp_no = b.comp_no
+		 AND a.equip_id = b.equip_id
+		 AND a.wkor_id = x.wkor_id                                       
+		 AND a.comp_no = x.comp_no     ) woName
+            ,x.work_time workTime
+            ,x.perform perform
+            ,dbo.SFACODE_TO_DESC(x.pm_type,x.wo_type+'_TYPE','SYS','','^param2') status
+            ,(SELECT a.emp_name FROM TAEMP a where a.comp_no = x.comp_no AND a.emp_id = x.emp_id) craft
+FROM TAWORKORDER x, TAWOFAIL y
+WHERE x.comp_no =y.comp_no
+AND x.wkor_id = y.wkor_id
+AND x.comp_no = '^param1'
+AND x.start_date+x.start_time >= substring('^param3',1,4)+substring('^param3',6,2)+substring('^param3',9,2)+substring('^param4',1,2)+substring('^param4',4,2)
+AND x.start_date+x.start_time <= convert(char(8),convert(datetime,substring('^param3',1,4)+substring('^param3',6,2)+substring('^param3',9,2))+1,112)+substring('^param4',1,2)+substring('^param4',4,2)
+AND x.wo_type in ('BM','CM','PMW')
+AND x.shift_type='DAY'
+/
+$
+select 'Target Head Count : '+convert(char,count(1))+'    Actual Head Count : '+convert(char,sum(CASE x.wo_status WHEN 'C' THEN 1 ELSE 0 END))+'    Production Stop Time : '+convert(char,sum(y.lndn_work_time))+'Min' aa
+FROM TAWORKORDER x, TAWOFAIL y
+WHERE x.comp_no =y.comp_no
+AND x.wkor_id = y.wkor_id
+AND   x.comp_no = '^param1'
+AND x.start_date+x.start_time >= substring('^param3',1,4)+substring('^param3',6,2)+substring('^param3',9,2)+substring('^param4',1,2)+substring('^param4',4,2)
+AND x.start_date+x.start_time <= convert(char(8),convert(datetime,substring('^param3',1,4)+substring('^param3',6,2)+substring('^param3',9,2))+1,112)+substring('^param4',1,2)+substring('^param4',4,2)
+AND x.wo_type in ('BM','CM','PMW')
+AND x.shift_type='DAY'
+/
+$
+SELECT  (SELECT STUFF((SELECT ',' + bb.description
+						FROM tawoequip aa, taequipment bb       
+						WHERE aa.comp_no = bb.comp_no
+                        AND aa.equip_id = bb.equip_id
+						AND aa.comp_no = a.comp_no
+						AND aa.wkor_id = a.wkor_id
+						FOR XML PATH('')
+						), 1, 1, '')
+		  FROM tawoequip a, taequipment b 
+		  WHERE a.comp_no = b.comp_no
+		 AND a.equip_id = b.equip_id
+		 AND a.wkor_id = x.wkor_id                                       
+		 AND a.comp_no = x.comp_no     ) woName
+            ,x.work_time workTime
+            ,x.perform perform
+            ,dbo.SFACODE_TO_DESC(x.pm_type,x.wo_type+'_TYPE','SYS','','^param2') status
+            ,(SELECT a.emp_name FROM TAEMP a where a.comp_no = x.comp_no AND a.emp_id = x.emp_id) craft
+FROM TAWORKORDER x, TAWOFAIL y
+WHERE x.comp_no =y.comp_no
+AND x.wkor_id = y.wkor_id
+AND x.comp_no = '^param1'
+AND x.start_date+x.start_time >= substring('^param3',1,4)+substring('^param3',6,2)+substring('^param3',9,2)+substring('^param4',1,2)+substring('^param4',4,2)
+AND x.start_date+x.start_time <= convert(char(8),convert(datetime,substring('^param3',1,4)+substring('^param3',6,2)+substring('^param3',9,2))+1,112)+substring('^param4',1,2)+substring('^param4',4,2)
+AND x.wo_type in ('BM','CM','PMW')
+AND x.shift_type='NIGHT'
+/
+$
+select 'Target Head Count : '+convert(char,count(1))+'    Actual Head Count : '+convert(char,sum(CASE x.wo_status WHEN 'C' THEN 1 ELSE 0 END))+'    Production Stop Time : '+convert(char,sum(y.lndn_work_time))+'Min' aa
+FROM TAWORKORDER x, TAWOFAIL y
+WHERE x.comp_no =y.comp_no
+AND x.wkor_id = y.wkor_id
+AND   x.comp_no = '^param1'
+AND x.start_date+x.start_time >= substring('^param3',1,4)+substring('^param3',6,2)+substring('^param3',9,2)+substring('^param4',1,2)+substring('^param4',4,2)
+AND x.start_date+x.start_time <= convert(char(8),convert(datetime,substring('^param3',1,4)+substring('^param3',6,2)+substring('^param3',9,2))+1,112)+substring('^param4',1,2)+substring('^param4',4,2)
+AND x.wo_type in ('BM','CM','PMW')
+AND x.shift_type='NIGHT'
+/
+$
+select 'Target Head Count : '+convert(char,count(1))+'    Actual Head Count : '+convert(char,sum(CASE x.wo_status WHEN 'C' THEN 1 ELSE 0 END))+'    Production Stop Time : '+convert(char,sum(y.lndn_work_time))+'Min' aa
+FROM TAWORKORDER x, TAWOFAIL y
+WHERE x.comp_no =y.comp_no
+AND x.wkor_id = y.wkor_id
+AND   x.comp_no = '^param1'
+AND x.start_date+x.start_time >= substring('^param3',1,4)+substring('^param3',6,2)+substring('^param3',9,2)+substring('^param4',1,2)+substring('^param4',4,2)
+AND x.start_date+x.start_time <= convert(char(8),convert(datetime,substring('^param3',1,4)+substring('^param3',6,2)+substring('^param3',9,2))+1,112)+substring('^param4',1,2)+substring('^param4',4,2)
+AND x.wo_type in ('BM','CM','PMW')
+/

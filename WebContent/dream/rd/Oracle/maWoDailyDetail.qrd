@@ -1,0 +1,89 @@
+$
+SELECT                                                            
+        a.description                         title             
+        ,CASE WHEN a.start_fdate IS NULL THEN NULL                                                                                         
+                  ELSE SUBSTR(a.start_fdate, 1, 4)||'-'||SUBSTR(a.start_fdate, 5, 2)||'-'||SUBSTR(a.start_fdate, 7, 2) END||' '            
+         ||CASE WHEN a.start_ftime IS NULL THEN NULL                                                                                       
+                  ELSE SUBSTR(a.start_ftime, 1, 2)||':'||SUBSTR(a.start_ftime, 3, 2) END||' ~ '          
+         ||CASE WHEN a.start_edate IS NULL THEN NULL                                                                                       
+                  ELSE SUBSTR(a.start_edate, 1, 4)||'-'||SUBSTR(a.start_edate, 5, 2)||'-'||SUBSTR(a.start_edate, 7, 2) END||' '            
+         ||CASE WHEN a.start_etime IS NULL THEN NULL                                                                                       
+                  ELSE SUBSTR(a.start_etime, 1, 2)||':'||SUBSTR(a.start_etime, 3, 2) END       AS woTime 
+        ,(SELECT description                                       
+          FROM TADEPT                                             
+          WHERE comp_no = a.comp_no                                
+          AND dept_id = a.wo_dept)           woDept     
+        ,a.wodaylist_id                         dailyWorkNo
+        ,(SELECT description                                       
+         FROM TAPLANT                                             
+         WHERE comp_no = a.comp_no                                
+          AND plant = a.plant)               plant         
+FROM   TAWODAYLIST a
+WHERE a.comp_no = '^param1'
+AND a.wodaylist_id = '^param2'
+/
+$
+SELECT                                                                        
+        ROWNUM                                                            seqNo        
+        ,(SELECT TO_CHAR(WM_CONCAT(b.description))                                
+            FROM TAWOEQUIP a, TAEQUIPMENT b                                        
+            WHERE a.comp_no = b.comp_no                                            
+                AND a.equip_id = b.equip_id                                        
+                AND a.wkor_id = x.wkor_id                                        
+                AND a.comp_no = x.comp_no                                        
+            GROUP BY a.comp_no, a.wkor_id    )                     AS equipDesc   
+        ,x.description                                                 wkOrDesc    
+        ,SFACODE_TO_DESC(x.wo_type,'WO_TYPE','SYS','','ko')                 woTypeDesc    
+        ,CASE WHEN x.start_date IS NULL THEN NULL                                                                                         
+                  ELSE SUBSTR(x.start_date, 1, 4)||'-'||SUBSTR(x.start_date, 5, 2)||'-'||SUBSTR(x.start_date, 7, 2) END||' '            
+         ||CASE WHEN x.start_time IS NULL THEN NULL                                                                                       
+                  ELSE SUBSTR(x.start_time, 1, 2)||':'||SUBSTR(x.start_time, 3, 2) END||' ~ '          
+         ||CASE WHEN x.end_date IS NULL THEN NULL                                                                                       
+                  ELSE SUBSTR(x.end_date, 1, 4)||'-'||SUBSTR(x.end_date, 5, 2)||'-'||SUBSTR(x.end_date, 7, 2) END||' '            
+         ||CASE WHEN x.end_time IS NULL THEN NULL                                                                                       
+                  ELSE SUBSTR(x.end_time, 1, 2)||':'||SUBSTR(x.end_time, 3, 2) END       AS woTime 
+        ,x.work_time                                                 workTime    
+        ,(SELECT emp_name                                                        
+           FROM TAEMP                                                            
+          WHERE comp_no = x.comp_no                                                
+            AND emp_id = x.emp_id)                                     manager
+FROM TAWORKORDER x                                                            
+WHERE x.comp_no = '^param1'
+AND x.wo_type <> 'PMI'                     
+AND x.pm_type <> 'INS'   
+@AND(x.wkor_date, ^param3)
+AND NVL(x.start_date,'000000')||NVL(x.start_time,'0000') >= '^param4'      
+AND NVL(x.start_date,'000000')||NVL(x.start_time,'0000') <= '^param5'     
+@AND(x.dept_id, ^param6)
+@AND(x.plant, ^param7)
+@AND(x.wkctr_id,^param8)
+/
+$
+SELECT                                                                                                                 
+        ROWNUM                                                                                  seqNo        
+        ,(SELECT description FROM TAEQUIPMENT                                                                          
+            WHERE equip_id = a.equip_id                                                                                
+            AND comp_no = a.comp_no)                                                                    equipDesc      
+        ,c.check_point                                                                                  CHECKPOINT    
+        ,c.fit_basis                                                                                    fitBasis       
+        ,SFACODE_TO_DESC(c.check_type,'CHECK_TYPE','SYS','','ko')                     checkTypeDesc  
+        ,b.result_value                                                                                 resultValue    
+        ,SFACODE_TO_DESC(b.pm_point_rslt_status,'PM_POINT_RSLT_STATUS','SYS','','ko') rsltStatusDesc 
+        ,(SELECT emp_name FROM TAEMP                                                                                   
+            WHERE emp_id = a.emp_id                                                                                    
+            AND comp_no = a.comp_no)                                                                    empDesc        
+        ,b.remark                                                                                       remark         
+FROM TAPMINSLIST a INNER JOIN TAPMINSPOINT b      
+ON a.pminslist_id = b.pminslist_id                
+AND a.comp_no = b.comp_no                         
+RIGHT OUTER JOIN TAPMPOINT c                      
+ON b.pm_point_id = c.pm_point_id                  
+AND b.comp_no = c.comp_no                         
+WHERE a.comp_no = '^param1'                                        
+@AND(a.wkor_date, ^param3)
+AND NVL(a.start_date,'000000')||NVL(a.start_time,'0000') >= '^param4'      
+AND NVL(a.start_date,'000000')||NVL(a.start_time,'0000') <= '^param5'     
+@AND(a.dept_id, ^param6)
+@AND(a.plant, ^param7)
+@AND(a.wkctr_id,^param8)
+/

@@ -1,0 +1,49 @@
+$
+SELECT 
+   x.pminslist_id  woNo
+   ,SFACODE_TO_DESC(x.pmsched_status,'PMSCHED_STATUS','SYS','','^param3')    woStatus
+   ,SFACODE_TO_DESC(x.wo_type,'WO_TYPE','SYS','','^param3')    woType        
+   ,SFACODE_TO_DESC(x.pm_type,x.wo_type||'_TYPE','SYS','','^param3')        pmType                
+   ,y.item_no	  itemNo
+   ,y.description equip
+   ,(SELECT a.full_desc FROM TAEQLOC a WHERE a.comp_no = x.comp_no AND a.eqloc_id = y.eqloc_id) eqLoc
+   ,(SELECT a.description FROM TADEPT a WHERE a.comp_no = x.comp_no AND a.dept_id = x.dept_id) dept
+   ,(SELECT a.emp_name FROM TAEMP a WHERE a.comp_no = x.comp_no AND a.emp_id = x.emp_id) emp
+   ,SUBSTR(x.wkor_date,1,4)||'-'||
+    SUBSTR(x.wkor_date,5,2)||'-'||
+    SUBSTR(x.wkor_date,7,2)                    workDate
+ FROM TAPMINSLIST x INNER JOIN TAEQUIPMENT y
+ ON x.comp_no = y.comp_no
+ AND x.equip_id = y.equip_id 
+ WHERE x.pminslist_id = '^param4'
+ AND x.comp_no='^param1'
+/
+$
+SELECT                                                                      
+     y.step_num                         seqNo                            
+    ,(SELECT a.full_desc                                                
+       FROM TAEQASMB a                                                    
+      WHERE a.comp_no = y.comp_no                                            
+        AND a.eqasmb_id = y.eqasmb_id)  asmbDesc                        
+    ,y.check_point                      checkPointDesc                        
+    ,y.fit_basis                        fitBasis                        
+    ,SFACODE_TO_DESC(y.check_type,'CHECK_TYPE','SYS','','^param3')                         checkTypeDesc
+    , CASE WHEN y.check_type = 'SEN' 
+           THEN SFACODE_TO_DESC(x.pm_point_rslt_status,'PM_POINT_RSLT_STATUS','SYS','','^param3')
+           ELSE NVL(TO_CHAR(x.result_value),NVL(x.remark,SFACODE_TO_DESC(x.pm_point_rslt_status,'PM_POINT_RSLT_STATUS','SYS','','^param3')))
+           END  						rslt                              
+    ,y.uom                              uom             
+FROM TAPMINSPOINT x INNER JOIN TAPMPOINT y                                
+    ON x.comp_no = y.comp_no                                                
+ AND x.pm_point_id = y.pm_point_id                                        
+  AND  x.pminslist_id = '^param4'
+WHERE 1=1                                                                    
+  AND  y.comp_no='^param1'
+  AND y.pm_id = (SELECT pm_id                                                     
+                   FROM TAPMINSLIST                                             
+                  WHERE comp_no      = '^param1'                
+                    AND pminslist_id = '^param4'    
+                 )                                                                
+  AND  y.is_deleted = 'N'
+ORDER BY y.step_num
+/

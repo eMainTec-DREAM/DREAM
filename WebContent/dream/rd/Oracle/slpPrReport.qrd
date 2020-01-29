@@ -1,0 +1,64 @@
+$
+SELECT x.ptprlist_no ptPrListNo
+FROM TAPTPRLIST x
+WHERE 1=1
+AND x.comp_no = '^param1'
+AND x.ptprlist_id = '^param3'
+/
+$
+SELECT 	x.description title, 
+		TO_CHAR(TO_DATE(x.req_Date,'YYYYMMDD'),'DD/MM/YYYY') reqDate,
+		(
+		 SELECT description 
+		 FROM TADEPT 
+		 WHERE dept_id = (
+			SELECT dept_id 
+			FROM TAEMP 
+			WHERE emp_id = (
+				SELECT emp_id 
+				FROM TAUSER 
+				WHERE user_id =x.user_id
+							)
+						)
+		) deptName,
+		(SELECT user_name FROM TAUSER WHERE user_id =x.user_id) userName,
+		(SELECT description FROM TAVENDOR WHERE comp_no=x.comp_no and vendor_id = x.vendor_id) vendorName
+ from TAPTPRLIST x
+ WHERE 1=1
+ AND x.comp_no = '^param1'
+ AND x.ptprlist_id = '^param3'
+/
+$
+SELECT x.description itemDesc,
+         (SELECT part_no 
+          FROM  TAPARTS
+          WHERE comp_no = x.comp_no
+          AND part_id = x.part_id) partNo,
+          TO_CHAR(x.rec_qty) recQty,
+          x.currency currency,
+          TO_CHAR(x.unit_price,'$999,999,999.00') unitPrice,
+          TO_CHAR(x.unit_price*rec_qty,'$999,999,999.00') totalPrice
+ from TAPTPRITEM x
+ WHERE 1=1
+ AND x.comp_no = '^param1'
+ AND x.ptprlist_id = '^param3'
+ UNION ALL
+ SELECT '','','','','','' FROM DUAL
+ UNION ALL
+ SELECT '','','','','','' FROM DUAL
+ UNION ALL
+ SELECT '','','','','','' FROM DUAL
+ UNION ALL
+ SELECT '','','','','','' FROM DUAL
+/
+$
+SELECT TO_CHAR(SUM(x.unit_price*x.rec_qty),'$999,999,999.00') totPrice1,
+            TO_CHAR(SUM(x.unit_price*x.rec_qty)*0.16,'$999,999,999.00') taxPrice,
+            TO_CHAR(SUM(x.unit_price*x.rec_qty)+SUM(x.unit_price*x.rec_qty)*0.16,'$999,999,999.00') totPrice2,
+            (SELECT remark FROM TAPTPRLIST WHERE comp_no = x.comp_no AND ptprlist_id = x.ptprlist_id) remark
+ from TAPTPRITEM x
+ WHERE 1=1
+ AND x.comp_no = '^param1'
+ AND x.ptprlist_id = '^param3'
+ group by x.comp_no, x.ptprlist_id
+/

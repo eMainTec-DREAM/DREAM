@@ -1,0 +1,68 @@
+$
+SELECT 
+   x.pminsdlist_id  woNo
+   ,dbo.SFACODE_TO_DESC(x.pmsched_status,'PMSCHED_STATUS','SYS','','^param3')    woStatus
+   ,dbo.SFACODE_TO_DESC(x.wo_type,'WO_TYPE','SYS','','^param3')    woType        
+   ,dbo.SFACODE_TO_DESC(x.pm_type,x.wo_type+'_TYPE','SYS','','^param3')        pmType                
+   ,(SELECT a.full_desc FROM TAEQLOC a WHERE a.comp_no = x.comp_no AND a.eqloc_id = y.eqloc_id) eqLoc
+   ,x.description workDesc
+   ,y.description equip
+   ,SUBSTRING(x.wkor_date,1,4)+'-'+
+    SUBSTRING(x.wkor_date,5,2)+'-'+
+    SUBSTRING(x.wkor_date,7,2)                    workDate
+   ,(SELECT a.description FROM TADEPT a WHERE a.comp_no = x.comp_no AND a.dept_id = x.dept_id) dept
+   ,(SELECT a.emp_name FROM TAEMP a WHERE a.comp_no = x.comp_no AND a.emp_id = x.emp_id) emp
+   ,CASE WHEN x.start_date IS NOT NULL THEN
+    SUBSTRING(x.start_date,1,4)+'-'+
+    SUBSTRING(x.start_date,5,2)+'-'+
+    SUBSTRING(x.start_date,7,2)           ELSE '' END
+    +' '+
+    CASE WHEN x.start_time IS NOT NULL THEN
+    SUBSTRING(x.start_time,1,2)+':'+
+    SUBSTRING(x.start_time,3,2)           ELSE '' END         startTime
+   ,CASE WHEN x.end_date IS NOT NULL   THEN 
+    SUBSTRING(x.end_date,1,4)+'-'+
+    SUBSTRING(x.end_date,5,2)+'-'+
+    SUBSTRING(x.end_date,7,2)             ELSE '' END 
+    +' '+
+    CASE WHEN x.end_time IS NOT NULL   THEN
+    SUBSTRING(x.end_time,1,2)+':'+
+    SUBSTRING(x.end_time,3,2)             ELSE '' END         endTime
+    ,REPLACE(REPLACE(x.REMARK,char(10),'$enter'),char(13),'$enter') AS perform
+ FROM TAPMINSDLIST x INNER JOIN TAEQUIPMENT y
+ ON x.comp_no = y.comp_no
+ AND x.equip_id = y.equip_id 
+ WHERE x.pminsdlist_id = '^param4'
+ AND x.comp_no='^param1'
+/
+$
+SELECT                                                                      
+     y.step_num                         seqNo                            
+    ,(SELECT a.full_desc                                                
+       FROM TAEQASMB a                                                    
+      WHERE a.comp_no = y.comp_no                                            
+        AND a.eqasmb_id = y.eqasmb_id)  asmbDesc                        
+    ,y.check_point                      checkPointDesc                        
+    ,y.fit_basis                        fitBasis                        
+    ,dbo.SFACODE_TO_DESC(y.check_type,'CHECK_TYPE','SYS','','^param3')                         checkTypeDesc
+    , CASE WHEN y.check_type = 'SEN' 
+           THEN dbo.SFACODE_TO_DESC(x.pm_point_rslt_status,'PM_POINT_RSLT_STATUS','SYS','','^param3')
+           ELSE CASE WHEN x.result_value IS NULL THEN (CASE WHEN x.remark IS NULL THEN dbo.SFACODE_TO_DESC(x.pm_point_rslt_status,'PM_POINT_RSLT_STATUS','SYS','','^param3') ELSE x.remark END)
+           										 ELSE CONVERT(NVARCHAR, x.result_value)
+           										 END
+           END  						rslt                              
+    ,y.uom                              uom             
+FROM TAPMINSDPOINT x INNER JOIN TAPMPOINT y                                
+    ON x.comp_no = y.comp_no                                                
+ AND x.pm_point_id = y.pm_point_id                                        
+  AND  x.pminsdlist_id = '^param4'
+WHERE 1=1                                                                    
+  AND  y.comp_no='^param1'
+  AND y.pm_id = (SELECT pm_id                                                     
+                   FROM TAPMINSDLIST                                             
+                  WHERE comp_no      = '^param1'                
+                    AND pminsdlist_id = '^param4'    
+                 )                                                                
+  AND  y.is_deleted = 'N'
+ORDER BY y.step_num
+/

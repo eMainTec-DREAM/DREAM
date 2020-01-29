@@ -1,0 +1,32 @@
+$
+SELECT '^param3' 						filterPlantDesc
+	  ,'^param4' 						filterDeptDesc
+	  ,CASE WHEN '^param5' IS NOT NULL OR '^param6' IS NOT NULL
+            THEN '^param5' || ' ~ ' ||'^param6'
+            ELSE '' 
+            END 						filterRepairDate
+FROM dual
+/
+$
+SELECT ROWNUM 												seqNo
+            , SFAIDTODESC(x.dept_id, '', 'DEPT', x.comp_no) deptDesc
+            , y.description 								equipDesc
+            , (SELECT full_desc FROM taeqasmb WHERE eqasmb_id = x.eqasmb_id and comp_no = x.comp_no)	eqasmbDesc
+            , y.tag_no 										tagNo
+            , z.part_no 									partNo
+            , z.description ||', ' ||z.pt_size 				partName
+            , NVL(x.repair_qty, 0)                          repairQty
+            , DECODE(x.repair_date,'','',SUBSTR(x.repair_date, 0, 4)||'-'||SUBSTR(x.repair_date, 5, 2)||'-'||SUBSTR(x.repair_date, 7, 2)) AS repairDate
+FROM TAPTREPAIRLIST x LEFT OUTER JOIN TAEQUIPMENT y
+ON x.comp_no = y.comp_no AND x.equip_id = y.equip_id
+LEFT OUTER JOIN TAPARTS z
+ON x.comp_no = z.comp_no AND x.part_id = z.part_id
+WHERE 1=1                                                                   
+  AND x.comp_no = '^param1'                   
+  AND x.plant IN (SELECT plant FROM taplant WHERE description LIKE '%^param3%')
+  AND x.dept_id IN (SELECT dept_id FROM tadept WHERE description LIKE '%^param4%')                            
+  AND x.repair_date >= NVL('^param5', '00000000')      
+  AND x.repair_date <= NVL('^param6', '99999999') 
+  AND  x.ptrepairlist_status = 'X'
+ORDER BY x.ptrepairlist_id asc
+/

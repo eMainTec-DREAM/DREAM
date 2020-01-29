@@ -1,0 +1,17 @@
+$
+SELECT
+       x.description equipDesc
+      ,x.item_no itemNo
+FROM  TAEQUIPMENT x
+WHERE 1=1
+AND   comp_no = '^param1'
+AND   equip_id IN (SELECT
+                         a.skey_id
+                   FROM  TAREPORTPARAM a
+                   WHERE 1=1
+                   AND   a.comp_no   = '^param1'
+                   AND   a.user_id   = '^param2'
+                   AND   a.file_name = '^param3'
+                  )
+                  ORDER BY x.ord_no
+/

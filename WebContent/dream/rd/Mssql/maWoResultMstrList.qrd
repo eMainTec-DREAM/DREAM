@@ -1,0 +1,51 @@
+$
+SELECT  
+    CASE WHEN '^param3'  IS NOT NULL 
+               THEN '^param3' 
+               ELSE SUBSTRING(MIN(x.wkor_date),1,4)+ '-' +
+                       SUBSTRING(MIN(x.wkor_date),5,2)+ '-' +
+                       SUBSTRING(MIN(x.wkor_date),7,2) 
+               END
+    + ' ~ ' +  
+    CASE WHEN '^param4' IS NOT NULL 
+                THEN '^param4'
+                ELSE SUBSTRING(MAX(x.wkor_date),1,4)+ '-' +
+                        SUBSTRING(MAX(x.wkor_date),5,2)+ '-' +
+                        SUBSTRING(MAX(x.wkor_date),7,2)
+                END                             filterDate
+		,COUNT(1)   workCnt
+FROM TAWORKORDER x 
+WHERE x.comp_no = '^param1'
+AND wkor_id IN (^param5)
+/
+$
+SELECT  
+		 ROW_NUMBER() over(order by aa.wkor_date,(SELECT a.description FROM TADEPT a WHERE a.comp_no = aa.comp_no AND a.dept_id = aa.dept_id),aa.description ) seqNo
+        ,CASE WHEN aa.wkor_date IS NOT NULL THEN 
+         SUBSTRING(aa.wkor_date,1,4)+ '-' +
+         SUBSTRING(aa.wkor_date,5,2)+ '-' +
+         SUBSTRING(aa.wkor_date,7,2)   		ELSE '-' END 	workDate
+        ,(SELECT a.description FROM TADEPT a WHERE a.comp_no = aa.comp_no AND a.dept_id = aa.dept_id) deptDesc
+        ,dbo.SFACODE_TO_DESC(aa.wo_type,'WO_TYPE','SYS','','^param2') woType
+        ,aa.description workDesc
+        ,(SELECT STUFF((SELECT ',' + b.description
+                FROM TAWOEQUIP a, TAEQUIPMENT b
+               WHERE a.comp_no = b.comp_no                                                
+                AND a.equip_id = b.equip_id 
+				and c.WKOR_ID = a.WKOR_ID
+				and d.COMP_NO = b.COMP_NO  
+                 FOR XML PATH('')
+              ), 1, 1, '') equipDesc
+		 FROM TAWOEQUIP c, TAEQUIPMENT d
+		 where c.wkor_id = aa.wkor_id                                            
+                AND c.comp_no = aa.comp_no   
+		 GROUP BY c.WKOR_ID, d.COMP_NO) equipDesc
+        ,(SELECT a.emp_name FROM TAEMP a WHERE a.comp_no = aa.comp_no AND a.emp_id = aa.emp_id) empName
+FROM (    
+SELECT x.description, x.wkor_id,x.wkor_date,x.wo_type,x.comp_no, x.perform, x.dept_id, x.emp_id
+FROM TAWORKORDER x 
+WHERE x.comp_no = '^param1'
+AND wkor_id IN (^param5)
+) aa
+ORDER BY aa.wkor_date,(SELECT a.description FROM TADEPT a WHERE a.comp_no = aa.comp_no AND a.dept_id = aa.dept_id),aa.description 
+/

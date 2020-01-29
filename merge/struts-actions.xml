@@ -1,0 +1,2 @@
+<action parameter="/Download" path="/download"
+	type="org.apache.struts.actions.ForwardAction" />

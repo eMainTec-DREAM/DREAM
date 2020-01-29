@@ -1,0 +1,31 @@
+$
+ SELECT x.ptemgissreq_no reqNo
+ 		,to_char(sysdate,'YYYY-MM-DD') printDate
+ 		,(SELECT a.emp_name FROM TAEMP a WHERE a.comp_no = x.comp_no AND a.emp_id = x.req_by) reqBy
+ 		,(SELECT a.description FROM TADEPT a WHERE a.comp_no = x.comp_no and a.dept_id = x.req_dept ) reqDept
+ 		,to_char(to_date(x.req_date,'yyyymmdd'),'yyyy-mm-dd') reqDate
+ 		,x.description reqTitle
+ FROM TAPTEMGISSREQ x
+WHERE x.comp_no = '^param1'
+AND x.ptemgissreq_id = ^param4
+/
+$
+SELECT rownum no
+		,y.full_desc  partNo
+		,x.req_qty qty
+		,y.uom uom
+		,y.last_price unitcost
+		,round(x.req_qty * y.last_price,3) totalCost
+ FROM TAPTEMGISSLIST x INNER JOIN TAPARTS y
+ ON x.comp_no = y.comp_no
+ AND x.part_id = y.part_id
+ WHERE 1=1
+ AND x.comp_no = '^param1'
+ AND x.ptemgissreq_id = ^param4
+/
+$
+SELECT x.remark
+FROM TAPTEMGISSREQ x
+WHERE x.comp_no      = '^param1'
+AND x.ptemgissreq_id = ^param4
+/

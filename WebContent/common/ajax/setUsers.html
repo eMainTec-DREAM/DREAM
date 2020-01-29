@@ -1,0 +1,119 @@
+<HTML>
+<HEAD>
+<TITLE>USER</TITLE>
+<style type="text/css">
+.table_list2 { border-top:2 solid #99AECE; border-bottom:2 solid #99AECE; }
+.td_line1     {	background:#ECEEF5;	color:#666666;	text-indent: 2px;}
+.td_title2   {	color:#FFFFFF;	background-color: #99AECE;	text-indent: 3px;}
+input	{font-family: "돋움", "굴림", verdana; font-size:12px;color:#666666; line-height: 12pt;}
+
+BODY,TD,DIV,TEXTAREA {
+	scrollbar-face-color: #D4E6F8;
+	scrollbar-shadow-color: #6699CC;
+	scrollbar-highlight-color: #FFFFFF;
+	scrollbar-3dlight-color: #D1DDE9;
+	scrollbar-darkshadow-color: #FFFFFF;
+	scrollbar-track-color: #DBDBDB;
+	scrollbar-arrow-color: #336699;
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	margin-left: 0px;
+}
+
+BODY,TD,DIV,TEXTAREA
+{
+	font-family:"돋움", "굴림", verdana;
+	FONT-SIZE: 12px; 
+	color:#7D7D7D;
+	line-height:16px;
+}
+
+A:link { color:#7D7D7D}
+A:visited { text-decoration:none; color:#7D7D7D}
+A:active { text-decoration:none; color:#7D7D7D}
+A:hover {text-decoration:none; color:#3399FF}
+
+img 		{border: 0px;}
+input		{border:1px solid #C6C6C6}
+textarea	{border:1px solid #C6C6C6}
+
+</style>
+</head>
+<body style="MARGIN:0px" leftmargin=0 topmargin=0 marginwidth=0 marginheight=0>
+<table><tr height="5"><td width="100%"><input type="text" name="description" style="border: 0;font-size: 1;" readonly /></td></tr></table>
+<table width="100%" cellspacing="1" class="table_list2">
+	<tr>
+		<td>
+			<div id="userHTML"></div>
+		</td>
+	</tr>
+</table>
+<script>
+<!--  
+var aId   = opener.ajaxIdArray;
+var aDesc = opener.ajaxUserArray;
+var aEtc  = opener.ajaxEtcArray;
+
+for (i=0; i<aDesc.length; i++)
+{
+	addUser(aId[i], aDesc[i], aEtc[i]);
+}
+
+/**
+ * 유저 선택
+ */
+function selectUser(userId, userName)
+{
+	var returnArray = new Array();
+	
+	returnArray[0] = userId;
+	returnArray[1] = userName;
+	
+    opener.setLovValue(returnArray);
+    
+    self.close();
+}
+
+/**
+ * 한 Row 를 추가한다.
+ */
+function addUser(userId, userName, userInfo)
+{
+	var userDivObj = M$("userHTML");
+
+	var userRowHTML = 
+					  "<table width='100%' border='0' cellpadding='1' cellspacing='1' > " + 
+						 "<tr>" + 
+					 		"<td class='td_title2' width='90'>" +
+					 	 		userName + 
+					 	 	"</td>" +
+	   					    "<td class='td_line1' width='90' onfocus='this.blur();'>" + 
+	   					    	"<A href='#' onclick=\"selectUser('" + userId + "', '" + userName + "');\" onmouseover=\"this.style.cursor='pointer'\">" +
+	   					    		userId + 
+	   					    	"</A>" +
+	   					    "</td>" +
+					        "<td class='td_line1' onfocus='this.blur();'>" + 
+					        	"<A href='#' onclick=\"selectUser('" + userId + "', '" + userName + "');\" onmouseover=\"this.style.cursor='pointer'\">" +
+					        		userInfo + 
+					        	"</A>" +
+					        "</td>" +
+				         "</tr>" + 
+				      "</table>";
+				  
+    if (userDivObj.insertAdjacentHTML != null)
+    {
+       userDivObj.insertAdjacentHTML("BeforeEnd", userRowHTML);
+    }
+    else
+    {
+        var r = userDivObj.ownerDocument.createRange();
+        var df = r.createContextualFragment(userRowHTML);
+        userDivObj.appendChild(df);
+    }
+}
+
+// -->
+</script>
+</body>
+</html>

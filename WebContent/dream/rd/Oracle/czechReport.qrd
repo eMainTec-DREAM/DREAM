@@ -1,0 +1,1371 @@
+$
+SELECT 
+'Y'||substr('^param3',0,4) yyyy,
+'Maintenance status'||' - '||
+(SELECT key_name FROM TALANG WHERE key_no='month'||to_number(substr('^param3',6,2)) AND key_type='LABEL' AND lang='^param4') title, 
+(SELECT user_name FROM TAUSER WHERE user_id = '^param2') name,
+TO_CHAR(SYSDATE, 'YYYY.MM.DD')toDate
+from dual
+/
+$
+SELECT 
+(select to_char(to_Date(min(tday),'yyyymmdd'),'dd.mm.yyyy') ||' ~ ' ||to_char(to_Date(max(tday),'yyyymmdd'),'dd.mm.yyyy') from taday
+where tmonth = substr('^param3',0,4)||substr('^param3',6,2)) workdate, 
+(SELECT user_name FROM TAUSER WHERE user_id = '^param2') empname
+from dual
+/
+$
+SELECT                    
+    (DECODE(x.kpi_mpoint,'BD',SFACODETODESC(x.kpi_mpoint,'KPI_MPOINT','SYS',''),'Maint Index(Min)'))title,            
+        SFACODETODESC(x.kpi_mpoint,'KPI_MPOINT','SYS','') kpiMpointDesc,    
+DECODE(INSTR(x.m_plan, '.', 1, 1), 0 , TO_CHAR(x.m_plan, '999G999G999G999') , TO_CHAR(x.m_plan, '999G999G999G999D99')) as actPlan,
+DECODE(INSTR(x.m_actual, '.', 1, 1), 0 , TO_CHAR(x.m_actual, '999G999G999G999') , TO_CHAR(x.m_actual, '999G999G999G999D99')) as actActual,
+DECODE(INSTR(x.m_diff, '.', 1, 1), 0 , TO_CHAR(x.m_diff, '999G999G999G999') , TO_CHAR(x.m_diff, '999G999G999G999D99')) as actDiff,
+DECODE(INSTR(x.m_ach, '.', 1, 1), 0 , TO_CHAR(x.m_ach, '999G999G999G999') , TO_CHAR(x.m_ach, '999G999G999G999D99')) as actAch,
+DECODE(INSTR(x.acm_plan, '.', 1, 1), 0 , TO_CHAR(x.acm_plan, '999G999G999G999') , TO_CHAR(x.acm_plan, '999G999G999G999D99')) as accPlan,
+DECODE(INSTR(x.acm_actual, '.', 1, 1), 0 , TO_CHAR(x.acm_actual, '999G999G999G999') , TO_CHAR(x.acm_actual, '999G999G999G999D99')) as accActual,
+DECODE(INSTR(x.acm_diff, '.', 1, 1), 0 , TO_CHAR(x.acm_diff, '999G999G999G999') , TO_CHAR(x.acm_diff, '999G999G999G999D99')) as accDiff,
+DECODE(INSTR(x.acm_ach, '.', 1, 1), 0 , TO_CHAR(x.acm_ach, '999G999G999G999') , TO_CHAR(x.acm_ach, '999G999G999G999D99')) as accAch,
+DECODE(INSTR(x.next_plan, '.', 1, 1), 0 , TO_CHAR(x.next_plan, '999G999G999G999') , TO_CHAR(x.next_plan, '999G999G999G999D99')) as nextPlan,
+        x.remark remark                        ,
+(SELECT key_name FROM TALANG WHERE key_no='month'||to_number(substr('^param3',6,2)) AND key_type='LABEL' AND lang='^param4')month
+FROM TAKPIMMPOINT x                        
+WHERE 1=1                                    
+and x.yyyymm =substr('^param3',0,4)||substr('^param3',6,2)
+and x.comp_no='^param1'
+AND x.kpi_mpoint in ('BD','MTBF','MTTR','PMW','PMI')
+ORDER bY x.kpi_mpoint    
+/
+$
+select y_plan,
+         y_actual 
+         from TAKPIMMPOINT x
+where x.kpi_mpoint='BD'
+and x.yyyymm =substr('^param3',0,4)||substr('^param3',6,2)
+and x.comp_no='^param1'
+/
+$
+select (SELECT key_name FROM TALANG 
+            WHERE key_type='LABEL' 
+            AND key_no='month'||to_number(substr(x.tmonth,5,2))
+            ANd lang='ko') month
+            ,nvl((
+                    select 
+                             y.m_plan
+                    From TAKPIMMPOINT y
+                     where  y.kpi_mpoint='BD'
+                    and y.comp_no='^param1'
+                and y.plant='^param5'
+                and y.yyyymm = x.tmonth
+                    ),'0')plan
+                                ,nvl((
+                    select 
+                             y.m_actual 
+                    From TAKPIMMPOINT y
+                     where  y.kpi_mpoint='BD'
+                    and y.comp_no='^param1'
+                and y.plant='^param5'
+                and y.yyyymm = x.tmonth
+                    ),'0')actual
+FROM TAMONTH x
+where x.tyyyy = substr('^param3',0,4)
+order by x.tmonth
+/
+$
+select
+(SELECT description FROM TAEQLOC y where x.eqloc_id=y.eqloc_id)description, 
+nvl(ma_bd_rate,'0')bdRate
+from 
+TAKPIMLOCDN x
+where 1=1
+  AND  x.comp_no = '^param1'
+  AND  x.yyyymm = substr('^param3',0,4)||substr('^param3',6,2)
+  AND  x.plant = '^param5'
+/
+$
+SELECT                    
+        SFACODETODESC(x.kpi_mpoint,'KPI_MPOINT','SYS','') kpiMpointDesc,    
+        DECODE(INSTR(x.y_actual, '.', 1, 1), 0 , TO_CHAR(x.y_actual, '999G999G999G999') , TO_CHAR(x.y_actual, '999G999G999G999D99')) as yactual,
+        DECODE(INSTR(x.y_plan, '.', 1, 1), 0 , TO_CHAR(x.y_plan, '999G999G999G999') , TO_CHAR(x.y_plan, '999G999G999G999D99')) as yplan,
+DECODE(INSTR(x.m_plan, '.', 1, 1), 0 , TO_CHAR(x.m_plan, '999G999G999G999') , TO_CHAR(x.m_plan, '999G999G999G999D99')) as actPlan,
+DECODE(INSTR(x.m_actual, '.', 1, 1), 0 , TO_CHAR(x.m_actual, '999G999G999G999') , TO_CHAR(x.m_actual, '999G999G999G999D99')) as actActual,
+DECODE(INSTR(x.m_diff, '.', 1, 1), 0 , TO_CHAR(x.m_diff, '999G999G999G999') , TO_CHAR(x.m_diff, '999G999G999G999D99')) as actDiff,
+DECODE(INSTR(x.acm_plan, '.', 1, 1), 0 , TO_CHAR(x.acm_plan, '999G999G999G999') , TO_CHAR(x.acm_plan, '999G999G999G999D99')) as accPlan,
+DECODE(INSTR(x.acm_actual, '.', 1, 1), 0 , TO_CHAR(x.acm_actual, '999G999G999G999') , TO_CHAR(x.acm_actual, '999G999G999G999D99')) as accActual,
+DECODE(INSTR(x.acm_ach, '.', 1, 1), 0 , TO_CHAR(x.acm_ach, '999G999G999G999') , TO_CHAR(x.acm_ach, '999G999G999G999D99')) as accAch,
+(SELECT key_name FROM TALANG WHERE key_no='month'||to_number(substr('^param3',6,2)) AND key_type='LABEL' AND lang='^param4')month
+FROM TAKPIMMPOINT x                        
+WHERE 1=1                                    
+and x.yyyymm =substr('^param3',0,4)||substr('^param3',6,2)
+and x.comp_no='^param1'
+AND x.kpi_mpoint in ('BD')
+ORDER bY x.kpi_mpoint
+/
+$
+select
+    'B/D(Min)'title,
+    (SELECT NVL(x.ma_repairtime,'0') FROM TAKPIMLOCDN x  
+     WHERE 1=1
+  AND  x.comp_no='^param1'
+  AND  x.yyyymm = substr('^param3',0,4)||substr('^param3',6,2)
+  AND  x.plant = '^param5'
+  AND x.eqloc_id='1606' )assyWorkTime,
+      (SELECT NVL(x.ma_repairtime,'0') FROM TAKPIMLOCDN x  
+     WHERE 1=1
+  AND  x.comp_no='^param1'
+  AND  x.yyyymm = substr('^param3',0,4)||substr('^param3',6,2)
+  AND  x.plant = '^param5'
+  AND x.eqloc_id='1677' )asrsWorkTime,
+        (SELECT NVL(x.ma_repairtime,'0') FROM TAKPIMLOCDN x  
+     WHERE 1=1
+  AND  x.comp_no='^param1'
+  AND  x.yyyymm = substr('^param3',0,4)||substr('^param3',6,2)
+  AND  x.plant = '^param5'
+  AND x.eqloc_id='1676' )foamWorkTime
+from dual
+UNION ALL
+select
+    '%'title,
+    (SELECT NVL(x.ma_bd_rate,'0') FROM TAKPIMLOCDN x  
+     WHERE 1=1
+  AND  x.comp_no='^param1'
+  AND  x.yyyymm = substr('^param3',0,4)||substr('^param3',6,2)
+  AND  x.plant = '^param5'
+  AND x.eqloc_id='1606' )assyWorkTime,
+      (SELECT NVL(x.ma_bd_rate,'0') FROM TAKPIMLOCDN x  
+     WHERE 1=1
+  AND  x.comp_no='^param1'
+  AND  x.yyyymm = substr('^param3',0,4)||substr('^param3',6,2)
+  AND  x.plant = '^param5' 
+  AND x.eqloc_id='1677' )asrsWorkTime,
+        (SELECT NVL(x.ma_bd_rate,'0') FROM TAKPIMLOCDN x  
+     WHERE 1=1
+  AND  x.comp_no='^param1'
+  AND  x.yyyymm = substr('^param3',0,4)||substr('^param3',6,2)
+  AND  x.plant = '^param5'
+  AND x.eqloc_id='1676' )foamWorkTime
+from dual
+/
+$
+SELECT
+*
+FROM
+(
+   select
+   MAX(eqloc),
+   equipDesc,
+   fscd,
+   cacd,
+   recd,
+   count(*)
+   from
+   (  
+       select 
+       (select y1.description FROM TAEQLOC y1 WHERE x.eqloc_id=y1.eqloc_id)eqloc,
+               (SELECT TO_CHAR(WM_CONCAT(b.description))                                
+                   FROM TAWOEQUIP a, TAEQUIPMENT b                                        
+                   WHERE a.comp_no = b.comp_no                                            
+                       AND a.equip_id = b.equip_id                                        
+                       AND a.wkor_id = x.wkor_id                                        
+                   GROUP By a.comp_no, a.wkor_id    )                     AS equipDesc,    
+       (SELECT y2.description FROM TAFAILURE y2 where y2.failure_id=(select y.fs_cd FROM TAWOFAIL y where x.wkor_id=y.wkor_id ) AND y2.fail_type='FS')fscd ,
+       (SELECT y2.description FROM TAFAILURE y2 where y2.failure_id=(select y.fs_cd FROM TAWOFAIL y where x.wkor_id=y.wkor_id ) AND y2.fail_type='CA')cacd ,
+       (SELECT y2.description FROM TAFAILURE y2 where y2.failure_id=(select y.fs_cd FROM TAWOFAIL y where x.wkor_id=y.wkor_id ) AND y2.fail_type='RE')recd
+       from taworkorder x where substr(x.wkor_date,0,6)= substr('^param3',0,4)||substr('^param3',6,2)
+   and wo_type='BM'
+)b
+group by b.equipdesc, fscd,cacd,recd
+order by COUNT(*) desc
+)c
+where rownum<=5
+/
+$
+SELECT 
+'01'AS ID
+,'january'month
+,NVL((
+SELECT ma_stoptime  
+FROM TAKPIMLOCDN x
+WHERE x.comp_no='^param1'
+AND (substr(x.yyyymm,0,4))=substr('^param3',0,4)
+AND x.plant='^param5'
+AND (substr(x.yyyymm,-2))='01'
+AND x.eqloc_id='1606'
+),'0')result
+,NVL((
+SELECT ma_stopfreq 
+FROM TAKPIMLOCDN x
+WHERE x.comp_no='^param1'
+AND (substr(x.yyyymm,0,4))=substr('^param3',0,4)
+AND x.plant='^param5'
+AND (substr(x.yyyymm,-2))='01'
+AND x.eqloc_id='1606'
+),'0')target
+from dual
+UNION ALL
+SELECT 
+'11'AS ID
+,'february'month
+,NVL((
+SELECT ma_stoptime  
+FROM TAKPIMLOCDN x
+WHERE x.comp_no='^param1'
+AND (substr(x.yyyymm,0,4))=substr('^param3',0,4)
+AND x.plant='^param5'
+AND (substr(x.yyyymm,-2))='02'
+AND x.eqloc_id='1606'
+),'0')result
+,NVL((
+SELECT ma_stopfreq 
+FROM TAKPIMLOCDN x
+WHERE x.comp_no='^param1'
+AND (substr(x.yyyymm,0,4))=substr('^param3',0,4)
+AND x.plant='^param5'
+AND (substr(x.yyyymm,-2))='02'
+AND x.eqloc_id='1606'
+),'0')target
+from dual
+UNION ALL
+SELECT 
+'21'AS ID
+,'march'month
+,NVL((
+SELECT ma_stoptime  
+FROM TAKPIMLOCDN x
+WHERE x.comp_no='^param1'
+AND (substr(x.yyyymm,0,4))=substr('^param3',0,4)
+AND x.plant='^param5'
+AND (substr(x.yyyymm,-2))='03'
+AND x.eqloc_id='1606'
+),'0')result
+,NVL((
+SELECT ma_stopfreq 
+FROM TAKPIMLOCDN x
+WHERE x.comp_no='^param1'
+AND (substr(x.yyyymm,0,4))=substr('^param3',0,4)
+AND x.plant='^param5'
+AND (substr(x.yyyymm,-2))='03'
+AND x.eqloc_id='1606'
+),'0')target
+from dual
+UNION ALL
+SELECT 
+'31'AS ID
+,'april'month
+,NVL((
+SELECT ma_stoptime  
+FROM TAKPIMLOCDN x
+WHERE x.comp_no='^param1'
+AND (substr(x.yyyymm,0,4))=substr('^param3',0,4)
+AND x.plant='^param5'
+AND (substr(x.yyyymm,-2))='04'
+AND x.eqloc_id='1606'
+),'0')result
+,NVL((
+SELECT ma_stopfreq 
+FROM TAKPIMLOCDN x
+WHERE x.comp_no='^param1'
+AND (substr(x.yyyymm,0,4))=substr('^param3',0,4)
+AND x.plant='^param5'
+AND (substr(x.yyyymm,-2))='04'
+AND x.eqloc_id='1606'
+),'0')target
+from dual
+UNION ALL
+SELECT 
+'41'AS ID
+,'may'month
+,NVL((
+SELECT ma_stoptime  
+FROM TAKPIMLOCDN x
+WHERE x.comp_no='^param1'
+AND (substr(x.yyyymm,0,4))=substr('^param3',0,4)
+AND x.plant='^param5'
+AND (substr(x.yyyymm,-2))='05'
+AND x.eqloc_id='1606'
+),'0')result
+,NVL((
+SELECT ma_stopfreq 
+FROM TAKPIMLOCDN x
+WHERE x.comp_no='^param1'
+AND (substr(x.yyyymm,0,4))=substr('^param3',0,4)
+AND x.plant='^param5'
+AND (substr(x.yyyymm,-2))='05'
+AND x.eqloc_id='1606'
+),'0')target
+from dual
+UNION ALL
+SELECT 
+'51'AS ID
+,'june'month
+,NVL((
+SELECT ma_stoptime  
+FROM TAKPIMLOCDN x
+WHERE x.comp_no='^param1'
+AND (substr(x.yyyymm,0,4))=substr('^param3',0,4)
+AND x.plant='^param5'
+AND (substr(x.yyyymm,-2))='06'
+AND x.eqloc_id='1606'
+),'0')result
+,NVL((
+SELECT ma_stopfreq 
+FROM TAKPIMLOCDN x
+WHERE x.comp_no='^param1'
+AND (substr(x.yyyymm,0,4))=substr('^param3',0,4)
+AND x.plant='^param5'
+AND (substr(x.yyyymm,-2))='06'
+AND x.eqloc_id='1606'
+),'0')target
+from dual
+UNION ALL
+SELECT 
+'61'AS ID
+,'july'month
+,NVL((
+SELECT ma_stoptime  
+FROM TAKPIMLOCDN x
+WHERE x.comp_no='^param1'
+AND (substr(x.yyyymm,0,4))=substr('^param3',0,4)
+AND x.plant='^param5'
+AND (substr(x.yyyymm,-2))='07'
+AND x.eqloc_id='1606'
+),'0')result
+,NVL((
+SELECT ma_stopfreq 
+FROM TAKPIMLOCDN x
+WHERE x.comp_no='^param1'
+AND (substr(x.yyyymm,0,4))=substr('^param3',0,4)
+AND x.plant='^param5'
+AND (substr(x.yyyymm,-2))='07'
+AND x.eqloc_id='1606'
+),'0')target
+from dual
+UNION ALL
+SELECT 
+'71'AS ID
+,'august'month
+,NVL((
+SELECT ma_stoptime  
+FROM TAKPIMLOCDN x
+WHERE x.comp_no='^param1'
+AND (substr(x.yyyymm,0,4))=substr('^param3',0,4)
+AND x.plant='^param5'
+AND (substr(x.yyyymm,-2))='08'
+AND x.eqloc_id='1606'
+),'0')result
+,NVL((
+SELECT ma_stopfreq 
+FROM TAKPIMLOCDN x
+WHERE x.comp_no='^param1'
+AND (substr(x.yyyymm,0,4))=substr('^param3',0,4)
+AND x.plant='^param5'
+AND (substr(x.yyyymm,-2))='08'
+AND x.eqloc_id='1606'
+),'0')target
+from dual
+UNION ALL
+SELECT 
+'81'AS ID
+,'september'month
+,NVL((
+SELECT ma_stoptime  
+FROM TAKPIMLOCDN x
+WHERE x.comp_no='^param1'
+AND (substr(x.yyyymm,0,4))=substr('^param3',0,4)
+AND x.plant='^param5'
+AND (substr(x.yyyymm,-2))='09'
+AND x.eqloc_id='1606'
+),'0')result
+,NVL((
+SELECT ma_stopfreq 
+FROM TAKPIMLOCDN x
+WHERE x.comp_no='^param1'
+AND (substr(x.yyyymm,0,4))=substr('^param3',0,4)
+AND x.plant='^param5'
+AND (substr(x.yyyymm,-2))='09'
+AND x.eqloc_id='1606'
+),'0')target
+from dual
+UNION ALL
+SELECT 
+'91'AS ID
+,'october'month
+,NVL((
+SELECT ma_stoptime  
+FROM TAKPIMLOCDN x
+WHERE x.comp_no='^param1'
+AND (substr(x.yyyymm,0,4))=substr('^param3',0,4)
+AND x.plant='^param5'
+AND (substr(x.yyyymm,-2))='10'
+AND x.eqloc_id='1606'
+),'0')result
+,NVL((
+SELECT ma_stopfreq 
+FROM TAKPIMLOCDN x
+WHERE x.comp_no='^param1'
+AND (substr(x.yyyymm,0,4))=substr('^param3',0,4)
+AND x.plant='^param5'
+AND (substr(x.yyyymm,-2))='10'
+AND x.eqloc_id='1606'
+),'0')target
+from dual
+UNION ALL
+SELECT 
+'101'AS ID
+,'november'month
+,NVL((
+SELECT ma_stoptime  
+FROM TAKPIMLOCDN x
+WHERE x.comp_no='^param1'
+AND (substr(x.yyyymm,0,4))=substr('^param3',0,4)
+AND x.plant='^param5'
+AND (substr(x.yyyymm,-2))='11'
+AND x.eqloc_id='1606'
+),'0')result
+,NVL((
+SELECT ma_stopfreq 
+FROM TAKPIMLOCDN x
+WHERE x.comp_no='^param1'
+AND (substr(x.yyyymm,0,4))=substr('^param3',0,4)
+AND x.plant='^param5'
+AND (substr(x.yyyymm,-2))='11'
+AND x.eqloc_id='1606'
+),'0')target
+from dual
+UNION ALL
+SELECT 
+'111'AS ID
+,'december'month
+,NVL((
+SELECT ma_stoptime  
+FROM TAKPIMLOCDN x
+WHERE x.comp_no='^param1'
+AND (substr(x.yyyymm,0,4))=substr('^param3',0,4)
+AND x.plant='^param5'
+AND (substr(x.yyyymm,-2))='12'
+AND x.eqloc_id='1606'
+),'0')result
+,NVL((
+SELECT ma_stopfreq 
+FROM TAKPIMLOCDN x
+WHERE x.comp_no='^param1'
+AND (substr(x.yyyymm,0,4))=substr('^param3',0,4)
+AND x.plant='^param5'
+AND (substr(x.yyyymm,-2))='12'
+AND x.eqloc_id='1606'
+),'0')target
+from dual
+/
+$
+SELECT 
+'01'AS ID
+,'january'month
+,NVL((
+SELECT ma_stoptime  
+FROM TAKPIMLOCDN x
+WHERE x.comp_no='^param1'
+AND (substr(x.yyyymm,0,4))=substr('^param3',0,4)
+AND x.plant='^param5'
+AND (substr(x.yyyymm,-2))='01'
+AND x.eqloc_id='1677'
+),'0')result
+,NVL((
+SELECT ma_stopfreq 
+FROM TAKPIMLOCDN x
+WHERE x.comp_no='^param1'
+AND (substr(x.yyyymm,0,4))=substr('^param3',0,4)
+AND x.plant='^param5'
+AND (substr(x.yyyymm,-2))='01'
+AND x.eqloc_id='1677'
+),'0')target
+from dual
+UNION ALL
+SELECT 
+'11'AS ID
+,'february'month
+,NVL((
+SELECT ma_stoptime  
+FROM TAKPIMLOCDN x
+WHERE x.comp_no='^param1'
+AND (substr(x.yyyymm,0,4))=substr('^param3',0,4)
+AND x.plant='^param5'
+AND (substr(x.yyyymm,-2))='02'
+AND x.eqloc_id='1677'
+),'0')result
+,NVL((
+SELECT ma_stopfreq 
+FROM TAKPIMLOCDN x
+WHERE x.comp_no='^param1'
+AND (substr(x.yyyymm,0,4))=substr('^param3',0,4)
+AND x.plant='^param5'
+AND (substr(x.yyyymm,-2))='02'
+AND x.eqloc_id='1677'
+),'0')target
+from dual
+UNION ALL
+SELECT 
+'21'AS ID
+,'march'month
+,NVL((
+SELECT ma_stoptime  
+FROM TAKPIMLOCDN x
+WHERE x.comp_no='^param1'
+AND (substr(x.yyyymm,0,4))=substr('^param3',0,4)
+AND x.plant='^param5'
+AND (substr(x.yyyymm,-2))='03'
+AND x.eqloc_id='1677'
+),'0')result
+,NVL((
+SELECT ma_stopfreq 
+FROM TAKPIMLOCDN x
+WHERE x.comp_no='^param1'
+AND (substr(x.yyyymm,0,4))=substr('^param3',0,4)
+AND x.plant='^param5'
+AND (substr(x.yyyymm,-2))='03'
+AND x.eqloc_id='1677'
+),'0')target
+from dual
+UNION ALL
+SELECT 
+'31'AS ID
+,'april'month
+,NVL((
+SELECT ma_stoptime  
+FROM TAKPIMLOCDN x
+WHERE x.comp_no='^param1'
+AND (substr(x.yyyymm,0,4))=substr('^param3',0,4)
+AND x.plant='^param5'
+AND (substr(x.yyyymm,-2))='04'
+AND x.eqloc_id='1677'
+),'0')result
+,NVL((
+SELECT ma_stopfreq 
+FROM TAKPIMLOCDN x
+WHERE x.comp_no='^param1'
+AND (substr(x.yyyymm,0,4))=substr('^param3',0,4)
+AND x.plant='^param5'
+AND (substr(x.yyyymm,-2))='04'
+AND x.eqloc_id='1677'
+),'0')target
+from dual
+UNION ALL
+SELECT 
+'41'AS ID
+,'may'month
+,NVL((
+SELECT ma_stoptime  
+FROM TAKPIMLOCDN x
+WHERE x.comp_no='^param1'
+AND (substr(x.yyyymm,0,4))=substr('^param3',0,4)
+AND x.plant='^param5'
+AND (substr(x.yyyymm,-2))='05'
+AND x.eqloc_id='1677'
+),'0')result
+,NVL((
+SELECT ma_stopfreq 
+FROM TAKPIMLOCDN x
+WHERE x.comp_no='^param1'
+AND (substr(x.yyyymm,0,4))=substr('^param3',0,4)
+AND x.plant='^param5'
+AND (substr(x.yyyymm,-2))='05'
+AND x.eqloc_id='1677'
+),'0')target
+from dual
+UNION ALL
+SELECT 
+'51'AS ID
+,'june'month
+,NVL((
+SELECT ma_stoptime  
+FROM TAKPIMLOCDN x
+WHERE x.comp_no='^param1'
+AND (substr(x.yyyymm,0,4))=substr('^param3',0,4)
+AND x.plant='^param5'
+AND (substr(x.yyyymm,-2))='06'
+AND x.eqloc_id='1677'
+),'0')result
+,NVL((
+SELECT ma_stopfreq 
+FROM TAKPIMLOCDN x
+WHERE x.comp_no='^param1'
+AND (substr(x.yyyymm,0,4))=substr('^param3',0,4)
+AND x.plant='^param5'
+AND (substr(x.yyyymm,-2))='06'
+AND x.eqloc_id='1677'
+),'0')target
+from dual
+UNION ALL
+SELECT 
+'61'AS ID
+,'july'month
+,NVL((
+SELECT ma_stoptime  
+FROM TAKPIMLOCDN x
+WHERE x.comp_no='^param1'
+AND (substr(x.yyyymm,0,4))=substr('^param3',0,4)
+AND x.plant='^param5'
+AND (substr(x.yyyymm,-2))='07'
+AND x.eqloc_id='1677'
+),'0')result
+,NVL((
+SELECT ma_stopfreq 
+FROM TAKPIMLOCDN x
+WHERE x.comp_no='^param1'
+AND (substr(x.yyyymm,0,4))=substr('^param3',0,4)
+AND x.plant='^param5'
+AND (substr(x.yyyymm,-2))='07'
+AND x.eqloc_id='1677'
+),'0')target
+from dual
+UNION ALL
+SELECT 
+'71'AS ID
+,'august'month
+,NVL((
+SELECT ma_stoptime  
+FROM TAKPIMLOCDN x
+WHERE x.comp_no='^param1'
+AND (substr(x.yyyymm,0,4))=substr('^param3',0,4)
+AND x.plant='^param5'
+AND (substr(x.yyyymm,-2))='08'
+AND x.eqloc_id='1677'
+),'0')result
+,NVL((
+SELECT ma_stopfreq 
+FROM TAKPIMLOCDN x
+WHERE x.comp_no='^param1'
+AND (substr(x.yyyymm,0,4))=substr('^param3',0,4)
+AND x.plant='^param5'
+AND (substr(x.yyyymm,-2))='08'
+AND x.eqloc_id='1677'
+),'0')target
+from dual
+UNION ALL
+SELECT 
+'81'AS ID
+,'september'month
+,NVL((
+SELECT ma_stoptime  
+FROM TAKPIMLOCDN x
+WHERE x.comp_no='^param1'
+AND (substr(x.yyyymm,0,4))=substr('^param3',0,4)
+AND x.plant='^param5'
+AND (substr(x.yyyymm,-2))='09'
+AND x.eqloc_id='1677'
+),'0')result
+,NVL((
+SELECT ma_stopfreq 
+FROM TAKPIMLOCDN x
+WHERE x.comp_no='^param1'
+AND (substr(x.yyyymm,0,4))=substr('^param3',0,4)
+AND x.plant='^param5'
+AND (substr(x.yyyymm,-2))='09'
+AND x.eqloc_id='1677'
+),'0')target
+from dual
+UNION ALL
+SELECT 
+'91'AS ID
+,'october'month
+,NVL((
+SELECT ma_stoptime  
+FROM TAKPIMLOCDN x
+WHERE x.comp_no='^param1'
+AND (substr(x.yyyymm,0,4))=substr('^param3',0,4)
+AND x.plant='^param5'
+AND (substr(x.yyyymm,-2))='10'
+AND x.eqloc_id='1677'
+),'0')result
+,NVL((
+SELECT ma_stopfreq 
+FROM TAKPIMLOCDN x
+WHERE x.comp_no='^param1'
+AND (substr(x.yyyymm,0,4))=substr('^param3',0,4)
+AND x.plant='^param5'
+AND (substr(x.yyyymm,-2))='10'
+AND x.eqloc_id='1677'
+),'0')target
+from dual
+UNION ALL
+SELECT 
+'101'AS ID
+,'november'month
+,NVL((
+SELECT ma_stoptime  
+FROM TAKPIMLOCDN x
+WHERE x.comp_no='^param1'
+AND (substr(x.yyyymm,0,4))=substr('^param3',0,4)
+AND x.plant='^param5'
+AND (substr(x.yyyymm,-2))='11'
+AND x.eqloc_id='1677'
+),'0')result
+,NVL((
+SELECT ma_stopfreq 
+FROM TAKPIMLOCDN x
+WHERE x.comp_no='^param1'
+AND (substr(x.yyyymm,0,4))=substr('^param3',0,4)
+AND x.plant='^param5'
+AND (substr(x.yyyymm,-2))='11'
+AND x.eqloc_id='1677'
+),'0')target
+from dual
+UNION ALL
+SELECT 
+'111'AS ID
+,'december'month
+,NVL((
+SELECT ma_stoptime  
+FROM TAKPIMLOCDN x
+WHERE x.comp_no='^param1'
+AND (substr(x.yyyymm,0,4))=substr('^param3',0,4)
+AND x.plant='^param5'
+AND (substr(x.yyyymm,-2))='12'
+AND x.eqloc_id='1677'
+),'0')result
+,NVL((
+SELECT ma_stopfreq 
+FROM TAKPIMLOCDN x
+WHERE x.comp_no='^param1'
+AND (substr(x.yyyymm,0,4))=substr('^param3',0,4)
+AND x.plant='^param5'
+AND (substr(x.yyyymm,-2))='12'
+AND x.eqloc_id='1677'
+),'0')target
+from dual
+/
+$
+select 
+(select y1.description FROM TAEQLOC y1 WHERE x.eqloc_id=y1.eqloc_id)eqloc,
+ma_worktime,
+ma_stoptime totalstop,
+ma_stoptime stoptime,
+ma_stopfreq totalfreq,
+ma_stopfreq freq
+ from TAKPIMLOCDN x
+WHERE x.comp_no='^param1'
+AND x.plant='^param5'  
+and x.yyyymm =substr('^param3',0,4)||substr('^param3',6,2) 
+AND x.eqloc_id='1606'
+/
+$
+select 
+(select y1.description FROM TAEQLOC y1 WHERE x.eqloc_id=y1.eqloc_id)eqloc,
+ma_worktime,
+ma_stoptime totalstop,
+ma_stoptime stoptime,
+ma_stopfreq totalfreq,
+ma_stopfreq freq
+ from TAKPIMLOCDN x
+WHERE x.comp_no='^param1'
+AND x.plant='^param5'  
+and x.yyyymm =substr('^param3',0,4)||substr('^param3',6,2) 
+AND x.eqloc_id='1677'
+/
+$
+select 
+(select description from TAEQCtg y where x.eqctg_id=y.eqctg_id)eqCtgName,
+ sum(x.m_stoptime),
+ sum(x.m_stopfreq),
+ MAX(x.ratio)ratio
+ from TAKPIDLOCCTGDN x where x.eqloc_id='1606' 
+ and substr(x.wrk_date,0,6)=substr('^param3',0,4)||substr('^param3',6,2) 
+ and x.eqloc_id='1606' 
+ and x.m_stoptime is not null
+ AND x.plant='^param5' 
+ AND x.comp_no='^param1'
+ group by x.eqctg_id
+  order by ratio desc
+/
+$
+select 
+(select description from TAEQCtg y where x.eqctg_id=y.eqctg_id)eqCtgName,
+ sum(x.m_stoptime),
+ sum(x.m_stopfreq),
+ NVL(MAX(x.ratio),'0')ratio
+ from TAKPIDLOCCTGDN x where x.eqloc_id='1676' 
+ and substr(x.wrk_date,0,6)=substr('^param3',0,4)||substr('^param3',6,2) 
+ and x.eqloc_id='1677' 
+ and x.m_stoptime is not null
+ AND x.plant='^param5' 
+ AND x.comp_no='^param1'
+ group by x.eqctg_id
+  order by ratio desc
+/
+$
+SELECT 
+'01'AS ID
+,'january'month
+,NVL((
+SELECT ma_stoptime  
+FROM TAKPIMLOCDN x
+WHERE x.comp_no='^param1'
+AND (substr(x.yyyymm,0,4))=substr('^param3',0,4)
+AND x.plant='^param5'
+AND (substr(x.yyyymm,-2))='01'
+AND x.eqloc_id='1676'
+),'0')result
+,NVL((
+SELECT ma_stopfreq 
+FROM TAKPIMLOCDN x
+WHERE x.comp_no='^param1'
+AND (substr(x.yyyymm,0,4))=substr('^param3',0,4)
+AND x.plant='^param5'
+AND (substr(x.yyyymm,-2))='01'
+AND x.eqloc_id='1676'
+),'0')target
+from dual
+UNION ALL
+SELECT 
+'11'AS ID
+,'february'month
+,NVL((
+SELECT ma_stoptime  
+FROM TAKPIMLOCDN x
+WHERE x.comp_no='^param1'
+AND (substr(x.yyyymm,0,4))=substr('^param3',0,4)
+AND x.plant='^param5'
+AND (substr(x.yyyymm,-2))='02'
+AND x.eqloc_id='1676'
+),'0')result
+,NVL((
+SELECT ma_stopfreq 
+FROM TAKPIMLOCDN x
+WHERE x.comp_no='^param1'
+AND (substr(x.yyyymm,0,4))=substr('^param3',0,4)
+AND x.plant='^param5'
+AND (substr(x.yyyymm,-2))='02'
+AND x.eqloc_id='1676'
+),'0')target
+from dual
+UNION ALL
+SELECT 
+'21'AS ID
+,'march'month
+,NVL((
+SELECT ma_stoptime  
+FROM TAKPIMLOCDN x
+WHERE x.comp_no='^param1'
+AND (substr(x.yyyymm,0,4))=substr('^param3',0,4)
+AND x.plant='^param5'
+AND (substr(x.yyyymm,-2))='03'
+AND x.eqloc_id='1676'
+),'0')result
+,NVL((
+SELECT ma_stopfreq 
+FROM TAKPIMLOCDN x
+WHERE x.comp_no='^param1'
+AND (substr(x.yyyymm,0,4))=substr('^param3',0,4)
+AND x.plant='^param5'
+AND (substr(x.yyyymm,-2))='03'
+AND x.eqloc_id='1676'
+),'0')target
+from dual
+UNION ALL
+SELECT 
+'31'AS ID
+,'april'month
+,NVL((
+SELECT ma_stoptime  
+FROM TAKPIMLOCDN x
+WHERE x.comp_no='^param1'
+AND (substr(x.yyyymm,0,4))=substr('^param3',0,4)
+AND x.plant='^param5'
+AND (substr(x.yyyymm,-2))='04'
+AND x.eqloc_id='1676'
+),'0')result
+,NVL((
+SELECT ma_stopfreq 
+FROM TAKPIMLOCDN x
+WHERE x.comp_no='^param1'
+AND (substr(x.yyyymm,0,4))=substr('^param3',0,4)
+AND x.plant='^param5'
+AND (substr(x.yyyymm,-2))='04'
+AND x.eqloc_id='1676'
+),'0')target
+from dual
+UNION ALL
+SELECT 
+'41'AS ID
+,'may'month
+,NVL((
+SELECT ma_stoptime  
+FROM TAKPIMLOCDN x
+WHERE x.comp_no='^param1'
+AND (substr(x.yyyymm,0,4))=substr('^param3',0,4)
+AND x.plant='^param5'
+AND (substr(x.yyyymm,-2))='05'
+AND x.eqloc_id='1676'
+),'0')result
+,NVL((
+SELECT ma_stopfreq 
+FROM TAKPIMLOCDN x
+WHERE x.comp_no='^param1'
+AND (substr(x.yyyymm,0,4))=substr('^param3',0,4)
+AND x.plant='^param5'
+AND (substr(x.yyyymm,-2))='05'
+AND x.eqloc_id='1676'
+),'0')target
+from dual
+UNION ALL
+SELECT 
+'51'AS ID
+,'june'month
+,NVL((
+SELECT ma_stoptime  
+FROM TAKPIMLOCDN x
+WHERE x.comp_no='^param1'
+AND (substr(x.yyyymm,0,4))=substr('^param3',0,4)
+AND x.plant='^param5'
+AND (substr(x.yyyymm,-2))='06'
+AND x.eqloc_id='1676'
+),'0')result
+,NVL((
+SELECT ma_stopfreq 
+FROM TAKPIMLOCDN x
+WHERE x.comp_no='^param1'
+AND (substr(x.yyyymm,0,4))=substr('^param3',0,4)
+AND x.plant='^param5'
+AND (substr(x.yyyymm,-2))='06'
+AND x.eqloc_id='1676'
+),'0')target
+from dual
+UNION ALL
+SELECT 
+'61'AS ID
+,'july'month
+,NVL((
+SELECT ma_stoptime  
+FROM TAKPIMLOCDN x
+WHERE x.comp_no='^param1'
+AND (substr(x.yyyymm,0,4))=substr('^param3',0,4)
+AND x.plant='^param5'
+AND (substr(x.yyyymm,-2))='07'
+AND x.eqloc_id='1676'
+),'0')result
+,NVL((
+SELECT ma_stopfreq 
+FROM TAKPIMLOCDN x
+WHERE x.comp_no='^param1'
+AND (substr(x.yyyymm,0,4))=substr('^param3',0,4)
+AND x.plant='^param5'
+AND (substr(x.yyyymm,-2))='07'
+AND x.eqloc_id='1676'
+),'0')target
+from dual
+UNION ALL
+SELECT 
+'71'AS ID
+,'august'month
+,NVL((
+SELECT ma_stoptime  
+FROM TAKPIMLOCDN x
+WHERE x.comp_no='^param1'
+AND (substr(x.yyyymm,0,4))=substr('^param3',0,4)
+AND x.plant='^param5'
+AND (substr(x.yyyymm,-2))='08'
+AND x.eqloc_id='1676'
+),'0')result
+,NVL((
+SELECT ma_stopfreq 
+FROM TAKPIMLOCDN x
+WHERE x.comp_no='^param1'
+AND (substr(x.yyyymm,0,4))=substr('^param3',0,4)
+AND x.plant='^param5'
+AND (substr(x.yyyymm,-2))='08'
+AND x.eqloc_id='1676'
+),'0')target
+from dual
+UNION ALL
+SELECT 
+'81'AS ID
+,'september'month
+,NVL((
+SELECT ma_stoptime  
+FROM TAKPIMLOCDN x
+WHERE x.comp_no='^param1'
+AND (substr(x.yyyymm,0,4))=substr('^param3',0,4)
+AND x.plant='^param5'
+AND (substr(x.yyyymm,-2))='09'
+AND x.eqloc_id='1676'
+),'0')result
+,NVL((
+SELECT ma_stopfreq 
+FROM TAKPIMLOCDN x
+WHERE x.comp_no='^param1'
+AND (substr(x.yyyymm,0,4))=substr('^param3',0,4)
+AND x.plant='^param5'
+AND (substr(x.yyyymm,-2))='09'
+AND x.eqloc_id='1676'
+),'0')target
+from dual
+UNION ALL
+SELECT 
+'91'AS ID
+,'october'month
+,NVL((
+SELECT ma_stoptime  
+FROM TAKPIMLOCDN x
+WHERE x.comp_no='^param1'
+AND (substr(x.yyyymm,0,4))=substr('^param3',0,4)
+AND x.plant='^param5'
+AND (substr(x.yyyymm,-2))='10'
+AND x.eqloc_id='1676'
+),'0')result
+,NVL((
+SELECT ma_stopfreq 
+FROM TAKPIMLOCDN x
+WHERE x.comp_no='^param1'
+AND (substr(x.yyyymm,0,4))=substr('^param3',0,4)
+AND x.plant='^param5'
+AND (substr(x.yyyymm,-2))='10'
+AND x.eqloc_id='1676'
+),'0')target
+from dual
+UNION ALL
+SELECT 
+'101'AS ID
+,'november'month
+,NVL((
+SELECT ma_stoptime  
+FROM TAKPIMLOCDN x
+WHERE x.comp_no='^param1'
+AND (substr(x.yyyymm,0,4))=substr('^param3',0,4)
+AND x.plant='^param5'
+AND (substr(x.yyyymm,-2))='11'
+AND x.eqloc_id='1676'
+),'0')result
+,NVL((
+SELECT ma_stopfreq 
+FROM TAKPIMLOCDN x
+WHERE x.comp_no='^param1'
+AND (substr(x.yyyymm,0,4))=substr('^param3',0,4)
+AND x.plant='^param5'
+AND (substr(x.yyyymm,-2))='11'
+AND x.eqloc_id='1676'
+),'0')target
+from dual
+UNION ALL
+SELECT 
+'111'AS ID
+,'december'month
+,NVL((
+SELECT ma_stoptime  
+FROM TAKPIMLOCDN x
+WHERE x.comp_no='^param1'
+AND (substr(x.yyyymm,0,4))=substr('^param3',0,4)
+AND x.plant='^param5'
+AND (substr(x.yyyymm,-2))='12'
+AND x.eqloc_id='1676'
+),'0')result
+,NVL((
+SELECT ma_stopfreq 
+FROM TAKPIMLOCDN x
+WHERE x.comp_no='^param1'
+AND (substr(x.yyyymm,0,4))=substr('^param3',0,4)
+AND x.plant='^param5'
+AND (substr(x.yyyymm,-2))='12'
+AND x.eqloc_id='1676'
+),'0')target
+from dual
+/
+$
+select 
+(select y1.description FROM TAEQLOC y1 WHERE x.eqloc_id=y1.eqloc_id)eqloc,
+NVL(ma_worktime,'0'),
+NVL(ma_stoptime,'0') totalstop,
+NVL(ma_stoptime,'0') stoptime,
+NVL(ma_stopfreq,'0') totalfreq,
+NVL(ma_stopfreq,'0') freq
+ from TAKPIMLOCDN x
+WHERE x.comp_no='^param1'
+AND x.plant='^param5'  
+and x.yyyymm =substr('^param3',0,4)||substr('^param3',6,2) 
+AND x.eqloc_id='1676'
+/
+$
+select 
+(select description from TAEQCtg y where x.eqctg_id=y.eqctg_id)eqCtgName,
+ NVL(sum(x.m_stoptime),'0'),
+ NVL(sum(x.m_stopfreq),'0'),
+ NVL(MAX(x.ratio),'0')ratio
+ from TAKPIDLOCCTGDN x where x.eqloc_id='1676' 
+ and substr(x.wrk_date,0,6)=substr('^param3',0,4)||substr('^param3',6,2) 
+ and x.eqloc_id='1676' 
+ and x.m_stoptime is not null
+ AND x.plant='^param5' 
+ AND x.comp_no='^param1'
+ group by x.eqctg_id
+  order by ratio desc
+/
+$
+select 
+substr(x.tday,7,2),
+NVL((select SUM(x2.lndn_work_time)dnTime from taworkorder x1, TAWOFAIL x2 where x1.wkor_id=x2.wkor_id AND x1.wkor_date=x.tday
+                 AND x1.wkor_id IN (SELECT wkor_id FROM TAWOEQUIP             
+                WHERE equip_id IN (SELECT equip_id        
+                                    FROM TAEQUIPMENT    
+                                    WHERE 1=1            
+AND eqloc_id IN (    SELECT eqloc_id                            
+                        FROM TAEQLOC                            
+                        WHERE comp_no = '^param1'          
+                        START wITH eqloc_id = '1606'            
+                        CONNECT BY PRIOR eqloc_id = p_eqloc_id    
+                    )                                            
+                                    ))  ),'0')dnTime
+from taday x 
+where x.tmonth=substr('^param3',0,4)||substr('^param3',6,2)
+order by x.tday
+/
+$
+select
+substr(y.eqdn_start_date,5,2)||'/'||substr(y.eqdn_start_date,7,2)||' '||substr(start_time,0,2)||':'||substr(start_time,2,2)time,
+        (SELECT TO_CHAR(WM_CONCAT(b.description))                                
+            FROM TAWOEQUIP a, TAEQUIPMENT b                                        
+            WHERE a.comp_no = b.comp_no                                            
+                AND a.equip_id = b.equip_id                                        
+                AND a.wkor_id = x.wkor_id                                        
+            GROUP By a.comp_no, a.wkor_id    )                     AS equipDesc,
+                    (SELECT emp_name                                                        
+           FROM TAEMP                                                            
+          WHERE comp_no = x.comp_no                                                
+            AND emp_id = x.emp_id)                                     empDesc,
+            x.description perform,
+            y.eqdn_work_time workTime,
+            y.lndn_work_time lndnTime,
+            (SELECT key_name FROM TALANG WHERE key_no='month'||to_number(substr('^param3',6,2)) AND key_type='LABEL' AND lang='^param4')month
+from TAWORKORDER x, TAWOFAIL y
+WHERE y.wkor_id(+)=x.wkor_id
+and y.eqdn_work_time is not null
+AND x.wkor_id IN (SELECT a.wkor_id                          
+                    FROM TAWOEQUIP a, TAEQUIPMENT b            
+                    WHERE a.comp_no = b.comp_no                
+                    AND   a.equip_id = b.equip_id            
+  AND  a.comp_no='^param1' 
+AND b.eqloc_id IN (    SELECT eqloc_id                            
+                        FROM TAEQLOC                            
+                        WHERE comp_no = '^param1'             
+                        START wITH eqloc_id = '1606'            
+                        CONNECT BY PRIOR eqloc_id = p_eqloc_id    
+                    )                                            
+                    )
+and substr(x.wkor_date,0,6) = substr('^param3',0,4)||substr('^param3',6,2)
+and ROWNUM <=5   
+order by NVL(lndntime,'0') desc, NVL(worktime,'0') desc
+/
+$
+select 
+substr(x.tday,7,2),
+NVL((select SUM(x2.lndn_work_time)dnTime from taworkorder x1, TAWOFAIL x2 where x1.wkor_id=x2.wkor_id AND x1.wkor_date=x.tday
+                 AND x1.wkor_id IN (SELECT wkor_id FROM TAWOEQUIP             
+                WHERE equip_id IN (SELECT equip_id        
+                                    FROM TAEQUIPMENT    
+                                    WHERE 1=1            
+AND eqloc_id IN (    SELECT eqloc_id                            
+                        FROM TAEQLOC                            
+                        WHERE comp_no = '^param1'          
+                        START wITH eqloc_id = '1676'            
+                        CONNECT BY PRIOR eqloc_id = p_eqloc_id    
+                    )                                            
+                                    ))  ),'0')dnTime
+from taday x 
+where x.tmonth=substr('^param3',0,4)||substr('^param3',6,2)
+order by x.tday
+/
+$
+select
+substr(y.eqdn_start_date,5,2)||'/'||substr(y.eqdn_start_date,7,2)||' '||substr(start_time,0,2)||':'||substr(start_time,2,2)time,
+        (SELECT TO_CHAR(WM_CONCAT(b.description))                                
+            FROM TAWOEQUIP a, TAEQUIPMENT b                                        
+            WHERE a.comp_no = b.comp_no                                            
+                AND a.equip_id = b.equip_id                                        
+                AND a.wkor_id = x.wkor_id                                        
+            GROUP By a.comp_no, a.wkor_id    )                     AS equipDesc,
+                    (SELECT emp_name                                                        
+           FROM TAEMP                                                            
+          WHERE comp_no = x.comp_no                                                
+            AND emp_id = x.emp_id)                                     empDesc,
+            x.description perform,
+            y.eqdn_work_time workTime,
+            y.lndn_work_time lndnTime,
+            (SELECT key_name FROM TALANG WHERE key_no='month'||to_number(substr('^param3',6,2)) AND key_type='LABEL' AND lang='^param4')month
+from TAWORKORDER x, TAWOFAIL y
+WHERE y.wkor_id(+)=x.wkor_id
+and y.eqdn_work_time is not null
+AND x.wkor_id IN (SELECT a.wkor_id                          
+                    FROM TAWOEQUIP a, TAEQUIPMENT b            
+                    WHERE a.comp_no = b.comp_no                
+                    AND   a.equip_id = b.equip_id            
+  AND  a.comp_no='^param1' 
+AND b.eqloc_id IN (    SELECT eqloc_id                            
+                        FROM TAEQLOC                            
+                        WHERE comp_no = '^param1'             
+                        START wITH eqloc_id = '1676'            
+                        CONNECT BY PRIOR eqloc_id = p_eqloc_id    
+                    )                                            
+                    )
+and substr(x.wkor_date,0,6) = substr('^param3',0,4)||substr('^param3',6,2)
+and ROWNUM <=5   
+order by NVL(lndntime,'0') desc, NVL(worktime,'0') desc
+/
+$
+select 
+substr(x.tday,7,2),
+NVL((select SUM(x2.lndn_work_time)dnTime from taworkorder x1, TAWOFAIL x2 where x1.wkor_id=x2.wkor_id AND x1.wkor_date=x.tday
+                 AND x1.wkor_id IN (SELECT wkor_id FROM TAWOEQUIP             
+                WHERE equip_id IN (SELECT equip_id        
+                                    FROM TAEQUIPMENT    
+                                    WHERE 1=1            
+AND eqloc_id IN (    SELECT eqloc_id                            
+                        FROM TAEQLOC                            
+                        WHERE comp_no = '^param1'          
+                        START wITH eqloc_id = '1677'            
+                        CONNECT BY PRIOR eqloc_id = p_eqloc_id    
+                    )                                            
+                                    ))  ),'0')dnTime
+from taday x 
+where x.tmonth=substr('^param3',0,4)||substr('^param3',6,2)
+order by x.tday
+/
+$
+select
+substr(y.eqdn_start_date,5,2)||'/'||substr(y.eqdn_start_date,7,2)||' '||substr(start_time,0,2)||':'||substr(start_time,2,2)time,
+        (SELECT TO_CHAR(WM_CONCAT(b.description))                                
+            FROM TAWOEQUIP a, TAEQUIPMENT b                                        
+            WHERE a.comp_no = b.comp_no                                            
+                AND a.equip_id = b.equip_id                                        
+                AND a.wkor_id = x.wkor_id                                        
+            GROUP By a.comp_no, a.wkor_id    )                     AS equipDesc,
+                    (SELECT emp_name                                                        
+           FROM TAEMP                                                            
+          WHERE comp_no = x.comp_no                                                
+            AND emp_id = x.emp_id)                                     empDesc,
+            x.description perform,
+            y.eqdn_work_time workTime,
+            y.lndn_work_time lndnTime,
+            (SELECT key_name FROM TALANG WHERE key_no='month'||to_number(substr('^param3',6,2)) AND key_type='LABEL' AND lang='^param4')month
+from TAWORKORDER x, TAWOFAIL y
+WHERE y.wkor_id(+)=x.wkor_id
+and y.eqdn_work_time is not null
+AND x.wkor_id IN (SELECT a.wkor_id                          
+                    FROM TAWOEQUIP a, TAEQUIPMENT b            
+                    WHERE a.comp_no = b.comp_no                
+                    AND   a.equip_id = b.equip_id            
+  AND  a.comp_no='^param1' 
+AND b.eqloc_id IN (    SELECT eqloc_id                            
+                        FROM TAEQLOC                            
+                        WHERE comp_no = '^param1'             
+                        START wITH eqloc_id = '1677'            
+                        CONNECT BY PRIOR eqloc_id = p_eqloc_id    
+                    )                                            
+                    )
+and substr(x.wkor_date,0,6) = substr('^param3',0,4)||substr('^param3',6,2)
+and ROWNUM <=5   
+order by NVL(lndntime,'0') desc, NVL(worktime,'0') desc
+/
+$
+select
+(SELECT
+        NVL(x.mtbf,x.ma_worktime) workTime
+ FROM TAKPIMLOCDN x
+ WHERE 1=1
+  AND  x.comp_no = '^param1'
+  AND  x.yyyymm = substr('^param3',0,4)||substr('^param3',6,2)
+  AND  x.plant = '^param5'
+  AND eqloc_id='1606')assy,
+  (SELECT
+        NVL(x.mtbf,x.ma_worktime) workTime
+ FROM TAKPIMLOCDN x
+ WHERE 1=1
+  AND  x.comp_no = '^param1'
+  AND  x.yyyymm = substr('^param3',0,4)||substr('^param3',6,2)
+  AND  x.plant = '^param5'
+  AND eqloc_id='1676')foam,
+    (SELECT
+        NVL(x.mtbf,x.ma_worktime) workTime
+ FROM TAKPIMLOCDN x
+ WHERE 1=1
+  AND  x.comp_no = '^param1'
+  AND  x.yyyymm = substr('^param3',0,4)||substr('^param3',6,2)
+  AND  x.plant = '^param5'
+  AND eqloc_id='1677')asrs
+from
+dual
+/
+$
+select
+(SELECT
+        NVL(x.mttr,0) workTime
+ FROM TAKPIMLOCDN x
+ WHERE 1=1
+  AND  x.comp_no = '^param1'
+  AND  x.yyyymm = substr('^param3',0,4)||substr('^param3',6,2)
+  AND  x.plant = '^param5'
+  AND eqloc_id='1606')assy,
+  (SELECT
+        NVL(x.mttr,0) workTime
+ FROM TAKPIMLOCDN x
+ WHERE 1=1
+  AND  x.comp_no = '^param1'
+  AND  x.yyyymm = substr('^param3',0,4)||substr('^param3',6,2)
+  AND  x.plant = '^param5'
+  AND eqloc_id='1676')foam,
+    (SELECT
+        NVL(x.mttr,0) workTime
+ FROM TAKPIMLOCDN x
+ WHERE 1=1
+  AND  x.comp_no = '^param1'
+  AND  x.yyyymm = substr('^param3',0,4)||substr('^param3',6,2)
+  AND  x.plant = '^param5'
+  AND eqloc_id='1677')asrs
+from
+dual
+/
+$
+SELECT              
+        (SELECT description                    
+          FROM TAEQLOC                        
+        WHERE eqloc_id = x.eqloc_id            
+        AND comp_no = x.comp_no) eqLocDesc,    
+        NVL(x.ma_worktime,0) workHour,       
+        (select NVL(SUM(y.d_repairtime_ns),'0')repairns from takpidlocctgdn y
+where substr(y.wrk_date,0,6) = substr('^param3',0,4)||substr('^param3',6,2)
+ AND y.plant = '^param5'
+ AND y.comp_no='^param1')repairns, 
+         (select NVL(SUM(y.d_stoptime_ns),'0')stopns from takpidlocctgdn y
+where substr(y.wrk_date,0,6) = substr('^param3',0,4)||substr('^param3',6,2)
+ AND y.plant = '^param5'
+ AND y.comp_no='^param1')stopns, 
+        NVL(x.ma_repairtime,0) repairTime,
+        NVL(x.ma_stoptime,0) stopTime,
+        NVL(x.mtbf,0) mtbf,                    
+        NVL(x.mttr,0) mttr,                    
+        NVL(x.mtba,0) mtba                    
+FROM TAKPIMLOCDN x        
+WHERE 1=1
+  AND  x.comp_no = '^param1'
+  AND  x.yyyymm = substr('^param3',0,4)||substr('^param3',6,2)
+AND UPPER(x.plant) = '^param5'
+UNION ALL
+  SELECT              
+        'Total' eqLocDesc,    
+        SUM(NVL(x.ma_worktime,0)) workHour,       
+        SUM((select NVL(SUM(y.d_repairtime_ns),'0')repairns from takpidlocctgdn y
+where substr(y.wrk_date,0,6) = substr('^param3',0,4)||substr('^param3',6,2)
+ AND y.plant = '^param5'
+ AND y.comp_no='110'))repairns, 
+         SUM((select NVL(SUM(y.d_stoptime_ns),'0')stopns from takpidlocctgdn y
+where substr(y.wrk_date,0,6) = substr('^param3',0,4)||substr('^param3',6,2)
+ AND y.plant = '^param5'
+ AND y.comp_no='110'))stopns, 
+        SUM(NVL(x.ma_repairtime,0)) repairTime,
+        SUM(NVL(x.ma_stoptime,0)) stopTime,
+        SUM(NVL(x.mtbf,0)) mtbf,                    
+        SUM(NVL(x.mttr,0)) mttr,                    
+        SUM(NVL(x.mtba,0)) mtba                    
+FROM TAKPIMLOCDN x        
+WHERE 1=1
+  AND  x.comp_no = '^param1'
+  AND  x.yyyymm = substr('^param3',0,4)||substr('^param3',6,2)
+AND UPPER(x.plant) = '^param5'
+ORDER bY eqlocDesc ASC
+/

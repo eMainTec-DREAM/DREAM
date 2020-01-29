@@ -1,0 +1,38 @@
+$
+SELECT              
+		'^param4' AS yyyy
+		,(SELECT description FROM TADEPT WHERE comp_no = '^param1' AND dept_id = CASE WHEN '^param5' = '' THEN 0 ELSE '^param5' END) dept
+        ,'Form info.: HVQ03-005-F01 (Ver. 2.00)'         docNo        
+/
+$
+SELECT z.rowNum seqNo, z.equipDesc, z.period,z.m1,z.m2,z.m3,z.m4,z.m5,z.m6,z.m7,z.m8,z.m9,z.m10,z.m11,z.m12                
+FROM (                                                                                    
+    SELECT                                                                                     
+            (SELECT a.description FROM TAEQUIPMENT a WHERE a.comp_no = x.comp_no AND a.equip_id = x.equip_id) equipDesc        
+            ,convert(nvarchar,y.cycle)+y.period_type period                                                    
+            ,sum(CASE WHEN x.sched_date LIKE '^param4' + '01%' THEN 1 ELSE 0 END) AS M1     
+            ,sum(CASE WHEN x.sched_date LIKE '^param4' + '02%' THEN 1 ELSE 0 END) AS M2     
+            ,sum(CASE WHEN x.sched_date LIKE '^param4' + '03%' THEN 1 ELSE 0 END) AS M3     
+            ,sum(CASE WHEN x.sched_date LIKE '^param4' + '04%' THEN 1 ELSE 0 END) AS M4     
+            ,sum(CASE WHEN x.sched_date LIKE '^param4' + '05%' THEN 1 ELSE 0 END) AS M5     
+            ,sum(CASE WHEN x.sched_date LIKE '^param4' + '06%' THEN 1 ELSE 0 END) AS M6     
+            ,sum(CASE WHEN x.sched_date LIKE '^param4' + '07%' THEN 1 ELSE 0 END) AS M7     
+            ,sum(CASE WHEN x.sched_date LIKE '^param4' + '08%' THEN 1 ELSE 0 END) AS M8     
+            ,sum(CASE WHEN x.sched_date LIKE '^param4' + '09%' THEN 1 ELSE 0 END) AS M9     
+            ,sum(CASE WHEN x.sched_date LIKE '^param4' + '10%' THEN 1 ELSE 0 END) AS M10     
+            ,sum(CASE WHEN x.sched_date LIKE '^param4' + '11%' THEN 1 ELSE 0 END) AS M11     
+            ,sum(CASE WHEN x.sched_date LIKE '^param4' + '12%' THEN 1 ELSE 0 END) AS M12
+			,row_number() over(ORDER BY (SELECT a.description FROM TAEQUIPMENT a WHERE a.equip_id = x.equip_id)) rowNum     
+    FROM TAPMINSSCHED x, TAPMLST y                                                            
+    WHERE x.comp_no  = y.comp_no                                                            
+    AND x.pm_id    = y.pm_id                 
+    AND x.comp_no = '^param1'        
+    AND  (  (y.dept_id IN (
+                                SELECT dept_id 
+                                FROM dbo.SFADEPT_PALL('^param1',^param5,'')
+                           )      )
+                 OR y.dept_id IN (SELECT dept_id FROM TADEPT WHERE comp_no = '^param1' AND  comp_no  
+                 					= (CASE WHEN '^param5' IS NULL THEN '^param1' ELSE 'NOTCOMP' END) )  )
+    GROUP BY x.comp_no, x.equip_id,y.cycle,y.period_type                                    
+) z                              
+/

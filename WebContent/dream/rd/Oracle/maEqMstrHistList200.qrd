@@ -1,0 +1,42 @@
+$
+SELECT 
+		x.description equip
+		,x.item_no itemNo
+      	,'Form info.:HPE05-005E-F08(Ver.2.00)' docNo
+FROM TAEQUIPMENT x
+WHERE x.comp_no = '^param1'
+AND x.equip_id = ^param4
+/
+$
+SELECT 
+			ROW_NUMBER() OVER( ORDER BY y.wkor_date DESC) AS seqNo
+			,CASE WHEN y.wkor_date IS NOT NULL THEN
+		        SUBSTR(y.wkor_date,1,4)||'-'||
+		        SUBSTR(y.wkor_date,5,2)||'-'||
+		        SUBSTR(y.wkor_date,7,2)     ELSE '-' END wkor_date
+            ,(SELECT (SELECT b.full_desc
+                    FROM TAEQASMB b
+                    WHERE b.comp_no = a.comp_no
+                    AND b.eqasmb_id = a.eqasmb_id) FROM TAWOFAIL a
+                    WHERE a.comp_no = y.comp_no
+                    AND a.wkor_id = y.wkor_id) asmb
+             ,y.description +'   '+REPLACE(REPLACE(y.perform,char(10),''),char(13),' ') perform
+             ,y.tot_amt amt
+             ,(SELECT (SELECT aa.emp_name FROM TAEMP aa WHERE aa.comp_no = b.comp_no AND aa.emp_id = b.req_emp_id)
+                FROM TAWOREQRES a INNER JOIN TAWOREQ b
+                ON a.comp_no = b.comp_no
+                AND a.woreq_id = b.woreq_id
+                WHERE a.comp_no = y.comp_no
+                AND  a.wkor_id = y.wkor_id) reqEmp
+             ,(SELECT aa.emp_name FROM TAEMP aa WHERE aa.comp_no = y.comp_no AND aa.emp_id = y.emp_id) emp
+             ,(SELECT   dbo.SFACODE_TO_DESC(aa.fmea_priority,'FMEA_PRIORITY','SYS','','^param3') 
+                 FROM TAWOFMEA aa WHERE aa.comp_no = y.comp_no AND aa.wkor_id = y.wkor_id) fmeaResult  
+             ,'' remark
+FROM TAWOEQUIP x INNER JOIN TAWORKORDER y
+ON x.comp_no = y.comp_no
+AND x.wkor_id = y.wkor_id
+WHERE 1=1
+AND x.comp_no = '^param1'
+AND x.equip_id = ^param4
+AND y.wo_status = 'C'
+/

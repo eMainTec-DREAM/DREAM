@@ -1,0 +1,225 @@
+$
+SELECT	'^param3'	AS yyyy
+/
+$
+SELECT
+	'^param3'		AS yyyy
+    ,aa.equip		AS equip
+    ,aa.itemNo		AS itemNo
+    ,(SELECT convert(nvarchar,a.cycle) + a.period_type FROM TAPMLST a WHERE a.comp_no = aa.comp_no AND a.pm_id = aa.pm_id)       AS cycle
+    ,(SELECT
+    	CASE WHEN ( COUNT(1) > 0) THEN 'O' ELSE '' END                                                                                                     
+      FROM                                                                                                             
+      (SELECT
+       		x.pm_id, x.comp_no, x.sched_date, substring(x.sched_date,1,6)	as yyyymm
+       FROM TAPMINSSCHED x 
+       WHERE 1=1           
+        AND substring(x.sched_date,1,6) = '^param3'+'01'
+		AND x.sched_date >= '^param4'       
+		AND x.sched_date <= '^param5'      
+        AND x.pmsched_status IN ('^param6')      
+      ) a
+      WHERE 1 = 1
+       AND a.comp_no = aa.comp_no 
+       AND a.pm_id = aa.pm_id 
+     )																					AS m1
+    ,(SELECT
+           CASE WHEN ( COUNT(1) > 0) THEN 'O' ELSE '' END                                                                                                     
+      FROM                                                                                                             
+      (SELECT
+       		x.pm_id, x.comp_no, x.sched_date, substring(x.sched_date,1,6)	as yyyymm
+       FROM TAPMINSSCHED x
+       WHERE 1=1
+        AND substring(x.sched_date,1,6) = '^param3'+'02'   
+		AND x.sched_date >= '^param4'       
+		AND x.sched_date <= '^param5'       
+        AND x.pmsched_status IN ('^param6')     
+      ) a
+      WHERE 1 = 1
+       AND a.comp_no = aa.comp_no 
+       AND a.pm_id = aa.pm_id 
+     )																					AS m2
+    ,(SELECT
+           CASE WHEN ( COUNT(1) > 0) THEN 'O' ELSE '' END                                                                                                     
+      FROM                                                                                                             
+      (SELECT
+       		x.pm_id, x.comp_no, x.sched_date, substring(x.sched_date,1,6)	as yyyymm
+       FROM TAPMINSSCHED x 
+       WHERE 1=1
+        AND substring(x.sched_date,1,6) = '^param3'+'03' 
+		AND  x.sched_date >= '^param4'       
+		AND  x.sched_date <= '^param5'       
+        AND x.pmsched_status IN ('^param6')               
+      ) a
+      WHERE 1=1
+       AND a.comp_no = aa.comp_no 
+       AND a.pm_id = aa.pm_id 
+     )																					AS m3
+    ,(SELECT
+           CASE WHEN ( COUNT(1) > 0) THEN 'O' ELSE '' END                                                                                                     
+      FROM                                                                                                             
+      (SELECT
+       		x.pm_id, x.comp_no, x.sched_date, substring(x.sched_date,1,6)	as yyyymm
+       FROM TAPMINSSCHED x
+       WHERE 1=1
+        AND substring(x.sched_date,1,6) = '^param3'+'04'  
+		AND  x.sched_date >= '^param4'       
+		AND  x.sched_date <= '^param5'      
+        AND x.pmsched_status IN ('^param6')                
+      ) a
+      WHERE 1 = 1
+       AND a.comp_no = aa.comp_no 
+       AND a.pm_id = aa.pm_id 
+     )																					AS m4
+    ,(SELECT
+           CASE WHEN ( COUNT(1) > 0) THEN 'O' ELSE '' END                                                                                                     
+      FROM                                                                                                             
+      (SELECT
+       		x.pm_id, x.comp_no, x.sched_date, substring(x.sched_date,1,6)	as yyyymm
+       FROM TAPMINSSCHED x 
+       WHERE 1=1
+        AND substring(x.sched_date,1,6) = '^param3'+'05'  
+		AND x.sched_date >= '^param4'       
+		AND x.sched_date <= '^param5'       
+        AND x.pmsched_status IN ('^param6')               
+      ) a
+      WHERE 1 = 1
+       AND a.comp_no = aa.comp_no 
+       AND a.pm_id = aa.pm_id 
+     )																					AS m5
+    ,(SELECT
+           CASE WHEN ( COUNT(1) > 0) THEN 'O' ELSE '' END                                                                                                     
+      FROM                                                                                                             
+      (SELECT
+       		x.pm_id, x.comp_no, x.sched_date, substring(x.sched_date,1,6)	as yyyymm
+       FROM TAPMINSSCHED x
+       WHERE 1=1
+        AND substring(x.sched_date,1,6) = '^param3'+'06'
+		AND x.sched_date >= '^param4'       
+		AND x.sched_date <= '^param5'         
+        AND x.pmsched_status IN ('^param6')             
+      ) a
+      WHERE 1 = 1
+       AND a.comp_no = aa.comp_no 
+       AND a.pm_id = aa.pm_id 
+     )																					AS m6
+    ,(SELECT
+           CASE WHEN ( COUNT(1) > 0) THEN 'O' ELSE '' END                                                                                                     
+      FROM                                                                                                             
+	      (SELECT
+	       		x.pm_id, x.comp_no, x.sched_date, substring(x.sched_date,1,6)	as yyyymm
+	       FROM TAPMINSSCHED x 
+	       WHERE 1=1
+	        AND substring(x.sched_date,1,6) = '^param3'+'07' 
+			AND x.sched_date >= '^param4'       
+			AND x.sched_date <= '^param5'      
+        AND x.pmsched_status IN ('^param6')                
+	      ) a
+      WHERE 1 = 1
+       AND a.comp_no = aa.comp_no 
+       AND a.pm_id = aa.pm_id 
+     )																					AS m7
+    ,(SELECT
+           CASE WHEN ( COUNT(1) > 0) THEN 'O' ELSE '' END                                                                                                     
+      FROM                                                                                                             
+      (SELECT
+       		x.pm_id, x.comp_no, x.sched_date, substring(x.sched_date,1,6)	as yyyymm
+       FROM TAPMINSSCHED x
+       WHERE 1=1
+        AND substring(x.sched_date,1,6) = '^param3'+'08' 
+		AND  x.sched_date >= '^param4'       
+		AND  x.sched_date <= '^param5'        
+        AND x.pmsched_status IN ('^param6')              
+      ) a
+      WHERE 1 = 1
+       AND a.comp_no = aa.comp_no 
+       AND a.pm_id = aa.pm_id 
+     )																					AS m8
+    ,(SELECT
+           CASE WHEN ( COUNT(1) > 0) THEN 'O' ELSE '' END                                                                                                     
+      FROM                                                                                                             
+      (SELECT
+       		x.pm_id, x.comp_no, x.sched_date, substring(x.sched_date,1,6)	as yyyymm
+       FROM TAPMINSSCHED x 
+       WHERE 1=1
+        AND substring(x.sched_date,1,6) = '^param3'+'09'   
+		AND x.sched_date >= '^param4'       
+		AND x.sched_date <= '^param5'        
+        AND x.pmsched_status IN ('^param6')              
+      ) a
+      WHERE 1 = 1
+       AND a.comp_no = aa.comp_no 
+       AND a.pm_id = aa.pm_id 
+     )																					AS m9
+    ,(SELECT
+           CASE WHEN ( COUNT(1) > 0) THEN 'O' ELSE '' END                                                                                                     
+      FROM                                                                                                             
+      (SELECT
+       		x.pm_id, x.comp_no, x.sched_date, substring(x.sched_date,1,6)	as yyyymm
+       FROM TAPMINSSCHED x
+       WHERE 1=1
+        AND substring(x.sched_date,1,6) = '^param3'+'10'   
+		AND  x.sched_date >= '^param4'       
+		AND  x.sched_date <= '^param5'         
+        AND x.pmsched_status IN ('^param6')        
+      ) a
+      WHERE 1 = 1
+       AND a.comp_no = aa.comp_no 
+       AND a.pm_id = aa.pm_id 
+     )																					AS m10
+    ,(SELECT
+           CASE WHEN ( COUNT(1) > 0) THEN 'O' ELSE '' END                                                                                                     
+      FROM                                                                                                             
+      (SELECT
+       		x.pm_id, x.comp_no, x.sched_date, substring(x.sched_date,1,6)	as yyyymm
+       FROM TAPMINSSCHED x 
+       WHERE 1=1
+        AND substring(x.sched_date,1,6) = '^param3'+'11'  
+		AND  x.sched_date >= '^param4'       
+		AND  x.sched_date <= '^param5'        
+        AND x.pmsched_status IN ('^param6')         
+      ) a
+      WHERE 1 = 1
+       AND a.comp_no = aa.comp_no 
+       AND a.pm_id = aa.pm_id 
+     )																					AS m11
+    ,(SELECT
+           CASE WHEN ( COUNT(1) > 0) THEN 'O' ELSE '' END                                                                                                     
+      FROM                                                                                                             
+      (SELECT
+       		x.pm_id, x.comp_no, x.sched_date, substring(x.sched_date,1,6)	as yyyymm
+       FROM TAPMINSSCHED x
+       WHERE 1=1
+        AND substring(x.sched_date,1,6) = '^param3'+'12'  
+		AND  x.sched_date >= '^param4'       
+		AND  x.sched_date <= '^param5'        
+        AND x.pmsched_status IN ('^param6')              
+      ) a
+      WHERE 1 = 1
+       AND a.comp_no = aa.comp_no 
+       AND a.pm_id = aa.pm_id 
+     )																					AS m12
+FROM
+( 
+    SELECT                                                                                   
+           z.description        AS equip
+           ,z.equip_id
+           ,z.item_no           AS itemNo
+           ,x.sched_date    	AS sched_date
+           ,x.pm_id
+           ,x.comp_no
+    FROM TAPMINSSCHED x INNER JOIN TAEQUIPMENT z 
+    ON x.comp_no = z.comp_no
+     AND x.equip_id = z.equip_id 
+    WHERE 1=1                                                                                   
+      AND  x.comp_no='^param1'
+      AND x.is_deleted = 'N'
+      AND z.is_deleted = 'N'  
+      AND  x.sched_date >= '^param4'    
+      AND  x.sched_date <= '^param5'
+      AND x.pmsched_status IN ('^param6')
+) aa
+WHERE 1=1                                    
+GROUP BY aa.comp_no, aa.pm_id, aa.equip_id, aa.equip, aa.itemNo                                                               
+ORDER BY aa.itemNo
+/

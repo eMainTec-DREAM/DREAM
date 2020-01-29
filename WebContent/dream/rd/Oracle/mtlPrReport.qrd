@@ -1,0 +1,41 @@
+$
+select x.ptprlist_no,
+         TO_CHAR(TO_DATE(x.req_date,'YYYYMMDD'),'MM.DD.YYYY')reqDate,
+(SELECT user_name                                 
+          FROM TAUSER a                                
+         WHERE a.comp_no = x.comp_no                    
+           AND a.user_id = x.user_id) reqUser,
+           ( select TO_CHAR(SUM(x1.rec_qty*x2.unit_price),'$999,999,999.00')mercTotal
+  from TAPTPRITEM x1, TAPtSTOCK x2 where x1.part_id = x2.part_id and x1.ptprlist_id=x.ptprlist_id
+  )mercTotal,
+  ( select TO_CHAR(TO_NUMBER(SUM(x1.rec_qty*x2.unit_price)*0.16),'$999,999,999.00')mercTotal
+  from TAPTPRITEM x1, TAPtSTOCK x2 where x1.part_id = x2.part_id and x1.ptprlist_id=x.ptprlist_id
+  )tax,
+  ( select  TO_CHAR((SUM(x1.rec_qty*x2.unit_price)+SUM(x1.rec_qty*x2.unit_price)*0.16),'$999,999,999.00')mercTotal
+  from TAPTPRITEM x1, TAPtSTOCK x2 where x1.part_id = x2.part_id and x1.ptprlist_id=x.ptprlist_id
+  )total,
+    x.remark,
+    (select y.description FROM TAVENDOR y where x.vendor_id=y.vendor_id and x.comp_no=y.comp_no)company,
+     (select y.repname FROM TAVENDOR y where x.vendor_id=y.vendor_id and x.comp_no=y.comp_no)repname,
+      (select y.office FROM TAVENDOR y where x.vendor_id=y.vendor_id and x.comp_no=y.comp_no)office,
+       (select y.email FROM TAVENDOR y where x.vendor_id=y.vendor_id and x.comp_no=y.comp_no)email,
+        (select y.address FROM TAVENDOR y where x.vendor_id=y.vendor_id and x.comp_no=y.comp_no)address,
+                (SELECT m_phone                                 
+          FROM TAUSER a                                
+         WHERE a.comp_no = x.comp_no                    
+           AND a.user_id = x.user_id) reqPhone
+ from TAPTPRLIST x
+ where ptprlist_no='^param3'
+ and comp_no='^param1'
+/
+$
+select 
+ROWNUM,
+y.part_no,
+x.description,
+TO_CHAR(y.last_price,'$999,999,999.00')lastPrice,
+rec_qty,
+TO_CHAR(TO_NUMBER(TO_CHAR(y.last_price*rec_qty)),'$999,999,999.00')amount,
+'MXN'currency 
+from TAPTPRITEM x, TAPARTS y where x.part_id (+)= y.part_id and ptprlist_id='^param3'
+/

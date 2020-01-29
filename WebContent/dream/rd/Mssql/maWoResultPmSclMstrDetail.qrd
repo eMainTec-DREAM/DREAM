@@ -1,0 +1,112 @@
+$
+SELECT              
+                ISNULL((SELECT aa.description FROM TAEQUIPMENT aa WHERE aa.equip_id=b.p_equip_id AND aa.comp_no = '^param1'),'N/A')+' / '+
+                    ISNULL((SELECT aa.item_no FROM TAEQUIPMENT aa WHERE aa.equip_id=b.p_equip_id AND aa.comp_no = '^param1'),'N/A')           equip    
+                ,ISNULL(b.item_no,'N/A')                                                                                                      eqToolNo                    
+                ,ISNULL(b.maker,'N/A')+' / '+ISNULL(b.MODEL_no,'N/A')                                                                          maker             
+                ,ISNULL(b.serial_no,'N/A')                                                                                                    serialNo             
+                ,ISNULL((SELECT aa.description                                                                                                                                                              
+                    FROM TAEQLOC aa                                                                                                                                                               
+                    WHERE aa.comp_no='^param1'                                                              
+                    AND aa.eqloc_id=b.eqloc_id),'N/A')          eqLoc  
+                ,ISNULL(convert(char,(SELECT aa.min_unit_value FROM TAEQTOOL aa WHERE aa.equip_id=b.equip_id AND aa.comp_no='^param1')),'N/A') minUnitValue              
+                ,ISNULL((SELECT aa.all_range FROM TAEQTOOL aa WHERE aa.equip_id=b.equip_id AND aa.comp_no='^param1'),'N/A') allRange              
+                ,ISNULL((SELECT aa.use_range FROM TAEQTOOL aa WHERE aa.equip_id=b.equip_id AND aa.comp_no='^param1'),'N/A') useRange     
+                ,ISNULL((SELECT aa.tolerance FROM TAEQTOOL aa WHERE aa.equip_id=b.equip_id AND aa.comp_no='^param1'),'N/A') diff     
+                ,ISNULL(dbo.SFACODE_TO_DESC(y.calib_type,'CALIB_TYPE','SYS','','^param3'),'N/A')                                pmcType                     
+                ,CASE WHEN x.wkor_date IS NOT NULL THEN 
+                	SUBSTRING(x.wkor_date,1,4)+'-'                                                                                                                                             
+                    +SUBSTRING(x.wkor_date,5,2)+'-'                                                                                                                                           
+                    +SUBSTRING(x.wkor_date,7,2)+'' ELSE '-' END                                                                                                     schedDate     
+                ,CASE (SELECT c.next_sch_date FROM TAPMEQUIP c WHERE x.pm_id=c.pm_id AND c.comp_no=x.comp_no AND c.is_deleted = 'N' AND c.equip_id = a.equip_id )                                                          
+                    WHEN NULL THEN 'N/A'
+					ELSE SUBSTRING((SELECT c.next_sch_date FROM TAPMEQUIP c WHERE x.pm_id=c.pm_id AND c.comp_no=x.comp_no AND c.is_deleted = 'N' AND c.equip_id = a.equip_id ),1,4)+'-'                                   
+                    +SUBSTRING((SELECT c.next_sch_date FROM TAPMEQUIP c WHERE x.pm_id=c.pm_id AND c.comp_no=x.comp_no AND c.is_deleted = 'N' AND c.equip_id = a.equip_id ),5,2)+'-'                                   
+                    +SUBSTRING((SELECT c.next_sch_date FROM TAPMEQUIP c WHERE x.pm_id=c.pm_id AND c.comp_no=x.comp_no AND c.is_deleted = 'N' AND c.equip_id = a.equip_id ),7,2)+'' END nextSchedDate     
+                ,'Form info.: HVQ03-005-F01 (Ver. 2.00)'         docNo        
+        FROM TAWORKORDER x LEFT OUTER JOIN TAWOCALIB y           
+          ON x.comp_no = y.comp_no     
+          AND x.wkor_id = y.wkor_id     
+        LEFT OUTER JOIN TAWOEQUIP a         
+          ON a.wkor_id = x.wkor_id                                                 
+          AND a.comp_no = x.comp_no             
+        LEFT OUTER JOIN TAEQUIPMENT b         
+          ON a.comp_no = b.comp_no                                                     
+          AND a.equip_id = b.equip_id                                                   
+        WHERE 1=1        
+        AND x.comp_no ='^param1'
+        AND x.wkor_id = ^param4
+/
+$
+SELECT ISNULL(y.description,'N/A') stdEq
+            ,ISNULL(y.item_no,'N/A') stdEqNo
+            ,ISNULL(y.serial_no,'N/A') serialNo
+            ,ISNULL(x.wo_no,'N/A') woNo
+            ,CASE next_plan_date
+			WHEN NULL THEN 'N/A'
+			ELSE SUBSTRING(x.next_plan_date,1,4)+'-'                                                                                                                                             
+                 +SUBSTRING(x.next_plan_date,5,2)+'-'                                                                                                                                           
+                 +SUBSTRING(x.next_plan_date,7,2)+'' END nextSched
+FROM tawocalibstdeq x INNER JOIN taequipment y
+ON x.comp_no = y.comp_no
+AND x.equip_id =y.equip_id
+WHERE x.wkor_id=^param4
+AND x.comp_no='^param1'
+/
+$
+SELECT ISNULL(STUFF((SELECT ',' + yy.measure_unit
+								FROM taeqtool yy  
+								WHERE yy.equip_id = y.equip_id
+								AND yy.comp_no = y.comp_no
+								FOR XML PATH('')
+								), 1, 1, ''), 'N/A') uom
+				 FROM taeqtool y
+				 WHERE y.equip_id IN (SELECT x.equip_id 
+									FROM tawoequip x
+									WHERE x.wkor_id=^param4
+									AND x.comp_no = '^param1')
+				and y.comp_no = '^param1'
+/
+$
+SELECT                                                                                
+                ISNULL(MAX(li0_value),'N/A')             AS liValue0                             
+                ,ISNULL(MAX(li25_value),'N/A')         AS liValue25                              
+                ,ISNULL(MAX(li50_value),'N/A')         AS liValue50                              
+                ,ISNULL(MAX(li75_value),'N/A')         AS liValue75                              
+                ,ISNULL(MAX(li100_value),'N/A')         AS liValue100                            
+                ,ISNULL(MAX(ld75_value),'N/A')         AS ldValue75                          
+                ,ISNULL(MAX(ld50_value),'N/A')         AS ldValue50                          
+                ,ISNULL(MAX(ld25_value),'N/A')         AS ldValue25                          
+                ,ISNULL(MAX(ld0_value),'N/A')             AS ldValue0                            
+                ,ISNULL(MAX(ecntr_value),'N/A')         AS ecntrValue                        
+                ,ISNULL(MAX(ebef_value),'N/A')         AS ebefValue                          
+                ,ISNULL(MAX(eaft_value),'N/A')         AS eaftValue                          
+                ,ISNULL(MAX(elft_value),'N/A')         AS elftValue                              
+                ,ISNULL(MAX(erig_value),'N/A')         AS erigValue                              
+                ,ISNULL(MAX(degree1),'N/A')             AS degree1                               
+                ,ISNULL(MAX(degree2),'N/A')             AS degree2                               
+                ,ISNULL(MAX(degree3),'N/A')             AS degree3                               
+        FROM   TAWOCALIBSCLVALUE x                                             
+        WHERE  1=1     
+		AND x.wkor_id=^param4
+		AND x.comp_no='^param1'
+/
+$
+SELECT
+            CASE WHEN y.calib_result_status='P' THEN '1' ELSE '0' END calibResult1
+            ,CASE WHEN y.calib_result_status='F' THEN '1' ELSE '0' END calibResult2
+            ,x.perform remark
+            ,(SELECT aa.emp_name FROM TAEMP aa WHERE aa.comp_no='^param1' AND aa.emp_id=x.emp_id) empName
+            ,SUBSTRING(x.wkor_date,1,4) empYyyy                                                      
+            ,SUBSTRING(x.wkor_date,5,2) empMm
+            ,SUBSTRING(x.wkor_date,7,2) empDd         
+            ,(SELECT aa.user_name FROM TAUSER aa WHERE aa.comp_no='^param1' AND aa.user_id=x.close_id) comName      
+            ,SUBSTRING(x.close_date,1,4) comYyyy                                                      
+            ,SUBSTRING(x.close_date,5,2) comMm
+            ,SUBSTRING(x.close_date,7,2) comDd           
+FROM TAWORKORDER x LEFT OUTER JOIN TAWOCALIB y
+ON x.comp_no = y.comp_no
+AND x.wkor_id = y.wkor_id
+WHERE x.wkor_id=^param4
+AND x.comp_no='^param1'
+/

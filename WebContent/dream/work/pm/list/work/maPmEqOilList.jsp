@@ -1,0 +1,191 @@
+<%--===========================================================================
+윤활설비
+author  kim21017
+version $Id: maPmEqOilList.jsp,v 1.1 2015/12/03 01:45:27 kim21017 Exp $
+since   1.0
+===========================================================================--%>
+<%@ page language="java" buffer="8kb"%>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page session="true" autoFlush="true" isErrorPage="false"%>
+<%@ page import="dream.work.pm.list.action.MaPmEqClnListAction" %>
+<%@ page import="dream.work.pm.list.action.MaPmEqClnDetailAction" %>
+<%@ taglib uri="/WEB-INF/tld/c.tld" prefix="c"%>
+<%@ taglib uri="/WEB-INF/tld/struts-html.tld" prefix="html"%>
+<%@ taglib uri="/WEB-INF/tld/struts-bean.tld" prefix="bean" %>
+<%@ taglib tagdir="/WEB-INF/tags" prefix="mware" %>
+<html>
+<head>
+<!-- 윤활설비 -->
+<title><bean:message key='TAB.maPmEqOilList'/></title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="decorator" content="defaultPage">
+<!-- 공통메뉴 -->
+ 
+<script language="javascript">
+<!--//
+
+function loadPage() 
+{
+	initGrid();
+}
+
+function afterDisable()
+{
+	parent.$('.b_open').show();
+	parent.$('.b_excel').show();
+	parent.$('.b_setting').show();
+}
+
+var myGrid;
+function initGrid()
+{
+	myGrid = new dhtmlXGridObject('gridbox');
+	myGrid.setImagesPath('<c:url value="common/dhtmlxSuite/codebase/imgs/" />');
+	
+	myGrid.enableSmartRendering(true,500);
+	myGrid.attachEvent("onRowSelect",function(rowId, columnId){
+		goTabPage("maPmEqOilDetail");
+	});
+    myGrid.attachEvent("onBeforeSorting",function(ind,type,direction){
+    	maPmEqClnListForm.elements['maPmMstrCommonDTO.pmEquipId'].value = "";
+        return sortColumn("maPmEqClnList", this, maPmEqClnListForm, "PMEQUIPID", ind, direction);
+    });
+	myGrid.attachEvent("onXLE",function(grdObj,count){ setCounter(grdObj,"gridbox")}); myGrid.init();
+
+	setHeader(myGrid, "gridbox"); // grid, grid id, callBack
+}
+
+/**
+ * 검색 클릭시 호출
+ */
+function goSearch()
+{	
+    findGridList('Search');   
+}
+
+function findGridList(sheetAction)
+{
+	//id에 값이 없는경우 Grid 조회를 하지않기 위해 return 한다.
+	if (maPmEqClnListForm.elements['maPmMstrCommonDTO.pmId'].value == '') return;
+	
+	var form = document.maPmEqClnListForm;	
+	form.strutsAction.value = '<%=MaPmEqClnListAction.PM_EQ_CLN_LIST_FIND %>';
+	
+	var url = contextPath + "/maPmEqClnList.do";
+	doGridAction(sheetAction, myGrid, "gridbox", url, FormQueryString(maPmEqClnListForm), "PMEQUIPID", "Y");
+}
+
+/** 
+ * 수정된 그리드 1건을 다시 조회한다.
+ */
+function findGridRow(_pmEquipId)
+{
+	maPmEqClnListForm.elements['maPmMstrCommonDTO.pmEquipId'].value = _pmEquipId;
+	findGridList('ReloadRow');
+	maPmEqClnListForm.elements['maPmMstrCommonDTO.pmEquipId'].value = "";
+}
+
+
+/**
+ * Modify List Data using Detail Data when Detail saved. 
+ */
+// function setDataAction(detailArray, keyVal)
+// {
+// 	var keyValMap = {};
+// 	keyValMap["PARTNO"] 		= "maPmEqClnDetailDTO.partNo";
+// 	keyValMap["PARTDESC"] 		= "maPmEqClnDetailDTO.partDesc";
+// 	keyValMap["USEQTY"] 		= "maPmEqClnDetailDTO.useQty";
+// 	keyValMap["PMID"] 			= "maPmMstrCommonDTO.pmId";
+// 	keyValMap["PMPARTID"] 		= "maPmEqClnDetailDTO.pmPartId";
+
+// 	setValues(myGrid, 'PMPARTID', keyVal, keyValMap, detailArray);
+// }
+
+/**
+* Tab 이동시 호출
+*/
+function goTabPage(pageId)
+{
+   tabValidationCheck(myGrid, pageId, "goTabPageAction");
+}
+
+function goTabPageAction(pageId, selectedId)
+{
+	var form = document.maPmEqClnListForm;
+	 
+	form.elements['maPmMstrCommonDTO.pmEquipId'].value = getValueById(myGrid, selectedId,'PMEQUIPID');
+	goCommonTabPage(form, <%= MaPmEqClnDetailAction.PM_EQ_CLN_DETAIL_INIT %>, pageId);
+}
+
+
+/**
+ * 상세열기
+ */
+ function goOpen(){
+	goTabPage('maPmEqOilDetail');
+}
+
+ 
+  /**
+   * 생성
+   */
+ function goCreate()
+ {
+  	createValidationCheck(myGrid, "maPmEqOilDetail" , "goCreateAction");
+ }
+
+ function goCreateAction(pageId)
+ {
+	maPmEqClnListForm.elements['maPmMstrCommonDTO.pmEquipId'].value = "";
+	goCommonTabPage(maPmEqClnListForm, '', pageId);
+ }
+ 
+ /**
+  * 삭제
+  */
+function goDelete(){
+	var delArray = getDeletRows(myGrid, 'isDelCheck', 'PMEQUIPID'); //Grid, check box column seq, pk column seq
+	if(typeof delArray == "undefined"){
+		alertMessage1('<bean:message key="MESSAGE.MSG0074"/>');
+		return;
+	}
+
+	maPmEqClnListForm.strutsAction.value = '<%=MaPmEqClnListAction.PM_EQ_CLN_LIST_DELETE%>';
+	var url = contextPath + "/maPmEqClnList.do";
+	
+	$.post(url,FormQueryString(maPmEqClnListForm)+delArray , function(_data){
+		afterDelete();
+	});
+  }
+ 
+function afterDelete(){
+	goClose('maPmEqOilDetail',this);
+   	//goSearch();
+   	alertMessage1('<bean:message key="MESSAGE.MSG021"/>');
+   }
+   
+function goExcel()
+{
+	maPmEqClnListForm.elements['maPmMstrCommonDTO.pmEquipId'].value = "";
+	excelServerAction("maPmEqClnList",maPmEqClnListForm);
+}
+//-->
+</script>
+
+</head>
+<BODY style="MARGIN: 0px" marginheight="0" marginwidth="0"> 
+<html:form action="/maPmEqClnList.do">
+<html:hidden property="strutsAction"/>
+<html:hidden property="maPmMstrCommonDTO.pmId"/><!-- Key -->
+<html:hidden property="maPmMstrCommonDTO.pmEquipId"/>
+    <!-- searchbox 박스 Line -->
+
+    <div class="article_box" id="listBox">
+           <div class="grid_area">
+           	<div id="gridbox" style="width:100%; height:170px; background-color:white;"></div>
+           </div>
+ 	</div>
+
+</html:form> 
+</body>
+</html>

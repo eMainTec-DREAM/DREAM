@@ -1,0 +1,38 @@
+$
+select 
+    x.ptprlist_no,
+    TO_CHAR(sysdate,'YYYY-MM-DD - HH:MM:SS')printDate,
+    (SELECT user_name                                 
+          FROM TAUSER a                                
+         WHERE a.comp_no = x.comp_no                    
+           AND a.user_id = x.user_id) reqUser,
+           (SELECT description FROM TADEPT y where x.dept_id=y.dept_id)dept,
+            TO_CHAR(TO_DATE(x.req_date,'YYYYMMDD'),'MM.DD.YYYY')reqDate           
+ From TAPTPRLIST x
+ where ptprlist_no='^param3'
+ and comp_no='^param1'
+/
+$
+SELECT 
+ROWNUM,
+y.part_no||' - '||y.description,
+x.rec_qty,
+y.uom,
+TO_CHAR(y.last_price,'999,999,999.00')lastPrice,
+TO_CHAR(TO_NUMBER(TO_CHAR(y.last_price*rec_qty)),'999,999,999.00')amount
+from TAPTPRITEM x, TAPARTS y where x.part_id (+)= y.part_id and ptprlist_id='^param3'
+/
+$
+select 
+    x.remark         
+ From TAPTPRLIST x
+ where ptprlist_no='^param3'
+ and comp_no='^param1'
+/
+$
+select 
+    x.description         
+ From TAPTPRLIST x
+ where ptprlist_no='^param3'
+ and comp_no='^param1'
+/

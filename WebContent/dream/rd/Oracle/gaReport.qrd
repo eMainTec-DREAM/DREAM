@@ -1,0 +1,2010 @@
+$
+SELECT 
+		 TO_CHAR(to_date('^param3'||'01','yyyy-mmdd'), 'MONTH YYYY', 'NLS_DATE_LANGUAGE=ENGLISH') mmyyyy
+		,TO_CHAR(sysdate,'yyyy. mm. dd') yyyymmdd
+from dual
+/
+$
+SELECT UPPER(el.description) locDesc 
+            ,'100%' planMonth
+            ,TO_CHAR(ROUND((SELECT sum(decode(substr(x.plan_date,0,6),substr('^param3',0,4)||substr('^param3',6,2),decode(pmsched_status,'C',1,0),0))
+            FROM TAPMSCHED x, TAPMLST y
+            WHERE x.comp_no = y.comp_no
+            AND x.pm_id = y.pm_id
+            AND x.comp_no = el.comp_no
+            AND x.plan_date like substr('^param3',0,4)||'____'
+            AND x.pm_id in (SELECT a.pm_id
+                                        FROM TAPMEQUIP a, TAEQUIPMENT b
+                                        WHERE a.comp_no = b.comp_no
+                                        AND a.equip_id = b.equip_id
+                                        AND a.comp_no =x.comp_no
+                                        AND b.plant = el.plant
+                                        AND eqloc_id in ( SELECT c.eqloc_id
+                                                                FROM  TAEQLOC c
+                                                                WHERE 1=1
+                                                                AND c.plant=b.plant
+                                                                AND c.comp_no=b.comp_no
+                                                                START WITH c.eqloc_id=el.eqloc_id
+                                                                CONNECT BY PRIOR c.eqloc_id=c.p_eqloc_id
+                                                                )
+                        )
+            GROUP BY x.comp_no)/DECODE((SELECT sum(decode(substr(x.plan_date,0,6),substr('^param3',0,4)||substr('^param3',6,2),1,0))
+            FROM TAPMSCHED x, TAPMLST y
+            WHERE x.comp_no = y.comp_no
+            AND x.pm_id = y.pm_id
+            AND x.comp_no = el.comp_no
+            AND x.plan_date like substr('^param3',0,4)||'____'
+            AND x.pm_id in (SELECT a.pm_id
+                                        FROM TAPMEQUIP a, TAEQUIPMENT b
+                                        WHERE a.comp_no = b.comp_no
+                                        AND a.equip_id = b.equip_id
+                                        AND a.comp_no =x.comp_no
+                                        AND b.plant = el.plant
+                                        AND eqloc_id in ( SELECT c.eqloc_id
+                                                                FROM  TAEQLOC c
+                                                                WHERE 1=1
+                                                                AND c.plant=b.plant
+                                                                AND c.comp_no=b.comp_no
+                                                                START WITH c.eqloc_id=el.eqloc_id
+                                                                CONNECT BY PRIOR c.eqloc_id=c.p_eqloc_id
+                                                                )
+                        )
+            GROUP BY x.comp_no),0,null,(SELECT sum(decode(substr(x.plan_date,0,6),substr('^param3',0,4)||substr('^param3',6,2),1,0))
+            FROM TAPMSCHED x, TAPMLST y
+            WHERE x.comp_no = y.comp_no
+            AND x.pm_id = y.pm_id
+            AND x.comp_no = el.comp_no
+            AND x.plan_date like substr('^param3',0,4)||'____'
+            AND x.pm_id in (SELECT a.pm_id
+                                        FROM TAPMEQUIP a, TAEQUIPMENT b
+                                        WHERE a.comp_no = b.comp_no
+                                        AND a.equip_id = b.equip_id
+                                        AND a.comp_no =x.comp_no
+                                        AND b.plant = el.plant
+                                        AND eqloc_id in ( SELECT c.eqloc_id
+                                                                FROM  TAEQLOC c
+                                                                WHERE 1=1
+                                                                AND c.plant=b.plant
+                                                                AND c.comp_no=b.comp_no
+                                                                START WITH c.eqloc_id=el.eqloc_id
+                                                                CONNECT BY PRIOR c.eqloc_id=c.p_eqloc_id
+                                                                )
+                        )
+            GROUP BY x.comp_no))*100,2),'FM9999990D00')||'%' resultMonth
+            ,'100%' planYear
+            ,TO_CHAR(ROUND((SELECT sum(decode(pmsched_status,'C',1,0))
+            FROM TAPMSCHED x, TAPMLST y
+            WHERE x.comp_no = y.comp_no
+            AND x.pm_id = y.pm_id
+            AND x.comp_no = el.comp_no
+            AND x.plan_date like substr('^param3',0,4)||'____'
+            AND x.pm_id in (SELECT a.pm_id
+                                        FROM TAPMEQUIP a, TAEQUIPMENT b
+                                        WHERE a.comp_no = b.comp_no
+                                        AND a.equip_id = b.equip_id
+                                        AND a.comp_no =x.comp_no
+                                        AND b.plant = el.plant
+                                        AND eqloc_id in ( SELECT c.eqloc_id
+                                                                FROM  TAEQLOC c
+                                                                WHERE 1=1
+                                                                AND c.plant=b.plant
+                                                                AND c.comp_no=b.comp_no
+                                                                START WITH c.eqloc_id=el.eqloc_id
+                                                                CONNECT BY PRIOR c.eqloc_id=c.p_eqloc_id
+                                                                )
+                        )
+            GROUP BY x.comp_no)/DECODE((SELECT count(*)
+            FROM TAPMSCHED x, TAPMLST y
+            WHERE x.comp_no = y.comp_no
+            AND x.pm_id = y.pm_id
+            AND x.comp_no = el.comp_no
+            AND x.plan_date like substr('^param3',0,4)||'____'
+            AND x.pm_id in (SELECT a.pm_id
+                                        FROM TAPMEQUIP a, TAEQUIPMENT b
+                                        WHERE a.comp_no = b.comp_no
+                                        AND a.equip_id = b.equip_id
+                                        AND a.comp_no =x.comp_no
+                                        AND b.plant = el.plant
+                                        AND eqloc_id in ( SELECT c.eqloc_id
+                                                                FROM  TAEQLOC c
+                                                                WHERE 1=1
+                                                                AND c.plant=b.plant
+                                                                AND c.comp_no=b.comp_no
+                                                                START WITH c.eqloc_id=el.eqloc_id
+                                                                CONNECT BY PRIOR c.eqloc_id=c.p_eqloc_id
+                                                                )
+                        )
+            GROUP BY x.comp_no),0,null,(SELECT count(*)
+            FROM TAPMSCHED x, TAPMLST y
+            WHERE x.comp_no = y.comp_no
+            AND x.pm_id = y.pm_id
+            AND x.comp_no = el.comp_no
+            AND x.plan_date like substr('^param3',0,4)||'____'
+            AND x.pm_id in (SELECT a.pm_id
+                                        FROM TAPMEQUIP a, TAEQUIPMENT b
+                                        WHERE a.comp_no = b.comp_no
+                                        AND a.equip_id = b.equip_id
+                                        AND a.comp_no =x.comp_no
+                                        AND b.plant = el.plant
+                                        AND eqloc_id in ( SELECT c.eqloc_id
+                                                                FROM  TAEQLOC c
+                                                                WHERE 1=1
+                                                                AND c.plant=b.plant
+                                                                AND c.comp_no=b.comp_no
+                                                                START WITH c.eqloc_id=el.eqloc_id
+                                                                CONNECT BY PRIOR c.eqloc_id=c.p_eqloc_id
+                                                                )
+                        )
+            GROUP BY x.comp_no))*100,2),'FM9999990D00')||'%' resultYear
+            ,NVL((SELECT sum(decode(substr(x.plan_date,0,6),to_char(add_months(to_date(substr('^param3',0,4)||substr('^param3',6,2),'yyyymm'), 1),'yyyymm'),1,0))
+            FROM TAPMSCHED x, TAPMLST y
+            WHERE x.comp_no = y.comp_no
+            AND x.pm_id = y.pm_id
+            AND x.comp_no = el.comp_no
+            AND x.plan_date like substr('^param3',0,4)||'____'
+            AND x.pm_id in (SELECT a.pm_id
+                                        FROM TAPMEQUIP a, TAEQUIPMENT b
+                                        WHERE a.comp_no = b.comp_no
+                                        AND a.equip_id = b.equip_id
+                                        AND a.comp_no =x.comp_no
+                                        AND b.plant = el.plant
+                                        AND eqloc_id in ( SELECT c.eqloc_id
+                                                                FROM  TAEQLOC c
+                                                                WHERE 1=1
+                                                                AND c.plant=b.plant
+                                                                AND c.comp_no=b.comp_no
+                                                                START WITH c.eqloc_id=el.eqloc_id
+                                                                CONNECT BY PRIOR c.eqloc_id=c.p_eqloc_id
+                                                                )
+                        )
+            GROUP BY x.comp_no),0) planNext
+            ,'ACCUMULATIVE '||substr('^param3',0,4) yyyy
+            ,TO_CHAR(to_date('^param3'||'01','yyyy-mmdd'), 'MON', 'NLS_DATE_LANGUAGE=ENGLISH') mm
+            ,TO_CHAR(add_months(to_date('^param3'||'01','yyyy-mmdd'),1), 'MON', 'NLS_DATE_LANGUAGE=ENGLISH')||' PLAN' nextmm
+FROM  TAEQLOC el
+WHERE el.eqloc_id in (1001,1034,1045)
+AND el.is_operation = 'Y'
+AND el.plant='^param5'
+AND el.comp_no='^param1'
+UNION ALL
+SELECT 'TOTAL' locDesc 
+            ,'100%' planMonth
+            ,TO_CHAR(ROUND(SUM((SELECT sum(decode(substr(x.plan_date,0,6),substr('^param3',0,4)||substr('^param3',6,2),decode(pmsched_status,'C',1,0),0))
+            FROM TAPMSCHED x, TAPMLST y
+            WHERE x.comp_no = y.comp_no
+            AND x.pm_id = y.pm_id
+            AND x.comp_no = el.comp_no
+            AND x.plan_date like substr('^param3',0,4)||'____'
+            AND x.pm_id in (SELECT a.pm_id
+                                        FROM TAPMEQUIP a, TAEQUIPMENT b
+                                        WHERE a.comp_no = b.comp_no
+                                        AND a.equip_id = b.equip_id
+                                        AND a.comp_no =x.comp_no
+                                        AND b.plant = el.plant
+                                        AND eqloc_id in ( SELECT c.eqloc_id
+                                                                FROM  TAEQLOC c
+                                                                WHERE 1=1
+                                                                AND c.plant=b.plant
+                                                                AND c.comp_no=b.comp_no
+                                                                START WITH c.eqloc_id=el.eqloc_id
+                                                                CONNECT BY PRIOR c.eqloc_id=c.p_eqloc_id
+                                                                )
+                        )
+            GROUP BY x.comp_no))/DECODE(SUM((SELECT sum(decode(substr(x.plan_date,0,6),substr('^param3',0,4)||substr('^param3',6,2),1,0))
+            FROM TAPMSCHED x, TAPMLST y
+            WHERE x.comp_no = y.comp_no
+            AND x.pm_id = y.pm_id
+            AND x.comp_no = el.comp_no
+            AND x.plan_date like substr('^param3',0,4)||'____'
+            AND x.pm_id in (SELECT a.pm_id
+                                        FROM TAPMEQUIP a, TAEQUIPMENT b
+                                        WHERE a.comp_no = b.comp_no
+                                        AND a.equip_id = b.equip_id
+                                        AND a.comp_no =x.comp_no
+                                        AND b.plant = el.plant
+                                        AND eqloc_id in ( SELECT c.eqloc_id
+                                                                FROM  TAEQLOC c
+                                                                WHERE 1=1
+                                                                AND c.plant=b.plant
+                                                                AND c.comp_no=b.comp_no
+                                                                START WITH c.eqloc_id=el.eqloc_id
+                                                                CONNECT BY PRIOR c.eqloc_id=c.p_eqloc_id
+                                                                )
+                        )
+            GROUP BY x.comp_no)),0,null,SUM((SELECT sum(decode(substr(x.plan_date,0,6),substr('^param3',0,4)||substr('^param3',6,2),1,0))
+            FROM TAPMSCHED x, TAPMLST y
+            WHERE x.comp_no = y.comp_no
+            AND x.pm_id = y.pm_id
+            AND x.comp_no = el.comp_no
+            AND x.plan_date like substr('^param3',0,4)||'____'
+            AND x.pm_id in (SELECT a.pm_id
+                                        FROM TAPMEQUIP a, TAEQUIPMENT b
+                                        WHERE a.comp_no = b.comp_no
+                                        AND a.equip_id = b.equip_id
+                                        AND a.comp_no =x.comp_no
+                                        AND b.plant = el.plant
+                                        AND eqloc_id in ( SELECT c.eqloc_id
+                                                                FROM  TAEQLOC c
+                                                                WHERE 1=1
+                                                                AND c.plant=b.plant
+                                                                AND c.comp_no=b.comp_no
+                                                                START WITH c.eqloc_id=el.eqloc_id
+                                                                CONNECT BY PRIOR c.eqloc_id=c.p_eqloc_id
+                                                                )
+                        )
+            GROUP BY x.comp_no)))*100,2),'FM9999990D00')||'%' resultMonth
+            ,'100%' planYear
+            ,TO_CHAR(ROUND(SUM((SELECT sum(decode(pmsched_status,'C',1,0))
+            FROM TAPMSCHED x, TAPMLST y
+            WHERE x.comp_no = y.comp_no
+            AND x.pm_id = y.pm_id
+            AND x.comp_no = el.comp_no
+            AND x.plan_date like substr('^param3',0,4)||'____'
+            AND x.pm_id in (SELECT a.pm_id
+                                        FROM TAPMEQUIP a, TAEQUIPMENT b
+                                        WHERE a.comp_no = b.comp_no
+                                        AND a.equip_id = b.equip_id
+                                        AND a.comp_no =x.comp_no
+                                        AND b.plant = el.plant
+                                        AND eqloc_id in ( SELECT c.eqloc_id
+                                                                FROM  TAEQLOC c
+                                                                WHERE 1=1
+                                                                AND c.plant=b.plant
+                                                                AND c.comp_no=b.comp_no
+                                                                START WITH c.eqloc_id=el.eqloc_id
+                                                                CONNECT BY PRIOR c.eqloc_id=c.p_eqloc_id
+                                                                )
+                        )
+            GROUP BY x.comp_no))/DECODE(SUM((SELECT count(*)
+            FROM TAPMSCHED x, TAPMLST y
+            WHERE x.comp_no = y.comp_no
+            AND x.pm_id = y.pm_id
+            AND x.comp_no = el.comp_no
+            AND x.plan_date like substr('^param3',0,4)||'____'
+            AND x.pm_id in (SELECT a.pm_id
+                                        FROM TAPMEQUIP a, TAEQUIPMENT b
+                                        WHERE a.comp_no = b.comp_no
+                                        AND a.equip_id = b.equip_id
+                                        AND a.comp_no =x.comp_no
+                                        AND b.plant = el.plant
+                                        AND eqloc_id in ( SELECT c.eqloc_id
+                                                                FROM  TAEQLOC c
+                                                                WHERE 1=1
+                                                                AND c.plant=b.plant
+                                                                AND c.comp_no=b.comp_no
+                                                                START WITH c.eqloc_id=el.eqloc_id
+                                                                CONNECT BY PRIOR c.eqloc_id=c.p_eqloc_id
+                                                                )
+                        )
+            GROUP BY x.comp_no)),0,null,SUM((SELECT count(*)
+            FROM TAPMSCHED x, TAPMLST y
+            WHERE x.comp_no = y.comp_no
+            AND x.pm_id = y.pm_id
+            AND x.comp_no = el.comp_no
+            AND x.plan_date like substr('^param3',0,4)||'____'
+            AND x.pm_id in (SELECT a.pm_id
+                                        FROM TAPMEQUIP a, TAEQUIPMENT b
+                                        WHERE a.comp_no = b.comp_no
+                                        AND a.equip_id = b.equip_id
+                                        AND a.comp_no =x.comp_no
+                                        AND b.plant = el.plant
+                                        AND eqloc_id in ( SELECT c.eqloc_id
+                                                                FROM  TAEQLOC c
+                                                                WHERE 1=1
+                                                                AND c.plant=b.plant
+                                                                AND c.comp_no=b.comp_no
+                                                                START WITH c.eqloc_id=el.eqloc_id
+                                                                CONNECT BY PRIOR c.eqloc_id=c.p_eqloc_id
+                                                                )
+                        )
+            GROUP BY x.comp_no)))*100,2),'FM9999990D00')||'%' resultYear
+            ,SUM(NVL((SELECT sum(decode(substr(x.plan_date,0,6),to_char(add_months(to_date(substr('^param3',0,4)||substr('^param3',6,2),'yyyymm'), 1),'yyyymm'),1,0))
+            FROM TAPMSCHED x, TAPMLST y
+            WHERE x.comp_no = y.comp_no
+            AND x.pm_id = y.pm_id
+            AND x.comp_no = el.comp_no
+            AND x.plan_date like substr('^param3',0,4)||'____'
+            AND x.pm_id in (SELECT a.pm_id
+                                        FROM TAPMEQUIP a, TAEQUIPMENT b
+                                        WHERE a.comp_no = b.comp_no
+                                        AND a.equip_id = b.equip_id
+                                        AND a.comp_no =x.comp_no
+                                        AND b.plant = el.plant
+                                        AND eqloc_id in ( SELECT c.eqloc_id
+                                                                FROM  TAEQLOC c
+                                                                WHERE 1=1
+                                                                AND c.plant=b.plant
+                                                                AND c.comp_no=b.comp_no
+                                                                START WITH c.eqloc_id=el.eqloc_id
+                                                                CONNECT BY PRIOR c.eqloc_id=c.p_eqloc_id
+                                                                )
+                        )
+            GROUP BY x.comp_no),0)) planNext
+            ,'ACCUMULATIVE '||substr('^param3',0,4) yyyy
+            ,TO_CHAR(to_date('^param3'||'01','yyyy-mmdd'), 'MON', 'NLS_DATE_LANGUAGE=ENGLISH') mm
+            ,TO_CHAR(add_months(to_date('^param3'||'01','yyyy-mmdd'),1), 'MON', 'NLS_DATE_LANGUAGE=ENGLISH')||' PLAN' nextmm
+FROM  TAEQLOC el
+WHERE el.eqloc_id in (1001,1034,1045)
+AND el.is_operation = 'Y'
+AND el.plant='^param5'
+AND el.comp_no='^param1'
+GROUP BY el.comp_no
+/
+$
+SELECT TO_CHAR(to_date(x.tmonth||'01','yyyymmdd'), 'MON', 'NLS_DATE_LANGUAGE=ENGLISH') month
+           ,100 plan
+           ,TO_CHAR(NVL(ROUND(y.compCnt/DECODE(y.planCnt,0,null,y.planCnt)*100,2),0),'FM9999990D00') result
+FROM TAMONTH x, (SELECT 
+                                        substr(x.plan_date,0,6) planMonth
+                                        ,count(substr(x.plan_date,0,6)) planCnt
+                                        ,sum(decode(x.pmsched_status,'C',1,0)) compCnt
+                            FROM TAPMSCHED x, TAPMLST y
+                         WHERE x.comp_no = y.comp_no
+                            AND x.pm_id = y.pm_id
+                            AND x.comp_no = '^param1'
+                            AND x.plan_date like substr('^param3',0,4)||'____'
+                            AND x.pm_id in (SELECT a.pm_id
+                                                FROM TAPMEQUIP a, TAEQUIPMENT b
+                                                WHERE a.comp_no = b.comp_no
+                                                AND a.equip_id = b.equip_id
+                                                AND a.comp_no =x.comp_no
+                                                AND b.plant = '^param5'
+                                                AND eqloc_id in ( (SELECT c.eqloc_id
+                                                                        FROM  TAEQLOC c
+                                                                        WHERE 1=1
+                                                                        AND c.plant=b.plant
+                                                                        AND c.comp_no=b.comp_no
+                                                                        START WITH c.eqloc_id =1001
+                                                                        CONNECT BY PRIOR c.eqloc_id=c.p_eqloc_id),
+                                                                         (SELECT c.eqloc_id
+                                                                        FROM  TAEQLOC c
+                                                                        WHERE 1=1
+                                                                        AND c.plant=b.plant
+                                                                        AND c.comp_no=b.comp_no
+                                                                        START WITH c.eqloc_id =1034
+                                                                        CONNECT BY PRIOR c.eqloc_id=c.p_eqloc_id),
+                                                                         (SELECT c.eqloc_id
+                                                                        FROM  TAEQLOC c
+                                                                        WHERE 1=1
+                                                                        AND c.plant=b.plant
+                                                                        AND c.comp_no=b.comp_no
+                                                                        START WITH c.eqloc_id =1045
+                                                                        CONNECT BY PRIOR c.eqloc_id=c.p_eqloc_id)
+                                                                        )
+                                ) 
+                        GROUP BY x.comp_no, substr(x.plan_date,0,6)) y
+WHERE x.tmonth = y.planMonth(+)
+AND x.tyyyy  = substr('^param3',0,4)
+order by x.tmonth
+/
+$
+SELECT substr(x.tday,7,2) day
+            ,100 plan
+           ,TO_CHAR(NVL(ROUND(y.compCnt/DECODE(y.planCnt,0,null,y.planCnt)*100,2),0),'FM9999990D00') result
+FROM TADAY x, (SELECT 
+                                        x.plan_date planMonth
+                                        ,count(x.plan_date) planCnt
+                                        ,sum(decode(x.pmsched_status,'C',1,0)) compCnt
+                            FROM TAPMSCHED x, TAPMLST y
+                         WHERE x.comp_no = y.comp_no
+                            AND x.pm_id = y.pm_id
+                            AND x.comp_no = '^param1'
+                            AND x.plan_date like substr('^param3',0,4)||'____'
+                            AND x.pm_id in (SELECT a.pm_id
+                                                FROM TAPMEQUIP a, TAEQUIPMENT b
+                                                WHERE a.comp_no = b.comp_no
+                                                AND a.equip_id = b.equip_id
+                                                AND a.comp_no =x.comp_no
+                                                AND b.plant = '^param5'
+                                                AND eqloc_id in ( (SELECT c.eqloc_id
+                                                                        FROM  TAEQLOC c
+                                                                        WHERE 1=1
+                                                                        AND c.plant=b.plant
+                                                                        AND c.comp_no=b.comp_no
+                                                                        START WITH c.eqloc_id =1001
+                                                                        CONNECT BY PRIOR c.eqloc_id=c.p_eqloc_id),
+                                                                         (SELECT c.eqloc_id
+                                                                        FROM  TAEQLOC c
+                                                                        WHERE 1=1
+                                                                        AND c.plant=b.plant
+                                                                        AND c.comp_no=b.comp_no
+                                                                        START WITH c.eqloc_id =1034
+                                                                        CONNECT BY PRIOR c.eqloc_id=c.p_eqloc_id),
+                                                                         (SELECT c.eqloc_id
+                                                                        FROM  TAEQLOC c
+                                                                        WHERE 1=1
+                                                                        AND c.plant=b.plant
+                                                                        AND c.comp_no=b.comp_no
+                                                                        START WITH c.eqloc_id =1045
+                                                                        CONNECT BY PRIOR c.eqloc_id=c.p_eqloc_id)
+                                                                        )
+                                ) 
+                        GROUP BY x.comp_no, x.plan_date) y
+WHERE x.tday = y.planMonth(+) 
+AND x.tmonth  = substr('^param3',0,4)||substr('^param3',6,2)
+and x.tday IN ( SELECT cal_date FROM TAWRKCALENDAR 
+                WHERE 1=1
+                AND cal_date like substr('^param3',0,4)||substr('^param3',6,2)||'__'
+                AND is_work = 'Y'
+                AND plant = '^param5'
+                AND comp_no = '^param1')
+order by x.tday
+/
+$
+SELECT UPPER(description) locDesc
+            ,TO_CHAR(NVL((SELECT a.pvalue
+                                FROM TAMTLNPOINT a
+                                WHERE 1=1
+                                AND a.plant = x.plant
+                                AND a.comp_no = x.comp_no
+                                AND a.eqloc_id = x.eqloc_id
+                                AND a.mtlnpoint = 'BD_HOURS'
+                                AND a.yyyymm = substr('^param3',0,4)||substr('^param3',6,2)),0)
+                ,'FM9999990D00') planMonth
+                ,TO_CHAR(ROUND(NVL((SELECT DECODE(a.ma_stoptime,0,null,a.ma_stoptime)
+                                    FROM TAKPIMLOCDN a
+                                    WHERE 1=1
+                                    AND a.plant = x.plant
+                                    AND a.comp_no = x.comp_no
+                                    AND a.eqloc_id = x.eqloc_id
+                                    AND a.yyyymm = substr('^param3',0,4)||substr('^param3',6,2))/60,0),2)
+                    ,'FM9999990D00') resultMonth
+                 ,TO_CHAR(NVL((SELECT DECODE(SUM(a.pvalue),0,null,SUM(a.pvalue))
+                                FROM TAMTLNPOINT a
+                                WHERE 1=1
+                                AND a.plant = x.plant
+                                AND a.comp_no = x.comp_no
+                                AND a.eqloc_id = x.eqloc_id
+                                AND a.mtlnpoint = 'BD_HOURS'
+                                AND a.yyyymm like substr('^param3',0,4)||'__')/
+                                DECODE((SELECT count(*)
+                                            FROM TAMTLNPOINT a
+                                            WHERE 1=1
+                                            AND a.plant = x.plant
+                                            AND a.comp_no = x.comp_no
+                                            AND a.eqloc_id = x.eqloc_id
+                                            AND a.mtlnpoint = 'BD_HOURS'
+                                            AND a.yyyymm like substr('^param3',0,4)||'__'),0,null,(SELECT count(*)
+                                                                                                FROM TAMTLNPOINT a
+                                                                                                WHERE 1=1
+                                                                                                AND a.plant = x.plant
+                                                                                                AND a.comp_no = x.comp_no
+                                                                                                AND a.eqloc_id = x.eqloc_id
+                                                                                                AND a.mtlnpoint = 'BD_HOURS'
+                                                                                                AND a.yyyymm like substr('^param3',0,4)||'__')),0),'FM9999990D00') planYear
+                ,TO_CHAR(NVL(ROUND(((SELECT DECODE(SUM(a.ma_stoptime),0,null,SUM(a.ma_stoptime))
+                                    FROM TAKPIMLOCDN a
+                                    WHERE 1=1
+                                    AND a.plant = x.plant
+                                    AND a.comp_no = x.comp_no
+                                    AND a.eqloc_id = x.eqloc_id
+                                    AND a.yyyymm like substr('^param3',0,4)||'__')
+                                    /
+                                DECODE((SELECT count(*)
+                                            FROM TAMTLNPOINT a
+                                            WHERE 1=1
+                                            AND a.plant = x.plant
+                                            AND a.comp_no = x.comp_no
+                                            AND a.eqloc_id = x.eqloc_id
+                                            AND a.mtlnpoint = 'BD_HOURS'
+                                            AND a.yyyymm like substr('^param3',0,4)||'__'),0,null,(SELECT count(*)
+                                                                                                FROM TAMTLNPOINT a
+                                                                                                WHERE 1=1
+                                                                                                AND a.plant = x.plant
+                                                                                                AND a.comp_no = x.comp_no
+                                                                                                AND a.eqloc_id = x.eqloc_id
+                                                                                                AND a.mtlnpoint = 'BD_HOURS'
+                                                                                                AND a.yyyymm like substr('^param3',0,4)||'__')))/60,2),0) ,'FM9999990D00') resultYear
+               ,TO_CHAR(NVL((SELECT a.pvalue
+                                FROM TAMTLNPOINT a
+                                WHERE 1=1
+                                AND a.plant = x.plant
+                                AND a.comp_no = x.comp_no
+                                AND a.eqloc_id = x.eqloc_id
+                                AND a.mtlnpoint = 'BD_HOURS'
+                                AND a.yyyymm = to_char(add_months(to_date(substr('^param3',0,4)||substr('^param3',6,2),'yyyymm'), 1),'yyyymm')),0)
+                ,'FM9999990D00') planNext
+                ,'ACCUMULATIVE '||substr('^param3',0,4) yyyy
+                ,TO_CHAR(to_date('^param3'||'01','yyyy-mmdd'), 'MON', 'NLS_DATE_LANGUAGE=ENGLISH') mm
+                ,TO_CHAR(add_months(to_date('^param3'||'01','yyyy-mmdd'),1), 'MON', 'NLS_DATE_LANGUAGE=ENGLISH')||' PLAN' nextmm
+FROM  TAEQLOC x
+WHERE x.eqloc_id in (1001,1034,1045)
+AND x.is_operation = 'Y'
+AND x.plant='^param5'
+AND x.comp_no='^param1'
+UNION ALL
+SELECT 'AVERAGE' locDesc
+            ,TO_CHAR(AVG(NVL((SELECT a.pvalue
+                                FROM TAMTLNPOINT a
+                                WHERE 1=1
+                                AND a.plant = x.plant
+                                AND a.comp_no = x.comp_no
+                                AND a.eqloc_id = x.eqloc_id
+                                AND a.mtlnpoint = 'BD_HOURS'
+                                AND a.yyyymm = substr('^param3',0,4)||substr('^param3',6,2)),0))
+                ,'FM9999990D00') planMonth
+                ,TO_CHAR(AVG(NVL(ROUND((SELECT DECODE(SUM(a.ma_stoptime),0,null,SUM(a.ma_stoptime))
+                                    FROM TAKPIMLOCDN a
+                                    WHERE 1=1
+                                    AND a.plant = x.plant
+                                    AND a.comp_no = x.comp_no
+                                    AND a.eqloc_id = x.eqloc_id
+                                    AND a.yyyymm = substr('^param3',0,4)||substr('^param3',6,2))/60,2),0)) ,'FM9999990D00') resultMonth
+                 ,TO_CHAR(AVG(ROUND(NVL((SELECT DECODE(SUM(a.pvalue),0,null,SUM(a.pvalue))
+                                FROM TAMTLNPOINT a
+                                WHERE 1=1
+                                AND a.plant = x.plant
+                                AND a.comp_no = x.comp_no
+                                AND a.eqloc_id = x.eqloc_id
+                                AND a.mtlnpoint = 'BD_HOURS'
+                                AND a.yyyymm like substr('^param3',0,4)||'__')/
+                                DECODE((SELECT count(*)
+                                            FROM TAMTLNPOINT a
+                                            WHERE 1=1
+                                            AND a.plant = x.plant
+                                            AND a.comp_no = x.comp_no
+                                            AND a.eqloc_id = x.eqloc_id
+                                            AND a.mtlnpoint = 'BD_HOURS'
+                                            AND a.yyyymm like substr('^param3',0,4)||'__'),0,null,(SELECT count(*)
+                                                                                                FROM TAMTLNPOINT a
+                                                                                                WHERE 1=1
+                                                                                                AND a.plant = x.plant
+                                                                                                AND a.comp_no = x.comp_no
+                                                                                                AND a.eqloc_id = x.eqloc_id
+                                                                                                AND a.mtlnpoint = 'BD_HOURS'
+                                                                                                AND a.yyyymm like substr('^param3',0,4)||'__')),0),2)),'FM9999990D00') planYear
+                ,TO_CHAR(ROUND(NVL(SUM((SELECT DECODE(SUM(a.ma_stoptime),0,null,SUM(a.ma_stoptime))
+                                    FROM TAKPIMLOCDN a
+                                    WHERE 1=1
+                                    AND a.plant = x.plant
+                                    AND a.comp_no = x.comp_no
+                                    AND a.eqloc_id = x.eqloc_id
+                                    AND a.yyyymm like substr('^param3',0,4)||'__') / 
+                                    DECODE((SELECT count(*)
+                                            FROM TAMTLNPOINT a
+                                            WHERE 1=1
+                                            AND a.plant = x.plant
+                                            AND a.comp_no = x.comp_no
+                                            AND a.eqloc_id = x.eqloc_id
+                                            AND a.mtlnpoint = 'BD_HOURS'
+                                            AND a.yyyymm like substr('^param3',0,4)||'__'),0,null,(SELECT count(*)
+                                                                                                FROM TAMTLNPOINT a
+                                                                                                WHERE 1=1
+                                                                                                AND a.plant = x.plant
+                                                                                                AND a.comp_no = x.comp_no
+                                                                                                AND a.eqloc_id = x.eqloc_id
+                                                                                                AND a.mtlnpoint = 'BD_HOURS'
+                                                                                                AND a.yyyymm like substr('^param3',0,4)||'__'))),0)/180,2),'FM9999990D00')  resultYear
+               ,TO_CHAR(AVG(NVL((SELECT a.pvalue
+                                FROM TAMTLNPOINT a
+                                WHERE 1=1
+                                AND a.plant = x.plant
+                                AND a.comp_no = x.comp_no
+                                AND a.eqloc_id = x.eqloc_id
+                                AND a.mtlnpoint = 'BD_HOURS'
+                                AND a.yyyymm = to_char(add_months(to_date(substr('^param3',0,4)||substr('^param3',6,2),'yyyymm'), 1),'yyyymm')),0))
+                ,'FM9999990D00') planNext
+                ,'ACCUMULATIVE '||substr('^param3',0,4) yyyy
+                ,TO_CHAR(to_date('^param3'||'01','yyyy-mmdd'), 'MON', 'NLS_DATE_LANGUAGE=ENGLISH') mm
+                ,TO_CHAR(add_months(to_date('^param3'||'01','yyyy-mmdd'),1), 'MON', 'NLS_DATE_LANGUAGE=ENGLISH')||' PLAN' nextmm
+FROM  TAEQLOC x
+WHERE x.eqloc_id in (1001,1034,1045)
+AND x.is_operation = 'Y'
+AND x.plant='^param5'
+AND x.comp_no='^param1'
+GROUP BY x.comp_no
+/
+$
+SELECT TO_CHAR(to_date(x.tmonth||'01','yyyymmdd'), 'MON', 'NLS_DATE_LANGUAGE=ENGLISH') month
+            ,NVL((SELECT ROUND(avg(NVL(a.pvalue,0)),2)
+                                FROM TAMTLNPOINT a
+                                WHERE 1=1
+                                AND a.plant = '^param5'
+                                AND a.comp_no = '^param1'
+                                AND a.mtlnpoint = 'BD_HOURS'
+                                AND a.yyyymm = x.tmonth
+                                GROUP BY a.yyyymm),0) plan
+            ,NVL(y.rate,0) result
+FROM TAMONTH x, (SELECT yyyymm, NVL(ROUND(SUM(ma_stoptime)/60/3,2),0) rate, comp_no, plant
+                            FROM TAKPIMLOCDN
+                            WHERE 1=1
+                            AND plant = '^param5'
+                            AND comp_no = '^param1'
+                            GROUP BY comp_no, plant, yyyymm) y
+WHERE x.tmonth = y.yyyymm(+)
+AND x.tyyyy  = substr('^param3',0,4)
+order by x.tmonth
+/
+$
+SELECT substr(x.tday,7,2) day
+            ,NVL((SELECT ROUND(avg(NVL(a.pvalue,0)),2)
+                                FROM TAMTLNPOINT a
+                                WHERE 1=1
+                                AND a.plant = '^param5'
+                                AND a.comp_no = '^param1'
+                                AND a.mtlnpoint = 'BD_HOURS'
+                                AND a.yyyymm = x.tmonth
+                                GROUP BY a.yyyymm),0) plan
+            ,NVL(y.rate,0) result
+FROM TADAY x, (SELECT wrk_date,NVL(ROUND((DECODE(avg(NVL(d_stoptime,0)),0,null,avg(NVL(d_stoptime,0)))) /60,2),0)  rate, comp_no, plant
+                            FROM TAKPIDLOCDN
+                            WHERE 1=1
+                            AND plant = '^param5'
+                            AND comp_no = '^param1'
+                            GROUP BY comp_no, plant, wrk_date) y
+WHERE x.tday = y.wrk_date(+) 
+AND x.tmonth  = substr('^param3',0,4)||substr('^param3',6,2)
+and x.tday IN ( SELECT cal_date FROM TAWRKCALENDAR 
+                WHERE 1=1
+                AND cal_date like substr('^param3',0,4)||substr('^param3',6,2)||'__'
+                AND is_work = 'Y'
+                AND plant = '^param5'
+                AND comp_no = '^param1')
+order by x.tday
+/
+$
+SELECT UPPER(description) locDesc
+            ,TO_CHAR(NVL((SELECT a.pvalue
+                                FROM TAMTLNPOINT a
+                                WHERE 1=1
+                                AND a.plant = x.plant
+                                AND a.comp_no = x.comp_no
+                                AND a.eqloc_id = x.eqloc_id
+                                AND a.mtlnpoint = 'BD_HOURS_EQ'
+                                AND a.yyyymm = substr('^param3',0,4)||substr('^param3',6,2)),0)
+                ,'FM9999990D00') planMonth
+                ,TO_CHAR(ROUND(NVL((SELECT DECODE(a.ma_repairtime,0,null,a.ma_repairtime)
+                                    FROM TAKPIMLOCDN a
+                                    WHERE 1=1
+                                    AND a.plant = x.plant
+                                    AND a.comp_no = x.comp_no
+                                    AND a.eqloc_id = x.eqloc_id
+                                    AND a.yyyymm = substr('^param3',0,4)||substr('^param3',6,2))/60,0),2)
+                    ,'FM9999990D00') resultMonth
+                 ,TO_CHAR(NVL((SELECT DECODE(SUM(a.pvalue),0,null,SUM(a.pvalue))
+                                FROM TAMTLNPOINT a
+                                WHERE 1=1
+                                AND a.plant = x.plant
+                                AND a.comp_no = x.comp_no
+                                AND a.eqloc_id = x.eqloc_id
+                                AND a.mtlnpoint = 'BD_HOURS_EQ'
+                                AND a.yyyymm like substr('^param3',0,4)||'__')/
+                                DECODE((SELECT count(*)
+                                            FROM TAMTLNPOINT a
+                                            WHERE 1=1
+                                            AND a.plant = x.plant
+                                            AND a.comp_no = x.comp_no
+                                            AND a.eqloc_id = x.eqloc_id
+                                            AND a.mtlnpoint = 'BD_HOURS_EQ'
+                                            AND a.yyyymm like substr('^param3',0,4)||'__'),0,null,(SELECT count(*)
+                                                                                                FROM TAMTLNPOINT a
+                                                                                                WHERE 1=1
+                                                                                                AND a.plant = x.plant
+                                                                                                AND a.comp_no = x.comp_no
+                                                                                                AND a.eqloc_id = x.eqloc_id
+                                                                                                AND a.mtlnpoint = 'BD_HOURS_EQ'
+                                                                                                AND a.yyyymm like substr('^param3',0,4)||'__')),0),'FM9999990D00') planYear
+                ,TO_CHAR(NVL(ROUND(((SELECT DECODE(SUM(a.ma_repairtime),0,null,SUM(a.ma_repairtime))
+                                    FROM TAKPIMLOCDN a
+                                    WHERE 1=1
+                                    AND a.plant = x.plant
+                                    AND a.comp_no = x.comp_no
+                                    AND a.eqloc_id = x.eqloc_id
+                                    AND a.yyyymm like substr('^param3',0,4)||'__')
+                                    /
+                                DECODE((SELECT count(*)
+                                            FROM TAMTLNPOINT a
+                                            WHERE 1=1
+                                            AND a.plant = x.plant
+                                            AND a.comp_no = x.comp_no
+                                            AND a.eqloc_id = x.eqloc_id
+                                            AND a.mtlnpoint = 'BD_HOURS_EQ'
+                                            AND a.yyyymm like substr('^param3',0,4)||'__'),0,null,(SELECT count(*)
+                                                                                                FROM TAMTLNPOINT a
+                                                                                                WHERE 1=1
+                                                                                                AND a.plant = x.plant
+                                                                                                AND a.comp_no = x.comp_no
+                                                                                                AND a.eqloc_id = x.eqloc_id
+                                                                                                AND a.mtlnpoint = 'BD_HOURS_EQ'
+                                                                                                AND a.yyyymm like substr('^param3',0,4)||'__')))/60,2),0) ,'FM9999990D00') resultYear
+               ,TO_CHAR(NVL((SELECT a.pvalue
+                                FROM TAMTLNPOINT a
+                                WHERE 1=1
+                                AND a.plant = x.plant
+                                AND a.comp_no = x.comp_no
+                                AND a.eqloc_id = x.eqloc_id
+                                AND a.mtlnpoint = 'BD_HOURS_EQ'
+                                AND a.yyyymm = to_char(add_months(to_date(substr('^param3',0,4)||substr('^param3',6,2),'yyyymm'), 1),'yyyymm')),0)
+                ,'FM9999990D00') planNext
+                ,'ACCUMULATIVE '||substr('^param3',0,4) yyyy
+                ,TO_CHAR(to_date('^param3'||'01','yyyy-mmdd'), 'MON', 'NLS_DATE_LANGUAGE=ENGLISH') mm
+                ,TO_CHAR(add_months(to_date('^param3'||'01','yyyy-mmdd'),1), 'MON', 'NLS_DATE_LANGUAGE=ENGLISH')||' PLAN' nextmm
+FROM  TAEQLOC x
+WHERE x.eqloc_id in (1001,1034,1045)
+AND x.is_operation = 'Y'
+AND x.plant='^param5'
+AND x.comp_no='^param1'
+UNION ALL
+SELECT 'AVERAGE' locDesc
+            ,TO_CHAR(AVG(NVL((SELECT a.pvalue
+                                FROM TAMTLNPOINT a
+                                WHERE 1=1
+                                AND a.plant = x.plant
+                                AND a.comp_no = x.comp_no
+                                AND a.eqloc_id = x.eqloc_id
+                                AND a.mtlnpoint = 'BD_HOURS_EQ'
+                                AND a.yyyymm = substr('^param3',0,4)||substr('^param3',6,2)),0))
+                ,'FM9999990D00') planMonth
+                ,TO_CHAR(AVG(NVL(ROUND((SELECT DECODE(SUM(a.ma_repairtime),0,null,SUM(a.ma_repairtime))
+                                    FROM TAKPIMLOCDN a
+                                    WHERE 1=1
+                                    AND a.plant = x.plant
+                                    AND a.comp_no = x.comp_no
+                                    AND a.eqloc_id = x.eqloc_id
+                                    AND a.yyyymm = substr('^param3',0,4)||substr('^param3',6,2))/60,2),0)) ,'FM9999990D00') resultMonth
+                 ,TO_CHAR(AVG(ROUND(NVL((SELECT DECODE(SUM(a.pvalue),0,null,SUM(a.pvalue))
+                                FROM TAMTLNPOINT a
+                                WHERE 1=1
+                                AND a.plant = x.plant
+                                AND a.comp_no = x.comp_no
+                                AND a.eqloc_id = x.eqloc_id
+                                AND a.mtlnpoint = 'BD_HOURS_EQ'
+                                AND a.yyyymm like substr('^param3',0,4)||'__')/
+                                DECODE((SELECT count(*)
+                                            FROM TAMTLNPOINT a
+                                            WHERE 1=1
+                                            AND a.plant = x.plant
+                                            AND a.comp_no = x.comp_no
+                                            AND a.eqloc_id = x.eqloc_id
+                                            AND a.mtlnpoint = 'BD_HOURS_EQ'
+                                            AND a.yyyymm like substr('^param3',0,4)||'__'),0,null,(SELECT count(*)
+                                                                                                FROM TAMTLNPOINT a
+                                                                                                WHERE 1=1
+                                                                                                AND a.plant = x.plant
+                                                                                                AND a.comp_no = x.comp_no
+                                                                                                AND a.eqloc_id = x.eqloc_id
+                                                                                                AND a.mtlnpoint = 'BD_HOURS_EQ'
+                                                                                                AND a.yyyymm like substr('^param3',0,4)||'__')),0),2)),'FM9999990D00') planYear
+                ,TO_CHAR(ROUND(NVL(SUM((SELECT DECODE(SUM(a.ma_repairtime),0,null,SUM(a.ma_repairtime))
+                                    FROM TAKPIMLOCDN a
+                                    WHERE 1=1
+                                    AND a.plant = x.plant
+                                    AND a.comp_no = x.comp_no
+                                    AND a.eqloc_id = x.eqloc_id
+                                    AND a.yyyymm like substr('^param3',0,4)||'__') / 
+                                    DECODE((SELECT count(*)
+                                            FROM TAMTLNPOINT a
+                                            WHERE 1=1
+                                            AND a.plant = x.plant
+                                            AND a.comp_no = x.comp_no
+                                            AND a.eqloc_id = x.eqloc_id
+                                            AND a.mtlnpoint = 'BD_HOURS_EQ'
+                                            AND a.yyyymm like substr('^param3',0,4)||'__'),0,null,(SELECT count(*)
+                                                                                                FROM TAMTLNPOINT a
+                                                                                                WHERE 1=1
+                                                                                                AND a.plant = x.plant
+                                                                                                AND a.comp_no = x.comp_no
+                                                                                                AND a.eqloc_id = x.eqloc_id
+                                                                                                AND a.mtlnpoint = 'BD_HOURS_EQ'
+                                                                                                AND a.yyyymm like substr('^param3',0,4)||'__'))),0)/180,2),'FM9999990D00')  resultYear
+               ,TO_CHAR(AVG(NVL((SELECT a.pvalue
+                                FROM TAMTLNPOINT a
+                                WHERE 1=1
+                                AND a.plant = x.plant
+                                AND a.comp_no = x.comp_no
+                                AND a.eqloc_id = x.eqloc_id
+                                AND a.mtlnpoint = 'BD_HOURS_EQ'
+                                AND a.yyyymm = to_char(add_months(to_date(substr('^param3',0,4)||substr('^param3',6,2),'yyyymm'), 1),'yyyymm')),0))
+                ,'FM9999990D00') planNext
+                ,'ACCUMULATIVE '||substr('^param3',0,4) yyyy
+                ,TO_CHAR(to_date('^param3'||'01','yyyy-mmdd'), 'MON', 'NLS_DATE_LANGUAGE=ENGLISH') mm
+                ,TO_CHAR(add_months(to_date('^param3'||'01','yyyy-mmdd'),1), 'MON', 'NLS_DATE_LANGUAGE=ENGLISH')||' PLAN' nextmm
+FROM  TAEQLOC x
+WHERE x.eqloc_id in (1001,1034,1045)
+AND x.is_operation = 'Y'
+AND x.plant='^param5'
+AND x.comp_no='^param1'
+GROUP BY x.comp_no
+/
+$
+SELECT TO_CHAR(to_date(x.tmonth||'01','yyyymmdd'), 'MON', 'NLS_DATE_LANGUAGE=ENGLISH') month
+            ,NVL((SELECT ROUND(avg(NVL(a.pvalue,0)),2)
+                                FROM TAMTLNPOINT a
+                                WHERE 1=1
+                                AND a.plant = '^param5'
+                                AND a.comp_no = '^param1'
+                                AND a.mtlnpoint = 'BD_HOURS_EQ'
+                                AND a.yyyymm = x.tmonth
+                                GROUP BY a.yyyymm),0) plan
+            ,NVL(y.rate,0) result
+FROM TAMONTH x, (SELECT yyyymm, NVL(ROUND(SUM(ma_repairtime)/60/3,2),0) rate, comp_no, plant
+                            FROM TAKPIMLOCDN
+                            WHERE 1=1
+                            AND plant = '^param5'
+                            AND comp_no = '^param1'
+                            GROUP BY comp_no, plant, yyyymm) y
+WHERE x.tmonth = y.yyyymm(+)
+AND x.tyyyy  = substr('^param3',0,4)
+order by x.tmonth
+/
+$
+SELECT substr(x.tday,7,2) day
+            ,NVL((SELECT ROUND(avg(NVL(a.pvalue,0)),2)
+                                FROM TAMTLNPOINT a
+                                WHERE 1=1
+                                AND a.plant = '^param5'
+                                AND a.comp_no = '^param1'
+                                AND a.mtlnpoint = 'BD_HOURS_EQ'
+                                AND a.yyyymm = x.tmonth
+                                GROUP BY a.yyyymm),0) plan
+            ,NVL(y.rate,0) result
+FROM TADAY x, (SELECT wrk_date,NVL(ROUND((DECODE(avg(NVL(d_repairtime,0)),0,null,avg(NVL(d_repairtime,0)))) /60,2),0)  rate, comp_no, plant
+                            FROM TAKPIDLOCDN
+                            WHERE 1=1
+                            AND plant = '^param5'
+                            AND comp_no = '^param1'
+                            GROUP BY comp_no, plant, wrk_date) y
+WHERE x.tday = y.wrk_date(+) 
+AND x.tmonth  = substr('^param3',0,4)||substr('^param3',6,2)
+and x.tday IN ( SELECT cal_date FROM TAWRKCALENDAR 
+                WHERE 1=1
+                AND cal_date like substr('^param3',0,4)||substr('^param3',6,2)||'__'
+                AND is_work = 'Y'
+                AND plant = '^param5'
+                AND comp_no = '^param1')
+order by x.tday
+/
+$
+SELECT UPPER(description) locDesc
+            ,TO_CHAR(NVL((SELECT a.pvalue
+                                FROM TAMTLNPOINT a
+                                WHERE 1=1
+                                AND a.plant = x.plant
+                                AND a.comp_no = x.comp_no
+                                AND a.eqloc_id = x.eqloc_id
+                                AND a.mtlnpoint = 'MTTR_EQ'
+                                AND a.yyyymm = substr('^param3',0,4)||substr('^param3',6,2)),0)
+                ,'FM9999990D00') planMonth
+                ,TO_CHAR(NVL((SELECT a.mttr_eq
+                                    FROM TAKPIMLOCDN a
+                                    WHERE 1=1
+                                    AND a.plant = x.plant
+                                    AND a.comp_no = x.comp_no
+                                    AND a.eqloc_id = x.eqloc_id
+                                    AND a.yyyymm = substr('^param3',0,4)||substr('^param3',6,2)),0)
+                    ,'FM9999990D00') resultMonth
+                 ,TO_CHAR(NVL((SELECT DECODE(SUM(a.pvalue),0,null,SUM(a.pvalue))
+                                FROM TAMTLNPOINT a
+                                WHERE 1=1
+                                AND a.plant = x.plant
+                                AND a.comp_no = x.comp_no
+                                AND a.eqloc_id = x.eqloc_id
+                                AND a.mtlnpoint = 'MTTR_EQ'
+                                AND a.yyyymm like substr('^param3',0,4)||'__')/
+                                DECODE((SELECT count(*)
+                                            FROM TAMTLNPOINT a
+                                            WHERE 1=1
+                                            AND a.plant = x.plant
+                                            AND a.comp_no = x.comp_no
+                                            AND a.eqloc_id = x.eqloc_id
+                                            AND a.mtlnpoint = 'MTTR_EQ'
+                                            AND a.yyyymm like substr('^param3',0,4)||'__'),0,null,(SELECT count(*)
+                                                                                                FROM TAMTLNPOINT a
+                                                                                                WHERE 1=1
+                                                                                                AND a.plant = x.plant
+                                                                                                AND a.comp_no = x.comp_no
+                                                                                                AND a.eqloc_id = x.eqloc_id
+                                                                                                AND a.mtlnpoint = 'MTTR_EQ'
+                                                                                                AND a.yyyymm like substr('^param3',0,4)||'__')),0),'FM9999990D00') planYear
+                ,TO_CHAR(NVL((SELECT DECODE(SUM(a.mttr_eq),0,null,SUM(a.mttr_eq))
+                                    FROM TAKPIMLOCDN a
+                                    WHERE 1=1
+                                    AND a.plant = x.plant
+                                    AND a.comp_no = x.comp_no
+                                    AND a.eqloc_id = x.eqloc_id
+                                    AND a.yyyymm like substr('^param3',0,4)||'__') / 
+                                    DECODE( (SELECT COUNT(*)
+                                    FROM TAKPIMLOCDN a
+                                    WHERE 1=1
+                                    AND a.plant = x.plant
+                                    AND a.comp_no = x.comp_no
+                                    AND a.eqloc_id = x.eqloc_id
+                                    AND a.yyyymm like substr('^param3',0,4)||'__') ,0,null, (SELECT COUNT(*)
+                                                                                            FROM TAKPIMLOCDN a
+                                                                                            WHERE 1=1
+                                                                                            AND a.plant = x.plant
+                                                                                            AND a.comp_no = x.comp_no
+                                                                                            AND a.eqloc_id = x.eqloc_id
+                                                                                            AND a.yyyymm like substr('^param3',0,4)||'__')),0),'FM9999990D00') resultYear
+               ,TO_CHAR(NVL((SELECT a.pvalue
+                                FROM TAMTLNPOINT a
+                                WHERE 1=1
+                                AND a.plant = x.plant
+                                AND a.comp_no = x.comp_no
+                                AND a.eqloc_id = x.eqloc_id
+                                AND a.mtlnpoint = 'MTTR_EQ'
+                                AND a.yyyymm = to_char(add_months(to_date(substr('^param3',0,4)||substr('^param3',6,2),'yyyymm'), 1),'yyyymm')),0)
+                ,'FM9999990D00') planNext
+                ,'ACCUMULATIVE '||substr('^param3',0,4) yyyy
+                ,TO_CHAR(to_date('^param3'||'01','yyyy-mmdd'), 'MON', 'NLS_DATE_LANGUAGE=ENGLISH') mm
+                ,TO_CHAR(add_months(to_date('^param3'||'01','yyyy-mmdd'),1), 'MON', 'NLS_DATE_LANGUAGE=ENGLISH')||' PLAN' nextmm
+FROM  TAEQLOC x
+WHERE x.eqloc_id in (1001,1034,1045)
+AND x.is_operation = 'Y'
+AND x.plant='^param5'
+AND x.comp_no='^param1'
+UNION ALL
+SELECT 'AVERAGE' locDesc
+            ,TO_CHAR(AVG(NVL((SELECT a.pvalue
+                                FROM TAMTLNPOINT a
+                                WHERE 1=1
+                                AND a.plant = x.plant
+                                AND a.comp_no = x.comp_no
+                                AND a.eqloc_id = x.eqloc_id
+                                AND a.mtlnpoint = 'MTTR_EQ'
+                                AND a.yyyymm = substr('^param3',0,4)||substr('^param3',6,2)),0))
+                ,'FM9999990D00') planMonth
+                ,TO_CHAR(AVG(NVL((SELECT a.mttr_eq
+                                    FROM TAKPIMLOCDN a
+                                    WHERE 1=1
+                                    AND a.plant = x.plant
+                                    AND a.comp_no = x.comp_no
+                                    AND a.eqloc_id = x.eqloc_id
+                                    AND a.yyyymm = substr('^param3',0,4)||substr('^param3',6,2)),0))
+                    ,'FM9999990D00') resultMonth
+                 ,TO_CHAR(AVG(NVL((SELECT DECODE(SUM(a.pvalue),0,null,SUM(a.pvalue))
+                                FROM TAMTLNPOINT a
+                                WHERE 1=1
+                                AND a.plant = x.plant
+                                AND a.comp_no = x.comp_no
+                                AND a.eqloc_id = x.eqloc_id
+                                AND a.mtlnpoint = 'MTTR_EQ'
+                                AND a.yyyymm like substr('^param3',0,4)||'__')/
+                                DECODE((SELECT count(*)
+                                            FROM TAMTLNPOINT a
+                                            WHERE 1=1
+                                            AND a.plant = x.plant
+                                            AND a.comp_no = x.comp_no
+                                            AND a.eqloc_id = x.eqloc_id
+                                            AND a.mtlnpoint = 'MTTR_EQ'
+                                            AND a.yyyymm like substr('^param3',0,4)||'__'),0,null,(SELECT count(*)
+                                                                                                FROM TAMTLNPOINT a
+                                                                                                WHERE 1=1
+                                                                                                AND a.plant = x.plant
+                                                                                                AND a.comp_no = x.comp_no
+                                                                                                AND a.eqloc_id = x.eqloc_id
+                                                                                                AND a.mtlnpoint = 'MTTR_EQ'
+                                                                                                AND a.yyyymm like substr('^param3',0,4)||'__')),0)),'FM9999990D00') planYear
+                ,TO_CHAR(AVG(NVL((SELECT DECODE(SUM(a.mttr_eq),0,null,SUM(a.mttr_eq))
+                                    FROM TAKPIMLOCDN a
+                                    WHERE 1=1
+                                    AND a.plant = x.plant
+                                    AND a.comp_no = x.comp_no
+                                    AND a.eqloc_id = x.eqloc_id
+                                    AND a.yyyymm like substr('^param3',0,4)||'__') / 
+                                    DECODE( (SELECT COUNT(*)
+                                    FROM TAKPIMLOCDN a
+                                    WHERE 1=1
+                                    AND a.plant = x.plant
+                                    AND a.comp_no = x.comp_no
+                                    AND a.eqloc_id = x.eqloc_id
+                                    AND a.yyyymm like substr('^param3',0,4)||'__') ,0,null, (SELECT COUNT(*)
+                                                                                            FROM TAKPIMLOCDN a
+                                                                                            WHERE 1=1
+                                                                                            AND a.plant = x.plant
+                                                                                            AND a.comp_no = x.comp_no
+                                                                                            AND a.eqloc_id = x.eqloc_id
+                                                                                            AND a.yyyymm like substr('^param3',0,4)||'__')),0)),'FM9999990D00') resultYear
+               ,TO_CHAR(AVG(NVL((SELECT a.pvalue
+                                FROM TAMTLNPOINT a
+                                WHERE 1=1
+                                AND a.plant = x.plant
+                                AND a.comp_no = x.comp_no
+                                AND a.eqloc_id = x.eqloc_id
+                                AND a.mtlnpoint = 'MTTR_EQ'
+                                AND a.yyyymm = to_char(add_months(to_date(substr('^param3',0,4)||substr('^param3',6,2),'yyyymm'), 1),'yyyymm')),0))
+                ,'FM9999990D00') planNext
+                ,'ACCUMULATIVE '||substr('^param3',0,4) yyyy
+                ,TO_CHAR(to_date('^param3'||'01','yyyy-mmdd'), 'MON', 'NLS_DATE_LANGUAGE=ENGLISH') mm
+                ,TO_CHAR(add_months(to_date('^param3'||'01','yyyy-mmdd'),1), 'MON', 'NLS_DATE_LANGUAGE=ENGLISH')||' PLAN' nextmm
+FROM  TAEQLOC x
+WHERE x.eqloc_id in (1001,1034,1045)
+AND x.is_operation = 'Y'
+AND x.plant='^param5'
+AND x.comp_no='^param1'
+GROUP BY x.comp_no
+/
+$
+SELECT TO_CHAR(to_date(x.tmonth||'01','yyyymmdd'), 'MON', 'NLS_DATE_LANGUAGE=ENGLISH') month
+            ,NVL((SELECT ROUND(avg(NVL(a.pvalue,0)),2)
+                                FROM TAMTLNPOINT a
+                                WHERE 1=1
+                                AND a.plant = '^param5'
+                                AND a.comp_no = '^param1'
+                                AND a.mtlnpoint = 'MTTR_EQ'
+                                AND a.yyyymm = x.tmonth
+                                GROUP BY a.yyyymm),0) plan
+            ,NVL(y.rate,0) result
+FROM TAMONTH x, (SELECT yyyymm,ROUND(AVG(NVL(mttr_eq,0)),2) rate, comp_no, plant
+                            FROM TAKPIMLOCDN
+                            WHERE 1=1
+                            AND plant = '^param5'
+                            AND comp_no = '^param1'
+                            GROUP BY comp_no, plant, yyyymm) y
+WHERE x.tmonth = y.yyyymm(+)
+AND x.tyyyy  = substr('^param3',0,4)
+order by x.tmonth
+/
+$
+SELECT UPPER(description) locDesc
+            ,TO_CHAR(NVL((SELECT a.pvalue
+                                FROM TAMTLNPOINT a
+                                WHERE 1=1
+                                AND a.plant = x.plant
+                                AND a.comp_no = x.comp_no
+                                AND a.eqloc_id = x.eqloc_id
+                                AND a.mtlnpoint = 'MTBF_EQ'
+                                AND a.yyyymm = substr('^param3',0,4)||substr('^param3',6,2)),0)
+                ,'FM9999990D00') planMonth
+                ,TO_CHAR(NVL((SELECT a.mtbf_eq
+                                    FROM TAKPIMLOCDN a
+                                    WHERE 1=1
+                                    AND a.plant = x.plant
+                                    AND a.comp_no = x.comp_no
+                                    AND a.eqloc_id = x.eqloc_id
+                                    AND a.yyyymm = substr('^param3',0,4)||substr('^param3',6,2)),0)
+                    ,'FM9999990D00') resultMonth
+                 ,TO_CHAR(NVL((SELECT DECODE(SUM(a.pvalue),0,null,SUM(a.pvalue))
+                                FROM TAMTLNPOINT a
+                                WHERE 1=1
+                                AND a.plant = x.plant
+                                AND a.comp_no = x.comp_no
+                                AND a.eqloc_id = x.eqloc_id
+                                AND a.mtlnpoint = 'MTBF_EQ'
+                                AND a.yyyymm like substr('^param3',0,4)||'__')/
+                                DECODE((SELECT count(*)
+                                            FROM TAMTLNPOINT a
+                                            WHERE 1=1
+                                            AND a.plant = x.plant
+                                            AND a.comp_no = x.comp_no
+                                            AND a.eqloc_id = x.eqloc_id
+                                            AND a.mtlnpoint = 'MTBF_EQ'
+                                            AND a.yyyymm like substr('^param3',0,4)||'__'),0,null,(SELECT count(*)
+                                                                                                FROM TAMTLNPOINT a
+                                                                                                WHERE 1=1
+                                                                                                AND a.plant = x.plant
+                                                                                                AND a.comp_no = x.comp_no
+                                                                                                AND a.eqloc_id = x.eqloc_id
+                                                                                                AND a.mtlnpoint = 'MTBF_EQ'
+                                                                                                AND a.yyyymm like substr('^param3',0,4)||'__')),0),'FM9999990D00') planYear
+                ,TO_CHAR(NVL((SELECT DECODE(SUM(a.mtbf_eq),0,null,SUM(a.mtbf_eq))
+                                    FROM TAKPIMLOCDN a
+                                    WHERE 1=1
+                                    AND a.plant = x.plant
+                                    AND a.comp_no = x.comp_no
+                                    AND a.eqloc_id = x.eqloc_id
+                                    AND a.yyyymm like substr('^param3',0,4)||'__') / 
+                                    DECODE( (SELECT COUNT(*)
+                                    FROM TAKPIMLOCDN a
+                                    WHERE 1=1
+                                    AND a.plant = x.plant
+                                    AND a.comp_no = x.comp_no
+                                    AND a.eqloc_id = x.eqloc_id
+                                    AND a.yyyymm like substr('^param3',0,4)||'__') ,0,null, (SELECT COUNT(*)
+                                                                                            FROM TAKPIMLOCDN a
+                                                                                            WHERE 1=1
+                                                                                            AND a.plant = x.plant
+                                                                                            AND a.comp_no = x.comp_no
+                                                                                            AND a.eqloc_id = x.eqloc_id
+                                                                                            AND a.yyyymm like substr('^param3',0,4)||'__')),0),'FM9999990D00') resultYear
+               ,TO_CHAR(NVL((SELECT a.pvalue
+                                FROM TAMTLNPOINT a
+                                WHERE 1=1
+                                AND a.plant = x.plant
+                                AND a.comp_no = x.comp_no
+                                AND a.eqloc_id = x.eqloc_id
+                                AND a.mtlnpoint = 'MTBF_EQ'
+                                AND a.yyyymm = to_char(add_months(to_date(substr('^param3',0,4)||substr('^param3',6,2),'yyyymm'), 1),'yyyymm')),0)
+                ,'FM9999990D00') planNext
+				,'ACCUMULATIVE '||substr('^param3',0,4) yyyy
+				,TO_CHAR(to_date('^param3'||'01','yyyy-mmdd'), 'MON', 'NLS_DATE_LANGUAGE=ENGLISH') mm
+				,TO_CHAR(add_months(to_date('^param3'||'01','yyyy-mmdd'),1), 'MON', 'NLS_DATE_LANGUAGE=ENGLISH')||' PLAN' nextmm
+FROM  TAEQLOC x
+WHERE x.eqloc_id in (1001,1034,1045)
+AND x.is_operation = 'Y'
+AND x.plant='^param5'
+AND x.comp_no='^param1'
+UNION ALL
+SELECT 'AVERAGE' locDesc
+            ,TO_CHAR(AVG(NVL((SELECT a.pvalue
+                                FROM TAMTLNPOINT a
+                                WHERE 1=1
+                                AND a.plant = x.plant
+                                AND a.comp_no = x.comp_no
+                                AND a.eqloc_id = x.eqloc_id
+                                AND a.mtlnpoint = 'MTBF_EQ'
+                                AND a.yyyymm = substr('^param3',0,4)||substr('^param3',6,2)),0))
+                ,'FM9999990D00') planMonth
+                ,TO_CHAR(AVG(NVL((SELECT a.mtbf_eq
+                                    FROM TAKPIMLOCDN a
+                                    WHERE 1=1
+                                    AND a.plant = x.plant
+                                    AND a.comp_no = x.comp_no
+                                    AND a.eqloc_id = x.eqloc_id
+                                    AND a.yyyymm = substr('^param3',0,4)||substr('^param3',6,2)),0))
+                    ,'FM9999990D00') resultMonth
+                 ,TO_CHAR(AVG(NVL((SELECT DECODE(SUM(a.pvalue),0,null,SUM(a.pvalue))
+                                FROM TAMTLNPOINT a
+                                WHERE 1=1
+                                AND a.plant = x.plant
+                                AND a.comp_no = x.comp_no
+                                AND a.eqloc_id = x.eqloc_id
+                                AND a.mtlnpoint = 'MTBF_EQ'
+                                AND a.yyyymm like substr('^param3',0,4)||'__')/
+                                DECODE((SELECT count(*)
+                                            FROM TAMTLNPOINT a
+                                            WHERE 1=1
+                                            AND a.plant = x.plant
+                                            AND a.comp_no = x.comp_no
+                                            AND a.eqloc_id = x.eqloc_id
+                                            AND a.mtlnpoint = 'MTBF_EQ'
+                                            AND a.yyyymm like substr('^param3',0,4)||'__'),0,null,(SELECT count(*)
+                                                                                                FROM TAMTLNPOINT a
+                                                                                                WHERE 1=1
+                                                                                                AND a.plant = x.plant
+                                                                                                AND a.comp_no = x.comp_no
+                                                                                                AND a.eqloc_id = x.eqloc_id
+                                                                                                AND a.mtlnpoint = 'MTBF_EQ'
+                                                                                                AND a.yyyymm like substr('^param3',0,4)||'__')),0)),'FM9999990D00') planYear
+                ,TO_CHAR(AVG(NVL((SELECT DECODE(SUM(a.mtbf_eq),0,null,SUM(a.mtbf_eq))
+                                    FROM TAKPIMLOCDN a
+                                    WHERE 1=1
+                                    AND a.plant = x.plant
+                                    AND a.comp_no = x.comp_no
+                                    AND a.eqloc_id = x.eqloc_id
+                                    AND a.yyyymm like substr('^param3',0,4)||'__') / 
+                                    DECODE( (SELECT COUNT(*)
+                                    FROM TAKPIMLOCDN a
+                                    WHERE 1=1
+                                    AND a.plant = x.plant
+                                    AND a.comp_no = x.comp_no
+                                    AND a.eqloc_id = x.eqloc_id
+                                    AND a.yyyymm like substr('^param3',0,4)||'__') ,0,null, (SELECT COUNT(*)
+                                                                                            FROM TAKPIMLOCDN a
+                                                                                            WHERE 1=1
+                                                                                            AND a.plant = x.plant
+                                                                                            AND a.comp_no = x.comp_no
+                                                                                            AND a.eqloc_id = x.eqloc_id
+                                                                                            AND a.yyyymm like substr('^param3',0,4)||'__')),0)),'FM9999990D00') resultYear
+               ,TO_CHAR(AVG(NVL((SELECT a.pvalue
+                                FROM TAMTLNPOINT a
+                                WHERE 1=1
+                                AND a.plant = x.plant
+                                AND a.comp_no = x.comp_no
+                                AND a.eqloc_id = x.eqloc_id
+                                AND a.mtlnpoint = 'MTBF_EQ'
+                                AND a.yyyymm = to_char(add_months(to_date(substr('^param3',0,4)||substr('^param3',6,2),'yyyymm'), 1),'yyyymm')),0))
+                ,'FM9999990D00') planNext
+                ,'ACCUMULATIVE '||substr('^param3',0,4) yyyy
+				,TO_CHAR(to_date('^param3'||'01','yyyy-mmdd'), 'MON', 'NLS_DATE_LANGUAGE=ENGLISH') mm
+				,TO_CHAR(add_months(to_date('^param3'||'01','yyyy-mmdd'),1), 'MON', 'NLS_DATE_LANGUAGE=ENGLISH')||' PLAN' nextmm
+FROM  TAEQLOC x
+WHERE x.eqloc_id in (1001,1034,1045)
+AND x.is_operation = 'Y'
+AND x.plant='^param5'
+AND x.comp_no='^param1'
+GROUP BY x.comp_no
+/
+$
+SELECT TO_CHAR(to_date(x.tmonth||'01','yyyymmdd'), 'MON', 'NLS_DATE_LANGUAGE=ENGLISH') month
+            ,NVL((SELECT ROUND(avg(NVL(a.pvalue,0)),2)
+                                FROM TAMTLNPOINT a
+                                WHERE 1=1
+                                AND a.plant = '^param5'
+                                AND a.comp_no = '^param1'
+                                AND a.mtlnpoint = 'MTBF_EQ'
+                                AND a.yyyymm = x.tmonth
+                                GROUP BY a.yyyymm),0) plan
+            ,NVL(y.rate,0) result
+FROM TAMONTH x, (SELECT yyyymm,ROUND(AVG(NVL(mtbf_eq,0)),2) rate, comp_no, plant
+                            FROM TAKPIMLOCDN
+                            WHERE 1=1
+                            AND plant = '^param5'
+                            AND comp_no = '^param1'
+                            GROUP BY comp_no, plant, yyyymm) y
+WHERE x.tmonth = y.yyyymm(+)
+AND x.tyyyy  = substr('^param3',0,4)
+order by x.tmonth
+/
+$
+	SELECT TO_CHAR(to_date('^param3'||'01','yyyy-mmdd'), 'MON yyyy', 'NLS_DATE_LANGUAGE=ENGLISH')||' - TOP ISSUE' topIssue FROM DUAL
+/
+$
+SELECT * FROM (
+SELECT 
+            ROW_NUMBER() OVER(ORDER BY y.lndn_work_time desc) no
+            ,(SELECT TO_CHAR(WM_CONCAT(UPPER(b.description)))                                
+                   FROM TAWOEQUIP a, TAEQUIPMENT b                                        
+                   WHERE a.comp_no = b.comp_no                                            
+                       AND a.equip_id = b.equip_id                                        
+                       AND a.wkor_id = x.wkor_id                                        
+                       AND a.comp_no = x.comp_no                                        
+                   GROUP By a.comp_no, a.wkor_id    )                     AS equipDesc
+             ,ca_desc trouble
+             ,y.lndn_work_time||' min' time
+             ,re_desc roa
+FROM TAWORKORDER x, TAWOFAIL y
+WHERE x.comp_no = y.comp_no
+AND x.wkor_id = y.wkor_id
+AND x.comp_no='^param1'
+AND x.wo_status='C'
+AND x.wo_type = 'BM'
+AND x.wkor_date like substr('^param3',0,4)||substr('^param3',6,2)||'__'
+AND y.lndn_work_time is not null
+AND x.wkor_id in (SELECT a.wkor_id
+                            FROM TAWOEQUIP a, TAEQUIPMENT b
+                            WHERE a.comp_no = b.comp_no
+                            AND a.equip_id = b.equip_id
+                            AND a.comp_no = x.comp_no
+                            AND b.plant = '^param5'
+                            AND eqloc_id in ( (SELECT c.eqloc_id
+                                                                        FROM  TAEQLOC c
+                                                                        WHERE 1=1
+                                                                        AND c.plant=b.plant
+                                                                        AND c.comp_no=b.comp_no
+                                                                        START WITH c.eqloc_id =1001
+                                                                        CONNECT BY PRIOR c.eqloc_id=c.p_eqloc_id),
+                                                                         (SELECT c.eqloc_id
+                                                                        FROM  TAEQLOC c
+                                                                        WHERE 1=1
+                                                                        AND c.plant=b.plant
+                                                                        AND c.comp_no=b.comp_no
+                                                                        START WITH c.eqloc_id =1034
+                                                                        CONNECT BY PRIOR c.eqloc_id=c.p_eqloc_id),
+                                                                         (SELECT c.eqloc_id
+                                                                        FROM  TAEQLOC c
+                                                                        WHERE 1=1
+                                                                        AND c.plant=b.plant
+                                                                        AND c.comp_no=b.comp_no
+                                                                        START WITH c.eqloc_id =1045
+                                                                        CONNECT BY PRIOR c.eqloc_id=c.p_eqloc_id)
+                                                                        )
+                            )
+ORDER BY y.lndn_work_time desc, x.description
+) WHERE no <6
+/
+$
+SELECT * FROM (
+SELECT 
+            ROW_NUMBER() OVER(ORDER BY y.eqdn_work_time desc) no
+            ,(SELECT TO_CHAR(WM_CONCAT(UPPER(b.description)))                                
+                   FROM TAWOEQUIP a, TAEQUIPMENT b                                        
+                   WHERE a.comp_no = b.comp_no                                            
+                       AND a.equip_id = b.equip_id                                        
+                       AND a.wkor_id = x.wkor_id                                        
+                       AND a.comp_no = x.comp_no                                        
+                   GROUP By a.comp_no, a.wkor_id    )                     AS equipDesc
+             ,ca_desc trouble
+             ,y.eqdn_work_time||' min' time
+             ,re_desc roa
+FROM TAWORKORDER x, TAWOFAIL y
+WHERE x.comp_no = y.comp_no
+AND x.wkor_id = y.wkor_id
+AND x.comp_no='^param1'
+AND x.wo_status='C'
+AND x.wo_type = 'BM'
+AND x.wkor_date like substr('^param3',0,4)||substr('^param3',6,2)||'__'
+AND y.eqdn_work_time is not null
+AND x.wkor_id in (SELECT a.wkor_id
+                            FROM TAWOEQUIP a, TAEQUIPMENT b
+                            WHERE a.comp_no = b.comp_no
+                            AND a.equip_id = b.equip_id
+                            AND a.comp_no = x.comp_no
+                            AND b.plant = '^param5'
+                            AND eqloc_id in ( (SELECT c.eqloc_id
+                                                                        FROM  TAEQLOC c
+                                                                        WHERE 1=1
+                                                                        AND c.plant=b.plant
+                                                                        AND c.comp_no=b.comp_no
+                                                                        START WITH c.eqloc_id =1001
+                                                                        CONNECT BY PRIOR c.eqloc_id=c.p_eqloc_id),
+                                                                         (SELECT c.eqloc_id
+                                                                        FROM  TAEQLOC c
+                                                                        WHERE 1=1
+                                                                        AND c.plant=b.plant
+                                                                        AND c.comp_no=b.comp_no
+                                                                        START WITH c.eqloc_id =1034
+                                                                        CONNECT BY PRIOR c.eqloc_id=c.p_eqloc_id),
+                                                                         (SELECT c.eqloc_id
+                                                                        FROM  TAEQLOC c
+                                                                        WHERE 1=1
+                                                                        AND c.plant=b.plant
+                                                                        AND c.comp_no=b.comp_no
+                                                                        START WITH c.eqloc_id =1045
+                                                                        CONNECT BY PRIOR c.eqloc_id=c.p_eqloc_id)
+                                                                        )
+                            )
+ORDER BY y.eqdn_work_time desc,x.description
+) WHERE no <6
+/
+$
+select to_char(to_date(x.tday,'yyyymmdd'),'dd.mm.yyyy') tday
+        , NVL((select a.d_worktime from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and b.eqloc_id = 1001),0) ff_ppt
+        , NVL((select a.d_stoptime from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and b.eqloc_id = 1001),0) ff_dt
+        , NVL((select a.d_stopfreq from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and b.eqloc_id = 1001),0) ff_fq
+        , NVL((select a.d_worktime-nvl(d_stoptime,0) from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and b.eqloc_id = 1001),0) ff_eot
+        , NVL((select to_char(round(DECODE((a.d_worktime-nvl(d_stoptime,0)),0,null,(a.d_worktime-nvl(d_stoptime,0)))/a.d_worktime*100,2),'FM9999990D00') from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and b.eqloc_id = 1001),0)||'%' ff_av
+        , NVL((select to_char(round(DECODE(nvl(d_stoptime,0),0,null,nvl(d_stoptime,0))/a.d_worktime*100,2),'FM9999990D00') from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and b.eqloc_id = 1001),0)||'%' ff_efr
+        , NVL((select a.d_worktime from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and b.eqloc_id = 1034),0) ar_ppt
+        , NVL((select a.d_stoptime from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and b.eqloc_id = 1034),0) ar_dt
+        , NVL((select a.d_stopfreq from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and b.eqloc_id = 1034),0) ar_fq
+        , NVL((select a.d_worktime-nvl(d_stoptime,0) from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and b.eqloc_id = 1034),0) ar_eot
+        , NVL((select to_char(round(DECODE((a.d_worktime-nvl(d_stoptime,0)),0,null,(a.d_worktime-nvl(d_stoptime,0)))/a.d_worktime*100,2),'FM9999990D00') from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and b.eqloc_id = 1034),0)||'%' ar_av
+        , NVL((select to_char(round(DECODE(nvl(d_stoptime,0),0,null,nvl(d_stoptime,0))/a.d_worktime*100,2),'FM9999990D00') from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and b.eqloc_id = 1034),0)||'%' ar_efr
+        , NVL((select a.d_worktime from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and b.eqloc_id = 1045),0) as_ppt
+        , NVL((select a.d_stoptime from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and b.eqloc_id = 1045),0) as_dt
+        , NVL((select a.d_stopfreq from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and b.eqloc_id = 1045),0) as_fq
+        , NVL((select a.d_worktime-nvl(d_stoptime,0) from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and b.eqloc_id = 1045),0) as_eot
+        , NVL((select to_char(round(DECODE((a.d_worktime-nvl(d_stoptime,0)),0,null,(a.d_worktime-nvl(d_stoptime,0)))/a.d_worktime*100,2),'FM9999990D00') from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and b.eqloc_id = 1045),0)||'%' as_av
+        , NVL((select to_char(round(DECODE(nvl(d_stoptime,0),0,null,nvl(d_stoptime,0))/a.d_worktime*100,2),'FM9999990D00') from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and b.eqloc_id = 1045),0)||'%' as_efr
+         ,NVL((select  to_char(round(DECODE((sum(a.d_worktime)-nvl(sum(a.d_stoptime),0)),0,null,(sum(a.d_worktime)-nvl(sum(a.d_stoptime),0)))/sum(a.d_worktime)*100,2),'FM9999990D00')
+                 from TAKPIDLOCDN a, TAEQLOC b
+                where a.comp_no = b.comp_no
+                and a.eqloc_id = b.eqloc_id
+                and a.wrk_date  =x.tday
+                and a.plant = '^param5'
+                and a.comp_no = '^param1'
+                and b.eqloc_id in (1001,1034,1045)
+                group by a.comp_no, a.wrk_date,a.plant),0)||'%' aad
+         ,NVL((select  to_char(round(DECODE(nvl(sum(a.d_stoptime),0),0,null,nvl(sum(a.d_stoptime),0))/sum(a.d_worktime)*100,2),'FM9999990D00')
+                 from TAKPIDLOCDN a, TAEQLOC b
+                where a.comp_no = b.comp_no
+                and a.eqloc_id = b.eqloc_id
+                and a.wrk_date  = x.tday
+                and a.plant = '^param5'
+                and a.comp_no = '^param1'
+                and b.eqloc_id in (1001,1034,1045)
+                group by a.comp_no, a.wrk_date,a.plant),0)||'%' ead
+FROM TADAY x
+where x.tmonth  = substr('^param3',0,4)||substr('^param3',6,2)
+and x.tday IN ( SELECT cal_date FROM TAWRKCALENDAR 
+				WHERE 1=1
+				AND cal_date like substr('^param3',0,4)||substr('^param3',6,2)||'__'
+				AND is_work = 'Y'
+            	AND plant = '^param5'
+            	AND comp_no = '^param1')
+order by x.tday
+/
+$
+select 'TOTAL' tday
+        , SUM(NVL((select a.d_worktime from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and b.eqloc_id = 1001),0)) ff_ppt
+        , SUM(NVL((select a.d_stoptime from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and b.eqloc_id = 1001),0)) ff_dt
+        , SUM(NVL((select a.d_stopfreq from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and b.eqloc_id = 1001),0)) ff_fq
+        , SUM(NVL((select a.d_worktime-nvl(d_stoptime,0) from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and b.eqloc_id = 1001),0)) ff_eot
+        ,TO_CHAR(NVL(ROUND(DECODE(SUM(NVL((select a.d_worktime-nvl(d_stoptime,0) from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and b.eqloc_id = 1001),0)),0,null,SUM(NVL((select a.d_worktime-nvl(d_stoptime,0) from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and b.eqloc_id = 1001),0)))/
+            SUM(NVL((select a.d_worktime from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and b.eqloc_id = 1001),0))*100,2),0),'FM9999990D00')||'%' ff_av
+         ,TO_CHAR(NVL(ROUND(DECODE(SUM(NVL((select a.d_stoptime from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and b.eqloc_id = 1001),0)),0,null,SUM(NVL((select a.d_stoptime from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and b.eqloc_id = 1001),0)))/
+            SUM(NVL((select a.d_worktime from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and b.eqloc_id = 1001),0))*100,2),0),'FM9999990D00')||'%' ff_efr
+        , SUM(NVL((select a.d_worktime from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and b.eqloc_id = 1034),0)) ar_ppt
+        , SUM(NVL((select a.d_stoptime from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and b.eqloc_id = 1034),0)) ar_dt
+        , SUM(NVL((select a.d_stopfreq from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and b.eqloc_id = 1034),0)) ar_fq
+        , SUM(NVL((select a.d_worktime-nvl(d_stoptime,0) from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and b.eqloc_id = 1034),0)) ar_eot
+        ,TO_CHAR(NVL(ROUND(DECODE(SUM(NVL((select a.d_worktime-nvl(d_stoptime,0) from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and b.eqloc_id = 1034),0)),0,null,SUM(NVL((select a.d_worktime-nvl(d_stoptime,0) from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and b.eqloc_id = 1034),0)))/
+            SUM(NVL((select a.d_worktime from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and b.eqloc_id = 1034),0))*100,2),0),'FM9999990D00')||'%' ar_av
+         ,TO_CHAR(NVL(ROUND(DECODE(SUM(NVL((select a.d_stoptime from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and b.eqloc_id = 1034),0)),0,null,SUM(NVL((select a.d_stoptime from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and b.eqloc_id = 1034),0)))/
+            SUM(NVL((select a.d_worktime from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and b.eqloc_id = 1034),0))*100,2),0),'FM9999990D00')||'%' ar_efr
+        , SUM(NVL((select a.d_worktime from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and b.eqloc_id = 1045),0)) as_ppt
+        , SUM(NVL((select a.d_stoptime from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and b.eqloc_id = 1045),0)) as_dt
+        , SUM(NVL((select a.d_stopfreq from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and b.eqloc_id = 1045),0)) as_fq
+        , SUM(NVL((select a.d_worktime-nvl(d_stoptime,0) from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and b.eqloc_id = 1045),0)) as_eot
+        ,TO_CHAR(NVL(ROUND(DECODE(SUM(NVL((select a.d_worktime-nvl(d_stoptime,0) from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and b.eqloc_id = 1045),0)),0,null,SUM(NVL((select a.d_worktime-nvl(d_stoptime,0) from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and b.eqloc_id = 1045),0)))/
+            SUM(NVL((select a.d_worktime from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and b.eqloc_id = 1045),0))*100,2),0),'FM9999990D00')||'%' as_av
+         ,TO_CHAR(NVL(ROUND(DECODE(SUM(NVL((select a.d_stoptime from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and b.eqloc_id = 1045),0)),0,null,SUM(NVL((select a.d_stoptime from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and b.eqloc_id = 1045),0)))/
+            SUM(NVL((select a.d_worktime from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and b.eqloc_id = 1045),0))*100,2),0),'FM9999990D00')||'%' as_efr
+          ,TO_CHAR(NVL(ROUND(DECODE(SUM(NVL((select SUM(a.d_worktime)-nvl(sum(d_stoptime),0) from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and trim(b.description) IN  (trim('Assy line'),trim('Asrs'))
+            ),0)),0,null,SUM(NVL((select SUM(a.d_worktime)-nvl(sum(d_stoptime),0) from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and trim(b.description) IN  (trim('Assy line'),trim('Asrs'))
+            ),0)))/
+          SUM(NVL((select SUM(a.d_worktime) from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and trim(b.description) IN  (trim('Assy line'),trim('Asrs'))
+            ),0))*100,2),0),'FM9999990D00')||'%' aad
+          ,TO_CHAR(NVL(ROUND(DECODE(SUM(NVL((select nvl(sum(d_stoptime),0) from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and trim(b.description) IN  (trim('Assy line'),trim('Asrs'))
+            ),0)),0,null,SUM(NVL((select nvl(sum(d_stoptime),0) from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and trim(b.description) IN  (trim('Assy line'),trim('Asrs'))
+            ),0)))/
+          SUM(NVL((select SUM(a.d_worktime) from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and trim(b.description) IN  (trim('Assy line'),trim('Asrs'))
+            ),0))*100,2),0),'FM9999990D00')||'%' ead
+FROM TADAY x
+where x.tmonth  = substr('^param3',0,4)||substr('^param3',6,2)
+and x.tday IN ( SELECT cal_date FROM TAWRKCALENDAR 
+                WHERE 1=1
+                AND cal_date like substr('^param3',0,4)||substr('^param3',6,2)||'__'
+                AND is_work = 'Y'
+                AND plant = '^param5'
+                AND comp_no = '^param1')
+GROUP BY x.tmonth
+/
+$
+select to_char(to_date(x.tday,'yyyymmdd'),'dd.mm.yyyy') tday
+        , NVL((select a.d_worktime from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and b.eqloc_id = 1001),0) ff_ppt
+        , NVL((select a.d_repairtime from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and b.eqloc_id = 1001),0) ff_dt
+        , NVL((select a.d_repairfreq from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and b.eqloc_id = 1001),0) ff_fq
+        , NVL((select to_char(round(DECODE(nvl(d_repairtime,0),0,null,nvl(d_repairtime,0))/a.d_worktime*100,2),'FM9999990D00') from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and b.eqloc_id = 1001),0)||'%' ff_efr
+        , NVL((select a.d_worktime from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and b.eqloc_id = 1034),0) ar_ppt
+        , NVL((select a.d_repairtime from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and b.eqloc_id = 1034),0) ar_dt
+        , NVL((select a.d_repairfreq from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and b.eqloc_id = 1034),0) ar_fq
+        , NVL((select to_char(round(DECODE(nvl(d_repairtime,0),0,null,nvl(d_repairtime,0))/a.d_worktime*100,2),'FM9999990D00') from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and b.eqloc_id = 1034),0)||'%' ar_efr
+        , NVL((select a.d_worktime from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and b.eqloc_id = 1045),0) as_ppt
+        , NVL((select a.d_repairtime from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and b.eqloc_id = 1045),0) as_dt
+        , NVL((select a.d_repairfreq from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and b.eqloc_id = 1045),0) as_fq
+        , NVL((select to_char(round(DECODE(nvl(d_repairtime,0),0,null,nvl(d_repairtime,0))/a.d_worktime*100,2),'FM9999990D00') from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and b.eqloc_id = 1045),0)||'%' as_efr
+         ,NVL((select  to_char(round(DECODE(nvl(sum(a.d_repairtime),0),0,null,nvl(sum(a.d_repairtime),0))/sum(a.d_worktime)*100,2),'FM9999990D00')
+                 from TAKPIDLOCDN a, TAEQLOC b
+                where a.comp_no = b.comp_no
+                and a.eqloc_id = b.eqloc_id
+                and a.wrk_date  = x.tday
+                and a.plant = '^param5'
+                and a.comp_no = '^param1'
+                and b.eqloc_id in (1001,1034,1045)
+                group by a.comp_no, a.wrk_date,a.plant),0)||'%' ead
+FROM TADAY x
+where x.tmonth  = substr('^param3',0,4)||substr('^param3',6,2)
+and x.tday IN ( SELECT cal_date FROM TAWRKCALENDAR 
+				WHERE 1=1
+				AND cal_date like substr('^param3',0,4)||substr('^param3',6,2)||'__'
+				AND is_work = 'Y'
+            	AND plant = '^param5'
+            	AND comp_no = '^param1')
+order by x.tday
+/
+$
+select 'TOTAL' tday
+        , SUM(NVL((select a.d_worktime from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and b.eqloc_id = 1001),0)) ff_ppt
+        , SUM(NVL((select a.d_repairtime from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and b.eqloc_id = 1001),0)) ff_dt
+        , SUM(NVL((select a.d_repairfreq from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and b.eqloc_id = 1001),0)) ff_fq
+         ,TO_CHAR(NVL(ROUND(DECODE(SUM(NVL((select a.d_repairtime from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and b.eqloc_id = 1001),0)),0,null,SUM(NVL((select a.d_repairtime from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and b.eqloc_id = 1001),0)))/
+            SUM(NVL((select a.d_worktime from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and b.eqloc_id = 1001),0))*100,2),0),'FM9999990D00')||'%' ff_efr
+        , SUM(NVL((select a.d_worktime from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and b.eqloc_id = 1034),0)) ar_ppt
+        , SUM(NVL((select a.d_repairtime from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and b.eqloc_id = 1034),0)) ar_dt
+        , SUM(NVL((select a.d_repairfreq from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and b.eqloc_id = 1034),0)) ar_fq
+         ,TO_CHAR(NVL(ROUND(DECODE(SUM(NVL((select a.d_repairtime from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and b.eqloc_id = 1034),0)),0,null,SUM(NVL((select a.d_repairtime from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and b.eqloc_id = 1034),0)))/
+            SUM(NVL((select a.d_worktime from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and b.eqloc_id = 1034),0))*100,2),0),'FM9999990D00')||'%' ar_efr
+        , SUM(NVL((select a.d_worktime from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and b.eqloc_id = 1045),0)) as_ppt
+        , SUM(NVL((select a.d_repairtime from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and b.eqloc_id = 1045),0)) as_dt
+        , SUM(NVL((select a.d_repairfreq from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and b.eqloc_id = 1045),0)) as_fq
+         ,TO_CHAR(NVL(ROUND(DECODE(SUM(NVL((select a.d_repairtime from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and b.eqloc_id = 1045),0)),0,null,SUM(NVL((select a.d_repairtime from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and b.eqloc_id = 1045),0)))/
+            SUM(NVL((select a.d_worktime from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and b.eqloc_id = 1045),0))*100,2),0),'FM9999990D00')||'%' as_efr
+          ,TO_CHAR(NVL(ROUND(DECODE(SUM(NVL((select nvl(sum(d_repairtime),0) from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and b.eqloc_id in (1001,1034,1045)
+            ),0)),0,null,SUM(NVL((select nvl(sum(d_repairtime),0) from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and b.eqloc_id in (1001,1034,1045)
+            ),0)))/
+          SUM(NVL((select SUM(a.d_worktime) from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and b.eqloc_id in (1001,1034,1045)
+            ),0))*100,2),0),'FM9999990D00')||'%' ead
+FROM TADAY x
+where x.tmonth  = substr('^param3',0,4)||substr('^param3',6,2)
+and x.tday IN ( SELECT cal_date FROM TAWRKCALENDAR 
+                WHERE 1=1
+                AND cal_date like substr('^param3',0,4)||substr('^param3',6,2)||'__'
+                AND is_work = 'Y'
+                AND plant = '^param5'
+                AND comp_no = '^param1')
+GROUP BY x.tmonth
+/

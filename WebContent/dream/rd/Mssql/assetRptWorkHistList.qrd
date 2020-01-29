@@ -1,0 +1,20 @@
+$
+SELECT          ROW_NUMBER() over(order by x.wkor_date ) as seqNo,
+                    CASE WHEN x.wkor_date IS NOT NULL THEN 
+         SUBSTRING(x.wkor_date,1,4)+ '-' +
+         SUBSTRING(x.wkor_date,5,2)+ '-' +
+         SUBSTRING(x.wkor_date,7,2)   		ELSE '-' END 	                                                             AS wkorDate        
+                    , dbo.SFACODE_TO_DESC(x.WO_TYPE, 'WO_TYPE','SYS','','^param2')                                           AS woType        
+                    , (SELECT DESCRIPTION FROM TADEPT WHERE DEPT_ID = x.DEPT_ID AND COMP_NO = x.COMP_NO)                                AS dept     
+                    ,y.DESCRIPTION                                                                                                   AS equip    
+                    , x.DESCRIPTION                                                                                                   AS workDesc    
+                    , REPLACE(REPLACE(x.PERFORM,char(10),'$enter'),char(13),'$enter')      AS perform
+          FROM TAEQHISTORY x LEFT OUTER JOIN TAEQUIPMENT y                                                                                            
+          ON y.ITEM_NO = x.ITEM_NO 
+          AND y.IS_LAST_VERSION = 'Y' 
+          AND y.COMP_NO = x.COMP_NO                                                                
+            WHERE  1=1
+            AND x.comp_no = '^param1'
+            AND x.eqhistory_id in (^param3)     
+        
+/

@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<fo:root xmlns:fo="http://www.w3.org/1999/XSL/Format">
+	<fo:layout-master-set>
+		<fo:simple-page-master master-name="all-pages" 
+   							   page-height="210mm" page-width="297mm"
+                               margin-top="10mm"  margin-bottom="10mm" 
+                               margin-left="10mm" margin-right="10mm">
+          <fo:region-body region-name="xsl-region-body" margin-top="10mm" margin-bottom="5mm" margin-left="0mm" margin-right="0mm"/>
+          <fo:region-before region-name="xsl-region-before" extent="10mm"/>
+          <fo:region-after region-name="xsl-region-after" extent="10mm"/>
+		</fo:simple-page-master>
+        <fo:page-sequence-master master-name="default-sequence">
+        	<fo:repeatable-page-master-reference master-reference="all-pages"/>
+        </fo:page-sequence-master>
+	</fo:layout-master-set>
+	<fo:declarations>
+		<x:xmpmeta xmlns:x="adobe:ns:meta/">
+			<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+				<rdf:Description rdf:about="">
+					<dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">javaworker</dc:creator>
+				</rdf:Description>
+			</rdf:RDF>
+		</x:xmpmeta>
+	</fo:declarations>
+	<fo:page-sequence master-reference="all-pages"  id="#PAGE_ID#">
+	
+		<!-- Footer -->
+        <fo:static-content flow-name="xsl-region-after" font-size="12pt" font-family="Arial">
+        	<!-- Sample : pageNumber / TotalPageCount -->
+        	<fo:block text-align="left">#TODAY#
+        	</fo:block>
+        </fo:static-content>
+        
+		<fo:flow flow-name="xsl-region-body">
+			<fo:table table-layout="fixed" width="10.638888in">
+				<fo:table-column column-width="1.1111112in" />
+				<fo:table-column column-width="0.7916667in" />
+				<fo:table-column column-width="0.7916667in" />.
+				<fo:table-column column-width="0.7916667in" />
+				<fo:table-column column-width="0.7916667in" />
+				<fo:table-column column-width="0.7777778in" />
+				<fo:table-column column-width="0.7916667in" />
+				<fo:table-column column-width="0.7916667in" />
+				<fo:table-column column-width="0.7916667in" />
+				<fo:table-column column-width="0.7916667in" />
+				<fo:table-column column-width="0.7777778in" />
+				<fo:table-column column-width="0.8611111in" />
+				<fo:table-column column-width="0.0000001in" />
+				<fo:table-column column-width="0.7777778in" />
+				<fo:table-body>
+					<fo:table-row height="17.4pt">
+						<fo:table-cell>
+							<fo:block />
+						</fo:table-cell>
+						<fo:table-cell>
+							<fo:block />
+						</fo:table-cell>
+						<fo:table-cell>
+							<fo:block />
+						</fo:table-cell>
+						<fo:table-cell>
+							<fo:block />
+						</fo:table-cell>
+						<fo:table-cell>
+							<fo:block />
+						</fo:table-cell>
+						<fo:table-cell display-align="center" margin-left="3px"
+							number-columns-spanned="4" number-rows-spanned="2">
+							<fo:block absolute-position="fixed" bottom="0px" color="black"
+								font-family="MS Gothic" font-size="18pt" font-weight="bold" height="17.4pt"
+								left="0px" min-width="56px" overflow="hidden" text-align="center"
+								top="0px" white-space-collapse="false" wrap-option="no-wrap">PART STOCK
+							</fo:block>
+						</fo:table-cell>
+					</fo:table-row>
+					<fo:table-row height="17.4pt">
+						<fo:table-cell>
+							<fo:block />
+						</fo:table-cell>
+					</fo:table-row>
+					<fo:table-row height="17.4pt">
+						<fo:table-cell>
+							<fo:block />
+						</fo:table-cell>
+						<fo:table-cell>
+							<fo:block />
+						</fo:table-cell>
+						<fo:table-cell>
+							<fo:block />
+						</fo:table-cell>
+						<fo:table-cell>
+							<fo:block />
+						</fo:table-cell>
+						<fo:table-cell>
+							<fo:block />
+						</fo:table-cell>
+						<fo:table-cell>
+							<fo:block />
+						</fo:table-cell>
+						<fo:table-cell>
+							<fo:block />
+						</fo:table-cell>
+						<fo:table-cell>
+							<fo:block />
+						</fo:table-cell>
+						<fo:table-cell>
+							<fo:block />
+						</fo:table-cell>
+						<fo:table-cell>
+							<fo:block />
+						</fo:table-cell>
+						<fo:table-cell>
+							<fo:block />
+						</fo:table-cell>
+						<fo:table-cell>
+							<fo:block />
+						</fo:table-cell>
+						<fo:table-cell>
+							<fo:block />
+						</fo:table-cell>
+						<fo:table-cell>
+							<fo:block />
+						</fo:table-cell>
+					</fo:table-row>
+					<fo:table-row height="17.4pt">
+						<fo:table-cell display-align="center" margin-left="3px">
+							<fo:block absolute-position="fixed" bottom="0px" color="black"
+								font-family="MS Gothic" font-size="11pt" font-weight="bold" height="17.4pt"
+								left="0px" max-width="772px" min-width="80px" overflow="hidden"
+								text-align="left" top="0px" white-space-collapse="false"
+								wrap-option="no-wrap">MANAGER: #EMPNAME# / #DEPTDESC#</fo:block>
+						</fo:table-cell>
+						<fo:table-cell>
+							<fo:block />
+						</fo:table-cell>
+						<fo:table-cell>
+							<fo:block />
+						</fo:table-cell>
+						<fo:table-cell>
+							<fo:block />
+						</fo:table-cell>
+						<fo:table-cell>
+							<fo:block />
+						</fo:table-cell>
+						<fo:table-cell>
+							<fo:block />
+						</fo:table-cell>
+						<fo:table-cell>
+							<fo:block />
+						</fo:table-cell>
+						<fo:table-cell>
+							<fo:block />
+						</fo:table-cell>
+						<fo:table-cell>
+							<fo:block />
+						</fo:table-cell>
+						<fo:table-cell>
+							<fo:block />
+						</fo:table-cell>
+						<fo:table-cell display-align="center" margin-left="3px">
+							<fo:block absolute-position="fixed" bottom="0px" color="black"
+								font-family="MS Gothic" font-size="11pt" height="17.4pt" left="0px"
+								min-width="56px" overflow="hidden" text-align="right" top="0px"
+								white-space-collapse="false" wrap-option="no-wrap">Date: #YYYYMMDD#</fo:block>
+						</fo:table-cell>
+						<fo:table-cell>
+							<fo:block />
+						</fo:table-cell>
+						<fo:table-cell>
+							<fo:block />
+						</fo:table-cell>
+						<fo:table-cell>
+							<fo:block />
+						</fo:table-cell>
+					</fo:table-row>
+					<fo:table-row height="31.8pt">
+						<fo:table-cell border-bottom="thin black solid"
+							border-left="thin black solid" border-right="thin black solid"
+							border-top="thin black solid" display-align="center" margin-left="3px">
+							<fo:block color="black" font-family="MS Gothic" font-size="9pt"
+								font-weight="bold" text-align="center" white-space-collapse="false">No
+							</fo:block>
+						</fo:table-cell>
+						<fo:table-cell border-bottom="thin black solid"
+							border-left="thin black solid" border-right="thin black solid"
+							border-top="thin black solid" display-align="center" margin-left="3px"
+							number-columns-spanned="2">
+							<fo:block absolute-position="fixed" bottom="0px" color="black"
+								font-family="MS Gothic" font-size="9pt" font-weight="bold" height="31.8pt"
+								left="0px" max-width="171px" min-width="57px" overflow="hidden"
+								text-align="center" top="0px" white-space-collapse="false"
+								wrap-option="no-wrap">S/Parts No</fo:block>
+						</fo:table-cell>
+						<fo:table-cell border-bottom="thin black solid"
+							border-left="thin black solid" border-right="thin black solid"
+							border-top="thin black solid" display-align="center" margin-left="3px"
+							number-columns-spanned="4">
+							<fo:block absolute-position="fixed" bottom="0px" color="black"
+								font-family="MS Gothic" font-size="9pt" font-weight="bold" height="31.8pt"
+								left="0px" max-width="227px" min-width="56px" overflow="hidden"
+								text-align="center" top="0px" white-space-collapse="false"
+								wrap-option="no-wrap">S/Parts Name</fo:block>
+						</fo:table-cell>
+						<fo:table-cell border-bottom="thin black solid"
+							border-left="thin black solid" border-right="thin black solid"
+							border-top="thin black solid" display-align="center" margin-left="3px"
+							number-columns-spanned="2">
+							<fo:block color="black" font-family="MS Gothic" font-size="9pt"
+								font-weight="bold" text-align="center" white-space-collapse="false">Model
+							</fo:block>
+						</fo:table-cell>
+						<fo:table-cell border-bottom="thin black solid"
+							border-left="thin black solid" border-right="thin black solid"
+							border-top="thin black solid" display-align="center" margin-left="3px">
+							<fo:block absolute-position="fixed" bottom="0px" color="black"
+								font-family="MS Gothic" font-size="9pt" font-weight="bold" height="31.8pt"
+								left="0px" max-width="120px" min-width="57px" overflow="hidden"
+								text-align="center" top="0px" white-space-collapse="false"
+								wrap-option="no-wrap">Current Qty</fo:block>
+						</fo:table-cell>
+						<fo:table-cell border-bottom="thin black solid"
+							border-left="thin black solid" border-right="thin black solid"
+							border-top="thin black solid" display-align="center" margin-left="3px">
+							<fo:block absolute-position="fixed" bottom="0px" color="black"
+								font-family="MS Gothic" font-size="9pt" font-weight="bold" height="31.8pt"
+								left="0px" min-width="62px" overflow="hidden" text-align="center"
+								top="0px" white-space-collapse="false" wrap-option="no-wrap">Min Qty
+							</fo:block>
+						</fo:table-cell>
+						<fo:table-cell border-bottom="thin black solid"
+							border-left="thin black solid" border-right="thin black solid"
+							border-top="thin black solid" display-align="center" margin-left="3px"
+							number-columns-spanned="3">
+							<fo:block absolute-position="fixed" bottom="0px" color="black"
+								font-family="MS Gothic" font-size="9pt" font-weight="bold" height="31.8pt"
+								left="0px" max-width="227px" min-width="56px" overflow="hidden"
+								text-align="center" top="0px" white-space-collapse="false"
+								wrap-option="no-wrap">Supplier</fo:block>
+						</fo:table-cell>
+					</fo:table-row>
+					<fo:table-row height="17.4pt" id='#PT_LIST#'>
+						<fo:table-cell border-bottom="thin black solid"
+							border-left="thin black solid" border-right="thin black solid"
+							border-top="thin black solid" display-align="center" margin-left="3px">
+							<fo:block absolute-position="fixed" bottom="0px" color="black"
+								font-family="MS Gothic" font-size="8pt" height="17.4pt" left="0px"
+								max-width="137px" min-width="80px" overflow="hidden" text-align="left"
+								top="0px" white-space-collapse="false" wrap-option="wrap">#SEQNUM#
+							</fo:block>
+						</fo:table-cell>
+						<fo:table-cell border-bottom="thin black solid"
+							border-left="thin black solid" border-right="thin black solid"
+							border-top="thin black solid" display-align="center" margin-left="3px"
+							number-columns-spanned="2">
+							<fo:block absolute-position="fixed" bottom="0px" color="black"
+								font-family="MS Gothic" font-size="8pt" height="17.4pt" left="0px"
+								max-width="171px" min-width="57px" overflow="hidden" text-align="left"
+								top="0px" white-space-collapse="false" wrap-option="wrap">#PARTNUM#
+							</fo:block>
+						</fo:table-cell>
+						<fo:table-cell border-bottom="thin black solid"
+							border-left="thin black solid" border-right="thin black solid"
+							border-top="thin black solid" display-align="center" margin-left="3px"
+							number-columns-spanned="4">
+							<fo:block absolute-position="fixed" bottom="0px" color="black"
+								font-family="MS Gothic" font-size="8pt" height="17.4pt" left="0px"
+								max-width="227px" min-width="56px" overflow="hidden" text-align="left"
+								top="0px" white-space-collapse="false" wrap-option="wrap">#PTNAMESIZE#
+							</fo:block>
+						</fo:table-cell>
+						<fo:table-cell border-bottom="thin black solid"
+							border-left="thin black solid" border-right="thin black solid"
+							border-top="thin black solid" display-align="center" margin-left="3px"
+							number-columns-spanned="2">
+							<fo:block absolute-position="fixed" bottom="0px" color="black"
+								font-family="MS Gothic" font-size="8pt" height="17.4pt" left="0px"
+								max-width="137px" min-width="80px" overflow="hidden" text-align="left"
+								top="0px" white-space-collapse="false" wrap-option="wrap">#PTMODEL#
+							</fo:block>
+						</fo:table-cell>
+						<fo:table-cell border-bottom="thin black solid"
+							border-left="thin black solid" border-right="thin black solid"
+							border-top="thin black solid" display-align="center" margin-left="3px">
+							<fo:block absolute-position="fixed" bottom="0px" color="black"
+								font-family="MS Gothic" font-size="8pt" height="17.4pt" left="0px"
+								max-width="120px" min-width="57px" overflow="hidden" text-align="left"
+								top="0px" white-space-collapse="false" wrap-option="wrap">#CURRQTY#
+							</fo:block>
+						</fo:table-cell>
+						<fo:table-cell border-bottom="thin black solid"
+							border-left="thin black solid" border-right="thin black solid"
+							border-top="thin black solid" display-align="center" margin-left="3px">
+							<fo:block absolute-position="fixed" bottom="0px" color="black"
+								font-family="MS Gothic" font-size="8pt" height="17.4pt" left="0px"
+								min-width="62px" overflow="hidden" text-align="left" top="0px"
+								white-space-collapse="false" wrap-option="wrap">#STOCKMINQTY#</fo:block>
+						</fo:table-cell>
+						<fo:table-cell border-bottom="thin black solid"
+							border-left="thin black solid" border-right="thin black solid"
+							border-top="thin black solid" display-align="center" margin-left="3px"
+							number-columns-spanned="3">
+							<fo:block absolute-position="fixed" bottom="0px" color="black"
+								font-family="MS Gothic" font-size="8pt" height="17.4pt" left="0px"
+								max-width="227px" min-width="56px" overflow="hidden" text-align="left"
+								top="0px" white-space-collapse="false" wrap-option="wrap">#STOCKSELLER#
+							</fo:block>
+						</fo:table-cell>
+					</fo:table-row>
+				</fo:table-body>
+			</fo:table>
+		</fo:flow>
+	</fo:page-sequence>
+</fo:root>

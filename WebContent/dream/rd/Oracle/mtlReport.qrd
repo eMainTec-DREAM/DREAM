@@ -1,0 +1,3495 @@
+$
+SELECT 
+substr('^param3',0,4) yyyy,
+(SELECT key_name FROM TALANG WHERE key_no='month'||to_number(substr('^param3',6,2)) AND key_type='LABEL' AND lang='^param4') title, 
+(SELECT user_name FROM TAUSER WHERE user_id = '^param2') name,
+TO_CHAR(SYSDATE, 'YYYY.MM.DD')toDate
+from dual
+/
+$
+SELECT 
+substr('^param3',0,4) yyyy
+from dual
+/
+$
+select
+NVL((
+select AVG(ma_stoptime) from TAKPIMLOCDN x
+WHERE x.eqloc_id in('1090','1089')
+AND substr(x.yyyymm,0,4)=substr('^param3',0,4)-1 ),'0')assemOld,
+NVL((
+select AVG(ma_stoptime) from TAKPIMLOCDN x
+WHERE x.eqloc_id in('1090','1089')
+AND substr(x.yyyymm,0,4)=substr('^param3',0,4) ),'0')assemNew,
+(select AVG(y.pvalue)target from TAMTLNPOINT y WHERE y.mtlnpoint='BD' and y.eqloc_id in('1090','1089') and substr(y.yyyymm,0,4)=substr('^param3',0,4))target ,
+'Assembly'title
+FROM dual
+UNION ALL
+select
+NVL((
+select AVG(ma_stoptime) from TAKPIMLOCDN x
+WHERE x.eqloc_id='1088'
+AND substr(x.yyyymm,0,4)=substr('^param3',0,4)-1 ),'0')mecaOld,
+NVL((
+select AVG(ma_stoptime) from TAKPIMLOCDN x
+WHERE x.eqloc_id='1088'
+AND substr(x.yyyymm,0,4)=substr('^param3',0,4) ),'0')mecaNew,
+(select AVG(y.pvalue)target from TAMTLNPOINT y WHERE y.mtlnpoint='BD' and y.eqloc_id in('1088') and substr(y.yyyymm,0,4)=substr('^param3',0,4))target ,
+'Mecha'title
+FROM dual
+UNION ALL
+select
+NVL((
+select AVG(ma_stoptime) from TAKPIMLOCDN x
+WHERE x.eqloc_id='1087'
+AND substr(x.yyyymm,0,4)=substr('^param3',0,4)-1 ),'0')mecaOld,
+NVL((
+select AVG(ma_stoptime) from TAKPIMLOCDN x
+WHERE x.eqloc_id='1087'
+AND substr(x.yyyymm,0,4)=substr('^param3',0,4) ),'0')mecaNew,
+(select AVG(y.pvalue)target from TAMTLNPOINT y WHERE y.mtlnpoint='BD' and y.eqloc_id in('1087') and substr(y.yyyymm,0,4)=substr('^param3',0,4))target ,
+'Foam'title
+FROM dual
+/
+$
+select
+rownum,
+b.*
+from
+(
+select
+NVL((
+select SUM(ma_stoptime) from TAKPIMLOCDN x
+WHERE x.eqloc_id in('1090','1089')
+AND x.yyyymm=substr('^param3',0,4)||'01' ),'0')assem,
+NVL((
+select ma_stoptime from TAKPIMLOCDN x
+WHERE x.eqloc_id='1088'
+AND x.yyyymm=substr('^param3',0,4)||'01' ),'0')meca,
+NVL((
+select ma_stoptime from TAKPIMLOCDN x
+WHERE x.eqloc_id='1087'
+AND x.yyyymm=substr('^param3',0,4)||'01' ),'0')foam,
+(select AVG(y.pvalue)target from TAMTLNPOINT y WHERE y.mtlnpoint='BD' and y.eqloc_id in('1090','1089') and substr(y.yyyymm,0,6)=substr('^param3',0,4)||'01')assemTarget ,
+(select AVG(y.pvalue)target from TAMTLNPOINT y WHERE y.mtlnpoint='BD' and y.eqloc_id in('1088') and substr(y.yyyymm,0,6)=substr('^param3',0,4)||'01')mecaTarget ,
+(select AVG(y.pvalue)target from TAMTLNPOINT y WHERE y.mtlnpoint='BD' and y.eqloc_id in('1087') and substr(y.yyyymm,0,6)=substr('^param3',0,4)||'01')foamTarget ,
+'Jan'month
+FROM dual
+UNION ALL
+SELECT
+NVL((
+select SUM(ma_stoptime) from TAKPIMLOCDN x
+WHERE x.eqloc_id in('1090','1089')
+AND x.yyyymm=substr('^param3',0,4)||'02' ),'0')assem,
+NVL((
+select ma_stoptime from TAKPIMLOCDN x
+WHERE x.eqloc_id='1088'
+AND x.yyyymm=substr('^param3',0,4)||'02' ),'0')meca,
+NVL((
+select ma_stoptime from TAKPIMLOCDN x
+WHERE x.eqloc_id='1087'
+AND x.yyyymm=substr('^param3',0,4)||'02' ),'0')foam,
+(select AVG(y.pvalue)target from TAMTLNPOINT y WHERE y.mtlnpoint='BD' and y.eqloc_id in('1090','1089') and substr(y.yyyymm,0,6)=substr('^param3',0,4)||'02')assemTarget ,
+(select AVG(y.pvalue)target from TAMTLNPOINT y WHERE y.mtlnpoint='BD' and y.eqloc_id in('1088') and substr(y.yyyymm,0,6)=substr('^param3',0,4)||'02')mecaTarget ,
+(select AVG(y.pvalue)target from TAMTLNPOINT y WHERE y.mtlnpoint='BD' and y.eqloc_id in('1087') and substr(y.yyyymm,0,6)=substr('^param3',0,4)||'02')foamTarget ,
+'Feb'month
+FROM dual
+UNION ALL
+SELECT
+NVL((
+select SUM(ma_stoptime) from TAKPIMLOCDN x
+WHERE x.eqloc_id in('1090','1089')
+AND x.yyyymm=substr('^param3',0,4)||'03' ),'0')assem,
+NVL((
+select ma_stoptime from TAKPIMLOCDN x
+WHERE x.eqloc_id='1088'
+AND x.yyyymm=substr('^param3',0,4)||'03' ),'0')meca,
+NVL((
+select ma_stoptime from TAKPIMLOCDN x
+WHERE x.eqloc_id='1087'
+AND x.yyyymm=substr('^param3',0,4)||'03' ),'0')foam,
+(select AVG(y.pvalue)target from TAMTLNPOINT y WHERE y.mtlnpoint='BD' and y.eqloc_id in('1090','1089') and substr(y.yyyymm,0,6)=substr('^param3',0,4)||'03')assemTarget ,
+(select AVG(y.pvalue)target from TAMTLNPOINT y WHERE y.mtlnpoint='BD' and y.eqloc_id in('1088') and substr(y.yyyymm,0,6)=substr('^param3',0,4)||'03')mecaTarget ,
+(select AVG(y.pvalue)target from TAMTLNPOINT y WHERE y.mtlnpoint='BD' and y.eqloc_id in('1087') and substr(y.yyyymm,0,6)=substr('^param3',0,4)||'03')foamTarget ,
+'Mar'month
+FROM dual
+UNION ALL
+SELECT
+NVL((
+select SUM(ma_stoptime) from TAKPIMLOCDN x
+WHERE x.eqloc_id in('1090','1089')
+AND x.yyyymm=substr('^param3',0,4)||'04' ),'0')assem,
+NVL((
+select ma_stoptime from TAKPIMLOCDN x
+WHERE x.eqloc_id='1088'
+AND x.yyyymm=substr('^param3',0,4)||'04' ),'0')meca,
+NVL((
+select ma_stoptime from TAKPIMLOCDN x
+WHERE x.eqloc_id='1087'
+AND x.yyyymm=substr('^param3',0,4)||'04' ),'0')foam,
+(select AVG(y.pvalue)target from TAMTLNPOINT y WHERE y.mtlnpoint='BD' and y.eqloc_id in('1090','1089') and substr(y.yyyymm,0,6)=substr('^param3',0,4)||'04')assemTarget ,
+(select AVG(y.pvalue)target from TAMTLNPOINT y WHERE y.mtlnpoint='BD' and y.eqloc_id in('1088') and substr(y.yyyymm,0,6)=substr('^param3',0,4)||'04')mecaTarget ,
+(select AVG(y.pvalue)target from TAMTLNPOINT y WHERE y.mtlnpoint='BD' and y.eqloc_id in('1087') and substr(y.yyyymm,0,6)=substr('^param3',0,4)||'04')foamTarget ,
+'Apr'month
+FROM dual
+UNION ALL
+SELECT
+NVL((
+select SUM(ma_stoptime) from TAKPIMLOCDN x
+WHERE x.eqloc_id in('1090','1089')
+AND x.yyyymm=substr('^param3',0,4)||'05' ),'0')assem,
+NVL((
+select ma_stoptime from TAKPIMLOCDN x
+WHERE x.eqloc_id='1088'
+AND x.yyyymm=substr('^param3',0,4)||'05' ),'0')meca,
+NVL((
+select ma_stoptime from TAKPIMLOCDN x
+WHERE x.eqloc_id='1087'
+AND x.yyyymm=substr('^param3',0,4)||'05' ),'0')foam,
+(select AVG(y.pvalue)target from TAMTLNPOINT y WHERE y.mtlnpoint='BD' and y.eqloc_id in('1090','1089') and substr(y.yyyymm,0,6)=substr('^param3',0,4)||'05')assemTarget ,
+(select AVG(y.pvalue)target from TAMTLNPOINT y WHERE y.mtlnpoint='BD' and y.eqloc_id in('1088') and substr(y.yyyymm,0,6)=substr('^param3',0,4)||'05')mecaTarget ,
+(select AVG(y.pvalue)target from TAMTLNPOINT y WHERE y.mtlnpoint='BD' and y.eqloc_id in('1087') and substr(y.yyyymm,0,6)=substr('^param3',0,4)||'05')foamTarget ,
+'May'month
+FROM dual
+UNION ALL
+SELECT
+NVL((
+select SUM(ma_stoptime) from TAKPIMLOCDN x
+WHERE x.eqloc_id in('1090','1089')
+AND x.yyyymm=substr('^param3',0,4)||'06' ),'0')assem,
+NVL((
+select ma_stoptime from TAKPIMLOCDN x
+WHERE x.eqloc_id='1088'
+AND x.yyyymm=substr('^param3',0,4)||'06' ),'0')meca,
+NVL((
+select ma_stoptime from TAKPIMLOCDN x
+WHERE x.eqloc_id='1087'
+AND x.yyyymm=substr('^param3',0,4)||'06' ),'0')foam,
+(select AVG(y.pvalue)target from TAMTLNPOINT y WHERE y.mtlnpoint='BD' and y.eqloc_id in('1090','1089') and substr(y.yyyymm,0,6)=substr('^param3',0,4)||'06')assemTarget ,
+(select AVG(y.pvalue)target from TAMTLNPOINT y WHERE y.mtlnpoint='BD' and y.eqloc_id in('1088') and substr(y.yyyymm,0,6)=substr('^param3',0,4)||'06')mecaTarget ,
+(select AVG(y.pvalue)target from TAMTLNPOINT y WHERE y.mtlnpoint='BD' and y.eqloc_id in('1087') and substr(y.yyyymm,0,6)=substr('^param3',0,4)||'06')foamTarget ,
+'Jun'month
+FROM dual
+UNION ALL
+SELECT
+NVL((
+select SUM(ma_stoptime) from TAKPIMLOCDN x
+WHERE x.eqloc_id in('1090','1089')
+AND x.yyyymm=substr('^param3',0,4)||'07' ),'0')assem,
+NVL((
+select ma_stoptime from TAKPIMLOCDN x
+WHERE x.eqloc_id='1088'
+AND x.yyyymm=substr('^param3',0,4)||'07' ),'0')meca,
+NVL((
+select ma_stoptime from TAKPIMLOCDN x
+WHERE x.eqloc_id='1087'
+AND x.yyyymm=substr('^param3',0,4)||'07' ),'0')foam,
+(select AVG(y.pvalue)target from TAMTLNPOINT y WHERE y.mtlnpoint='BD' and y.eqloc_id in('1090','1089') and substr(y.yyyymm,0,6)=substr('^param3',0,4)||'07')assemTarget ,
+(select AVG(y.pvalue)target from TAMTLNPOINT y WHERE y.mtlnpoint='BD' and y.eqloc_id in('1088') and substr(y.yyyymm,0,6)=substr('^param3',0,4)||'07')mecaTarget ,
+(select AVG(y.pvalue)target from TAMTLNPOINT y WHERE y.mtlnpoint='BD' and y.eqloc_id in('1087') and substr(y.yyyymm,0,6)=substr('^param3',0,4)||'07')foamTarget ,
+'Jul'month
+FROM dual
+UNION ALL
+SELECT
+NVL((
+select SUM(ma_stoptime) from TAKPIMLOCDN x
+WHERE x.eqloc_id in('1090','1089')
+AND x.yyyymm=substr('^param3',0,4)||'08' ),'0')assem,
+NVL((
+select ma_stoptime from TAKPIMLOCDN x
+WHERE x.eqloc_id='1088'
+AND x.yyyymm=substr('^param3',0,4)||'08' ),'0')meca,
+NVL((
+select ma_stoptime from TAKPIMLOCDN x
+WHERE x.eqloc_id='1087'
+AND x.yyyymm=substr('^param3',0,4)||'08' ),'0')foam,
+(select AVG(y.pvalue)target from TAMTLNPOINT y WHERE y.mtlnpoint='BD' and y.eqloc_id in('1090','1089') and substr(y.yyyymm,0,6)=substr('^param3',0,4)||'08')assemTarget ,
+(select AVG(y.pvalue)target from TAMTLNPOINT y WHERE y.mtlnpoint='BD' and y.eqloc_id in('1088') and substr(y.yyyymm,0,6)=substr('^param3',0,4)||'08')mecaTarget ,
+(select AVG(y.pvalue)target from TAMTLNPOINT y WHERE y.mtlnpoint='BD' and y.eqloc_id in('1087') and substr(y.yyyymm,0,6)=substr('^param3',0,4)||'08')foamTarget ,
+'Aug'month
+FROM dual
+UNION ALL
+SELECT
+NVL((
+select SUM(ma_stoptime) from TAKPIMLOCDN x
+WHERE x.eqloc_id in('1090','1089')
+AND x.yyyymm=substr('^param3',0,4)||'09' ),'0')assem,
+NVL((
+select ma_stoptime from TAKPIMLOCDN x
+WHERE x.eqloc_id='1088'
+AND x.yyyymm=substr('^param3',0,4)||'09' ),'0')meca,
+NVL((
+select ma_stoptime from TAKPIMLOCDN x
+WHERE x.eqloc_id='1087'
+AND x.yyyymm=substr('^param3',0,4)||'09' ),'0')foam,
+(select AVG(y.pvalue)target from TAMTLNPOINT y WHERE y.mtlnpoint='BD' and y.eqloc_id in('1090','1089') and substr(y.yyyymm,0,6)=substr('^param3',0,4)||'09')assemTarget ,
+(select AVG(y.pvalue)target from TAMTLNPOINT y WHERE y.mtlnpoint='BD' and y.eqloc_id in('1088') and substr(y.yyyymm,0,6)=substr('^param3',0,4)||'09')mecaTarget ,
+(select AVG(y.pvalue)target from TAMTLNPOINT y WHERE y.mtlnpoint='BD' and y.eqloc_id in('1087') and substr(y.yyyymm,0,6)=substr('^param3',0,4)||'09')foamTarget ,
+'Sep'month
+FROM dual
+UNION ALL
+SELECT
+NVL((
+select SUM(ma_stoptime) from TAKPIMLOCDN x
+WHERE x.eqloc_id in('1090','1089')
+AND x.yyyymm=substr('^param3',0,4)||'10' ),'0')assem,
+NVL((
+select ma_stoptime from TAKPIMLOCDN x
+WHERE x.eqloc_id='1088'
+AND x.yyyymm=substr('^param3',0,4)||'10' ),'0')meca,
+NVL((
+select ma_stoptime from TAKPIMLOCDN x
+WHERE x.eqloc_id='1087'
+AND x.yyyymm=substr('^param3',0,4)||'10' ),'0')foam,
+(select AVG(y.pvalue)target from TAMTLNPOINT y WHERE y.mtlnpoint='BD' and y.eqloc_id in('1090','1089') and substr(y.yyyymm,0,6)=substr('^param3',0,4)||'10')assemTarget ,
+(select AVG(y.pvalue)target from TAMTLNPOINT y WHERE y.mtlnpoint='BD' and y.eqloc_id in('1088') and substr(y.yyyymm,0,6)=substr('^param3',0,4)||'10')mecaTarget ,
+(select AVG(y.pvalue)target from TAMTLNPOINT y WHERE y.mtlnpoint='BD' and y.eqloc_id in('1087') and substr(y.yyyymm,0,6)=substr('^param3',0,4)||'10')foamTarget ,
+'Oct'month
+FROM dual
+UNION ALL
+SELECT
+NVL((
+select SUM(ma_stoptime) from TAKPIMLOCDN x
+WHERE x.eqloc_id in('1090','1089')
+AND x.yyyymm=substr('^param3',0,4)||'11' ),'0')assem,
+NVL((
+select ma_stoptime from TAKPIMLOCDN x
+WHERE x.eqloc_id='1088'
+AND x.yyyymm=substr('^param3',0,4)||'11' ),'0')meca,
+NVL((
+select ma_stoptime from TAKPIMLOCDN x
+WHERE x.eqloc_id='1087'
+AND x.yyyymm=substr('^param3',0,4)||'11' ),'0')foam,
+(select AVG(y.pvalue)target from TAMTLNPOINT y WHERE y.mtlnpoint='BD' and y.eqloc_id in('1090','1089') and substr(y.yyyymm,0,6)=substr('^param3',0,4)||'11')assemTarget ,
+(select AVG(y.pvalue)target from TAMTLNPOINT y WHERE y.mtlnpoint='BD' and y.eqloc_id in('1088') and substr(y.yyyymm,0,6)=substr('^param3',0,4)||'11')mecaTarget ,
+(select AVG(y.pvalue)target from TAMTLNPOINT y WHERE y.mtlnpoint='BD' and y.eqloc_id in('1087') and substr(y.yyyymm,0,6)=substr('^param3',0,4)||'11')foamTarget ,
+'Nov'month
+FROM dual
+UNION ALL
+SELECT
+NVL((
+select SUM(ma_stoptime) from TAKPIMLOCDN x
+WHERE x.eqloc_id in('1090','1089')
+AND x.yyyymm=substr('^param3',0,4)||'12' ),'0')assem,
+NVL((
+select ma_stoptime from TAKPIMLOCDN x
+WHERE x.eqloc_id='1088'
+AND x.yyyymm=substr('^param3',0,4)||'12' ),'0')meca,
+NVL((
+select ma_stoptime from TAKPIMLOCDN x
+WHERE x.eqloc_id='1087'
+AND x.yyyymm=substr('^param3',0,4)||'12' ),'0')foam,
+(select AVG(y.pvalue)target from TAMTLNPOINT y WHERE y.mtlnpoint='BD' and y.eqloc_id in('1090','1089') and substr(y.yyyymm,0,6)=substr('^param3',0,4)||'12')assemTarget ,
+(select AVG(y.pvalue)target from TAMTLNPOINT y WHERE y.mtlnpoint='BD' and y.eqloc_id in('1088') and substr(y.yyyymm,0,6)=substr('^param3',0,4)||'12')mecaTarget ,
+(select AVG(y.pvalue)target from TAMTLNPOINT y WHERE y.mtlnpoint='BD' and y.eqloc_id in('1087') and substr(y.yyyymm,0,6)=substr('^param3',0,4)||'12')foamTarget ,
+'Dec'month
+FROM dual
+)b
+where rownum <= substr('^param3',6,2)
+/
+$
+SELECT                         
+(SELECT TO_CHAR(TO_DATE(lndn_start_date,'yyyymmdd'),'YYYY-MM-DD') FROM TAWOFAIL y WHERE x.comp_no=y.comp_no AND x.wkor_id=y.wkor_id) startDate,     
+                (SELECT description                    
+                        FROM TAEQLOC                            
+                        WHERE comp_no ='130'          
+                        AND lvl=1
+                        START wITH eqloc_id =(SELECT TO_CHAR(WM_CONCAT(b.eqloc_id))                                    
+            FROM TAWOEQUIP a, TAEQUIPMENT b                                            
+            WHERE a.comp_no = b.comp_no                                                
+                AND a.equip_id = b.equip_id                                            
+                AND a.wkor_id = x.wkor_id                                            
+                AND a.comp_no = x.comp_no                                            
+            GROUP By a.comp_no, a.wkor_id    )     
+                        CONNECT BY PRIOR p_eqloc_id = eqloc_id       )   AS eqlocId,           
+                  (SELECT TO_CHAR(WM_CONCAT(b.description))                                    
+            FROM TAWOEQUIP a, TAEQUIPMENT b                                            
+            WHERE a.comp_no = b.comp_no                                                
+                AND a.equip_id = b.equip_id                                            
+                AND a.wkor_id = x.wkor_id                                            
+                AND a.comp_no = x.comp_no                                            
+            GROUP By a.comp_no, a.wkor_id    )                         AS equipDesc,    
+(SELECT lndn_work_time FROM TAWOFAIL y WHERE x.comp_no=y.comp_no AND x.wkor_id=y.wkor_id)||'min'lndnTime,   
+(SELECT fs_desc FROM TAWOFAIL y WHERE x.comp_no=y.comp_no AND x.wkor_id=y.wkor_id) fsDesc,            
+(SELECT ca_desc FROM TAWOFAIL y WHERE x.comp_no=y.comp_no AND x.wkor_id=y.wkor_id) caDesc,  
+x.description,
+TO_CHAR(TO_DATE(x.wkor_date,'YYYYMMDD'),'YYYY-MM-DD')wkorDate,                        
+        (SELECT emp_name                                                            
+           FROM TAEMP                                                                
+          WHERE comp_no = x.comp_no                                                    
+            AND emp_id = x.emp_id)                                    empDesc
+FROM TAWORKORDER x
+WHERE (SELECT lndn_work_time FROM TAWOFAIL y WHERE x.comp_no=y.comp_no AND x.wkor_id=y.wkor_id) >20
+AND substr(x.wkor_date,0,4)=substr('^param3',0,4)
+and substr(x.wkor_date,0,6)<= replace('^param3','-')
+AND ROWNUM <=2
+order by wkor_date asc
+/
+$
+SELECT 
+substr('^param3',0,4) yyyy
+from dual
+/
+$
+select
+NVL((
+select AVG(ma_stopfreq) from TAKPIMLOCDN x
+WHERE x.eqloc_id in ('1090','1089')
+AND substr(x.yyyymm,0,4)=substr('^param3',0,4)-1 ),'0')assemOld,
+NVL((
+select AVG(ma_stopfreq) from TAKPIMLOCDN x
+WHERE x.eqloc_id='1090'
+AND substr(x.yyyymm,0,4)=substr('^param3',0,4) ),'0')assemNew,
+NVL((select AVG(x.pvalue) From TAMTLNPOINT x where mtlnpoint='BDN' AND eqloc_id in('1090','1089') 
+AND substr(x.yyyymm,0,4)=substr('^param3',0,4) ),'0')assemTarget,
+'Assembly'title
+FROM dual	
+UNION ALL
+select
+NVL((
+select AVG(ma_stopfreq) from TAKPIMLOCDN x
+WHERE x.eqloc_id='1088'
+AND substr(x.yyyymm,0,4)=substr('^param3',0,4)-1 ),'0')mecaOld,
+NVL((
+select AVG(ma_stopfreq) from TAKPIMLOCDN x
+WHERE x.eqloc_id='1088'
+AND substr(x.yyyymm,0,4)=substr('^param3',0,4) ),'0')mecaNew,
+NVL((select AVG(x.pvalue) From TAMTLNPOINT x where mtlnpoint='BDN' AND eqloc_id='1088' 
+AND substr(x.yyyymm,0,4)=substr('^param3',0,4) ),'0')assemTarget,
+'Mecha'title
+FROM dual
+UNION ALL
+select
+NVL((
+select AVG(ma_stopfreq) from TAKPIMLOCDN x
+WHERE x.eqloc_id='1087'
+AND substr(x.yyyymm,0,4)=substr('^param3',0,4)-1 ),'0')mecaOld,
+NVL((
+select AVG(ma_stopfreq) from TAKPIMLOCDN x
+WHERE x.eqloc_id='1087'
+AND substr(x.yyyymm,0,4)=substr('^param3',0,4) ),'0')mecaNew,
+NVL((select AVG(x.pvalue) From TAMTLNPOINT x where mtlnpoint='BDN' AND eqloc_id='1087' 
+AND substr(x.yyyymm,0,4)=substr('^param3',0,4) ),'0')assemTarget,
+'Foam'title
+FROM dual
+/
+$
+select
+NVL((
+select ROUND(SUM(ma_stopfreq)/MAX((select count(*) from TAWRKCALENDAR where substr(cal_date,0,6)=substr('^param3',0,4)||'01' AND is_work='Y')),2) FROM TAKPIMLOCDN x
+WHERE x.eqloc_id in ('1090','1089')
+AND x.yyyymm=substr('^param3',0,4)||'01' ),'0')assem,
+NVL((
+select ma_stopfreq/(select count(*) from TAWRKCALENDAR where substr(cal_date,0,6)=substr('^param3',0,4)||'01' AND is_work='Y') FROM TAKPIMLOCDN x
+WHERE x.eqloc_id='1088'
+AND x.yyyymm=substr('^param3',0,4)||'01' ),'0')meca,
+NVL((
+select ma_stopfreq/(select count(*) from TAWRKCALENDAR where substr(cal_date,0,6)=substr('^param3',0,4)||'01' AND is_work='Y') FROM TAKPIMLOCDN x
+WHERE x.eqloc_id='1087'
+AND x.yyyymm=substr('^param3',0,4)||'01' ),'0')foam,
+(select
+ROUND(NVL((select AVG(x.pvalue) From TAMTLNPOINT x where mtlnpoint='BDN' AND eqloc_id in('1090','1089') 
+AND substr(x.yyyymm,0,6)=substr('^param3',0,4)||'01' ),'0')/(select count(*) from TAWRKCALENDAR where substr(cal_date,0,6)=substr('^param3',0,4)||'01' AND is_work='Y'),2)assemTarget
+from dual)assemtarget,
+(select
+ROUND(NVL((select AVG(x.pvalue) From TAMTLNPOINT x where mtlnpoint='BDN' AND eqloc_id in('1088') 
+AND substr(x.yyyymm,0,6)=substr('^param3',0,4)||'01' ),'0')/(select count(*) from TAWRKCALENDAR where substr(cal_date,0,6)=substr('^param3',0,4)||'01' AND is_work='Y'),2)assemTarget
+from dual)mecatarget,
+(select
+ROUND(NVL((select AVG(x.pvalue) From TAMTLNPOINT x where mtlnpoint='BDN' AND eqloc_id in('1087') 
+AND substr(x.yyyymm,0,6)=substr('^param3',0,4)||'01' ),'0')/(select count(*) from TAWRKCALENDAR where substr(cal_date,0,6)=substr('^param3',0,4)||'01' AND is_work='Y'),2)assemTarget
+from dual)foamtarget,
+'Jan'month
+FROM dual
+UNION ALL
+SELECT
+NVL((
+select ROUND(SUM(ma_stopfreq)/MAX((select count(*) from TAWRKCALENDAR where substr(cal_date,0,6)=substr('^param3',0,4)||'02' AND is_work='Y')),2) FROM TAKPIMLOCDN x
+WHERE x.eqloc_id in ('1090','1089')
+AND x.yyyymm=substr('^param3',0,4)||'02' ),'0')assem,
+NVL((
+select ma_stopfreq/(select count(*) from TAWRKCALENDAR where substr(cal_date,0,6)=substr('^param3',0,4)||'01' AND is_work='Y') FROM TAKPIMLOCDN x
+WHERE x.eqloc_id='1088'
+AND x.yyyymm=substr('^param3',0,4)||'02' ),'0')meca,
+NVL((
+select ma_stopfreq/(select count(*) from TAWRKCALENDAR where substr(cal_date,0,6)=substr('^param3',0,4)||'01' AND is_work='Y') FROM TAKPIMLOCDN x
+WHERE x.eqloc_id='1087'
+AND x.yyyymm=substr('^param3',0,4)||'02' ),'0')foam,
+(select
+ROUND(NVL((select AVG(x.pvalue) From TAMTLNPOINT x where mtlnpoint='BDN' AND eqloc_id in('1090','1089') 
+AND substr(x.yyyymm,0,6)=substr('^param3',0,4)||'02' ),'0')/(select count(*) from TAWRKCALENDAR where substr(cal_date,0,6)=substr('^param3',0,4)||'02' AND is_work='Y'),2)assemTarget
+from dual)assemtarget,
+(select
+ROUND(NVL((select AVG(x.pvalue) From TAMTLNPOINT x where mtlnpoint='BDN' AND eqloc_id in('1088') 
+AND substr(x.yyyymm,0,6)=substr('^param3',0,4)||'02' ),'0')/(select count(*) from TAWRKCALENDAR where substr(cal_date,0,6)=substr('^param3',0,4)||'02' AND is_work='Y'),2)assemTarget
+from dual)mecatarget,
+(select
+ROUND(NVL((select AVG(x.pvalue) From TAMTLNPOINT x where mtlnpoint='BDN' AND eqloc_id in('1087') 
+AND substr(x.yyyymm,0,6)=substr('^param3',0,4)||'02' ),'0')/(select count(*) from TAWRKCALENDAR where substr(cal_date,0,6)=substr('^param3',0,4)||'02' AND is_work='Y'),2)assemTarget
+from dual)foamtarget,
+'Feb'month
+FROM dual
+UNION ALL
+SELECT
+NVL((
+select ROUND(SUM(ma_stopfreq)/MAX((select count(*) from TAWRKCALENDAR where substr(cal_date,0,6)=substr('^param3',0,4)||'03' AND is_work='Y')),2) FROM TAKPIMLOCDN x
+WHERE x.eqloc_id in ('1090','1089')
+AND x.yyyymm=substr('^param3',0,4)||'03' ),'0')assem,
+NVL((
+select ma_stopfreq/(select count(*) from TAWRKCALENDAR where substr(cal_date,0,6)=substr('^param3',0,4)||'01' AND is_work='Y') FROM TAKPIMLOCDN x
+WHERE x.eqloc_id='1088'
+AND x.yyyymm=substr('^param3',0,4)||'03' ),'0')meca,
+NVL((
+select ma_stopfreq/(select count(*) from TAWRKCALENDAR where substr(cal_date,0,6)=substr('^param3',0,4)||'01' AND is_work='Y') FROM TAKPIMLOCDN x
+WHERE x.eqloc_id='1087'
+AND x.yyyymm=substr('^param3',0,4)||'03' ),'0')foam,
+(select
+ROUND(NVL((select AVG(x.pvalue) From TAMTLNPOINT x where mtlnpoint='BDN' AND eqloc_id in('1090','1089') 
+AND substr(x.yyyymm,0,6)=substr('^param3',0,4)||'03' ),'0')/(select count(*) from TAWRKCALENDAR where substr(cal_date,0,6)=substr('^param3',0,4)||'03' AND is_work='Y'),2)assemTarget
+from dual)assemtarget,
+(select
+ROUND(NVL((select AVG(x.pvalue) From TAMTLNPOINT x where mtlnpoint='BDN' AND eqloc_id in('1088') 
+AND substr(x.yyyymm,0,6)=substr('^param3',0,4)||'03' ),'0')/(select count(*) from TAWRKCALENDAR where substr(cal_date,0,6)=substr('^param3',0,4)||'03' AND is_work='Y'),2)assemTarget
+from dual)mecatarget,
+(select
+ROUND(NVL((select AVG(x.pvalue) From TAMTLNPOINT x where mtlnpoint='BDN' AND eqloc_id in('1087') 
+AND substr(x.yyyymm,0,6)=substr('^param3',0,4)||'03' ),'0')/(select count(*) from TAWRKCALENDAR where substr(cal_date,0,6)=substr('^param3',0,4)||'03' AND is_work='Y'),2)assemTarget
+from dual)foamtarget,
+'Mar'month
+FROM dual
+UNION ALL
+SELECT
+NVL((
+select ROUND(SUM(ma_stopfreq)/MAX((select count(*) from TAWRKCALENDAR where substr(cal_date,0,6)=substr('^param3',0,4)||'04' AND is_work='Y')),2) FROM TAKPIMLOCDN x
+WHERE x.eqloc_id in ('1090','1089')
+AND x.yyyymm=substr('^param3',0,4)||'04' ),'0')assem,
+NVL((
+select ma_stopfreq/(select count(*) from TAWRKCALENDAR where substr(cal_date,0,6)=substr('^param3',0,4)||'01' AND is_work='Y') FROM TAKPIMLOCDN x
+WHERE x.eqloc_id='1088'
+AND x.yyyymm=substr('^param3',0,4)||'04' ),'0')meca,
+NVL((
+select ma_stopfreq/(select count(*) from TAWRKCALENDAR where substr(cal_date,0,6)=substr('^param3',0,4)||'01' AND is_work='Y') FROM TAKPIMLOCDN x
+WHERE x.eqloc_id='1087'
+AND x.yyyymm=substr('^param3',0,4)||'04' ),'0')foam,
+(select
+ROUND(NVL((select AVG(x.pvalue) From TAMTLNPOINT x where mtlnpoint='BDN' AND eqloc_id in('1090','1089') 
+AND substr(x.yyyymm,0,6)=substr('^param3',0,4)||'04' ),'0')/(select count(*) from TAWRKCALENDAR where substr(cal_date,0,6)=substr('^param3',0,4)||'04' AND is_work='Y'),2)assemTarget
+from dual)assemtarget,
+(select
+ROUND(NVL((select AVG(x.pvalue) From TAMTLNPOINT x where mtlnpoint='BDN' AND eqloc_id in('1088') 
+AND substr(x.yyyymm,0,6)=substr('^param3',0,4)||'04' ),'0')/(select count(*) from TAWRKCALENDAR where substr(cal_date,0,6)=substr('^param3',0,4)||'04' AND is_work='Y'),2)assemTarget
+from dual)mecatarget,
+(select
+ROUND(NVL((select AVG(x.pvalue) From TAMTLNPOINT x where mtlnpoint='BDN' AND eqloc_id in('1087') 
+AND substr(x.yyyymm,0,6)=substr('^param3',0,4)||'04' ),'0')/(select count(*) from TAWRKCALENDAR where substr(cal_date,0,6)=substr('^param3',0,4)||'04' AND is_work='Y'),2)assemTarget
+from dual)foamtarget,
+'Apr'month
+FROM dual
+UNION ALL
+SELECT
+NVL((
+select ROUND(SUM(ma_stopfreq)/MAX((select count(*) from TAWRKCALENDAR where substr(cal_date,0,6)=substr('^param3',0,4)||'05' AND is_work='Y')),2) FROM TAKPIMLOCDN x
+WHERE x.eqloc_id in ('1090','1089')
+AND x.yyyymm=substr('^param3',0,4)||'05' ),'0')assem,
+NVL((
+select ma_stopfreq/(select count(*) from TAWRKCALENDAR where substr(cal_date,0,6)=substr('^param3',0,4)||'01' AND is_work='Y') FROM TAKPIMLOCDN x
+WHERE x.eqloc_id='1088'
+AND x.yyyymm=substr('^param3',0,4)||'05' ),'0')meca,
+NVL((
+select ma_stopfreq/(select count(*) from TAWRKCALENDAR where substr(cal_date,0,6)=substr('^param3',0,4)||'01' AND is_work='Y') FROM TAKPIMLOCDN x
+WHERE x.eqloc_id='1087'
+AND x.yyyymm=substr('^param3',0,4)||'05' ),'0')foam,
+(select
+ROUND(NVL((select AVG(x.pvalue) From TAMTLNPOINT x where mtlnpoint='BDN' AND eqloc_id in('1090','1089') 
+AND substr(x.yyyymm,0,6)=substr('^param3',0,4)||'05' ),'0')/(select count(*) from TAWRKCALENDAR where substr(cal_date,0,6)=substr('^param3',0,4)||'05' AND is_work='Y'),2)assemTarget
+from dual)assemtarget,
+(select
+ROUND(NVL((select AVG(x.pvalue) From TAMTLNPOINT x where mtlnpoint='BDN' AND eqloc_id in('1088') 
+AND substr(x.yyyymm,0,6)=substr('^param3',0,4)||'05' ),'0')/(select count(*) from TAWRKCALENDAR where substr(cal_date,0,6)=substr('^param3',0,4)||'05' AND is_work='Y'),2)assemTarget
+from dual)mecatarget,
+(select
+ROUND(NVL((select AVG(x.pvalue) From TAMTLNPOINT x where mtlnpoint='BDN' AND eqloc_id in('1087') 
+AND substr(x.yyyymm,0,6)=substr('^param3',0,4)||'05' ),'0')/(select count(*) from TAWRKCALENDAR where substr(cal_date,0,6)=substr('^param3',0,4)||'05' AND is_work='Y'),2)assemTarget
+from dual)foamtarget,
+'May'month
+FROM dual
+UNION ALL
+SELECT
+NVL((
+select ROUND(SUM(ma_stopfreq)/MAX((select count(*) from TAWRKCALENDAR where substr(cal_date,0,6)=substr('^param3',0,4)||'06' AND is_work='Y')),2) FROM TAKPIMLOCDN x
+WHERE x.eqloc_id in ('1090','1089')
+AND x.yyyymm=substr('^param3',0,4)||'06' ),'0')assem,
+NVL((
+select ma_stopfreq/(select count(*) from TAWRKCALENDAR where substr(cal_date,0,6)=substr('^param3',0,4)||'01' AND is_work='Y') FROM TAKPIMLOCDN x
+WHERE x.eqloc_id='1088'
+AND x.yyyymm=substr('^param3',0,4)||'06' ),'0')meca,
+NVL((
+select ma_stopfreq/(select count(*) from TAWRKCALENDAR where substr(cal_date,0,6)=substr('^param3',0,4)||'01' AND is_work='Y') FROM TAKPIMLOCDN x
+WHERE x.eqloc_id='1087'
+AND x.yyyymm=substr('^param3',0,4)||'06' ),'0')foam,
+(select
+ROUND(NVL((select AVG(x.pvalue) From TAMTLNPOINT x where mtlnpoint='BDN' AND eqloc_id in('1090','1089') 
+AND substr(x.yyyymm,0,6)=substr('^param3',0,4)||'06' ),'0')/(select count(*) from TAWRKCALENDAR where substr(cal_date,0,6)=substr('^param3',0,4)||'06' AND is_work='Y'),2)assemTarget
+from dual)assemtarget,
+(select
+ROUND(NVL((select AVG(x.pvalue) From TAMTLNPOINT x where mtlnpoint='BDN' AND eqloc_id in('1088') 
+AND substr(x.yyyymm,0,6)=substr('^param3',0,4)||'06' ),'0')/(select count(*) from TAWRKCALENDAR where substr(cal_date,0,6)=substr('^param3',0,4)||'06' AND is_work='Y'),2)assemTarget
+from dual)mecatarget,
+(select
+ROUND(NVL((select AVG(x.pvalue) From TAMTLNPOINT x where mtlnpoint='BDN' AND eqloc_id in('1087') 
+AND substr(x.yyyymm,0,6)=substr('^param3',0,4)||'06' ),'0')/(select count(*) from TAWRKCALENDAR where substr(cal_date,0,6)=substr('^param3',0,4)||'06' AND is_work='Y'),2)assemTarget
+from dual)foamtarget,
+'Jun'month
+FROM dual
+UNION ALL
+SELECT
+NVL((
+select ROUND(SUM(ma_stopfreq)/MAX((select count(*) from TAWRKCALENDAR where substr(cal_date,0,6)=substr('^param3',0,4)||'07' AND is_work='Y')),2) FROM TAKPIMLOCDN x
+WHERE x.eqloc_id in ('1090','1089')
+AND x.yyyymm=substr('^param3',0,4)||'07' ),'0')assem,
+NVL((
+select ma_stopfreq/(select count(*) from TAWRKCALENDAR where substr(cal_date,0,6)=substr('^param3',0,4)||'01' AND is_work='Y') FROM TAKPIMLOCDN x
+WHERE x.eqloc_id='1088'
+AND x.yyyymm=substr('^param3',0,4)||'07' ),'0')meca,
+NVL((
+select ma_stopfreq/(select count(*) from TAWRKCALENDAR where substr(cal_date,0,6)=substr('^param3',0,4)||'01' AND is_work='Y') FROM TAKPIMLOCDN x
+WHERE x.eqloc_id='1087'
+AND x.yyyymm=substr('^param3',0,4)||'07' ),'0')foam,
+(select
+ROUND(NVL((select AVG(x.pvalue) From TAMTLNPOINT x where mtlnpoint='BDN' AND eqloc_id in('1090','1089') 
+AND substr(x.yyyymm,0,6)=substr('^param3',0,4)||'07' ),'0')/(select count(*) from TAWRKCALENDAR where substr(cal_date,0,6)=substr('^param3',0,4)||'07' AND is_work='Y'),2)assemTarget
+from dual)assemtarget,
+(select
+ROUND(NVL((select AVG(x.pvalue) From TAMTLNPOINT x where mtlnpoint='BDN' AND eqloc_id in('1088') 
+AND substr(x.yyyymm,0,6)=substr('^param3',0,4)||'07' ),'0')/(select count(*) from TAWRKCALENDAR where substr(cal_date,0,6)=substr('^param3',0,4)||'07' AND is_work='Y'),2)assemTarget
+from dual)mecatarget,
+(select
+ROUND(NVL((select AVG(x.pvalue) From TAMTLNPOINT x where mtlnpoint='BDN' AND eqloc_id in('1087') 
+AND substr(x.yyyymm,0,6)=substr('^param3',0,4)||'07' ),'0')/(select count(*) from TAWRKCALENDAR where substr(cal_date,0,6)=substr('^param3',0,4)||'07' AND is_work='Y'),2)assemTarget
+from dual)foamtarget,
+'Jul'month
+FROM dual
+UNION ALL
+SELECT
+NVL((
+select ROUND(SUM(ma_stopfreq)/MAX((select count(*) from TAWRKCALENDAR where substr(cal_date,0,6)=substr('^param3',0,4)||'08' AND is_work='Y')),2) FROM TAKPIMLOCDN x
+WHERE x.eqloc_id in ('1090','1089')
+AND x.yyyymm=substr('^param3',0,4)||'08' ),'0')assem,
+NVL((
+select ma_stopfreq/(select count(*) from TAWRKCALENDAR where substr(cal_date,0,6)=substr('^param3',0,4)||'01' AND is_work='Y') FROM TAKPIMLOCDN x
+WHERE x.eqloc_id='1088'
+AND x.yyyymm=substr('^param3',0,4)||'08' ),'0')meca,
+NVL((
+select ma_stopfreq/(select count(*) from TAWRKCALENDAR where substr(cal_date,0,6)=substr('^param3',0,4)||'01' AND is_work='Y') FROM TAKPIMLOCDN x
+WHERE x.eqloc_id='1087'
+AND x.yyyymm=substr('^param3',0,4)||'08' ),'0')foam,
+(select
+ROUND(NVL((select AVG(x.pvalue) From TAMTLNPOINT x where mtlnpoint='BDN' AND eqloc_id in('1090','1089') 
+AND substr(x.yyyymm,0,6)=substr('^param3',0,4)||'08' ),'0')/(select count(*) from TAWRKCALENDAR where substr(cal_date,0,6)=substr('^param3',0,4)||'08' AND is_work='Y'),2)assemTarget
+from dual)assemtarget,
+(select
+ROUND(NVL((select AVG(x.pvalue) From TAMTLNPOINT x where mtlnpoint='BDN' AND eqloc_id in('1088') 
+AND substr(x.yyyymm,0,6)=substr('^param3',0,4)||'08' ),'0')/(select count(*) from TAWRKCALENDAR where substr(cal_date,0,6)=substr('^param3',0,4)||'08' AND is_work='Y'),2)assemTarget
+from dual)mecatarget,
+(select
+ROUND(NVL((select AVG(x.pvalue) From TAMTLNPOINT x where mtlnpoint='BDN' AND eqloc_id in('1087') 
+AND substr(x.yyyymm,0,6)=substr('^param3',0,4)||'08' ),'0')/(select count(*) from TAWRKCALENDAR where substr(cal_date,0,6)=substr('^param3',0,4)||'08' AND is_work='Y'),2)assemTarget
+from dual)foamtarget,
+'Aug'month
+FROM dual
+UNION ALL
+SELECT
+NVL((
+select ROUND(SUM(ma_stopfreq)/MAX((select count(*) from TAWRKCALENDAR where substr(cal_date,0,6)=substr('^param3',0,4)||'09' AND is_work='Y')),2) FROM TAKPIMLOCDN x
+WHERE x.eqloc_id in ('1090','1089')
+AND x.yyyymm=substr('^param3',0,4)||'09' ),'0')assem,
+NVL((
+select ma_stopfreq/(select count(*) from TAWRKCALENDAR where substr(cal_date,0,6)=substr('^param3',0,4)||'01' AND is_work='Y') FROM TAKPIMLOCDN x
+WHERE x.eqloc_id='1088'
+AND x.yyyymm=substr('^param3',0,4)||'09' ),'0')meca,
+NVL((
+select ma_stopfreq/(select count(*) from TAWRKCALENDAR where substr(cal_date,0,6)=substr('^param3',0,4)||'01' AND is_work='Y') FROM TAKPIMLOCDN x
+WHERE x.eqloc_id='1087'
+AND x.yyyymm=substr('^param3',0,4)||'09' ),'0')foam,
+(select
+ROUND(NVL((select AVG(x.pvalue) From TAMTLNPOINT x where mtlnpoint='BDN' AND eqloc_id in('1090','1089') 
+AND substr(x.yyyymm,0,6)=substr('^param3',0,4)||'09' ),'0')/(select count(*) from TAWRKCALENDAR where substr(cal_date,0,6)=substr('^param3',0,4)||'09' AND is_work='Y'),2)assemTarget
+from dual)assemtarget,
+(select
+ROUND(NVL((select AVG(x.pvalue) From TAMTLNPOINT x where mtlnpoint='BDN' AND eqloc_id in('1088') 
+AND substr(x.yyyymm,0,6)=substr('^param3',0,4)||'09' ),'0')/(select count(*) from TAWRKCALENDAR where substr(cal_date,0,6)=substr('^param3',0,4)||'09' AND is_work='Y'),2)assemTarget
+from dual)mecatarget,
+(select
+ROUND(NVL((select AVG(x.pvalue) From TAMTLNPOINT x where mtlnpoint='BDN' AND eqloc_id in('1087') 
+AND substr(x.yyyymm,0,6)=substr('^param3',0,4)||'09' ),'0')/(select count(*) from TAWRKCALENDAR where substr(cal_date,0,6)=substr('^param3',0,4)||'09' AND is_work='Y'),2)assemTarget
+from dual)foamtarget,
+'Sep'month
+FROM dual
+UNION ALL
+SELECT
+NVL((
+select ROUND(SUM(ma_stopfreq)/MAX((select count(*) from TAWRKCALENDAR where substr(cal_date,0,6)=substr('^param3',0,4)||'10' AND is_work='Y')),2) FROM TAKPIMLOCDN x
+WHERE x.eqloc_id in ('1090','1089')
+AND x.yyyymm=substr('^param3',0,4)||'10' ),'0')assem,
+NVL((
+select ma_stopfreq/(select count(*) from TAWRKCALENDAR where substr(cal_date,0,6)=substr('^param3',0,4)||'01' AND is_work='Y') FROM TAKPIMLOCDN x
+WHERE x.eqloc_id='1088'
+AND x.yyyymm=substr('^param3',0,4)||'10' ),'0')meca,
+NVL((
+select ma_stopfreq/(select count(*) from TAWRKCALENDAR where substr(cal_date,0,6)=substr('^param3',0,4)||'01' AND is_work='Y') FROM TAKPIMLOCDN x
+WHERE x.eqloc_id='1087'
+AND x.yyyymm=substr('^param3',0,4)||'10' ),'0')foam,
+(select
+ROUND(NVL((select AVG(x.pvalue) From TAMTLNPOINT x where mtlnpoint='BDN' AND eqloc_id in('1090','1089') 
+AND substr(x.yyyymm,0,6)=substr('^param3',0,4)||'10' ),'0')/(select count(*) from TAWRKCALENDAR where substr(cal_date,0,6)=substr('^param3',0,4)||'10' AND is_work='Y'),2)assemTarget
+from dual)assemtarget,
+(select
+ROUND(NVL((select AVG(x.pvalue) From TAMTLNPOINT x where mtlnpoint='BDN' AND eqloc_id in('1088') 
+AND substr(x.yyyymm,0,6)=substr('^param3',0,4)||'10' ),'0')/(select count(*) from TAWRKCALENDAR where substr(cal_date,0,6)=substr('^param3',0,4)||'10' AND is_work='Y'),2)assemTarget
+from dual)mecatarget,
+(select
+ROUND(NVL((select AVG(x.pvalue) From TAMTLNPOINT x where mtlnpoint='BDN' AND eqloc_id in('1087') 
+AND substr(x.yyyymm,0,6)=substr('^param3',0,4)||'10' ),'0')/(select count(*) from TAWRKCALENDAR where substr(cal_date,0,6)=substr('^param3',0,4)||'10' AND is_work='Y'),2)assemTarget
+from dual)foamtarget,
+'Oct'month
+FROM dual
+UNION ALL
+SELECT
+NVL((
+select ROUND(SUM(ma_stopfreq)/MAX((select count(*) from TAWRKCALENDAR where substr(cal_date,0,6)=substr('^param3',0,4)||'11' AND is_work='Y')),2) FROM TAKPIMLOCDN x
+WHERE x.eqloc_id in ('1090','1089')
+AND x.yyyymm=substr('^param3',0,4)||'11' ),'0')assem,
+NVL((
+select ma_stopfreq/(select count(*) from TAWRKCALENDAR where substr(cal_date,0,6)=substr('^param3',0,4)||'01' AND is_work='Y') FROM TAKPIMLOCDN x
+WHERE x.eqloc_id='1088'
+AND x.yyyymm=substr('^param3',0,4)||'11' ),'0')meca,
+NVL((
+select ma_stopfreq/(select count(*) from TAWRKCALENDAR where substr(cal_date,0,6)=substr('^param3',0,4)||'01' AND is_work='Y') FROM TAKPIMLOCDN x
+WHERE x.eqloc_id='1087'
+AND x.yyyymm=substr('^param3',0,4)||'11' ),'0')foam,
+(select
+ROUND(NVL((select AVG(x.pvalue) From TAMTLNPOINT x where mtlnpoint='BDN' AND eqloc_id in('1090','1089') 
+AND substr(x.yyyymm,0,6)=substr('^param3',0,4)||'11' ),'0')/(select count(*) from TAWRKCALENDAR where substr(cal_date,0,6)=substr('^param3',0,4)||'11' AND is_work='Y'),2)assemTarget
+from dual)assemtarget,
+(select
+ROUND(NVL((select AVG(x.pvalue) From TAMTLNPOINT x where mtlnpoint='BDN' AND eqloc_id in('1088') 
+AND substr(x.yyyymm,0,6)=substr('^param3',0,4)||'11' ),'0')/(select count(*) from TAWRKCALENDAR where substr(cal_date,0,6)=substr('^param3',0,4)||'11' AND is_work='Y'),2)assemTarget
+from dual)mecatarget,
+(select
+ROUND(NVL((select AVG(x.pvalue) From TAMTLNPOINT x where mtlnpoint='BDN' AND eqloc_id in('1087') 
+AND substr(x.yyyymm,0,6)=substr('^param3',0,4)||'11' ),'0')/(select count(*) from TAWRKCALENDAR where substr(cal_date,0,6)=substr('^param3',0,4)||'11' AND is_work='Y'),2)assemTarget
+from dual)foamtarget,
+'Nov'month
+FROM dual
+UNION ALL
+SELECT
+NVL((
+select ROUND(SUM(ma_stopfreq)/MAX((select count(*) from TAWRKCALENDAR where substr(cal_date,0,6)=substr('^param3',0,4)||'12' AND is_work='Y')),2) FROM TAKPIMLOCDN x
+WHERE x.eqloc_id in ('1090','1089')
+AND x.yyyymm=substr('^param3',0,4)||'12' ),'0')assem,
+NVL((
+select ma_stopfreq/(select count(*) from TAWRKCALENDAR where substr(cal_date,0,6)=substr('^param3',0,4)||'01' AND is_work='Y') FROM TAKPIMLOCDN x
+WHERE x.eqloc_id='1088'
+AND x.yyyymm=substr('^param3',0,4)||'12' ),'0')meca,
+NVL((
+select ma_stopfreq/(select count(*) from TAWRKCALENDAR where substr(cal_date,0,6)=substr('^param3',0,4)||'01' AND is_work='Y') FROM TAKPIMLOCDN x
+WHERE x.eqloc_id='1087'
+AND x.yyyymm=substr('^param3',0,4)||'12' ),'0')foam,
+(select
+ROUND(NVL((select AVG(x.pvalue) From TAMTLNPOINT x where mtlnpoint='BDN' AND eqloc_id in('1090','1089') 
+AND substr(x.yyyymm,0,6)=substr('^param3',0,4)||'12' ),'0')/(select count(*) from TAWRKCALENDAR where substr(cal_date,0,6)=substr('^param3',0,4)||'12' AND is_work='Y'),2)assemTarget
+from dual)assemtarget,
+(select
+ROUND(NVL((select AVG(x.pvalue) From TAMTLNPOINT x where mtlnpoint='BDN' AND eqloc_id in('1088') 
+AND substr(x.yyyymm,0,6)=substr('^param3',0,4)||'12' ),'0')/(select count(*) from TAWRKCALENDAR where substr(cal_date,0,6)=substr('^param3',0,4)||'12' AND is_work='Y'),2)assemTarget
+from dual)mecatarget,
+(select
+ROUND(NVL((select AVG(x.pvalue) From TAMTLNPOINT x where mtlnpoint='BDN' AND eqloc_id in('1087') 
+AND substr(x.yyyymm,0,6)=substr('^param3',0,4)||'12' ),'0')/(select count(*) from TAWRKCALENDAR where substr(cal_date,0,6)=substr('^param3',0,4)||'12' AND is_work='Y'),2)assemTarget
+from dual)foamtarget,
+'Dec'month
+FROM dual
+/
+$
+SELECT
+*
+FROM
+(
+SELECT
+MAX(b.startdate)startdate,
+MAX(b.eqlocid),
+MAX(b.equipdesc),
+COUNT(*),
+TO_CHAR(WM_CONCAT(fsdesc))fsDesc,
+TO_CHAR(WM_CONCAT(cadesc))caDesc
+FROM
+(
+SELECT                         
+(SELECT TO_CHAR(TO_DATE(lndn_start_date,'yyyymmdd'),'YYYY-MM-DD') FROM TAWOFAIL y WHERE x.comp_no=y.comp_no AND x.wkor_id=y.wkor_id) startDate,     
+                (SELECT description                    
+                        FROM TAEQLOC                            
+                        WHERE comp_no ='130'          
+                        AND lvl=1
+                        START wITH eqloc_id =(SELECT TO_CHAR(WM_CONCAT(b.eqloc_id))                                    
+            FROM TAWOEQUIP a, TAEQUIPMENT b                                            
+            WHERE a.comp_no = b.comp_no                                                
+                AND a.equip_id = b.equip_id                                            
+                AND a.wkor_id = x.wkor_id                                            
+                AND a.comp_no = x.comp_no                                            
+            GROUP By a.comp_no, a.wkor_id    )     
+                        CONNECT BY PRIOR p_eqloc_id = eqloc_id       )   AS eqlocId,           
+                  (SELECT TO_CHAR(WM_CONCAT(b.description))                                    
+            FROM TAWOEQUIP a, TAEQUIPMENT b                                            
+            WHERE a.comp_no = b.comp_no                                                
+                AND a.equip_id = b.equip_id                                            
+                AND a.wkor_id = x.wkor_id                                            
+                AND a.comp_no = x.comp_no                                            
+            GROUP By a.comp_no, a.wkor_id    )                         AS equipDesc,    
+(SELECT fs_desc FROM TAWOFAIL y WHERE x.comp_no=y.comp_no AND x.wkor_id=y.wkor_id) fsDesc,            
+(SELECT ca_desc FROM TAWOFAIL y WHERE x.comp_no=y.comp_no AND x.wkor_id=y.wkor_id) caDesc,
+                  (SELECT TO_CHAR(WM_CONCAT(b.equip_id))                                    
+            FROM TAWOEQUIP a, TAEQUIPMENT b                                            
+            WHERE a.comp_no = b.comp_no                                                
+                AND a.equip_id = b.equip_id                                            
+                AND a.wkor_id = x.wkor_id                                            
+                AND a.comp_no = x.comp_no                                            
+            GROUP By a.comp_no, a.wkor_id    )                         AS equipId
+FROM TAWORKORDER x
+WHERE (SELECT lndn_work_time FROM TAWOFAIL y WHERE x.comp_no=y.comp_no AND x.wkor_id=y.wkor_id) is not null
+AND substr(x.wkor_date,0,4)=substr('^param3',0,4)
+)b
+GROUP BY b.equipid
+ORDER BY count(*) DESC
+)c
+where rownum <=2
+and substr(TO_NUMBER(replace(c.startdate,'-','')),0,6) <=substr('^param3',0,4)||substr('^param3',6,2)
+/
+$
+SELECT
+title,
+CASE
+ WHEN rownum <=substr('^param3',6,2) then janplan
+ ELSE 0
+ END janplan,
+CASE
+ WHEN rownum <=substr('^param3',6,2) then janperform
+ ELSE 0
+ END janperform,
+ CASE
+ WHEN rownum <=substr('^param3',6,2) then DECODE(janplan,'0','',janaccplan)
+ ELSE '0'
+ END janaccplan,
+ CASE
+ WHEN rownum <=substr('^param3',6,2) then DECODE(janplan,'0','',janaccperform)
+ ELSE '0'
+ END janaccperform
+FROM
+(
+SELECT
+'Jan'title,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'01'
+AND WO_TYPE IN ('PMI','PMW')
+)janPlan,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'01'
+AND WO_TYPE IN ('PMI','PMW')
+AND wo_status ='C'
+)janPerform,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'01'
+AND WO_TYPE IN ('PMI','PMW')
+)janAccPlan,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'01'
+AND WO_TYPE IN ('PMI','PMW')
+AND wo_status ='C'
+)janAccPerform
+FROM dual
+UNION ALL
+SELECT
+'Feb'title,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'02'
+AND WO_TYPE IN ('PMI','PMW')
+)febPlan,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'02'
+AND WO_TYPE IN ('PMI','PMW')
+AND wo_status ='C'
+)febPerform,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)>=substr('^param3',0,4)||'01'
+AND substr(x.wkor_date,0,6)<=substr('^param3',0,4)||'02'
+AND WO_TYPE IN ('PMI','PMW')
+)febAccPlan,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)>=substr('^param3',0,4)||'01'
+AND substr(x.wkor_date,0,6)<=substr('^param3',0,4)||'02'
+AND WO_TYPE IN ('PMI','PMW')
+AND wo_status ='C'
+)febAccPerform
+FROM dual
+UNION ALL
+SELECT
+'Mar'title,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'03'
+AND WO_TYPE IN ('PMI','PMW')
+)marPlan,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'03'
+AND WO_TYPE IN ('PMI','PMW')
+AND wo_status ='C'
+)marPerform,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)>=substr('^param3',0,4)||'01'
+AND substr(x.wkor_date,0,6)<=substr('^param3',0,4)||'03'
+AND WO_TYPE IN ('PMI','PMW')
+)marAccPlan,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)>=substr('^param3',0,4)||'01'
+AND substr(x.wkor_date,0,6)<=substr('^param3',0,4)||'03'
+AND WO_TYPE IN ('PMI','PMW')
+AND wo_status ='C'
+)marAccPerform
+FROM dual
+UNION ALL
+SELECT
+'Apr'title,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'04'
+AND WO_TYPE IN ('PMI','PMW')
+)marPlan,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'04'
+AND WO_TYPE IN ('PMI','PMW')
+AND wo_status ='C'
+)marPerform,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)>=substr('^param3',0,4)||'01'
+AND substr(x.wkor_date,0,6)<=substr('^param3',0,4)||'04'
+AND WO_TYPE IN ('PMI','PMW')
+)marAccPlan,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)>=substr('^param3',0,4)||'01'
+AND substr(x.wkor_date,0,6)<=substr('^param3',0,4)||'04'
+AND WO_TYPE IN ('PMI','PMW')
+AND wo_status ='C'
+)marAccPerform
+FROM dual
+UNION ALL
+SELECT
+'May'title,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'05'
+AND WO_TYPE IN ('PMI','PMW')
+)marPlan,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'05'
+AND WO_TYPE IN ('PMI','PMW')
+AND wo_status ='C'
+)marPerform,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)>=substr('^param3',0,4)||'01'
+AND substr(x.wkor_date,0,6)<=substr('^param3',0,4)||'05'
+AND WO_TYPE IN ('PMI','PMW')
+)marAccPlan,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)>=substr('^param3',0,4)||'01'
+AND substr(x.wkor_date,0,6)<=substr('^param3',0,4)||'05'
+AND WO_TYPE IN ('PMI','PMW')
+AND wo_status ='C'
+)marAccPerform
+FROM dual
+UNION ALL
+SELECT
+'Jun'title,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'06'
+AND WO_TYPE IN ('PMI','PMW')
+)marPlan,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'06'
+AND WO_TYPE IN ('PMI','PMW')
+AND wo_status ='C'
+)marPerform,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)>=substr('^param3',0,4)||'01'
+AND substr(x.wkor_date,0,6)<=substr('^param3',0,4)||'06'
+AND WO_TYPE IN ('PMI','PMW')
+)marAccPlan,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)>=substr('^param3',0,4)||'01'
+AND substr(x.wkor_date,0,6)<=substr('^param3',0,4)||'06'
+AND WO_TYPE IN ('PMI','PMW')
+AND wo_status ='C'
+)marAccPerform
+FROM dual
+UNION ALL
+SELECT
+'Jul'title,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'07'
+AND WO_TYPE IN ('PMI','PMW')
+)marPlan,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'07'
+AND WO_TYPE IN ('PMI','PMW')
+AND wo_status ='C'
+)marPerform,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)>=substr('^param3',0,4)||'01'
+AND substr(x.wkor_date,0,6)<=substr('^param3',0,4)||'07'
+AND WO_TYPE IN ('PMI','PMW')
+)marAccPlan,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)>=substr('^param3',0,4)||'01'
+AND substr(x.wkor_date,0,6)<=substr('^param3',0,4)||'07'
+AND WO_TYPE IN ('PMI','PMW')
+AND wo_status ='C'
+)marAccPerform
+FROM dual
+UNION ALL
+SELECT
+'Aug'title,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'08'
+AND WO_TYPE IN ('PMI','PMW')
+)marPlan,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'08'
+AND WO_TYPE IN ('PMI','PMW')
+AND wo_status ='C'
+)marPerform,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)>=substr('^param3',0,4)||'01'
+AND substr(x.wkor_date,0,6)<=substr('^param3',0,4)||'08'
+AND WO_TYPE IN ('PMI','PMW')
+)marAccPlan,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)>=substr('^param3',0,4)||'01'
+AND substr(x.wkor_date,0,6)<=substr('^param3',0,4)||'08'
+AND WO_TYPE IN ('PMI','PMW')
+AND wo_status ='C'
+)marAccPerform
+FROM dual
+UNION ALL
+SELECT
+'Sep'title,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'09'
+AND WO_TYPE IN ('PMI','PMW')
+)marPlan,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'09'
+AND WO_TYPE IN ('PMI','PMW')
+AND wo_status ='C'
+)marPerform,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)>=substr('^param3',0,4)||'01'
+AND substr(x.wkor_date,0,6)<=substr('^param3',0,4)||'09'
+AND WO_TYPE IN ('PMI','PMW')
+)marAccPlan,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)>=substr('^param3',0,4)||'01'
+AND substr(x.wkor_date,0,6)<=substr('^param3',0,4)||'09'
+AND WO_TYPE IN ('PMI','PMW')
+AND wo_status ='C'
+)marAccPerform
+FROM dual
+UNION ALL
+SELECT
+'Oct'title,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'10'
+AND WO_TYPE IN ('PMI','PMW')
+)marPlan,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'10'
+AND WO_TYPE IN ('PMI','PMW')
+AND wo_status ='C'
+)marPerform,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)>=substr('^param3',0,4)||'01'
+AND substr(x.wkor_date,0,6)<=substr('^param3',0,4)||'10'
+AND WO_TYPE IN ('PMI','PMW')
+)marAccPlan,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)>=substr('^param3',0,4)||'01'
+AND substr(x.wkor_date,0,6)<=substr('^param3',0,4)||'10'
+AND WO_TYPE IN ('PMI','PMW')
+AND wo_status ='C'
+)marAccPerform
+FROM dual
+UNION ALL
+SELECT
+'Nov'title,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'11'
+AND WO_TYPE IN ('PMI','PMW')
+)marPlan,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'11'
+AND WO_TYPE IN ('PMI','PMW')
+AND wo_status ='C'
+)marPerform,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)>=substr('^param3',0,4)||'01'
+AND substr(x.wkor_date,0,6)<=substr('^param3',0,4)||'11'
+AND WO_TYPE IN ('PMI','PMW')
+)marAccPlan,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)>=substr('^param3',0,4)||'01'
+AND substr(x.wkor_date,0,6)<=substr('^param3',0,4)||'11'
+AND WO_TYPE IN ('PMI','PMW')
+AND wo_status ='C'
+)marAccPerform
+FROM dual
+UNION ALL
+SELECT
+'Dec'title,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'12'
+AND WO_TYPE IN ('PMI','PMW')
+)marPlan,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'12'
+AND WO_TYPE IN ('PMI','PMW')
+AND wo_status ='C'
+)marPerform,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)>=substr('^param3',0,4)||'01'
+AND substr(x.wkor_date,0,6)<=substr('^param3',0,4)||'12'
+AND WO_TYPE IN ('PMI','PMW')
+)marAccPlan,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)>=substr('^param3',0,4)||'01'
+AND substr(x.wkor_date,0,6)<=substr('^param3',0,4)||'12'
+AND WO_TYPE IN ('PMI','PMW')
+AND wo_status ='C'
+)marAccPerform
+FROM dual
+)
+b
+/
+$
+SELECT
+NVL(title,'TOTAL')title,
+janplan,
+janperform,
+janaccplan,
+janaccperform
+FROM
+(
+select
+title,
+SUM(janplan)janplan,
+SUM(janperform)janperform,
+SUM(janaccplan)janaccplan,
+SUM(janaccperform)janaccperform,
+SUM(ord)ord
+FROM
+(
+SELECT
+title,
+CASE
+ WHEN rownum <=substr('^param3',6,2) then DECODE(janplan,'0','',janplan)
+ ELSE '0'
+ END janplan,
+ CASE
+ WHEN rownum <=substr('^param3',6,2) then DECODE(janplan,'0','',janperform)
+ ELSE '0'
+ END janperform,
+  CASE
+ WHEN rownum <=substr('^param3',6,2) then DECODE(janplan,'0','',janaccplan)
+ ELSE '0'
+ END janaccplan,
+  CASE
+ WHEN rownum <=substr('^param3',6,2) then DECODE(janplan,'0','',janaccperform)
+ ELSE '0'
+ END janaccperform,
+ord
+FROM
+(
+SELECT
+'Jan'title,
+'1'ord,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'01'
+AND WO_TYPE IN ('PMI','PMW')
+)janPlan,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'01'
+AND WO_TYPE IN ('PMI','PMW')
+AND wo_status ='C'
+)janPerform,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'01'
+AND WO_TYPE IN ('PMI','PMW')
+)janAccPlan,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'01'
+AND WO_TYPE IN ('PMI','PMW')
+AND wo_status ='C'
+)janAccPerform
+FROM dual
+UNION ALL
+SELECT
+'Feb'title,
+'2'ord,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'02'
+AND WO_TYPE IN ('PMI','PMW')
+)febPlan,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'02'
+AND WO_TYPE IN ('PMI','PMW')
+AND wo_status ='C'
+)febPerform,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)>=substr('^param3',0,4)||'01'
+AND substr(x.wkor_date,0,6)<=substr('^param3',0,4)||'02'
+AND WO_TYPE IN ('PMI','PMW')
+)febAccPlan,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)>=substr('^param3',0,4)||'01'
+AND substr(x.wkor_date,0,6)<=substr('^param3',0,4)||'02'
+AND WO_TYPE IN ('PMI','PMW')
+AND wo_status ='C'
+)febAccPerform
+FROM dual
+UNION ALL
+SELECT
+'Mar'title,
+'3'ord,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'03'
+AND WO_TYPE IN ('PMI','PMW')
+)marPlan,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'03'
+AND WO_TYPE IN ('PMI','PMW')
+AND wo_status ='C'
+)marPerform,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)>=substr('^param3',0,4)||'01'
+AND substr(x.wkor_date,0,6)<=substr('^param3',0,4)||'03'
+AND WO_TYPE IN ('PMI','PMW')
+)marAccPlan,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)>=substr('^param3',0,4)||'01'
+AND substr(x.wkor_date,0,6)<=substr('^param3',0,4)||'03'
+AND WO_TYPE IN ('PMI','PMW')
+AND wo_status ='C'
+)marAccPerform
+FROM dual
+UNION ALL
+SELECT
+'Apr'title,
+'4'ord,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'04'
+AND WO_TYPE IN ('PMI','PMW')
+)marPlan,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'04'
+AND WO_TYPE IN ('PMI','PMW')
+AND wo_status ='C'
+)marPerform,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)>=substr('^param3',0,4)||'01'
+AND substr(x.wkor_date,0,6)<=substr('^param3',0,4)||'04'
+AND WO_TYPE IN ('PMI','PMW')
+)marAccPlan,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)>=substr('^param3',0,4)||'01'
+AND substr(x.wkor_date,0,6)<=substr('^param3',0,4)||'04'
+AND WO_TYPE IN ('PMI','PMW')
+AND wo_status ='C'
+)marAccPerform
+FROM dual
+UNION ALL
+SELECT
+'May'title,
+'5'ord,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'05'
+AND WO_TYPE IN ('PMI','PMW')
+)marPlan,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'05'
+AND WO_TYPE IN ('PMI','PMW')
+AND wo_status ='C'
+)marPerform,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)>=substr('^param3',0,4)||'01'
+AND substr(x.wkor_date,0,6)<=substr('^param3',0,4)||'05'
+AND WO_TYPE IN ('PMI','PMW')
+)marAccPlan,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)>=substr('^param3',0,4)||'01'
+AND substr(x.wkor_date,0,6)<=substr('^param3',0,4)||'05'
+AND WO_TYPE IN ('PMI','PMW')
+AND wo_status ='C'
+)marAccPerform
+FROM dual
+UNION ALL
+SELECT
+'Jun'title,
+'6'ord,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'06'
+AND WO_TYPE IN ('PMI','PMW')
+)marPlan,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'06'
+AND WO_TYPE IN ('PMI','PMW')
+AND wo_status ='C'
+)marPerform,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)>=substr('^param3',0,4)||'01'
+AND substr(x.wkor_date,0,6)<=substr('^param3',0,4)||'06'
+AND WO_TYPE IN ('PMI','PMW')
+)marAccPlan,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)>=substr('^param3',0,4)||'01'
+AND substr(x.wkor_date,0,6)<=substr('^param3',0,4)||'06'
+AND WO_TYPE IN ('PMI','PMW')
+AND wo_status ='C'
+)marAccPerform
+FROM dual
+UNION ALL
+SELECT
+'Jul'title,
+'7'ord,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'07'
+AND WO_TYPE IN ('PMI','PMW')
+)marPlan,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'07'
+AND WO_TYPE IN ('PMI','PMW')
+AND wo_status ='C'
+)marPerform,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)>=substr('^param3',0,4)||'01'
+AND substr(x.wkor_date,0,6)<=substr('^param3',0,4)||'07'
+AND WO_TYPE IN ('PMI','PMW')
+)marAccPlan,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)>=substr('^param3',0,4)||'01'
+AND substr(x.wkor_date,0,6)<=substr('^param3',0,4)||'07'
+AND WO_TYPE IN ('PMI','PMW')
+AND wo_status ='C'
+)marAccPerform
+FROM dual
+UNION ALL
+SELECT
+'Aug'title,
+'8'ord,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'08'
+AND WO_TYPE IN ('PMI','PMW')
+)marPlan,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'08'
+AND WO_TYPE IN ('PMI','PMW')
+AND wo_status ='C'
+)marPerform,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)>=substr('^param3',0,4)||'01'
+AND substr(x.wkor_date,0,6)<=substr('^param3',0,4)||'08'
+AND WO_TYPE IN ('PMI','PMW')
+)marAccPlan,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)>=substr('^param3',0,4)||'01'
+AND substr(x.wkor_date,0,6)<=substr('^param3',0,4)||'08'
+AND WO_TYPE IN ('PMI','PMW')
+AND wo_status ='C'
+)marAccPerform
+FROM dual
+UNION ALL
+SELECT
+'Sep'title,
+'9'ord,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'09'
+AND WO_TYPE IN ('PMI','PMW')
+)marPlan,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'09'
+AND WO_TYPE IN ('PMI','PMW')
+AND wo_status ='C'
+)marPerform,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)>=substr('^param3',0,4)||'01'
+AND substr(x.wkor_date,0,6)<=substr('^param3',0,4)||'09'
+AND WO_TYPE IN ('PMI','PMW')
+)marAccPlan,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)>=substr('^param3',0,4)||'01'
+AND substr(x.wkor_date,0,6)<=substr('^param3',0,4)||'09'
+AND WO_TYPE IN ('PMI','PMW')
+AND wo_status ='C'
+)marAccPerform
+FROM dual
+UNION ALL
+SELECT
+'Oct'title,
+'10'ord,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'10'
+AND WO_TYPE IN ('PMI','PMW')
+)marPlan,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'10'
+AND WO_TYPE IN ('PMI','PMW')
+AND wo_status ='C'
+)marPerform,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)>=substr('^param3',0,4)||'01'
+AND substr(x.wkor_date,0,6)<=substr('^param3',0,4)||'10'
+AND WO_TYPE IN ('PMI','PMW')
+)marAccPlan,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)>=substr('^param3',0,4)||'01'
+AND substr(x.wkor_date,0,6)<=substr('^param3',0,4)||'10'
+AND WO_TYPE IN ('PMI','PMW')
+AND wo_status ='C'
+)marAccPerform
+FROM dual
+UNION ALL
+SELECT
+'Nov'title,
+'11'ord,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'11'
+AND WO_TYPE IN ('PMI','PMW')
+)marPlan,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'11'
+AND WO_TYPE IN ('PMI','PMW')
+AND wo_status ='C'
+)marPerform,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)>=substr('^param3',0,4)||'01'
+AND substr(x.wkor_date,0,6)<=substr('^param3',0,4)||'11'
+AND WO_TYPE IN ('PMI','PMW')
+)marAccPlan,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)>=substr('^param3',0,4)||'01'
+AND substr(x.wkor_date,0,6)<=substr('^param3',0,4)||'11'
+AND WO_TYPE IN ('PMI','PMW')
+AND wo_status ='C'
+)marAccPerform
+FROM dual
+UNION ALL
+SELECT
+'Dec'title,
+'12'ord,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'12'
+AND WO_TYPE IN ('PMI','PMW')
+)marPlan,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'12'
+AND WO_TYPE IN ('PMI','PMW')
+AND wo_status ='C'
+)marPerform,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)>=substr('^param3',0,4)||'01'
+AND substr(x.wkor_date,0,6)<=substr('^param3',0,4)||'12'
+AND WO_TYPE IN ('PMI','PMW')
+)marAccPlan,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)>=substr('^param3',0,4)||'01'
+AND substr(x.wkor_date,0,6)<=substr('^param3',0,4)||'12'
+AND WO_TYPE IN ('PMI','PMW')
+AND wo_status ='C'
+)marAccPerform
+FROM dual)b
+)c
+group by rollup(title)
+)d
+order by ord asc
+/
+$
+SELECT
+title,
+janaccplan,
+janaccperform,
+NVL2(100-ROUND(janaccplan/janaccperform,0),100-ROUND(janaccplan/janaccperform,0)||'%','') accm,
+NVL2(ROUND(janaccplan/janaccperform,0),ROUND(janaccplan/janaccperform,0)||'%','')accmPerform
+FROM
+(
+SELECT
+title,
+CASE
+ WHEN rownum <=substr('^param3',6,2) then DECODE(janplan,'0','',janplan)
+ ELSE ''
+ END janplan,
+ CASE
+ WHEN rownum <=substr('^param3',6,2) then DECODE(janplan,'0','',janperform)
+ ELSE '0'
+ END janperform,
+  CASE
+ WHEN rownum <=substr('^param3',6,2) then DECODE(janplan,'0','',janaccplan)
+ ELSE ''
+ END janaccplan,
+  CASE
+ WHEN rownum <=substr('^param3',6,2) then DECODE(janplan,'0','',janaccperform)
+ ELSE ''
+ END janaccperform,
+ord
+FROM
+(
+SELECT
+'Jan'title,
+'1'ord,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'01'
+AND WO_TYPE IN ('PMI','PMW')
+)janPlan,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'01'
+AND WO_TYPE IN ('PMI','PMW')
+AND wo_status ='C'
+)janPerform,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'01'
+AND WO_TYPE IN ('PMI','PMW')
+)janAccPlan,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'01'
+AND WO_TYPE IN ('PMI','PMW')
+AND wo_status ='C'
+)janAccPerform
+FROM dual
+UNION ALL
+SELECT
+'Feb'title,
+'2'ord,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'02'
+AND WO_TYPE IN ('PMI','PMW')
+)febPlan,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'02'
+AND WO_TYPE IN ('PMI','PMW')
+AND wo_status ='C'
+)febPerform,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)>=substr('^param3',0,4)||'01'
+AND substr(x.wkor_date,0,6)<=substr('^param3',0,4)||'02'
+AND WO_TYPE IN ('PMI','PMW')
+)febAccPlan,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)>=substr('^param3',0,4)||'01'
+AND substr(x.wkor_date,0,6)<=substr('^param3',0,4)||'02'
+AND WO_TYPE IN ('PMI','PMW')
+AND wo_status ='C'
+)febAccPerform
+FROM dual
+UNION ALL
+SELECT
+'Mar'title,
+'3'ord,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'03'
+AND WO_TYPE IN ('PMI','PMW')
+)marPlan,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'03'
+AND WO_TYPE IN ('PMI','PMW')
+AND wo_status ='C'
+)marPerform,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)>=substr('^param3',0,4)||'01'
+AND substr(x.wkor_date,0,6)<=substr('^param3',0,4)||'03'
+AND WO_TYPE IN ('PMI','PMW')
+)marAccPlan,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)>=substr('^param3',0,4)||'01'
+AND substr(x.wkor_date,0,6)<=substr('^param3',0,4)||'03'
+AND WO_TYPE IN ('PMI','PMW')
+AND wo_status ='C'
+)marAccPerform
+FROM dual
+UNION ALL
+SELECT
+'Apr'title,
+'4'ord,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'04'
+AND WO_TYPE IN ('PMI','PMW')
+)marPlan,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'04'
+AND WO_TYPE IN ('PMI','PMW')
+AND wo_status ='C'
+)marPerform,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)>=substr('^param3',0,4)||'01'
+AND substr(x.wkor_date,0,6)<=substr('^param3',0,4)||'04'
+AND WO_TYPE IN ('PMI','PMW')
+)marAccPlan,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)>=substr('^param3',0,4)||'01'
+AND substr(x.wkor_date,0,6)<=substr('^param3',0,4)||'04'
+AND WO_TYPE IN ('PMI','PMW')
+AND wo_status ='C'
+)marAccPerform
+FROM dual
+UNION ALL
+SELECT
+'May'title,
+'5'ord,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'05'
+AND WO_TYPE IN ('PMI','PMW')
+)marPlan,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'05'
+AND WO_TYPE IN ('PMI','PMW')
+AND wo_status ='C'
+)marPerform,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)>=substr('^param3',0,4)||'01'
+AND substr(x.wkor_date,0,6)<=substr('^param3',0,4)||'05'
+AND WO_TYPE IN ('PMI','PMW')
+)marAccPlan,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)>=substr('^param3',0,4)||'01'
+AND substr(x.wkor_date,0,6)<=substr('^param3',0,4)||'05'
+AND WO_TYPE IN ('PMI','PMW')
+AND wo_status ='C'
+)marAccPerform
+FROM dual
+UNION ALL
+SELECT
+'Jun'title,
+'6'ord,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'06'
+AND WO_TYPE IN ('PMI','PMW')
+)marPlan,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'06'
+AND WO_TYPE IN ('PMI','PMW')
+AND wo_status ='C'
+)marPerform,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)>=substr('^param3',0,4)||'01'
+AND substr(x.wkor_date,0,6)<=substr('^param3',0,4)||'06'
+AND WO_TYPE IN ('PMI','PMW')
+)marAccPlan,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)>=substr('^param3',0,4)||'01'
+AND substr(x.wkor_date,0,6)<=substr('^param3',0,4)||'06'
+AND WO_TYPE IN ('PMI','PMW')
+AND wo_status ='C'
+)marAccPerform
+FROM dual
+UNION ALL
+SELECT
+'Jul'title,
+'7'ord,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'07'
+AND WO_TYPE IN ('PMI','PMW')
+)marPlan,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'07'
+AND WO_TYPE IN ('PMI','PMW')
+AND wo_status ='C'
+)marPerform,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)>=substr('^param3',0,4)||'01'
+AND substr(x.wkor_date,0,6)<=substr('^param3',0,4)||'07'
+AND WO_TYPE IN ('PMI','PMW')
+)marAccPlan,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)>=substr('^param3',0,4)||'01'
+AND substr(x.wkor_date,0,6)<=substr('^param3',0,4)||'07'
+AND WO_TYPE IN ('PMI','PMW')
+AND wo_status ='C'
+)marAccPerform
+FROM dual
+UNION ALL
+SELECT
+'Aug'title,
+'8'ord,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'08'
+AND WO_TYPE IN ('PMI','PMW')
+)marPlan,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'08'
+AND WO_TYPE IN ('PMI','PMW')
+AND wo_status ='C'
+)marPerform,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)>=substr('^param3',0,4)||'01'
+AND substr(x.wkor_date,0,6)<=substr('^param3',0,4)||'08'
+AND WO_TYPE IN ('PMI','PMW')
+)marAccPlan,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)>=substr('^param3',0,4)||'01'
+AND substr(x.wkor_date,0,6)<=substr('^param3',0,4)||'08'
+AND WO_TYPE IN ('PMI','PMW')
+AND wo_status ='C'
+)marAccPerform
+FROM dual
+UNION ALL
+SELECT
+'Sep'title,
+'9'ord,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'09'
+AND WO_TYPE IN ('PMI','PMW')
+)marPlan,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'09'
+AND WO_TYPE IN ('PMI','PMW')
+AND wo_status ='C'
+)marPerform,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)>=substr('^param3',0,4)||'01'
+AND substr(x.wkor_date,0,6)<=substr('^param3',0,4)||'09'
+AND WO_TYPE IN ('PMI','PMW')
+)marAccPlan,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)>=substr('^param3',0,4)||'01'
+AND substr(x.wkor_date,0,6)<=substr('^param3',0,4)||'09'
+AND WO_TYPE IN ('PMI','PMW')
+AND wo_status ='C'
+)marAccPerform
+FROM dual
+UNION ALL
+SELECT
+'Oct'title,
+'10'ord,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'10'
+AND WO_TYPE IN ('PMI','PMW')
+)marPlan,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'10'
+AND WO_TYPE IN ('PMI','PMW')
+AND wo_status ='C'
+)marPerform,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)>=substr('^param3',0,4)||'01'
+AND substr(x.wkor_date,0,6)<=substr('^param3',0,4)||'10'
+AND WO_TYPE IN ('PMI','PMW')
+)marAccPlan,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)>=substr('^param3',0,4)||'01'
+AND substr(x.wkor_date,0,6)<=substr('^param3',0,4)||'10'
+AND WO_TYPE IN ('PMI','PMW')
+AND wo_status ='C'
+)marAccPerform
+FROM dual
+UNION ALL
+SELECT
+'Nov'title,
+'11'ord,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'11'
+AND WO_TYPE IN ('PMI','PMW')
+)marPlan,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'11'
+AND WO_TYPE IN ('PMI','PMW')
+AND wo_status ='C'
+)marPerform,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)>=substr('^param3',0,4)||'01'
+AND substr(x.wkor_date,0,6)<=substr('^param3',0,4)||'11'
+AND WO_TYPE IN ('PMI','PMW')
+)marAccPlan,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)>=substr('^param3',0,4)||'01'
+AND substr(x.wkor_date,0,6)<=substr('^param3',0,4)||'11'
+AND WO_TYPE IN ('PMI','PMW')
+AND wo_status ='C'
+)marAccPerform
+FROM dual
+UNION ALL
+SELECT
+'Dec'title,
+'12'ord,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'12'
+AND WO_TYPE IN ('PMI','PMW')
+)marPlan,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'12'
+AND WO_TYPE IN ('PMI','PMW')
+AND wo_status ='C'
+)marPerform,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)>=substr('^param3',0,4)||'01'
+AND substr(x.wkor_date,0,6)<=substr('^param3',0,4)||'12'
+AND WO_TYPE IN ('PMI','PMW')
+)marAccPlan,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)>=substr('^param3',0,4)||'01'
+AND substr(x.wkor_date,0,6)<=substr('^param3',0,4)||'12'
+AND WO_TYPE IN ('PMI','PMW')
+AND wo_status ='C'
+)marAccPerform
+FROM dual)b
+)c
+/
+$
+SELECT
+title,
+CASE
+ WHEN rownum <=substr('^param3',6,2) then DECODE(janpm,0,'',janpm)
+ ELSE ''
+ END janpm,
+ CASE
+ WHEN rownum <=substr('^param3',6,2) then DECODE(janbm,0,'',janbm)
+ ELSE ''
+ END janbm
+FROM
+(
+SELECT
+'Jan'title,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'01'
+AND WO_TYPE IN ('PMI','PMW')
+AND wo_status ='C'
+)janPm,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'01'
+AND WO_TYPE IN ('BM')
+AND wo_status ='C'
+AND (SELECT lndn_work_time FROM TAWOFAIL y WHERE x.comp_no=y.comp_no AND x.wkor_id=y.wkor_id) is not null
+)janBm
+FROM dual
+UNION ALL
+SELECT
+'Feb'title,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'02'
+AND WO_TYPE IN ('PMI','PMW')
+AND wo_status ='C'
+)janPm,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'02'
+AND WO_TYPE IN ('BM')
+AND wo_status ='C'
+AND (SELECT lndn_work_time FROM TAWOFAIL y WHERE x.comp_no=y.comp_no AND x.wkor_id=y.wkor_id) is not null
+)janBm
+FROM dual
+UNION ALL
+SELECT
+'Mar'title,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'03'
+AND WO_TYPE IN ('PMI','PMW')
+AND wo_status ='C'
+)janPm,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'03'
+AND WO_TYPE IN ('BM')
+AND wo_status ='C'
+AND (SELECT lndn_work_time FROM TAWOFAIL y WHERE x.comp_no=y.comp_no AND x.wkor_id=y.wkor_id) is not null
+)janBm
+FROM dual
+UNION ALL
+SELECT
+'Apr'title,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'04'
+AND WO_TYPE IN ('PMI','PMW')
+AND wo_status ='C'
+)janPm,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'04'
+AND WO_TYPE IN ('BM')
+AND wo_status ='C'
+AND (SELECT lndn_work_time FROM TAWOFAIL y WHERE x.comp_no=y.comp_no AND x.wkor_id=y.wkor_id) is not null
+)janBm
+FROM dual
+UNION ALL
+SELECT
+'May'title,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'05'
+AND WO_TYPE IN ('PMI','PMW')
+AND wo_status ='C'
+)janPm,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'05'
+AND WO_TYPE IN ('BM')
+AND wo_status ='C'
+AND (SELECT lndn_work_time FROM TAWOFAIL y WHERE x.comp_no=y.comp_no AND x.wkor_id=y.wkor_id) is not null
+)janBm
+FROM dual
+UNION ALL
+SELECT
+'Jun'title,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'06'
+AND WO_TYPE IN ('PMI','PMW')
+AND wo_status ='C'
+)janPm,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'06'
+AND WO_TYPE IN ('BM')
+AND wo_status ='C'
+AND (SELECT lndn_work_time FROM TAWOFAIL y WHERE x.comp_no=y.comp_no AND x.wkor_id=y.wkor_id) is not null
+)janBm
+FROM dual
+UNION ALL
+SELECT
+'Jul'title,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'07'
+AND WO_TYPE IN ('PMI','PMW')
+AND wo_status ='C'
+)janPm,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'07'
+AND WO_TYPE IN ('BM')
+AND wo_status ='C'
+AND (SELECT lndn_work_time FROM TAWOFAIL y WHERE x.comp_no=y.comp_no AND x.wkor_id=y.wkor_id) is not null
+)janBm
+FROM dual
+UNION ALL
+SELECT
+'Aug'title,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'08'
+AND WO_TYPE IN ('PMI','PMW')
+AND wo_status ='C'
+)janPm,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'08'
+AND WO_TYPE IN ('BM')
+AND wo_status ='C'
+AND (SELECT lndn_work_time FROM TAWOFAIL y WHERE x.comp_no=y.comp_no AND x.wkor_id=y.wkor_id) is not null
+)janBm
+FROM dual
+UNION ALL
+SELECT
+'Sep'title,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'09'
+AND WO_TYPE IN ('PMI','PMW')
+AND wo_status ='C'
+)janPm,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'09'
+AND WO_TYPE IN ('BM')
+AND wo_status ='C'
+AND (SELECT lndn_work_time FROM TAWOFAIL y WHERE x.comp_no=y.comp_no AND x.wkor_id=y.wkor_id) is not null
+)janBm
+FROM dual
+UNION ALL
+SELECT
+'Oct'title,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'10'
+AND WO_TYPE IN ('PMI','PMW')
+AND wo_status ='C'
+)janPm,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'10'
+AND WO_TYPE IN ('BM')
+AND wo_status ='C'
+AND (SELECT lndn_work_time FROM TAWOFAIL y WHERE x.comp_no=y.comp_no AND x.wkor_id=y.wkor_id) is not null
+)janBm
+FROM dual
+UNION ALL
+SELECT
+'Nov'title,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'11'
+AND WO_TYPE IN ('PMI','PMW')
+AND wo_status ='C'
+)janPm,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'11'
+AND WO_TYPE IN ('BM')
+AND wo_status ='C'
+AND (SELECT lndn_work_time FROM TAWOFAIL y WHERE x.comp_no=y.comp_no AND x.wkor_id=y.wkor_id) is not null
+)janBm
+FROM dual
+UNION ALL
+SELECT
+'Dec'title,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'12'
+AND WO_TYPE IN ('PMI','PMW')
+AND wo_status ='C'
+)janPm,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'12'
+AND WO_TYPE IN ('BM')
+AND wo_status ='C'
+AND (SELECT lndn_work_time FROM TAWOFAIL y WHERE x.comp_no=y.comp_no AND x.wkor_id=y.wkor_id) is not null
+)janBm
+FROM dual
+)b
+/
+$
+SELECT
+NVL(title,'TOTAL')title,
+DECODE(SUM(janpm),'0','',SUM(janpm))janpm,
+DECODE(SUM(janbm),'0','',SUM(janbm))janbm
+FROM
+(
+SELECT
+ROWNUM rowseq,
+title,
+CASE
+ WHEN rownum <=substr('^param3',6,2) then janpm
+ ELSE 0
+ END janpm,
+ CASE
+ WHEN rownum <=substr('^param3',6,2) then janbm
+ ELSE 0
+ END janbm
+FROM
+(
+SELECT
+'Jan'title,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'01'
+AND WO_TYPE IN ('PMI','PMW')
+AND wo_status ='C'
+)janPm,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'01'
+AND WO_TYPE IN ('BM')
+AND wo_status ='C'
+AND (SELECT lndn_work_time FROM TAWOFAIL y WHERE x.comp_no=y.comp_no AND x.wkor_id=y.wkor_id) is not null
+)janBm
+FROM dual
+UNION ALL
+SELECT
+'Feb'title,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'02'
+AND WO_TYPE IN ('PMI','PMW')
+AND wo_status ='C'
+)janPm,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'02'
+AND WO_TYPE IN ('BM')
+AND wo_status ='C'
+AND (SELECT lndn_work_time FROM TAWOFAIL y WHERE x.comp_no=y.comp_no AND x.wkor_id=y.wkor_id) is not null
+)janBm
+FROM dual
+UNION ALL
+SELECT
+'Mar'title,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'03'
+AND WO_TYPE IN ('PMI','PMW')
+AND wo_status ='C'
+)janPm,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'03'
+AND WO_TYPE IN ('BM')
+AND wo_status ='C'
+AND (SELECT lndn_work_time FROM TAWOFAIL y WHERE x.comp_no=y.comp_no AND x.wkor_id=y.wkor_id) is not null
+)janBm
+FROM dual
+UNION ALL
+SELECT
+'Apr'title,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'04'
+AND WO_TYPE IN ('PMI','PMW')
+AND wo_status ='C'
+)janPm,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'04'
+AND WO_TYPE IN ('BM')
+AND wo_status ='C'
+AND (SELECT lndn_work_time FROM TAWOFAIL y WHERE x.comp_no=y.comp_no AND x.wkor_id=y.wkor_id) is not null
+)janBm
+FROM dual
+UNION ALL
+SELECT
+'May'title,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'05'
+AND WO_TYPE IN ('PMI','PMW')
+AND wo_status ='C'
+)janPm,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'05'
+AND WO_TYPE IN ('BM')
+AND wo_status ='C'
+AND (SELECT lndn_work_time FROM TAWOFAIL y WHERE x.comp_no=y.comp_no AND x.wkor_id=y.wkor_id) is not null
+)janBm
+FROM dual
+UNION ALL
+SELECT
+'Jun'title,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'06'
+AND WO_TYPE IN ('PMI','PMW')
+AND wo_status ='C'
+)janPm,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'06'
+AND WO_TYPE IN ('BM')
+AND wo_status ='C'
+AND (SELECT lndn_work_time FROM TAWOFAIL y WHERE x.comp_no=y.comp_no AND x.wkor_id=y.wkor_id) is not null
+)janBm
+FROM dual
+UNION ALL
+SELECT
+'Jul'title,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'07'
+AND WO_TYPE IN ('PMI','PMW')
+AND wo_status ='C'
+)janPm,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'07'
+AND WO_TYPE IN ('BM')
+AND wo_status ='C'
+AND (SELECT lndn_work_time FROM TAWOFAIL y WHERE x.comp_no=y.comp_no AND x.wkor_id=y.wkor_id) is not null
+)janBm
+FROM dual
+UNION ALL
+SELECT
+'Aug'title,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'08'
+AND WO_TYPE IN ('PMI','PMW')
+AND wo_status ='C'
+)janPm,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'08'
+AND WO_TYPE IN ('BM')
+AND wo_status ='C'
+AND (SELECT lndn_work_time FROM TAWOFAIL y WHERE x.comp_no=y.comp_no AND x.wkor_id=y.wkor_id) is not null
+)janBm
+FROM dual
+UNION ALL
+SELECT
+'Sep'title,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'09'
+AND WO_TYPE IN ('PMI','PMW')
+AND wo_status ='C'
+)janPm,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'09'
+AND WO_TYPE IN ('BM')
+AND wo_status ='C'
+AND (SELECT lndn_work_time FROM TAWOFAIL y WHERE x.comp_no=y.comp_no AND x.wkor_id=y.wkor_id) is not null
+)janBm
+FROM dual
+UNION ALL
+SELECT
+'Oct'title,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'10'
+AND WO_TYPE IN ('PMI','PMW')
+AND wo_status ='C'
+)janPm,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'10'
+AND WO_TYPE IN ('BM')
+AND wo_status ='C'
+AND (SELECT lndn_work_time FROM TAWOFAIL y WHERE x.comp_no=y.comp_no AND x.wkor_id=y.wkor_id) is not null
+)janBm
+FROM dual
+UNION ALL
+SELECT
+'Nov'title,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'11'
+AND WO_TYPE IN ('PMI','PMW')
+AND wo_status ='C'
+)janPm,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'11'
+AND WO_TYPE IN ('BM')
+AND wo_status ='C'
+AND (SELECT lndn_work_time FROM TAWOFAIL y WHERE x.comp_no=y.comp_no AND x.wkor_id=y.wkor_id) is not null
+)janBm
+FROM dual
+UNION ALL
+SELECT
+'Dec'title,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'12'
+AND WO_TYPE IN ('PMI','PMW')
+AND wo_status ='C'
+)janPm,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'12'
+AND WO_TYPE IN ('BM')
+AND wo_status ='C'
+AND (SELECT lndn_work_time FROM TAWOFAIL y WHERE x.comp_no=y.comp_no AND x.wkor_id=y.wkor_id) is not null
+)janBm
+FROM dual
+)b
+)c
+GROUP BY ROLLUP(title)
+ORDER BY (MAX(rowseq)),title
+/
+$
+SELECT
+title,
+CASE
+ WHEN rownum <=substr('^param3',6,2) then DECODE(janpm,'0','',ROUND((janpm/(janpm+janbm)*100),0))
+ ELSE ''
+ END pm,
+ CASE
+ WHEN rownum <=substr('^param3',6,2) then DECODE(janpm,'0','',100-DECODE(janpm,'0','',ROUND((janpm/(janpm+janbm)*100),0)))
+ ELSE ''
+ END bm
+FROM
+(
+SELECT
+'Jan'title,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'01'
+AND WO_TYPE IN ('PMI','PMW')
+AND wo_status ='C'
+)janPm,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'01'
+AND WO_TYPE IN ('BM')
+AND wo_status ='C'
+AND (SELECT lndn_work_time FROM TAWOFAIL y WHERE x.comp_no=y.comp_no AND x.wkor_id=y.wkor_id) is not null
+)janBm
+FROM dual
+UNION ALL
+SELECT
+'Feb'title,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'02'
+AND WO_TYPE IN ('PMI','PMW')
+AND wo_status ='C'
+)janPm,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'02'
+AND WO_TYPE IN ('BM')
+AND wo_status ='C'
+AND (SELECT lndn_work_time FROM TAWOFAIL y WHERE x.comp_no=y.comp_no AND x.wkor_id=y.wkor_id) is not null
+)janBm
+FROM dual
+UNION ALL
+SELECT
+'Mar'title,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'03'
+AND WO_TYPE IN ('PMI','PMW')
+AND wo_status ='C'
+)janPm,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'03'
+AND WO_TYPE IN ('BM')
+AND wo_status ='C'
+AND (SELECT lndn_work_time FROM TAWOFAIL y WHERE x.comp_no=y.comp_no AND x.wkor_id=y.wkor_id) is not null
+)janBm
+FROM dual
+UNION ALL
+SELECT
+'Apr'title,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'04'
+AND WO_TYPE IN ('PMI','PMW')
+AND wo_status ='C'
+)janPm,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'04'
+AND WO_TYPE IN ('BM')
+AND wo_status ='C'
+AND (SELECT lndn_work_time FROM TAWOFAIL y WHERE x.comp_no=y.comp_no AND x.wkor_id=y.wkor_id) is not null
+)janBm
+FROM dual
+UNION ALL
+SELECT
+'May'title,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'05'
+AND WO_TYPE IN ('PMI','PMW')
+AND wo_status ='C'
+)janPm,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'05'
+AND WO_TYPE IN ('BM')
+AND wo_status ='C'
+AND (SELECT lndn_work_time FROM TAWOFAIL y WHERE x.comp_no=y.comp_no AND x.wkor_id=y.wkor_id) is not null
+)janBm
+FROM dual
+UNION ALL
+SELECT
+'Jun'title,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'06'
+AND WO_TYPE IN ('PMI','PMW')
+AND wo_status ='C'
+)janPm,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'06'
+AND WO_TYPE IN ('BM')
+AND wo_status ='C'
+AND (SELECT lndn_work_time FROM TAWOFAIL y WHERE x.comp_no=y.comp_no AND x.wkor_id=y.wkor_id) is not null
+)janBm
+FROM dual
+UNION ALL
+SELECT
+'Jul'title,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'07'
+AND WO_TYPE IN ('PMI','PMW')
+AND wo_status ='C'
+)janPm,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'07'
+AND WO_TYPE IN ('BM')
+AND wo_status ='C'
+AND (SELECT lndn_work_time FROM TAWOFAIL y WHERE x.comp_no=y.comp_no AND x.wkor_id=y.wkor_id) is not null
+)janBm
+FROM dual
+UNION ALL
+SELECT
+'Aug'title,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'08'
+AND WO_TYPE IN ('PMI','PMW')
+AND wo_status ='C'
+)janPm,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'08'
+AND WO_TYPE IN ('BM')
+AND wo_status ='C'
+AND (SELECT lndn_work_time FROM TAWOFAIL y WHERE x.comp_no=y.comp_no AND x.wkor_id=y.wkor_id) is not null
+)janBm
+FROM dual
+UNION ALL
+SELECT
+'Sep'title,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'09'
+AND WO_TYPE IN ('PMI','PMW')
+AND wo_status ='C'
+)janPm,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'09'
+AND WO_TYPE IN ('BM')
+AND wo_status ='C'
+AND (SELECT lndn_work_time FROM TAWOFAIL y WHERE x.comp_no=y.comp_no AND x.wkor_id=y.wkor_id) is not null
+)janBm
+FROM dual
+UNION ALL
+SELECT
+'Oct'title,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'10'
+AND WO_TYPE IN ('PMI','PMW')
+AND wo_status ='C'
+)janPm,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'10'
+AND WO_TYPE IN ('BM')
+AND wo_status ='C'
+AND (SELECT lndn_work_time FROM TAWOFAIL y WHERE x.comp_no=y.comp_no AND x.wkor_id=y.wkor_id) is not null
+)janBm
+FROM dual
+UNION ALL
+SELECT
+'Nov'title,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'11'
+AND WO_TYPE IN ('PMI','PMW')
+AND wo_status ='C'
+)janPm,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'11'
+AND WO_TYPE IN ('BM')
+AND wo_status ='C'
+AND (SELECT lndn_work_time FROM TAWOFAIL y WHERE x.comp_no=y.comp_no AND x.wkor_id=y.wkor_id) is not null
+)janBm
+FROM dual
+UNION ALL
+SELECT
+'Dec'title,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'12'
+AND WO_TYPE IN ('PMI','PMW')
+AND wo_status ='C'
+)janPm,
+(
+SELECT
+count(*) FROM TAWORKORDER x
+WHERE substr(x.wkor_date,0,6)=substr('^param3',0,4)||'12'
+AND WO_TYPE IN ('BM')
+AND wo_status ='C'
+AND (SELECT lndn_work_time FROM TAWOFAIL y WHERE x.comp_no=y.comp_no AND x.wkor_id=y.wkor_id) is not null
+)janBm
+FROM dual
+)b
+/
+$
+SELECT
+((select NVL(ROUND(AVG(x.mtbf/60),2),'0')result From TAKPIMLOCDN x where substr(x.yyyymm,0,4)=substr('^param3',0,4)-1))lastResult,
+(select ROUND(((SUM(pvalue)/count(*))/60),2) target from TAMTLNPOINT x where substr(x.yyyymm,0,4)=substr('^param3',0,4)  AND x.mtlnpoint='MTBF' )thisGoal,
+(select ROUND(((SUM(x.mtbf)/4)/60),2) From TAKPIMLOCDN x where substr(x.yyyymm,0,4)=substr('^param3',0,4) AND x.yyyymm <=replace('^param3','-'))thisResult
+FROM dual
+/
+$
+SELECT
+b.title,
+CASE
+ WHEN rownum <=substr('^param3',6,2) then thisgoal
+ ELSE null
+ END thisgoal,
+ CASE
+ WHEN rownum <=substr('^param3',6,2) then thisresult
+ ELSE null 
+ END thisresult
+FROM
+(
+SELECT
+'Jan'title,
+(select ROUND(((SUM(pvalue)/count(*))/60),2) target from TAMTLNPOINT x where substr(x.yyyymm,0,6)=substr('^param3',0,4)||'01'  AND x.mtlnpoint='MTBF' )thisGoal,
+(select ROUND(((SUM(x.mtbf)/4)/60),2) From TAKPIMLOCDN x where substr(x.yyyymm,0,6)=substr('^param3',0,4)||'01')thisResult
+FROM dual
+UNION ALL
+SELECT
+'Feb'title,
+(select ROUND(((SUM(pvalue)/count(*))/60),2) target from TAMTLNPOINT x where substr(x.yyyymm,0,6)=substr('^param3',0,4)||'02' AND x.mtlnpoint='MTBF' )thisGoal,
+(select ROUND(((SUM(x.mtbf)/4)/60),2) From TAKPIMLOCDN x where substr(x.yyyymm,0,6)=substr('^param3',0,4)||'02')thisResult
+FROM dual
+UNION ALL
+SELECT
+'Mar'title,
+(select ROUND(((SUM(pvalue)/count(*))/60),2) target from TAMTLNPOINT x where substr(x.yyyymm,0,6)=substr('^param3',0,4)||'03' AND x.mtlnpoint='MTBF' )thisGoal,
+(select ROUND(((SUM(x.mtbf)/4)/60),2) From TAKPIMLOCDN x where substr(x.yyyymm,0,6)=substr('^param3',0,4)||'03')thisResult
+FROM dual
+UNION ALL
+SELECT
+'Apr'title,
+(select ROUND(((SUM(pvalue)/count(*))/60),2) target from TAMTLNPOINT x where substr(x.yyyymm,0,6)=substr('^param3',0,4)||'04'  AND x.mtlnpoint='MTBF' )thisGoal,
+(select ROUND(((SUM(x.mtbf)/4)/60),2) From TAKPIMLOCDN x where substr(x.yyyymm,0,6)=substr('^param3',0,4)||'04')thisResult
+FROM dual
+UNION ALL
+SELECT
+'May'title,
+(select ROUND(((SUM(pvalue)/count(*))/60),2) target from TAMTLNPOINT x where substr(x.yyyymm,0,6)=substr('^param3',0,4)||'05'  AND x.mtlnpoint='MTBF' )thisGoal,
+(select ROUND(((SUM(x.mtbf)/4)/60),2) From TAKPIMLOCDN x where substr(x.yyyymm,0,6)=substr('^param3',0,4)||'05')thisResult
+FROM dual
+UNION ALL
+SELECT
+'Jun'title,
+(select ROUND(((SUM(pvalue)/count(*))/60),2) target from TAMTLNPOINT x where substr(x.yyyymm,0,6)=substr('^param3',0,4)||'06' AND x.mtlnpoint='MTBF' )thisGoal,
+(select ROUND(((SUM(x.mtbf)/4)/60),2) From TAKPIMLOCDN x where substr(x.yyyymm,0,6)=substr('^param3',0,4)||'06')thisResult
+FROM dual
+UNION ALL
+SELECT
+'Jul'title,
+(select ROUND(((SUM(pvalue)/count(*))/60),2) target from TAMTLNPOINT x where substr(x.yyyymm,0,6)=substr('^param3',0,4)||'07'  AND x.mtlnpoint='MTBF' )thisGoal,
+(select ROUND(((SUM(x.mtbf)/4)/60),2) From TAKPIMLOCDN x where substr(x.yyyymm,0,6)=substr('^param3',0,4)||'07')thisResult
+FROM dual
+UNION ALL
+SELECT
+'Aug'title,
+(select ROUND(((SUM(pvalue)/count(*))/60),2) target from TAMTLNPOINT x where substr(x.yyyymm,0,6)=substr('^param3',0,4)||'08' AND x.mtlnpoint='MTBF' )thisGoal,
+(select ROUND(((SUM(x.mtbf)/4)/60),2) From TAKPIMLOCDN x where substr(x.yyyymm,0,6)=substr('^param3',0,4)||'08')thisResult
+FROM dual
+UNION ALL
+SELECT
+'Sep'title,
+(select ROUND(((SUM(pvalue)/count(*))/60),2) target from TAMTLNPOINT x where substr(x.yyyymm,0,6)=substr('^param3',0,4)||'09'  AND x.mtlnpoint='MTBF' )thisGoal,
+(select ROUND(((SUM(x.mtbf)/4)/60),2) From TAKPIMLOCDN x where substr(x.yyyymm,0,6)=substr('^param3',0,4)||'09')thisResult
+FROM dual
+UNION ALL
+SELECT
+'Oct'title,
+(select ROUND(((SUM(pvalue)/count(*))/60),2) target from TAMTLNPOINT x where substr(x.yyyymm,0,6)=substr('^param3',0,4)||'10'  AND x.mtlnpoint='MTBF' )thisGoal,
+(select ROUND(((SUM(x.mtbf)/4)/60),2) From TAKPIMLOCDN x where substr(x.yyyymm,0,6)=substr('^param3',0,4)||'10')thisResult
+FROM dual
+UNION ALL
+SELECT
+'Nov'title,
+(select ROUND(((SUM(pvalue)/count(*))/60),2) target from TAMTLNPOINT x where substr(x.yyyymm,0,6)=substr('^param3',0,4)||'11'  AND x.mtlnpoint='MTBF' )thisGoal,
+(select ROUND(((SUM(x.mtbf)/4)/60),2) From TAKPIMLOCDN x where substr(x.yyyymm,0,6)=substr('^param3',0,4)||'11')thisResult
+FROM dual
+UNION ALL
+SELECT
+'Dec'title,
+(select ROUND(((SUM(pvalue)/count(*))/60),2) target from TAMTLNPOINT x where substr(x.yyyymm,0,6)=substr('^param3',0,4)||'12'  AND x.mtlnpoint='MTBF' )thisGoal,
+(select ROUND(((SUM(x.mtbf)/4)/60),2) From TAKPIMLOCDN x where substr(x.yyyymm,0,6)=substr('^param3',0,4)||'12')thisResult
+FROM dual
+)b
+/
+$
+SELECT
+*
+FROM
+(
+SELECT
+MAX(c.description)description,
+AVG(lastResult)lastResult,
+AVG(thisGoal)thisGoal,
+ROUND(AVG(thisResult),2)thisResult
+FROM
+(
+SELECT
+b.*,
+DECODE(b.eqloc_id,'1090','1','1088','2','1087','3','1089','1')eqLoc
+FROM
+(
+SELECT 
+y.description,
+ (
+ select ROUND((AVG(mtbf)/60),2) from TAKPIMLOCDN x where substr(x.yyyymm,0,4)=substr('^param3',0,4)-1 AND x.eqloc_id=y.eqloc_id
+ )lastResult,
+(
+ select ROUND(((SUM(pvalue)/count(*))/60),2)thisGoal 
+ from TAMTLNPOINT x where substr(x.yyyymm,0,4)=substr('^param3',0,4)  AND x.mtlnpoint='MTBF'  AND x.eqloc_id=y.eqloc_id AND substr(x.yyyymm,0,4)=substr('^param3',0,4)
+ )thisGoal,
+ (
+ select ROUND((AVG(mtbf)/60),2) from TAKPIMLOCDN x where substr(x.yyyymm,0,4)=substr('^param3',0,4) AND x.eqloc_id=y.eqloc_id AND x.yyyymm <=replace('^param3','-')
+ )thisResult,
+ eqloc_id
+FROM TAEQLOC y WHERE is_kpi='Y' order by DECODE(eqloc_id,'1090','1','1088','2','1087','3','1089','4') asc
+)b
+)c
+group by c.eqloc
+order by eqloc
+)d
+UNION ALL
+SELECT
+'TOTAL',
+(
+SELECT
+ROUND(AVG(lastresult),2)
+FROM
+(
+SELECT
+MAX(c.description)description,
+AVG(lastResult)lastResult,
+AVG(thisGoal)thisGoal,
+ROUND(AVG(thisResult),2)thisResult
+FROM
+(
+SELECT
+b.*,
+DECODE(b.eqloc_id,'1090','1','1088','2','1087','3','1089','1')eqLoc
+FROM
+(
+SELECT 
+y.description,
+ (
+ select ROUND((AVG(mtbf)/60),2) from TAKPIMLOCDN x where substr(x.yyyymm,0,4)=substr('^param3',0,4)-1 AND x.eqloc_id=y.eqloc_id
+ )lastResult,
+(
+ select ROUND(((SUM(pvalue)/count(*))/60),2)thisGoal 
+ from TAMTLNPOINT x where substr(x.yyyymm,0,4)=substr('^param3',0,4)  AND x.mtlnpoint='MTBF'  AND x.eqloc_id=y.eqloc_id AND substr(x.yyyymm,0,4)=substr('^param3',0,4)
+ )thisGoal,
+ (
+ select ROUND((AVG(mtbf)/60),2) from TAKPIMLOCDN x where substr(x.yyyymm,0,4)=substr('^param3',0,4) AND x.eqloc_id=y.eqloc_id AND x.yyyymm <=replace('^param3','-')
+ )thisResult,
+ eqloc_id
+FROM TAEQLOC y WHERE is_kpi='Y' order by DECODE(eqloc_id,'1090','1','1088','2','1087','3','1089','4') asc
+)b
+)c
+group by c.eqloc
+order by eqloc
+)d
+)lastResult,
+(select ROUND(((SUM(pvalue)/count(*))/60),2) target from TAMTLNPOINT x where substr(x.yyyymm,0,4)=substr(substr('^param3',0,4),0,4)  AND x.mtlnpoint='MTBF' )thisGoal,
+(
+SELECT
+ROUND(AVG(thisresult),2)
+FROM
+(
+SELECT
+MAX(c.description)description,
+AVG(lastResult)lastResult,
+AVG(thisGoal)thisGoal,
+ROUND(AVG(thisResult),2)thisResult
+FROM
+(
+SELECT
+b.*,
+DECODE(b.eqloc_id,'1090','1','1088','2','1087','3','1089','1')eqLoc
+FROM
+(
+SELECT 
+y.description,
+ (
+ select ROUND((AVG(mtbf)/60),2) from TAKPIMLOCDN x where substr(x.yyyymm,0,4)=substr('^param3',0,4)-1 AND x.eqloc_id=y.eqloc_id
+ )lastResult,
+(
+ select ROUND(((SUM(pvalue)/count(*))/60),2)thisGoal 
+ from TAMTLNPOINT x where substr(x.yyyymm,0,4)=substr('^param3',0,4)  AND x.mtlnpoint='MTBF'  AND x.eqloc_id=y.eqloc_id AND substr(x.yyyymm,0,4)=substr('^param3',0,4)
+ )thisGoal,
+ (
+ select ROUND((AVG(mtbf)/60),2) from TAKPIMLOCDN x where substr(x.yyyymm,0,4)=substr('^param3',0,4) AND x.eqloc_id=y.eqloc_id AND x.yyyymm <=replace('^param3','-')
+ )thisResult,
+ eqloc_id
+FROM TAEQLOC y WHERE is_kpi='Y' order by DECODE(eqloc_id,'1090','1','1088','2','1087','3','1089','4') asc
+)b
+)c
+group by c.eqloc
+order by eqloc
+)d
+)
+FROM dual
+/
+$
+SELECT
+CASE
+ WHEN 1 <=substr('^param3',6,2) then ROUND((AVG(janresult)),2)
+ ELSE null
+ END janresult,
+ CASE
+ WHEN 2 <=substr('^param3',6,2) then ROUND((AVG(febresult)),2)
+ ELSE null
+ END febresult,
+ CASE
+ WHEN 3 <=substr('^param3',6,2) then ROUND((AVG(marresult)),2)
+ ELSE null
+ END marresult,
+ CASE
+ WHEN 4 <=substr('^param3',6,2) then ROUND((AVG(aprresult)),2)
+ ELSE null
+ END aprresult,
+ CASE
+ WHEN 5 <=substr('^param3',6,2) then ROUND((AVG(mayresult)),2)
+ ELSE null
+ END mayresult,
+ CASE
+ WHEN 6 <=substr('^param3',6,2) then ROUND((AVG(junresult)),2)
+ ELSE null
+ END junresult,
+ CASE
+ WHEN 7 <=substr('^param3',6,2) then ROUND((AVG(julresult)),2)
+ ELSE null
+ END julresult,
+ CASE
+ WHEN 8 <=substr('^param3',6,2) then ROUND((AVG(augresult)),2)
+ ELSE null
+ END augresult,
+ CASE
+ WHEN 9 <=substr('^param3',6,2) then ROUND((AVG(sepresult)),2)
+ ELSE null
+ END sepresult,
+ CASE
+ WHEN 10 <=substr('^param3',6,2) then ROUND((AVG(octresult)),2)
+ ELSE null
+ END octresult,
+ CASE
+ WHEN 11 <=substr('^param3',6,2) then ROUND((AVG(novresult)),2)
+ ELSE null
+ END novresult,
+ CASE
+ WHEN 12 <=substr('^param3',6,2) then ROUND((AVG(decresult)),2)
+ ELSE null
+ END decresult,
+MAX(eqloc),
+rownum
+FROM
+(
+SELECT
+AVG(janresult)janresult,
+AVG(febresult)febresult,
+AVG(marresult)marresult,
+AVG(aprresult)aprresult,
+AVG(mayresult)mayresult,
+AVG(junresult)junresult,
+AVG(julresult)julresult,
+AVG(augresult)augresult,
+AVG(sepresult)sepresult,
+AVG(octresult)octresult,
+AVG(novresult)novresult,
+AVG(decresult)decresult,
+MAX(eqloc)eqloc
+FROM
+(
+SELECT
+(AVG(janresult))janresult,
+(AVG(febresult))febresult,
+(AVG(marresult))marresult,
+(AVG(aprresult))aprresult,
+(AVG(mayresult))mayresult,
+(AVG(junresult))junresult,
+(AVG(julresult))julresult,
+(AVG(augresult))augresult,
+(AVG(sepresult))sepresult,
+(AVG(octresult))octresult,
+(AVG(novresult))novresult,
+(AVG(decresult))decresult,
+MAX(eqloc)eqloc
+FROM
+(
+SELECT
+ROWNUM rowseq,
+description,
+janresult,
+febresult,
+marresult,
+aprresult,
+mayresult,
+junresult,
+julresult,
+augresult,
+sepresult,
+octresult,
+novresult,
+decresult,
+eqloc
+FROM
+(
+SELECT
+y.description,
+ (
+ select mtbf/60 from TAKPIMLOCDN x where substr(x.yyyymm,0,6)=substr('^param3',0,4)||'01' AND x.eqloc_id=y.eqloc_id
+ )janResult,
+   (
+ select mtbf/60  from TAKPIMLOCDN x where substr(x.yyyymm,0,6)=substr('^param3',0,4)||'02' AND x.eqloc_id=y.eqloc_id
+ )febResult,
+  (
+ select mtbf/60  from TAKPIMLOCDN x where substr(x.yyyymm,0,6)=substr('^param3',0,4)||'03' AND x.eqloc_id=y.eqloc_id
+ )marResult,
+  (
+ select mtbf/60  from TAKPIMLOCDN x where substr(x.yyyymm,0,6)=substr('^param3',0,4)||'04' AND x.eqloc_id=y.eqloc_id
+ )aprResult,
+  (
+ select mtbf/60  from TAKPIMLOCDN x where substr(x.yyyymm,0,6)=substr('^param3',0,4)||'05' AND x.eqloc_id=y.eqloc_id
+ )mayResult,
+  (
+ select mtbf/60  from TAKPIMLOCDN x where substr(x.yyyymm,0,6)=substr('^param3',0,4)||'06' AND x.eqloc_id=y.eqloc_id
+ )junResult,
+  (
+ select mtbf/60  from TAKPIMLOCDN x where substr(x.yyyymm,0,6)=substr('^param3',0,4)||'07' AND x.eqloc_id=y.eqloc_id
+ )julResult,
+  (
+ select mtbf/60  from TAKPIMLOCDN x where substr(x.yyyymm,0,6)=substr('^param3',0,4)||'08' AND x.eqloc_id=y.eqloc_id
+ )augResult,
+  (
+ select mtbf/60  from TAKPIMLOCDN x where substr(x.yyyymm,0,6)=substr('^param3',0,4)||'09' AND x.eqloc_id=y.eqloc_id
+ )sepResult,
+  (
+ select mtbf/60  from TAKPIMLOCDN x where substr(x.yyyymm,0,6)=substr('^param3',0,4)||'10' AND x.eqloc_id=y.eqloc_id
+ )octResult,
+  (
+ select mtbf/60  from TAKPIMLOCDN x where substr(x.yyyymm,0,6)=substr('^param3',0,4)||'11' AND x.eqloc_id=y.eqloc_id
+ )novResult,
+   (
+ select mtbf/60  from TAKPIMLOCDN x where substr(x.yyyymm,0,6)=substr('^param3',0,4)||'12' AND x.eqloc_id=y.eqloc_id
+ )decResult,
+ DECODE(y.eqloc_id,'1090','1','1088','2','1087','3','1089','1')eqLoc
+FROM TAEQLOC y WHERE is_kpi='Y' order by DECODE(eqloc_id,'1090','1','1088','2','1087','3','1089','4') asc
+)b
+)c 
+GROUP BY (description)
+order by MAX(c.eqloc)asc
+)d
+GROUP by (d.eqloc)
+)e
+GROUP BY ROLLUP(rownum)
+ORDER BY (MAX(eqloc)),rownum
+/
+$
+SELECT
+((select NVL(ROUND(AVG(x.mtbf/60),2),'0')result From TAKPIMLOCDN x where substr(x.yyyymm,0,4)=substr('^param3',0,4)-1))lastResult,
+(select ROUND(((SUM(pvalue)/count(*))/60),2) target from TAMTLNPOINT x where substr(x.yyyymm,0,4)=substr('^param3',0,4)  AND x.mtlnpoint='MTTR' )thisGoal,
+(select ROUND(((SUM(x.mttr)/4)/60),2) From TAKPIMLOCDN x where substr(x.yyyymm,0,4)=substr('^param3',0,4) AND x.yyyymm <=replace('^param3','-'))thisResult
+FROM dual
+/
+$
+SELECT
+b.title,
+CASE
+ WHEN rownum <=substr('^param3',6,2) then thisgoal
+ ELSE null
+ END thisgoal,
+ CASE
+ WHEN rownum <=substr('^param3',6,2) then thisresult
+ ELSE null 
+ END thisresult
+FROM
+(
+SELECT
+'Jan'title,
+(select ROUND(((SUM(pvalue)/count(*))/60),2) target from TAMTLNPOINT x where substr(x.yyyymm,0,6)=substr('^param3',0,4)||'01'  AND x.mtlnpoint='MTTR' )thisGoal,
+(select ROUND(((SUM(x.mttr)/4)/60),2) From TAKPIMLOCDN x where substr(x.yyyymm,0,6)=substr('^param3',0,4)||'01')thisResult
+FROM dual
+UNION ALL
+SELECT
+'Feb'title,
+(select ROUND(((SUM(pvalue)/count(*))/60),2) target from TAMTLNPOINT x where substr(x.yyyymm,0,6)=substr('^param3',0,4)||'02' AND x.mtlnpoint='MTTR' )thisGoal,
+(select ROUND(((SUM(x.mttr)/4)/60),2) From TAKPIMLOCDN x where substr(x.yyyymm,0,6)=substr('^param3',0,4)||'02')thisResult
+FROM dual
+UNION ALL
+SELECT
+'Mar'title,
+(select ROUND(((SUM(pvalue)/count(*))/60),2) target from TAMTLNPOINT x where substr(x.yyyymm,0,6)=substr('^param3',0,4)||'03' AND x.mtlnpoint='MTTR' )thisGoal,
+(select ROUND(((SUM(x.mttr)/4)/60),2) From TAKPIMLOCDN x where substr(x.yyyymm,0,6)=substr('^param3',0,4)||'03')thisResult
+FROM dual
+UNION ALL
+SELECT
+'Apr'title,
+(select ROUND(((SUM(pvalue)/count(*))/60),2) target from TAMTLNPOINT x where substr(x.yyyymm,0,6)=substr('^param3',0,4)||'04'  AND x.mtlnpoint='MTTR' )thisGoal,
+(select ROUND(((SUM(x.mttr)/4)/60),2) From TAKPIMLOCDN x where substr(x.yyyymm,0,6)=substr('^param3',0,4)||'04')thisResult
+FROM dual
+UNION ALL
+SELECT
+'May'title,
+(select ROUND(((SUM(pvalue)/count(*))/60),2) target from TAMTLNPOINT x where substr(x.yyyymm,0,6)=substr('^param3',0,4)||'05'  AND x.mtlnpoint='MTTR' )thisGoal,
+(select ROUND(((SUM(x.mttr)/4)/60),2) From TAKPIMLOCDN x where substr(x.yyyymm,0,6)=substr('^param3',0,4)||'05')thisResult
+FROM dual
+UNION ALL
+SELECT
+'Jun'title,
+(select ROUND(((SUM(pvalue)/count(*))/60),2) target from TAMTLNPOINT x where substr(x.yyyymm,0,6)=substr('^param3',0,4)||'06' AND x.mtlnpoint='MTTR' )thisGoal,
+(select ROUND(((SUM(x.mttr)/4)/60),2) From TAKPIMLOCDN x where substr(x.yyyymm,0,6)=substr('^param3',0,4)||'06')thisResult
+FROM dual
+UNION ALL
+SELECT
+'Jul'title,
+(select ROUND(((SUM(pvalue)/count(*))/60),2) target from TAMTLNPOINT x where substr(x.yyyymm,0,6)=substr('^param3',0,4)||'07'  AND x.mtlnpoint='MTTR' )thisGoal,
+(select ROUND(((SUM(x.mttr)/4)/60),2) From TAKPIMLOCDN x where substr(x.yyyymm,0,6)=substr('^param3',0,4)||'07')thisResult
+FROM dual
+UNION ALL
+SELECT
+'Aug'title,
+(select ROUND(((SUM(pvalue)/count(*))/60),2) target from TAMTLNPOINT x where substr(x.yyyymm,0,6)=substr('^param3',0,4)||'08' AND x.mtlnpoint='MTTR' )thisGoal,
+(select ROUND(((SUM(x.mttr)/4)/60),2) From TAKPIMLOCDN x where substr(x.yyyymm,0,6)=substr('^param3',0,4)||'08')thisResult
+FROM dual
+UNION ALL
+SELECT
+'Sep'title,
+(select ROUND(((SUM(pvalue)/count(*))/60),2) target from TAMTLNPOINT x where substr(x.yyyymm,0,6)=substr('^param3',0,4)||'09'  AND x.mtlnpoint='MTTR' )thisGoal,
+(select ROUND(((SUM(x.mttr)/4)/60),2) From TAKPIMLOCDN x where substr(x.yyyymm,0,6)=substr('^param3',0,4)||'09')thisResult
+FROM dual
+UNION ALL
+SELECT
+'Oct'title,
+(select ROUND(((SUM(pvalue)/count(*))/60),2) target from TAMTLNPOINT x where substr(x.yyyymm,0,6)=substr('^param3',0,4)||'10'  AND x.mtlnpoint='MTTR' )thisGoal,
+(select ROUND(((SUM(x.mttr)/4)/60),2) From TAKPIMLOCDN x where substr(x.yyyymm,0,6)=substr('^param3',0,4)||'10')thisResult
+FROM dual
+UNION ALL
+SELECT
+'Nov'title,
+(select ROUND(((SUM(pvalue)/count(*))/60),2) target from TAMTLNPOINT x where substr(x.yyyymm,0,6)=substr('^param3',0,4)||'11'  AND x.mtlnpoint='MTTR' )thisGoal,
+(select ROUND(((SUM(x.mttr)/4)/60),2) From TAKPIMLOCDN x where substr(x.yyyymm,0,6)=substr('^param3',0,4)||'11')thisResult
+FROM dual
+UNION ALL
+SELECT
+'Dec'title,
+(select ROUND(((SUM(pvalue)/count(*))/60),2) target from TAMTLNPOINT x where substr(x.yyyymm,0,6)=substr('^param3',0,4)||'12'  AND x.mtlnpoint='MTTR' )thisGoal,
+(select ROUND(((SUM(x.mttr)/4)/60),2) From TAKPIMLOCDN x where substr(x.yyyymm,0,6)=substr('^param3',0,4)||'12')thisResult
+FROM dual
+)b
+/
+$
+SELECT
+*
+FROM
+(
+SELECT
+MAX(c.description)description,
+AVG(lastResult)lastResult,
+AVG(thisGoal)thisGoal,
+ROUND(AVG(thisResult),2)thisResult
+FROM
+(
+SELECT
+b.*,
+DECODE(b.eqloc_id,'1090','1','1088','2','1087','3','1089','1')eqLoc
+FROM
+(
+SELECT 
+y.description,
+ (
+ select ROUND((AVG(mttr)/60),2) from TAKPIMLOCDN x where substr(x.yyyymm,0,4)=substr('^param3',0,4)-1 AND x.eqloc_id=y.eqloc_id
+ )lastResult,
+(
+ select ROUND(((SUM(pvalue)/count(*))/60),2)thisGoal 
+ from TAMTLNPOINT x where substr(x.yyyymm,0,4)=substr('^param3',0,4)  AND x.mtlnpoint='MTTR'  AND x.eqloc_id=y.eqloc_id AND substr(x.yyyymm,0,4)=substr('^param3',0,4)
+ )thisGoal,
+ (
+ select ROUND((AVG(mttr)/60),2) from TAKPIMLOCDN x where substr(x.yyyymm,0,4)=substr('^param3',0,4) AND x.eqloc_id=y.eqloc_id AND x.yyyymm <=replace('^param3','-')
+ )thisResult,
+ eqloc_id
+FROM TAEQLOC y WHERE is_kpi='Y' order by DECODE(eqloc_id,'1090','1','1088','2','1087','3','1089','4') asc
+)b
+)c
+group by c.eqloc
+order by eqloc
+)d
+UNION ALL
+SELECT
+'TOTAL',
+(
+SELECT
+ROUND(AVG(lastresult),2)
+FROM
+(
+SELECT
+MAX(c.description)description,
+AVG(lastResult)lastResult,
+AVG(thisGoal)thisGoal,
+ROUND(AVG(thisResult),2)thisResult
+FROM
+(
+SELECT
+b.*,
+DECODE(b.eqloc_id,'1090','1','1088','2','1087','3','1089','1')eqLoc
+FROM
+(
+SELECT 
+y.description,
+ (
+ select ROUND((AVG(mttr)/60),2) from TAKPIMLOCDN x where substr(x.yyyymm,0,4)=substr('^param3',0,4)-1 AND x.eqloc_id=y.eqloc_id
+ )lastResult,
+(
+ select ROUND(((SUM(pvalue)/count(*))/60),2)thisGoal 
+ from TAMTLNPOINT x where substr(x.yyyymm,0,4)=substr('^param3',0,4)  AND x.mtlnpoint='MTTR'  AND x.eqloc_id=y.eqloc_id AND substr(x.yyyymm,0,4)=substr('^param3',0,4)
+ )thisGoal,
+ (
+ select ROUND((AVG(mttr)/60),2) from TAKPIMLOCDN x where substr(x.yyyymm,0,4)=substr('^param3',0,4) AND x.eqloc_id=y.eqloc_id AND x.yyyymm <=replace('^param3','-')
+ )thisResult,
+ eqloc_id
+FROM TAEQLOC y WHERE is_kpi='Y' order by DECODE(eqloc_id,'1090','1','1088','2','1087','3','1089','4') asc
+)b
+)c
+group by c.eqloc
+order by eqloc
+)d
+)lastResult,
+(select ROUND(((SUM(pvalue)/count(*))/60),2) target from TAMTLNPOINT x where substr(x.yyyymm,0,4)=substr(substr('^param3',0,4),0,4)  AND x.mtlnpoint='MTTR' )thisGoal,
+(
+SELECT
+ROUND(AVG(thisresult),2)
+FROM
+(
+SELECT
+MAX(c.description)description,
+AVG(lastResult)lastResult,
+AVG(thisGoal)thisGoal,
+ROUND(AVG(thisResult),2)thisResult
+FROM
+(
+SELECT
+b.*,
+DECODE(b.eqloc_id,'1090','1','1088','2','1087','3','1089','1')eqLoc
+FROM
+(
+SELECT 
+y.description,
+ (
+ select ROUND((AVG(mttr)/60),2) from TAKPIMLOCDN x where substr(x.yyyymm,0,4)=substr('^param3',0,4)-1 AND x.eqloc_id=y.eqloc_id
+ )lastResult,
+(
+ select ROUND(((SUM(pvalue)/count(*))/60),2)thisGoal 
+ from TAMTLNPOINT x where substr(x.yyyymm,0,4)=substr('^param3',0,4)  AND x.mtlnpoint='MTTR'  AND x.eqloc_id=y.eqloc_id AND substr(x.yyyymm,0,4)=substr('^param3',0,4)
+ )thisGoal,
+ (
+ select ROUND((AVG(mttr)/60),2) from TAKPIMLOCDN x where substr(x.yyyymm,0,4)=substr('^param3',0,4) AND x.eqloc_id=y.eqloc_id AND x.yyyymm <=replace('^param3','-')
+ )thisResult,
+ eqloc_id
+FROM TAEQLOC y WHERE is_kpi='Y' order by DECODE(eqloc_id,'1090','1','1088','2','1087','3','1089','4') asc
+)b
+)c
+group by c.eqloc
+order by eqloc
+)d
+)
+FROM dual
+/
+$
+SELECT
+CASE
+ WHEN 1 <=substr('^param3',6,2) then ROUND((AVG(janresult)),2)
+ ELSE null
+ END janresult,
+ CASE
+ WHEN 2 <=substr('^param3',6,2) then ROUND((AVG(febresult)),2)
+ ELSE null
+ END febresult,
+ CASE
+ WHEN 3 <=substr('^param3',6,2) then ROUND((AVG(marresult)),2)
+ ELSE null
+ END marresult,
+ CASE
+ WHEN 4 <=substr('^param3',6,2) then ROUND((AVG(aprresult)),2)
+ ELSE null
+ END aprresult,
+ CASE
+ WHEN 5 <=substr('^param3',6,2) then ROUND((AVG(mayresult)),2)
+ ELSE null
+ END mayresult,
+ CASE
+ WHEN 6 <=substr('^param3',6,2) then ROUND((AVG(junresult)),2)
+ ELSE null
+ END junresult,
+ CASE
+ WHEN 7 <=substr('^param3',6,2) then ROUND((AVG(julresult)),2)
+ ELSE null
+ END julresult,
+ CASE
+ WHEN 8 <=substr('^param3',6,2) then ROUND((AVG(augresult)),2)
+ ELSE null
+ END augresult,
+ CASE
+ WHEN 9 <=substr('^param3',6,2) then ROUND((AVG(sepresult)),2)
+ ELSE null
+ END sepresult,
+ CASE
+ WHEN 10 <=substr('^param3',6,2) then ROUND((AVG(octresult)),2)
+ ELSE null
+ END octresult,
+ CASE
+ WHEN 11 <=substr('^param3',6,2) then ROUND((AVG(novresult)),2)
+ ELSE null
+ END novresult,
+ CASE
+ WHEN 12 <=substr('^param3',6,2) then ROUND((AVG(decresult)),2)
+ ELSE null
+ END decresult,
+MAX(eqloc),
+rownum
+FROM
+(
+SELECT
+AVG(janresult)janresult,
+AVG(febresult)febresult,
+AVG(marresult)marresult,
+AVG(aprresult)aprresult,
+AVG(mayresult)mayresult,
+AVG(junresult)junresult,
+AVG(julresult)julresult,
+AVG(augresult)augresult,
+AVG(sepresult)sepresult,
+AVG(octresult)octresult,
+AVG(novresult)novresult,
+AVG(decresult)decresult,
+MAX(eqloc)eqloc
+FROM
+(
+SELECT
+(AVG(janresult))janresult,
+(AVG(febresult))febresult,
+(AVG(marresult))marresult,
+(AVG(aprresult))aprresult,
+(AVG(mayresult))mayresult,
+(AVG(junresult))junresult,
+(AVG(julresult))julresult,
+(AVG(augresult))augresult,
+(AVG(sepresult))sepresult,
+(AVG(octresult))octresult,
+(AVG(novresult))novresult,
+(AVG(decresult))decresult,
+MAX(eqloc)eqloc
+FROM
+(
+SELECT
+ROWNUM rowseq,
+description,
+janresult,
+febresult,
+marresult,
+aprresult,
+mayresult,
+junresult,
+julresult,
+augresult,
+sepresult,
+octresult,
+novresult,
+decresult,
+eqloc
+FROM
+(
+SELECT
+y.description,
+ (
+ select mttr/60 from TAKPIMLOCDN x where substr(x.yyyymm,0,6)=substr('^param3',0,4)||'01' AND x.eqloc_id=y.eqloc_id
+ )janResult,
+   (
+ select mttr/60  from TAKPIMLOCDN x where substr(x.yyyymm,0,6)=substr('^param3',0,4)||'02' AND x.eqloc_id=y.eqloc_id
+ )febResult,
+  (
+ select mttr/60  from TAKPIMLOCDN x where substr(x.yyyymm,0,6)=substr('^param3',0,4)||'03' AND x.eqloc_id=y.eqloc_id
+ )marResult,
+  (
+ select mttr/60  from TAKPIMLOCDN x where substr(x.yyyymm,0,6)=substr('^param3',0,4)||'04' AND x.eqloc_id=y.eqloc_id
+ )aprResult,
+  (
+ select mttr/60  from TAKPIMLOCDN x where substr(x.yyyymm,0,6)=substr('^param3',0,4)||'05' AND x.eqloc_id=y.eqloc_id
+ )mayResult,
+  (
+ select mttr/60  from TAKPIMLOCDN x where substr(x.yyyymm,0,6)=substr('^param3',0,4)||'06' AND x.eqloc_id=y.eqloc_id
+ )junResult,
+  (
+ select mttr/60  from TAKPIMLOCDN x where substr(x.yyyymm,0,6)=substr('^param3',0,4)||'07' AND x.eqloc_id=y.eqloc_id
+ )julResult,
+  (
+ select mttr/60  from TAKPIMLOCDN x where substr(x.yyyymm,0,6)=substr('^param3',0,4)||'08' AND x.eqloc_id=y.eqloc_id
+ )augResult,
+  (
+ select mttr/60  from TAKPIMLOCDN x where substr(x.yyyymm,0,6)=substr('^param3',0,4)||'09' AND x.eqloc_id=y.eqloc_id
+ )sepResult,
+  (
+ select mttr/60  from TAKPIMLOCDN x where substr(x.yyyymm,0,6)=substr('^param3',0,4)||'10' AND x.eqloc_id=y.eqloc_id
+ )octResult,
+  (
+ select mttr/60  from TAKPIMLOCDN x where substr(x.yyyymm,0,6)=substr('^param3',0,4)||'11' AND x.eqloc_id=y.eqloc_id
+ )novResult,
+   (
+ select mttr/60  from TAKPIMLOCDN x where substr(x.yyyymm,0,6)=substr('^param3',0,4)||'12' AND x.eqloc_id=y.eqloc_id
+ )decResult,
+ DECODE(y.eqloc_id,'1090','1','1088','2','1087','3','1089','1')eqLoc
+FROM TAEQLOC y WHERE is_kpi='Y' order by DECODE(eqloc_id,'1090','1','1088','2','1087','3','1089','4') asc
+)b
+)c 
+GROUP BY (description)
+order by MAX(c.eqloc)asc
+)d
+GROUP by (d.eqloc)
+)e
+GROUP BY ROLLUP(rownum)
+ORDER BY (MAX(eqloc)),rownum
+/

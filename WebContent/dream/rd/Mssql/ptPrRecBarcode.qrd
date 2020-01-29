@@ -1,0 +1,30 @@
+$
+WITH q AS
+(
+	SELECT  1 AS num
+	UNION ALL
+	SELECT  num + 1
+	FROM    q
+	WHERE   num <= 999
+)
+SELECT
+    y.part_no partNo
+    ,y.description+', '+y.pt_size partDesc
+    ,y.part_no partId --barcode
+FROM TAPTPRRECLIST x LEFT OUTER JOIN TAPARTS y
+ON x.comp_no = y.comp_no
+AND x.part_id = y.part_id
+INNER JOIN (SELECT num FROM q) z
+ON z.num <= x.rec_qty
+WHERE 1=1
+AND   x.comp_no = '^param1'
+AND   x.prreclist_id IN (SELECT
+                         a.skey_id
+                   FROM  TAREPORTPARAM a
+                   WHERE 1=1
+                   AND   a.comp_no = '^param1'
+                   AND   a.user_id = '^param2'
+                   AND   a.file_name = '^param4'
+                  )
+option(maxrecursion 0)
+/

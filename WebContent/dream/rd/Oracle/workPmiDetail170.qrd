@@ -1,0 +1,28 @@
+$
+SELECT y.description equip
+            , y.item_no itemNo
+            ,'Forminfo.:HPE05-005E-F05(Ver. 2.00)' doc_no
+ FROM TAPMINSLIST x INNER JOIN TAEQUIPMENT y
+ ON x.comp_no = y.comp_no
+ AND x.equip_id = y.equip_id 
+ WHERE x.pminslist_id=^param4
+ AND x.comp_no=^param1
+/
+$
+SELECT x.step_num seqNo
+	 , (SELECT REPLACE(REPLACE(trim(a.full_desc),chr(10),''),chr(13),' ')
+		  FROM TAEQASMB a
+		 WHERE a.comp_no = x.comp_no
+		   AND a.eqasmb_id = x.eqasmb_id) gubun
+	 , REPLACE(REPLACE(x.check_point,chr(10),''),chr(13),' ') description
+	 , REPLACE(REPLACE(x.fit_basis,chr(10),''),chr(13),' ') fitbasis
+     , '' remark
+FROM TAPMPOINT x LEFT OUTER JOIN TAPMINSSCHED y
+ON x.comp_no  =y.comp_no
+AND x.pm_id = y.pm_id
+WHERE 1=1
+AND x.pm_id = (SELECT a.pm_id FROM tapminslist a WHERE a.pminslist_id = ^param4)
+AND y.sched_date LIKE (SELECT substr(a.wkor_date,0,4) FROM tapminslist a WHERE a.pminslist_id = ^param4)||'%'
+GROUP BY x.comp_no,x.pm_point_id,x.step_num, x.eqasmb_id,x.check_point, x.fit_basis
+ORDER BY seqNo
+/

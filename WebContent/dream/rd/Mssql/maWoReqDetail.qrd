@@ -1,0 +1,65 @@
+$
+SELECT									
+       x.woreq_no	woReqNo					
+	  ,dbo.SFACODE_TO_DESC(x.woreq_status,'WOREQ_STATUS','SYS','','^param3')	woReqStatusDesc	
+      ,x.req_date 														reqDate				
+	  ,(SELECT a.emp_name					
+		  FROM TAEMP a					
+		 WHERE a.comp_no = x.comp_no		
+		   AND a.emp_id = x.req_emp_id		
+		)+'/'+						
+		(SELECT a.description			
+		   FROM TADEPT a					
+		  WHERE a.comp_no = x.comp_no		
+		    AND a.dept_id = x.req_dept_id	
+		)																reqEmpDesc		
+      ,x.req_phone 														reqPhone				
+      ,x.req_email 														reqEmail					
+	  ,dbo.SFACODE_TO_DESC(x.eq_class,'EQ_CLASS','SYS','','^param3')			eqClassDesc
+	  ,(SELECT a.full_desc				
+		  FROM TAEQLOC a					
+		 WHERE a.comp_no = x.comp_no		
+	       AND a.eqloc_id = x.eqloc_id)									reqEqLocDesc			  
+	  ,(SELECT a.description				
+		  FROM TAEQUIPMENT a				
+		 WHERE a.comp_no = x.comp_no		
+	   	   AND a.equip_id = x.equip_id)									reqEquipDesc         
+      ,x.description 													reqDesc						 
+      ,(SELECT a.emp_name                 
+            FROM TAEMP a                  
+            WHERE a.comp_no = x.comp_no   
+            AND a.emp_id = x.rec_emp_id   
+            ) as 														recEmpName
+      ,(SELECT a.description              
+            FROM TADEPT a                 
+            WHERE a.comp_no = x.comp_no   
+            AND a.dept_id = x.rec_dept_id 
+            )             												recDeptDesc			
+      ,x.req_com_date													reqComDate
+	  ,dbo.SFACODE_TO_DESC(x.req_priority,'REQ_PRIORITY','SYS','','^param3')	reqPriorityDesc	
+      ,x.request 														reqRequest	
+      ,x.review 														review				
+FROM TAWOREQ x																				
+WHERE 1=1																						
+  AND x.comp_no = '^param1'																		
+  AND x.woreq_id = ^param4	
+/
+$
+SELECT                                                                            
+   row_number() OVER(ORDER BY x.doc_id) seqNo                                 
+   ,y.file_name             fileName                  
+   ,(SELECT a.emp_name FROM TAEMP a WHERE a.comp_no = x.comp_no AND a.emp_id = x.reg_id) regName 
+   ,CONVERT(NVARCHAR,y.file_size/1000)+' kb'     fileSize
+FROM TADOCUMENT x INNER JOIN TADOCDATA y                                       
+ON x.comp_no = y.comp_no                                                      
+AND x.doc_id = y.doc_id                                                       
+WHERE  1  = 1                                                                     
+AND  x.comp_no = '^param1'
+AND x.object_type = 'WOREQ'
+AND EXISTS (SELECT 1 FROM TAOBJDOC a 
+                  WHERE a.comp_no = x.comp_no
+                  AND a.doc_id = x.doc_id
+                  AND a.object_id = '^param4'
+                  AND a.object_type = 'WOREQ'
+                  )
+/

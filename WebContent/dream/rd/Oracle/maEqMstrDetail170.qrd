@@ -1,0 +1,36 @@
+$
+SELECT 		 x.description equip
+            ,x.item_no itemNo
+            ,(SELECT a.description FROM TADEPT a WHERE a.comp_no = x.comp_no AND a.dept_id = x.usage_dept) dept
+            ,x.capacity capacity
+            ,x.model_no MODEL
+            ,x.serial_no serial
+            ,x.maker maker
+            ,x.supplier supplier
+            ,TO_CHAR(x.buy_amt, '999,999,999,999,999')		  amt
+            ,CASE WHEN x.setup_date IS NULL THEN '-'
+    	   		  ELSE SUBSTR(x.setup_date,1,4)||'-'||
+             		   SUBSTR(x.setup_date,5,2)||'-'||
+             		   SUBSTR(x.setup_date,7,2)		
+                  END										  setupDate
+			,x.util_capa										utilCapa
+            ,REPLACE(REPLACE(x.remark,chr(10),' '),chr(13),' ') remark
+            ,'Form info.:HPE05-005E-F07(Ver.2.00)' docNo
+            ,'^param5' imgPath
+FROM TAEQUIPMENT x
+WHERE x.comp_no = '^param1'
+AND x.equip_id = ^param4
+/
+$
+ SELECT ROWNUM docSeq, file_name docName, '1' docCount, '' c4,'' c5, '' c6 FROM (
+  SELECT file_name
+   FROM TADOCDATA
+  WHERE comp_no = '^param1'
+  AND doc_id IN (SELECT a.doc_id               
+                    FROM   TAOBJDOC a             
+                    WHERE 1 = 1  
+  AND  a.object_id = ^param4
+  AND  a.object_type = 'EQMSTR'
+  AND  a.comp_no = '^param1')
+  ORDER BY doc_id)
+/

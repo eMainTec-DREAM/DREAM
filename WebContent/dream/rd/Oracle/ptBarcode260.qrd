@@ -1,0 +1,22 @@
+$
+SELECT
+    x.bin_no abinNo
+    ,'' vendor
+    ,y.part_no ptNo
+    ,'' recDate
+    ,y.description ptDesc
+    ,'' stockQty
+    ,y.model||', '||y.pt_size ptSize
+    ,y.part_no partId --barcode
+FROM TAPTSTOCK x INNER JOIN TAPARTS y
+ON x.comp_no = y.comp_no
+AND x.part_id = y.part_id
+INNER JOIN TAPTBCPRINT z
+ON x.comp_no = z.comp_no
+AND x.part_id = z.part_id
+AND x.wcode_id = z.wcode_id
+AND x.part_grade = 'A'
+WHERE 1=1
+AND   z.comp_no = '^param1'
+AND   z.user_id = '^param2'
+/

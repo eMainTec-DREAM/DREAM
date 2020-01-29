@@ -1,0 +1,50 @@
+<decorators defaultdir="/common/decorators">
+    <!-- decorator 적용안시키는 page 필요한 공통 만 include -->
+    <decorator name="nonePage" page="nonePage.jsp" />
+    
+    <!-- ================================= -->
+    <!--            DREAM DECORATOR         -->
+    <!-- ================================= -->
+    <!-- 설비마스터를 비롯하여 기본적인 업무 페이지에서 공통적으로 적용되는 데코레이터 -->
+    <decorator name="defaultPage" page="../../dream/decorators/defaultPage.jsp"/>
+    <!-- 메뉴 상세 페이지  -->
+    <decorator name="defaultTabPage" page="../../dream/decorators/defaultTabPage.jsp"/> 
+    
+    <!-- Admin 페이지에서 사용되는 데코레이터 -->
+    <decorator name="adminPage" page="../../dream/decorators/adminPage.jsp" />
+    <!-- 대시보드 부모 데코레이터 -->
+    <decorator name="dashboardParentPage" page="../../dream/decorators/dashboardParentPage.jsp"/>
+    <!-- 대시보드 자식 데코레이터 -->
+    <decorator name="dashboardChildPage" page="../../dream/decorators/dashboardChildPage.jsp"/>
+    <!-- Tab Decorator -->
+    <decorator name="tabPage" page="../../dream/decorators/tabPage.jsp" />
+    <!-- 상세 내부 Tab Decorator -->
+    <decorator name="innerTabPage" page="../../dream/decorators/innerTabPage.jsp" />
+    <!-- 모든 팝업페이지에 사용되는 팝업 데코레이터  -->
+    <decorator name="popupPage" page="../../dream/decorators/popupPage.jsp" />
+    
+    <!-- ================================= -->
+    <!--            GAIA DECORATOR         -->
+    <!-- ================================= -->
+    <!-- 설비마스터를 비롯하여 기본적인 업무 페이지에서 공통적으로 적용되는 데코레이터 -->
+    <decorator name="gaiaPage" page="../../gaia/decorators/gaiaPage.jsp"/>
+
+    <!-- ================================= -->
+    <!--            Consult DECORATOR      -->
+    <!-- ================================= -->
+	<!-- Ext Folder -->
+	<decorator name="consultPage" page="../../dream/consult/decorators/consultPage.jsp" />
+	
+	<decorator name="dashboardPage" page="../../dream/consult/decorators/dashboardPage.jsp" />
+	
+	<!-- ================================= -->
+    <!--            Mobile DECORATOR       -->
+    <!-- ================================= -->
+	<!-- -->
+	<decorator name="mobilePage" page="../../mobile/dream/decorators/mobilePage.jsp" />
+	
+	<decorator name="mobileTabPage" page="../../mobile/dream/decorators/mobileTabPage.jsp" />
+	
+	<decorator name="mobilePopupPage" page="../../mobile/dream/decorators/mobilePopupPage.jsp" />
+    
+</decorators>

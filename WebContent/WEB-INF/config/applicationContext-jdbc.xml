@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:jee="http://www.springframework.org/schema/jee"
+       xsi:schemaLocation="
+							http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+							http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd">
+  
+	<!-- getBean  -->
+	<bean id="applicationContextProvider" class="common.bean.ApplicationContextProvider"></bean>
+	
+	
+	<!-- JNDI DataSource for J2EE environments 
+	<bean id="dataSource"
+		class="common.db.JndiObjectFactoryBeanUtil">
+		<property name="jndiName">
+			<value>com.emaintec.datasource</value>
+		</property>
+	</bean>
+	-->
+	
+	<jee:jndi-lookup id="dataSource" jndi-name="com.emaintec.datasource" expected-type="javax.sql.DataSource"/>
+	
+	<!-- Transaction manager for a single JDBC DataSource (alternative to JTA) -->
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource">
+			<ref bean="dataSource" />
+		</property>
+	</bean>
+    <bean id="defaultTransactionProxy" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean"
+	     abstract="true">
+	   <property name="transactionManager" ref="transactionManager"/>
+	   <property name="transactionAttributes">
+	      <props>
+		  	<prop key="*">
+		    	PROPAGATION_REQUIRED,
+		        -java.lang.Exception,
+		        +common.exception.SqlIgnoreException
+		    </prop>
+	      </props>
+	   </property>
+	</bean>
+	<!-- 스케줄링 시작 -->
+	<!-- 스케쥴러 Object 설정 -->
+	<!-- 스케쥴러 Object를 가지고 JobDetail 생성 -->
+	<!-- MethodInvoing 방식 - 스케쥴러에서 실행할 객체와 메소드를 지정한다. -->
+	<!-- 생성된 trigger 를 가지고 SchedulerFactoryBean 을 생성한다. -->
+	<!-- JobDetail 로 CronTrigger 생성 -->
+    <!-- cronExpression 에서는 주기를 설정한다. 이 부분은 Quartz trigger 부분을 참고할 것 -->
+    <!-- 0 1:분(0~59) 2:시(0~23) 3:일(0~31) 4:월(1~12) 5:요일(0~7,7:일요일, 1:월요일)  -->
+    <!-- Seconds    0-59    , - * / 
+		Minutes    0-59    , - * / 
+		Hours    0-23    , - * / 
+		Day-of-month    1-31    , - * ? / L W 
+		Month    1-12 or JAN-DEC    , - * / 
+		Day-of-Week    1-7 or SUN-SAT    , - * ? / L # 
+		Year (Optional)    empty, 1970-2099    , - * / 
+		자릿수마다 의미는 위와 같다.
+		순서대로 초/분/시/한달중 몇번째일/월/요일중몇번째요일/년도. -->
+		
+	
+</beans>

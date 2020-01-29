@@ -1,0 +1,18 @@
+$
+SELECT
+      x.part_no partNo
+      ,x.vendor_code       
+      ,x.part_no partId --barcode
+      ,x.description
+      ,x.model
+FROM  TAPARTS x
+WHERE 1=1
+AND   comp_no = '^param1'
+AND   part_id IN (SELECT
+                         a.part_id
+                   FROM  TAPTBCPRINT a
+                   WHERE 1=1
+                   AND   a.comp_no = '^param1'
+                   AND   a.user_id = '^param2'
+                  )
+/

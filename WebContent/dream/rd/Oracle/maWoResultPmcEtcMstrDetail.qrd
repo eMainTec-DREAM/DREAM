@@ -1,0 +1,30 @@
+$
+SELECT x.wo_no woNo
+            ,SFACODE_TO_DESC(x.wo_status,'WO_STATUS','SYS','','^param3') woStatus
+            ,SFACODE_TO_DESC(x.wo_type,'WO_TYPE','SYS','','^param3') woType
+            ,SFACODE_TO_DESC(x.pm_type,x.wo_type||'_TYPE','SYS','','^param3') pmType
+            ,(SELECT a.full_desc FROM TAEQLOC a WHERE a.comp_no = z.comp_no AND a.eqloc_id = z.eqloc_id) eqLoc
+            ,x.description      	workDesc
+            ,z.description 			equip
+            ,SUBSTR(x.wkor_date,1,4)||'-'||
+             SUBSTR(x.wkor_date,5,2)||'-'||
+             SUBSTR(x.wkor_date,7,2)                    workDate
+            ,(SELECT a.description FROM TADEPT a WHERE a.comp_no = x.comp_no AND a.dept_id = x.dept_id) dept
+            ,(SELECT a.emp_name FROM TAEMP a WHERE a.comp_no = x.comp_no AND a.emp_id = x.emp_id) emp
+			,SFACODE_TO_DESC(q.calib_type,'CALIB_TYPE','SYS','','^param3')	calTypeDesc	
+			,SFACODE_TO_DESC(q.calib_result_status,'CALIB_RSLT_STATUS','SYS','','^param3')	calRsltStatDesc	
+            ,REPLACE(REPLACE(x.perform,chr(10),'$enter'),chr(13),'$enter') as perform
+FROM taworkorder x INNER JOIN 
+(SELECT * FROM TAWOEQUIP WHERE comp_no = '^param1' AND wkor_id = ^param4 and rownum=1) y
+ON x.comp_no = y.comp_no
+AND x.wkor_id = y.wkor_id
+INNER JOIN TAEQUIPMENT z 
+ON y.comp_no = z.comp_no
+AND y.equip_id = z.equip_id
+INNER JOIN TAWOCALIB q
+ON q.comp_no = x.comp_no
+AND q.wkor_id = x.wkor_id
+WHERE 1=1
+AND x.comp_no = '^param1'
+AND x.wkor_id = ^param4
+/

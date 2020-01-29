@@ -1,0 +1,454 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<fo:root xmlns:fo="http://www.w3.org/1999/XSL/Format">
+	<fo:layout-master-set>
+		<fo:simple-page-master master-name="all-pages" 
+   							   page-height="297mm" page-width="210mm"
+                               margin-top="10mm"  margin-bottom="15mm" 
+                               margin-left="5mm" margin-right="5mm">
+          <fo:region-body region-name="xsl-region-body" margin-top="10mm" margin-bottom="5mm" margin-left="0mm" margin-right="0mm"/>
+          <fo:region-before region-name="xsl-region-before" extent="10mm"/>
+          <fo:region-after region-name="xsl-region-after" extent="10mm"/>
+		</fo:simple-page-master>
+        <fo:page-sequence-master master-name="default-sequence">
+        	<fo:repeatable-page-master-reference master-reference="all-pages"/>
+        </fo:page-sequence-master>
+	</fo:layout-master-set>
+	<fo:declarations>
+		<x:xmpmeta xmlns:x="adobe:ns:meta/">
+			<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+				<rdf:Description rdf:about="">
+					<dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">javaworker</dc:creator>
+				</rdf:Description>
+			</rdf:RDF>
+		</x:xmpmeta>
+	</fo:declarations>
+	<fo:page-sequence master-reference="all-pages"  id="#PAGE_ID#">
+	
+		<!-- Footer -->
+        <fo:static-content flow-name="xsl-region-after" font-size="12pt" font-family="Arial">
+        	<!-- Sample : pageNumber / TotalPageCount -->
+        	<fo:block text-align="left">#TODAY#
+        	</fo:block>
+        </fo:static-content>
+        
+		<fo:flow flow-name="xsl-region-body">
+			<fo:table table-layout="fixed" width="7.8888884in">
+				<fo:table-column column-width="0.7777778in" />
+				<fo:table-column column-width="0.7916667in" />
+				<fo:table-column column-width="0.7916667in" />
+				<fo:table-column column-width="0.7916667in" />
+				<fo:table-column column-width="0.7916667in" />
+				<fo:table-column column-width="0.7777778in" />
+				<fo:table-column column-width="0.7916667in" />
+				<fo:table-column column-width="0.7916667in" />
+				<fo:table-column column-width="0.7916667in" />
+				<fo:table-column column-width="0.7916667in" />
+				<fo:table-body>
+					<fo:table-row height="17.4pt">
+						<fo:table-cell>
+							<fo:block />
+						</fo:table-cell>
+						<fo:table-cell>
+							<fo:block />
+						</fo:table-cell>
+						<fo:table-cell>
+							<fo:block />
+						</fo:table-cell>
+						<fo:table-cell display-align="center" margin-left="3px"
+							number-columns-spanned="4" number-rows-spanned="2">
+							<fo:block absolute-position="fixed" bottom="0px" color="black"
+								font-family="맑은 고딕" font-size="18pt" font-weight="bold" height="17.4pt"
+								left="0px" min-width="57px" overflow="hidden" text-align="center"
+								top="0px" white-space-collapse="false" wrap-option="no-wrap">#EQHISTCARD#
+							</fo:block>
+						</fo:table-cell>
+					</fo:table-row>
+					<fo:table-row height="17.4pt">
+						<fo:table-cell>
+							<fo:block />
+						</fo:table-cell>
+						<fo:table-cell>
+							<fo:block />
+						</fo:table-cell>
+						<fo:table-cell>
+							<fo:block />
+						</fo:table-cell>
+						<fo:table-cell display-align="center" margin-left="3px">
+							<fo:block absolute-position="fixed" bottom="0px" color="black"
+								font-family="맑은 고딕" font-size="11pt" height="17.4pt" left="0px"
+								max-width="57px" min-width="57px" overflow="hidden" top="0px"
+								white-space-collapse="false" wrap-option="no-wrap"></fo:block>
+						</fo:table-cell>
+						<fo:table-cell display-align="center" margin-left="3px">
+							<fo:block absolute-position="fixed" bottom="0px" color="black"
+								font-family="맑은 고딕" font-size="11pt" height="17.4pt" left="0px"
+								min-width="57px" overflow="hidden" top="0px"
+								white-space-collapse="false" wrap-option="no-wrap"># #ITEMNO#</fo:block>
+						</fo:table-cell>
+					</fo:table-row>
+					<fo:table-row height="17.4pt">
+						<fo:table-cell display-align="center" margin-left="3px">
+							<fo:block absolute-position="fixed" bottom="0px" color="black"
+								font-family="맑은 고딕" font-size="11pt" font-weight="bold" height="17.4pt"
+								left="0px" min-width="56px" overflow="hidden" text-align="left"
+								top="0px" white-space-collapse="false" wrap-option="no-wrap">1.#EQMAINHIST#
+							</fo:block>
+						</fo:table-cell>
+					</fo:table-row>
+					<fo:table-row height="17.4pt">
+						<fo:table-cell border-bottom="thin black solid"
+							border-left="thin black solid" border-right="thin black solid"
+							border-top="thin black solid" display-align="center" margin-left="3px">
+							<fo:block absolute-position="fixed" bottom="0px" color="black"
+								font-family="맑은 고딕" font-size="8pt" font-weight="bold" height="17.4pt"
+								left="0px" max-width="56px" min-width="56px" overflow="hidden"
+								text-align="center" top="0px" white-space-collapse="false"
+								wrap-option="no-wrap">#EQUIPNAME#</fo:block>
+						</fo:table-cell>
+						<fo:table-cell border-bottom="thin black solid"
+							border-left="thin black solid" border-right="thin black solid"
+							border-top="thin black solid" display-align="center" margin-left="3px"
+							number-columns-spanned="4">
+							<fo:block absolute-position="fixed" bottom="0px" color="black"
+								font-family="맑은 고딕" font-size="8pt" height="17.4pt" left="0px"
+								max-width="228px" min-width="57px" overflow="hidden" text-align="left"
+								top="0px" white-space-collapse="false" wrap-option="wrap">#EQUIPDESC#
+							</fo:block>
+						</fo:table-cell>
+						<fo:table-cell border-bottom="thin black solid"
+							border-left="thin black solid" border-right="thin black solid"
+							border-top="thin black solid" display-align="center" margin-left="3px">
+							<fo:block absolute-position="fixed" bottom="0px" color="black"
+								font-family="맑은 고딕" font-size="8pt" font-weight="bold" height="17.4pt"
+								left="0px" max-width="56px" min-width="56px" overflow="hidden"
+								text-align="center" top="0px" white-space-collapse="false"
+								wrap-option="no-wrap">#EQDEPTDESC#</fo:block>
+						</fo:table-cell>
+						<fo:table-cell border-bottom="thin black solid"
+							border-left="thin black solid" border-right="thin black solid"
+							border-top="thin black solid" display-align="center" margin-left="3px"
+							number-columns-spanned="4">
+							<fo:block absolute-position="fixed" bottom="0px" color="black"
+								font-family="맑은 고딕" font-size="8pt" height="17.4pt" left="0px"
+								min-width="57px" overflow="hidden" text-align="left" top="0px"
+								white-space-collapse="false" wrap-option="wrap">#DEPTDESC#</fo:block>
+						</fo:table-cell>
+					</fo:table-row>
+					<fo:table-row height="17.4pt">
+						<fo:table-cell border-bottom="thin black solid"
+							border-left="thin black solid" border-right="thin black solid"
+							border-top="thin black solid" display-align="center" margin-left="3px">
+							<fo:block absolute-position="fixed" bottom="0px" color="black"
+								font-family="맑은 고딕" font-size="8pt" font-weight="bold" height="17.4pt"
+								left="0px" max-width="56px" min-width="56px" overflow="hidden"
+								text-align="center" top="0px" white-space-collapse="false"
+								wrap-option="no-wrap">#EQLOCATION#</fo:block>
+						</fo:table-cell>
+						<fo:table-cell border-bottom="thin black solid"
+							border-left="thin black solid" border-right="thin black solid"
+							border-top="thin black solid" display-align="center" margin-left="3px"
+							number-columns-spanned="9">
+							<fo:block absolute-position="fixed" bottom="0px" color="black"
+								font-family="맑은 고딕" font-size="8pt" height="17.4pt" left="0px"
+								max-width="228px" min-width="57px" overflow="hidden" text-align="left"
+								top="0px" white-space-collapse="false" wrap-option="wrap">#EQLOCDESC#
+							</fo:block>
+						</fo:table-cell>
+					</fo:table-row>
+					<fo:table-row height="17.4pt">
+						<fo:table-cell border-bottom="thin black solid"
+							border-left="thin black solid" border-right="thin black solid"
+							border-top="thin black solid" display-align="center" margin-left="3px">
+							<fo:block absolute-position="fixed" bottom="0px" color="black"
+								font-family="맑은 고딕" font-size="8pt" font-weight="bold" height="17.4pt"
+								left="0px" max-width="56px" min-width="56px" overflow="hidden"
+								text-align="center" top="0px" white-space-collapse="false"
+								wrap-option="no-wrap">#EQMAKER#</fo:block>
+						</fo:table-cell>
+						<fo:table-cell border-bottom="thin black solid"
+							border-left="thin black solid" border-right="thin black solid"
+							border-top="thin black solid" display-align="center" margin-left="3px"
+							number-columns-spanned="4">
+							<fo:block absolute-position="fixed" bottom="0px" color="black"
+								font-family="맑은 고딕" font-size="8pt" height="17.4pt" left="0px"
+								max-width="228px" min-width="57px" overflow="hidden" text-align="left"
+								top="0px" white-space-collapse="false" wrap-option="wrap">#MAKER#
+							</fo:block>
+						</fo:table-cell>
+						<fo:table-cell border-bottom="thin black solid"
+							border-left="thin black solid" border-right="thin black solid"
+							border-top="thin black solid" display-align="center" margin-left="3px">
+							<fo:block absolute-position="fixed" bottom="0px" color="black"
+								font-family="맑은 고딕" font-size="8pt" font-weight="bold" height="17.4pt"
+								left="0px" max-width="56px" min-width="56px" overflow="hidden"
+								text-align="center" top="0px" white-space-collapse="false"
+								wrap-option="no-wrap">#EQMODEL#</fo:block>
+						</fo:table-cell>
+						<fo:table-cell border-bottom="thin black solid"
+							border-left="thin black solid" border-right="thin black solid"
+							border-top="thin black solid" display-align="center" margin-left="3px"
+							number-columns-spanned="4">
+							<fo:block absolute-position="fixed" bottom="0px" color="black"
+								font-family="맑은 고딕" font-size="8pt" height="17.4pt" left="0px"
+								min-width="57px" overflow="hidden" text-align="left" top="0px"
+								white-space-collapse="false" wrap-option="wrap">#MODEL#</fo:block>
+						</fo:table-cell>
+					</fo:table-row>
+					<fo:table-row height="17.4pt">
+						<fo:table-cell border-bottom="thin black solid"
+							border-left="thin black solid" border-right="thin black solid"
+							border-top="thin black solid" display-align="center" margin-left="3px">
+							<fo:block absolute-position="fixed" bottom="0px" color="black"
+								font-family="맑은 고딕" font-size="8pt" font-weight="bold" height="17.4pt"
+								left="0px" max-width="56px" min-width="56px" overflow="hidden"
+								text-align="center" top="0px" white-space-collapse="false"
+								wrap-option="no-wrap">#EQSETUPDATE#</fo:block>
+						</fo:table-cell>
+						<fo:table-cell border-bottom="thin black solid"
+							border-left="thin black solid" border-right="thin black solid"
+							border-top="thin black solid" display-align="center" margin-left="3px"
+							number-columns-spanned="4">
+							<fo:block absolute-position="fixed" bottom="0px" color="black"
+								font-family="맑은 고딕" font-size="8pt" height="17.4pt" left="0px"
+								max-width="228px" min-width="57px" overflow="hidden" text-align="left"
+								top="0px" white-space-collapse="false" wrap-option="wrap">#SETUPDATE#
+							</fo:block>
+						</fo:table-cell>
+						<fo:table-cell border-bottom="thin black solid"
+							border-left="thin black solid" border-right="thin black solid"
+							border-top="thin black solid" display-align="center" margin-left="3px">
+							<fo:block absolute-position="fixed" bottom="0px" color="black"
+								font-family="맑은 고딕" font-size="8pt" font-weight="bold" height="17.4pt"
+								left="0px" max-width="56px" min-width="56px" overflow="hidden"
+								text-align="center" top="0px" white-space-collapse="false"
+								wrap-option="no-wrap">#EQGRADE#</fo:block>
+						</fo:table-cell>
+						<fo:table-cell border-bottom="thin black solid"
+							border-left="thin black solid" border-right="thin black solid"
+							border-top="thin black solid" display-align="center" margin-left="3px"
+							number-columns-spanned="4">
+							<fo:block absolute-position="fixed" bottom="0px" color="black"
+								font-family="맑은 고딕" font-size="8pt" height="17.4pt" left="0px"
+								min-width="57px" overflow="hidden" text-align="left" top="0px"
+								white-space-collapse="false" wrap-option="wrap">#EQGRADEDESC#</fo:block>
+						</fo:table-cell>
+					</fo:table-row>
+					<fo:table-row height="17.4pt">
+						<fo:table-cell display-align="center" margin-left="3px">
+							<fo:block absolute-position="fixed" bottom="0px" color="black"
+								font-family="맑은 고딕" font-size="11pt" font-weight="bold" height="17.4pt"
+								left="0px" min-width="56px" overflow="hidden" text-align="left"
+								top="0px" white-space-collapse="false" wrap-option="no-wrap">2.#EQPART#</fo:block>
+						</fo:table-cell>
+					</fo:table-row>
+					<fo:table-row height="17.4pt">
+						<fo:table-cell border-bottom="thin black solid"
+							border-left="thin black solid" border-right="thin black solid"
+							border-top="thin black solid" display-align="center" margin-left="3px">
+							<fo:block absolute-position="fixed" bottom="0px" color="black"
+								font-family="맑은 고딕" font-size="8pt" font-weight="bold" height="17.4pt"
+								left="0px" max-width="56px" min-width="56px" overflow="hidden"
+								text-align="center" top="0px" white-space-collapse="false"
+								wrap-option="no-wrap">#PARTCODE#</fo:block>
+						</fo:table-cell>
+						<fo:table-cell border-bottom="thin black solid"
+							border-left="thin black solid" border-right="thin black solid"
+							border-top="thin black solid" display-align="center" margin-left="3px"
+							number-columns-spanned="7">
+							<fo:block absolute-position="fixed" bottom="0px" color="black"
+								font-family="맑은 고딕" font-size="8pt" font-weight="bold" height="17.4pt"
+								left="0px" max-width="398px" min-width="57px" overflow="hidden"
+								text-align="center" top="0px" white-space-collapse="false"
+								wrap-option="no-wrap">#PARTNAMESIZE#</fo:block>
+						</fo:table-cell>
+						<fo:table-cell border-bottom="thin black solid"
+							border-left="thin black solid" border-right="thin black solid"
+							border-top="thin black solid" display-align="center" margin-left="3px"
+							number-columns-spanned="2">
+							<fo:block absolute-position="fixed" bottom="0px" color="black"
+								font-family="맑은 고딕" font-size="8pt" font-weight="bold" height="17.4pt"
+								left="0px" min-width="57px" overflow="hidden" text-align="center"
+								top="0px" white-space-collapse="false" wrap-option="no-wrap">#EQPARTREMARK#</fo:block>
+						</fo:table-cell>
+					</fo:table-row>
+					<fo:table-row height="17.4pt" id='#EQPART_LIST#'>
+						<fo:table-cell border-bottom="thin black solid"
+							border-left="thin black solid" border-right="thin black solid"
+							border-top="thin black solid" display-align="center" margin-left="3px">
+							<fo:block absolute-position="fixed" bottom="0px" color="black"
+								font-family="맑은 고딕" font-size="8pt" height="17.4pt" left="0px"
+								max-width="56px" min-width="56px" overflow="hidden" text-align="center"
+								top="0px" white-space-collapse="false" wrap-option="wrap">#PARTNO#
+							</fo:block>
+						</fo:table-cell>
+						<fo:table-cell border-bottom="thin black solid"
+							border-left="thin black solid" border-right="thin black solid"
+							border-top="thin black solid" display-align="center" margin-left="3px"
+							number-columns-spanned="7">
+							<fo:block absolute-position="fixed" bottom="0px" color="black"
+								font-family="맑은 고딕" font-size="8pt" height="17.4pt" left="0px"
+								max-width="398px" min-width="57px" overflow="hidden" text-align="left"
+								top="0px" white-space-collapse="false" wrap-option="wrap">#EQPARTDESC#
+							</fo:block>
+						</fo:table-cell>
+						<fo:table-cell border-bottom="thin black solid"
+							border-left="thin black solid" border-right="thin black solid"
+							border-top="thin black solid" display-align="center" margin-left="3px"
+							number-columns-spanned="2">
+							<fo:block color="black" font-family="맑은 고딕" font-size="8pt"
+								text-align="left" white-space-collapse="false"> </fo:block>
+						</fo:table-cell>
+					</fo:table-row>
+					<!--
+					<fo:table-row height="17.4pt">
+						<fo:table-cell display-align="center" margin-left="3px">
+							<fo:block absolute-position="fixed" bottom="0px" color="black"
+								font-family="맑은 고딕" font-size="11pt" font-weight="bold" height="17.4pt"
+								left="0px" min-width="56px" overflow="hidden" top="0px"
+								white-space-collapse="false" wrap-option="no-wrap">3.설비사진</fo:block>
+						</fo:table-cell>
+					</fo:table-row>
+					<fo:table-row height="17.4pt" id='#IMG_LIST#'>
+						<fo:table-cell border-bottom="thin black solid"
+							border-left="thin black solid" border-right="thin black solid"
+							border-top="thin black solid" display-align="center" margin-left="3px" margin-right="3px" margin-top="3px" margin-bottom="3px"
+							number-columns-spanned="5">
+							<fo:block absolute-position="fixed" bottom="0px" color="black"
+								font-family="맑은 고딕" font-size="11pt" height="17.4pt" left="0px"
+								max-width="284px" min-width="56px" overflow="hidden" text-align="center"
+								top="0px" white-space-collapse="false" wrap-option="no-wrap">
+								<fo:external-graphic content-width="scale-to-fit" content-height="100%" width="100%" scaling="uniform" src="url(http://localhost:8080/ottogi/common/images/ma/no_image.png)"></fo:external-graphic>
+							</fo:block>
+						</fo:table-cell>
+						<fo:table-cell border-bottom="thin black solid"
+							border-left="thin black solid" border-right="thin black solid"
+							border-top="thin black solid" display-align="center" margin-left="3px" margin-right="3px" margin-top="3px" margin-bottom="3px"
+							number-columns-spanned="5">
+							<fo:block absolute-position="fixed" bottom="0px" color="black"
+								font-family="맑은 고딕" font-size="11pt" height="17.4pt" left="0px"
+								min-width="56px" overflow="hidden" text-align="center" top="0px"
+								white-space-collapse="false" wrap-option="no-wrap">
+								<fo:external-graphic content-width="scale-to-fit" content-height="100%" width="100%" scaling="uniform" src="url(http://localhost:8080/ottogi/common/images/ma/no_image.png)"></fo:external-graphic>
+							</fo:block>
+						</fo:table-cell>
+					</fo:table-row>
+					-->
+					<fo:table-row height="17.4pt">
+						<fo:table-cell display-align="center" margin-left="3px">
+							<fo:block absolute-position="fixed" bottom="0px" color="black"
+								font-family="맑은 고딕" font-size="11pt" font-weight="bold" height="17.4pt"
+								left="0px" min-width="56px" overflow="hidden" top="0px"
+								white-space-collapse="false" wrap-option="no-wrap">3.#RPRLIST#</fo:block>
+						</fo:table-cell>
+					</fo:table-row>
+					<fo:table-row height="17.4pt">
+						<fo:table-cell border-bottom="thin black solid"
+							border-left="thin black solid" border-right="thin black solid"
+							border-top="thin black solid" display-align="center" margin-left="3px">
+							<fo:block absolute-position="fixed" bottom="0px" color="black"
+								font-family="맑은 고딕" font-size="8pt" font-weight="bold" height="17.4pt"
+								left="0px" max-width="56px" min-width="56px" overflow="hidden"
+								text-align="center" top="0px" white-space-collapse="false"
+								wrap-option="no-wrap">#REPYYYYMMDD#</fo:block>
+						</fo:table-cell>
+						<fo:table-cell border-bottom="thin black solid"
+							border-left="thin black solid" border-right="thin black solid"
+							border-top="thin black solid" display-align="center" margin-left="3px"
+							number-columns-spanned="6">
+							<fo:block absolute-position="fixed" bottom="0px" color="black"
+								font-family="맑은 고딕" font-size="8pt" font-weight="bold" height="17.4pt"
+								left="0px" max-width="227px" min-width="57px" overflow="hidden"
+								text-align="center" top="0px" white-space-collapse="false"
+								wrap-option="no-wrap">#REPCHGDESC#</fo:block>
+						</fo:table-cell>
+						<fo:table-cell border-bottom="thin black solid"
+							border-left="thin black solid" border-right="thin black solid"
+							border-top="thin black solid" display-align="center" margin-left="3px">
+							<fo:block absolute-position="fixed" bottom="0px" color="black"
+								font-family="맑은 고딕" font-size="8pt" font-weight="bold" height="17.4pt"
+								left="0px" max-width="57px" min-width="57px" overflow="hidden"
+								text-align="center" top="0px" white-space-collapse="false"
+								wrap-option="no-wrap">#MANAGER#</fo:block>
+						</fo:table-cell>
+						<fo:table-cell border-bottom="thin black solid"
+							border-left="thin black solid" border-right="thin black solid"
+							border-top="thin black solid" display-align="center" margin-left="3px"
+							number-columns-spanned="2">
+							<fo:block absolute-position="fixed" bottom="0px" color="black"
+								font-family="맑은 고딕" font-size="8pt" font-weight="bold" height="17.4pt"
+								left="0px" max-width="114px" min-width="57px" overflow="hidden"
+								text-align="center" top="0px" white-space-collapse="false"
+								wrap-option="no-wrap">#WONO#</fo:block>
+						</fo:table-cell>
+					</fo:table-row>
+					<fo:table-row height="17.4pt" id='#REP_LIST#'>
+						<fo:table-cell border-bottom="thin black solid"
+							border-left="thin black solid" border-right="thin black solid"
+							border-top="thin black solid" display-align="center" margin-left="3px">
+							<fo:block absolute-position="fixed" bottom="0px" color="black"
+								font-family="맑은 고딕" font-size="8pt" height="17.4pt" left="0px"
+								max-width="56px" min-width="56px" overflow="hidden" text-align="center"
+								top="0px" white-space-collapse="false" wrap-option="wrap">#REPENDDATE#
+							</fo:block>
+						</fo:table-cell>
+						<fo:table-cell border-bottom="thin black solid"
+							border-left="thin black solid" border-right="thin black solid"
+							border-top="thin black solid" display-align="center" margin-left="3px"
+							number-columns-spanned="6">
+							<fo:block absolute-position="fixed" bottom="0px" color="black"
+								font-family="맑은 고딕" font-size="8pt" height="17.4pt" left="0px"
+								max-width="227px" min-width="57px" overflow="hidden" text-align="left"
+								top="0px" white-space-collapse="false" wrap-option="wrap">#REPDESC#
+							</fo:block>
+						</fo:table-cell>
+						<fo:table-cell border-bottom="thin black solid"
+							border-left="thin black solid" border-right="thin black solid"
+							border-top="thin black solid" display-align="center" margin-left="3px">
+							<fo:block absolute-position="fixed" bottom="0px" color="black"
+								font-family="맑은 고딕" font-size="8pt" height="17.4pt" left="0px"
+								min-width="57px" overflow="hidden" text-align="center" top="0px"
+								white-space-collapse="false" wrap-option="wrap">#REPMANAGER#</fo:block>
+						</fo:table-cell>
+						<fo:table-cell border-bottom="thin black solid"
+							border-left="thin black solid" border-right="thin black solid"
+							border-top="thin black solid" display-align="center" margin-left="3px"
+							number-columns-spanned="2">
+							<fo:block color="black" font-family="맑은 고딕" font-size="8pt"
+								text-align="left" white-space-collapse="false">#REPWONO#</fo:block>
+						</fo:table-cell>
+					</fo:table-row>
+					<fo:table-row height="17.4pt">
+						<fo:table-cell>
+							<fo:block />
+						</fo:table-cell>
+					</fo:table-row>
+					<fo:table-row height="17.4pt">
+						<fo:table-cell>
+							<fo:block />
+						</fo:table-cell>
+					</fo:table-row>
+					<fo:table-row height="17.4pt">
+						<fo:table-cell>
+							<fo:block />
+						</fo:table-cell>
+					</fo:table-row>
+					<fo:table-row height="17.4pt">
+						<fo:table-cell>
+							<fo:block />
+						</fo:table-cell>
+					</fo:table-row>
+					<fo:table-row height="17.4pt">
+						<fo:table-cell>
+							<fo:block />
+						</fo:table-cell>
+					</fo:table-row>
+					<fo:table-row height="17.4pt">
+						<fo:table-cell>
+							<fo:block />
+						</fo:table-cell>
+					</fo:table-row>
+				</fo:table-body>
+			</fo:table>
+		</fo:flow>
+	</fo:page-sequence>
+</fo:root>

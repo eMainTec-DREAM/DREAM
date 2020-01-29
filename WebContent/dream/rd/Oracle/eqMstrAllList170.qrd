@@ -1,0 +1,66 @@
+$
+SELECT              
+		'^param4' AS yyyy
+        ,'Form info.:HPE05-005E-F01 (Ver. 2.00)'         docNo        
+        FROM DUAL
+/
+$
+SELECT ROWNUM seqNo
+            ,x.equip
+            ,x.dept
+            ,x.roomNo
+            ,x.roomName
+            ,x.grade
+            ,x.itemNo
+            ,x.setupDate
+            ,x.maker
+            ,x.country
+            ,x.model
+            ,x.serialNo
+            ,x.capacity
+            ,x.utilCapa
+            ,x.remark
+FROM
+(
+SELECT         ''                                                                             seqNo
+            ,x.description                                                                 equip
+            ,(SELECT description                                            
+                 FROM TADEPT                                                
+                 WHERE comp_no = x.comp_no                                    
+                AND dept_categ = 'L2'
+             START WITH dept_id =  x.usage_dept
+             CONNECT BY PRIOR p_dept_id = dept_id
+             )                                                dept
+            ,NVL(REPLACE(REPLACE((SELECT A.eqloc_no
+              FROM TAEQLOC A
+              WHERE eqloc_lvl_type = 'L4'
+                  AND A.eqloc_id = x.eqloc_id
+             ) ,CHR(10),''),CHR(13),' '),'N/A')																		roomNo
+            ,NVL((SELECT A.description
+              FROM TAEQLOC A
+              WHERE eqloc_lvl_type = 'L4'
+                AND A.eqloc_id = x.eqloc_id
+             ),'N/A') 																		roomName
+            ,NVL(SFACODE_TO_DESC(x.eq_grade,'EQ_GRADE','SYS','', '^param3') ,'N/A')                grade 
+            ,x.item_no                                                                     itemNo
+            ,NVL(CASE WHEN x.setup_date IS NULL THEN '-'
+                     ELSE SUBSTR(x.setup_date,1,4)||'-'||
+                        SUBSTR(x.setup_date,5,2)||'-'||
+                        SUBSTR(x.setup_date,7,2) 
+                  END ,'N/A')                                                                     setupDate
+            ,NVL(REPLACE(REPLACE(x.maker,CHR(10),''),CHR(13),' '),'N/A')                             maker
+            ,NVL(REPLACE(REPLACE(x.country_maker,CHR(10),''),CHR(13),' '),'N/A')                                                             country
+            ,NVL(REPLACE(REPLACE(x.model_no,CHR(10),''),CHR(13),' '),'N/A')                                                                    MODEL
+            ,NVL(REPLACE(REPLACE(x.serial_no,CHR(10),''),CHR(13),' '),'N/A')                                                                 serialNo
+            ,NVL(REPLACE(REPLACE(x.capacity,CHR(10),''),CHR(13),' '),'N/A')                         capacity
+            ,NVL(REPLACE(REPLACE(x.util_capa,CHR(10),''),CHR(13),' '),'N/A')                         utilCapa
+            ,NVL(REPLACE(REPLACE(x.REMARK,CHR(10),''),CHR(13),' '),'N/A')                            REMARK
+FROM TAEQUIPMENT x
+WHERE x.comp_no = '^param1'
+AND eqctg_type='^param4'
+AND plant='^param5'
+   AND is_last_version = 'Y'
+   AND is_deleted ='N'
+ORDER BY x.dept_id, x.description
+) x
+/

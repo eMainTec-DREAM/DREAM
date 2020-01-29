@@ -1,0 +1,56 @@
+$
+SELECT              
+		'^param4' AS yyyy
+		,(SELECT description FROM TAEQLOC WHERE comp_no = '^param1' AND eqloc_id = decode('^param6','',0,'^param6')) dept
+        ,'Form info.: HPE05-005E-F02 (Ver. 2.00)'         docNo        
+        FROM DUAL
+/
+$
+SELECT ROWNUM seqNo, equipDesc, period,m1,m2,m3,m4,m5,m6,m7,m8,m9,m10,m11,m12                
+FROM (                                                                                    
+    SELECT                                                                                     
+            (SELECT a.description FROM TAEQUIPMENT a WHERE a.comp_no = x.comp_no AND a.equip_id = x.equip_id) equipDesc        
+            ,y.cycle||y.period_type period                                                    
+            ,sum(CASE WHEN x.sched_date LIKE '^param4' || '01%' THEN 1 ELSE 0 END) AS M1     
+            ,sum(CASE WHEN x.sched_date LIKE '^param4' || '02%' THEN 1 ELSE 0 END) AS M2     
+            ,sum(CASE WHEN x.sched_date LIKE '^param4' || '03%' THEN 1 ELSE 0 END) AS M3     
+            ,sum(CASE WHEN x.sched_date LIKE '^param4' || '04%' THEN 1 ELSE 0 END) AS M4     
+            ,sum(CASE WHEN x.sched_date LIKE '^param4' || '05%' THEN 1 ELSE 0 END) AS M5     
+            ,sum(CASE WHEN x.sched_date LIKE '^param4' || '06%' THEN 1 ELSE 0 END) AS M6     
+            ,sum(CASE WHEN x.sched_date LIKE '^param4' || '07%' THEN 1 ELSE 0 END) AS M7     
+            ,sum(CASE WHEN x.sched_date LIKE '^param4' || '08%' THEN 1 ELSE 0 END) AS M8     
+            ,sum(CASE WHEN x.sched_date LIKE '^param4' || '09%' THEN 1 ELSE 0 END) AS M9     
+            ,sum(CASE WHEN x.sched_date LIKE '^param4' || '10%' THEN 1 ELSE 0 END) AS M10     
+            ,sum(CASE WHEN x.sched_date LIKE '^param4' || '11%' THEN 1 ELSE 0 END) AS M11     
+            ,sum(CASE WHEN x.sched_date LIKE '^param4' || '12%' THEN 1 ELSE 0 END) AS M12     
+    FROM TAPMINSSCHED x, TAPMLST y                                                            
+    WHERE x.comp_no  = y.comp_no                                                            
+    AND x.pm_id    = y.pm_id                 
+    AND x.comp_no = '^param1'        
+    AND  (  (y.dept_id IN (
+                                SELECT dept_id 
+                                FROM tadept
+                                WHERE comp_no = '^param1'
+                                START WITH dept_id = CASE WHEN '^param5' ='0' THEN '0' ELSE '^param5' END
+                                CONNECT BY PRIOR p_dept_id = dept_id)      )
+                 OR y.dept_id IN (SELECT dept_id FROM TADEPT WHERE comp_no = '^param1' AND  comp_no  
+                 					= (CASE WHEN '^param5' ='0' THEN '^param1' ELSE 'NOTCOMP' END) )  )
+                 					
+     and y.pm_id in (select a.pm_id FROM TAPMEQUIP a inner join TAEQUIPMENT b
+                              on a.comp_no = b.comp_no
+                              and a.equip_id = b.equip_id
+                              where 1=1
+                              and a.comp_no = '^param1'
+                              and ( (b.eqloc_id IN (
+                                SELECT eqloc_id 
+                                FROM taeqloc
+                                WHERE comp_no = '^param1'
+                                START WITH eqloc_id = CASE WHEN '^param6' ='0' THEN '0' ELSE '^param6' END
+                                CONNECT BY PRIOR eqloc_id = p_eqloc_id)      )
+                 OR b.eqloc_id IN (SELECT eqloc_id FROM TAEQLOC WHERE comp_no = '^param1' AND  comp_no  
+                                     = (CASE WHEN '^param6' ='0' THEN '^param1' ELSE 'NOTCOMP' END) )  )
+                              )
+    GROUP BY x.comp_no, x.equip_id,y.cycle,y.period_type                                    
+    ORDER BY (SELECT a.description FROM TAEQUIPMENT a WHERE a.equip_id = x.equip_id)        
+)                               
+/

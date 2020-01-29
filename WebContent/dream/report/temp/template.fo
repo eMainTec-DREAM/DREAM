@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<fo:root xmlns:fo="http://www.w3.org/1999/XSL/Format">
+	<fo:layout-master-set>
+		<fo:simple-page-master master-name="all-pages" 
+   							   page-height="297mm" page-width="210mm"
+                               margin-top="10mm"  margin-bottom="10mm" 
+                               margin-left="10mm" margin-right="10mm">
+          <fo:region-body region-name="xsl-region-body" margin-top="34mm" margin-bottom="15mm" margin-left="0mm" margin-right="0mm"/>
+          <fo:region-before region-name="xsl-region-before" extent="10mm"/>
+          <fo:region-after region-name="xsl-region-after" extent="10mm"/>
+		</fo:simple-page-master>
+        <fo:page-sequence-master master-name="default-sequence">
+        	<fo:repeatable-page-master-reference master-reference="all-pages"/>
+        </fo:page-sequence-master>
+	</fo:layout-master-set>
+	<fo:declarations>
+		<x:xmpmeta xmlns:x="adobe:ns:meta/">
+			<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+				<rdf:Description rdf:about="">
+					<dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">javaworker</dc:creator>
+				</rdf:Description>
+			</rdf:RDF>
+		</x:xmpmeta>
+	</fo:declarations>
+	<fo:page-sequence master-reference="all-pages" id="#PAGE_ID#">
+	
+		<!-- Header -->
+		<fo:static-content flow-name="xsl-region-before" font-size="12pt" font-family="Arial">
+			<fo:table table-layout="fixed" width="7.5277786in">
+			<!-- Header Contents -->
+			...
+			</fo:table>
+		</fo:static-content>
+		
+		<!-- Footer -->
+        <fo:static-content flow-name="xsl-region-after" font-size="12pt" font-family="Arial">
+        	<!-- Sample : pageNumber / TotalPageCount -->
+        	<fo:block text-align="center"><fo:page-number/>
+        	/
+        	<!-- 여러설비 선택후 출력 -->
+        	<fo:inline>#TOTAL_PAGE#</fo:inline>
+        	<!-- 하나의 검색 후 여러페이지출력 -->
+        	<fo:page-number-citation-last ref-id="#PAGE_ID#"/>
+        	</fo:block>
+        </fo:static-content>
+        
+        <!-- Body -->
+		<fo:flow flow-name="xsl-region-body">
+			<fo:table table-layout="fixed" width="7.5277786in">
+			<!-- Contents -->
+			...
+			</fo:table>
+		</fo:flow>
+	</fo:page-sequence>
+</fo:root>

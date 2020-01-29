@@ -1,0 +1,635 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<fo:root xmlns:fo="http://www.w3.org/1999/XSL/Format">
+	<fo:layout-master-set>
+		<fo:simple-page-master master-name="all-pages" 
+   							   page-height="297mm" page-width="210mm"
+                               margin-top="10mm"  margin-bottom="10mm" 
+                               margin-left="5mm" margin-right="5mm">
+          <fo:region-body region-name="xsl-region-body" margin-top="20mm" margin-bottom="15mm" margin-left="0mm" margin-right="0mm"/>
+          <fo:region-before region-name="xsl-region-before" extent="10mm"/>
+          <fo:region-after region-name="xsl-region-after" extent="10mm"/>
+		</fo:simple-page-master>
+        <fo:page-sequence-master master-name="default-sequence">
+        	<fo:repeatable-page-master-reference master-reference="all-pages"/>
+        </fo:page-sequence-master>
+	</fo:layout-master-set>
+	<fo:declarations>
+		<x:xmpmeta xmlns:x="adobe:ns:meta/">
+			<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+				<rdf:Description rdf:about="">
+					<dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">JEONGWOO KIM</dc:creator>
+				</rdf:Description>
+			</rdf:RDF>
+		</x:xmpmeta>
+	</fo:declarations>
+	<fo:page-sequence master-reference="all-pages" id="#PAGE_ID#">
+		<!-- Footer -->
+        <fo:static-content flow-name="xsl-region-after" font-size="12pt" font-family="Arial">
+        	<!-- Sample : pageNumber / TotalPageCount -->
+        	<fo:block text-align="center">
+        	
+        	</fo:block>
+        </fo:static-content>
+        
+		<fo:flow flow-name="xsl-region-body">
+			<fo:table table-layout="fixed" width="7.972222in">
+				<fo:table-column column-width="0.7777778in" />
+				<fo:table-column column-width="0.7777778in" />
+				<fo:table-column column-width="0.7777778in" />
+				<fo:table-column column-width="0.7777778in" />
+				<fo:table-column column-width="0.7777778in" />
+				<fo:table-column column-width="0.8611111in" />
+				<fo:table-column column-width="0.7777778in" />
+				<fo:table-column column-width="0.6805556in" />
+				<fo:table-column column-width="0.5277778in" />
+				<fo:table-column column-width="1.2361112in" />
+				<fo:table-body>
+					<fo:table-row height="17.4pt">
+						<fo:table-cell display-align="center" margin-left="3px">
+							<fo:block color="black" font-family="맑은 고딕" font-size="11pt"
+								white-space-collapse="false" />
+						</fo:table-cell>
+						<fo:table-cell display-align="center" margin-left="3px">
+							<fo:block color="black" font-family="맑은 고딕" font-size="11pt"
+								white-space-collapse="false" />
+						</fo:table-cell>
+						<fo:table-cell display-align="center" margin-left="3px">
+							<fo:block color="black" font-family="맑은 고딕" font-size="11pt"
+								white-space-collapse="false" />
+						</fo:table-cell>
+						<fo:table-cell display-align="center" margin-left="3px"
+							number-columns-spanned="4" number-rows-spanned="2">
+							<fo:block absolute-position="fixed" bottom="0px" color="black"
+								font-family="맑은 고딕" font-size="18pt" font-weight="bold" height="17.4pt"
+								left="0px" min-width="56px" overflow="hidden" text-align="center"
+								top="0px" white-space-collapse="false" wrap-option="no-wrap">#WORESULTREPORT#
+							</fo:block>
+						</fo:table-cell>
+					</fo:table-row>
+					<fo:table-row height="17.4pt">
+						<fo:table-cell>
+							<fo:block />
+						</fo:table-cell>
+					</fo:table-row>
+					<fo:table-row height="17.4pt">
+						<fo:table-cell display-align="center" margin-left="3px"
+							number-columns-spanned="7">
+							<fo:block absolute-position="fixed" bottom="0px" color="black"
+								font-family="맑은 고딕" font-size="11pt" height="17.4pt" left="0px"
+								max-width="224px" min-width="56px" overflow="hidden" text-align="left"
+								top="0px" white-space-collapse="false" wrap-option="wrap"># #WONO#
+							</fo:block>
+						</fo:table-cell>
+						<fo:table-cell display-align="center" margin-left="3px"
+							number-columns-spanned="3">
+							<fo:block absolute-position="fixed" bottom="0px" color="black"
+								font-family="맑은 고딕" font-size="11pt" height="17.4pt" left="0px"
+								max-width="105px" min-width="56px" overflow="hidden" top="0px"
+								white-space-collapse="false" wrap-option="wrap">#MANAGER#: #DEPTDESC# / #EMPDESC#</fo:block>
+						</fo:table-cell>
+					</fo:table-row>
+					<fo:table-row height="17.4pt">
+						<fo:table-cell border-bottom="thin black solid"
+							border-left="thin black solid" border-right="thin black solid"
+							border-top="thin black solid" display-align="center" margin-left="3px">
+							<fo:block absolute-position="fixed" bottom="0px" color="black"
+								font-family="맑은 고딕" font-size="8pt" font-weight="bold" height="17.4pt"
+								left="0px" max-width="56px" min-width="56px" overflow="hidden"
+								text-align="center" top="0px" white-space-collapse="false"
+								wrap-option="no-wrap">#WORKDATE#</fo:block>
+						</fo:table-cell>
+						<fo:table-cell border-bottom="thin black solid"
+							border-left="thin black solid" border-right="thin black solid"
+							border-top="thin black solid" display-align="center" margin-left="3px"
+							number-columns-spanned="4">
+							<fo:block absolute-position="fixed" bottom="0px" color="black"
+								font-family="맑은 고딕" font-size="8pt" height="17.4pt" left="0px"
+								max-width="224px" min-width="56px" overflow="hidden" text-align="left"
+								top="0px" white-space-collapse="false" wrap-option="wrap">#WODATE#
+							</fo:block>
+						</fo:table-cell>
+						<fo:table-cell border-bottom="thin black solid"
+							border-left="thin black solid" border-right="thin black solid"
+							border-top="thin black solid" display-align="center" margin-left="3px">
+							<fo:block absolute-position="fixed" bottom="0px" color="black"
+								font-family="맑은 고딕" font-size="8pt" font-weight="bold" height="17.4pt"
+								left="0px" max-width="62px" min-width="62px" overflow="hidden"
+								text-align="center" top="0px" white-space-collapse="false"
+								wrap-option="no-wrap">#COSTTIME#</fo:block>
+						</fo:table-cell>
+						<fo:table-cell border-bottom="thin black solid"
+							border-left="thin black solid" border-right="thin black solid"
+							border-top="thin black solid" display-align="center" margin-left="3px"
+							number-columns-spanned="4">
+							<fo:block absolute-position="fixed" bottom="0px" color="black"
+								font-family="맑은 고딕" font-size="8pt" height="17.4pt" left="0px"
+								min-width="56px" overflow="hidden" text-align="left" top="0px"
+								white-space-collapse="false" wrap-option="wrap">#WORKTIME#</fo:block>
+						</fo:table-cell>
+					</fo:table-row>
+					<fo:table-row height="17.4pt">
+						<fo:table-cell border-bottom="thin black solid"
+							border-left="thin black solid" border-right="thin black solid"
+							border-top="thin black solid" display-align="center" margin-left="3px">
+							<fo:block absolute-position="fixed" bottom="0px" color="black"
+								font-family="맑은 고딕" font-size="8pt" font-weight="bold" height="17.4pt"
+								left="0px" max-width="56px" min-width="56px" overflow="hidden"
+								text-align="center" top="0px" white-space-collapse="false"
+								wrap-option="no-wrap">#WONAME#</fo:block>
+						</fo:table-cell>
+						<fo:table-cell border-bottom="thin black solid"
+							border-left="thin black solid" border-right="thin black solid"
+							border-top="thin black solid" display-align="center" margin-left="3px"
+							number-columns-spanned="9">
+							<fo:block absolute-position="fixed" bottom="0px" color="black"
+								font-family="맑은 고딕" font-size="8pt" height="17.4pt" left="0px"
+								min-width="56px" overflow="hidden" text-align="left" top="0px"
+								white-space-collapse="false" wrap-option="wrap">#WODESC#</fo:block>
+						</fo:table-cell>
+					</fo:table-row>
+					<fo:table-row height="17.4pt">
+						<fo:table-cell border-bottom="thin black solid"
+							border-left="thin black solid" border-right="thin black solid"
+							border-top="thin black solid" display-align="center" margin-left="3px">
+							<fo:block absolute-position="fixed" bottom="0px" color="black"
+								font-family="맑은 고딕" font-size="8pt" font-weight="bold" height="17.4pt"
+								left="0px" max-width="56px" min-width="56px" overflow="hidden"
+								text-align="center" top="0px" white-space-collapse="false"
+								wrap-option="no-wrap">#EQUIPLOC#</fo:block>
+						</fo:table-cell>
+						<fo:table-cell border-bottom="thin black solid"
+							border-left="thin black solid" border-right="thin black solid"
+							border-top="thin black solid" display-align="center" margin-left="3px"
+							number-columns-spanned="9">
+							<fo:block absolute-position="fixed" bottom="0px" color="black"
+								font-family="맑은 고딕" font-size="8pt" height="17.4pt" left="0px"
+								min-width="56px" overflow="hidden" text-align="left" top="0px"
+								white-space-collapse="false" wrap-option="wrap">#EQLOCDESC#</fo:block>
+						</fo:table-cell>
+					</fo:table-row>
+					<fo:table-row height="17.4pt">
+						<fo:table-cell border-bottom="thin black solid"
+							border-left="thin black solid" border-right="thin black solid"
+							border-top="thin black solid" display-align="center" margin-left="3px">
+							<fo:block absolute-position="fixed" bottom="0px" color="black"
+								font-family="맑은 고딕" font-size="8pt" font-weight="bold" height="17.4pt"
+								left="0px" max-width="56px" min-width="56px" overflow="hidden"
+								text-align="center" top="0px" white-space-collapse="false"
+								wrap-option="no-wrap">#WOTYPE#</fo:block>
+						</fo:table-cell>
+						<fo:table-cell border-bottom="thin black solid"
+							border-left="thin black solid" border-right="thin black solid"
+							border-top="thin black solid" display-align="center" margin-left="3px"
+							number-columns-spanned="9">
+							<fo:block absolute-position="fixed" bottom="0px" color="black"
+								font-family="맑은 고딕" font-size="8pt" height="17.4pt" left="0px"
+								max-width="224px" min-width="56px" overflow="hidden" text-align="left"
+								top="0px" white-space-collapse="false" wrap-option="wrap">#WOTYPEDESC# - #PMTYPEDESC#
+							</fo:block>
+						</fo:table-cell>
+					</fo:table-row>
+					<fo:table-row height="42pt">
+						<fo:table-cell border-bottom="thin black solid"
+							border-left="thin black solid" border-right="thin black solid"
+							border-top="thin black solid" display-align="center" margin-left="3px">
+							<fo:block color="black" font-family="맑은 고딕" font-size="8pt"
+								font-weight="bold" text-align="center" white-space-collapse="false">#WOREMARK#
+							</fo:block>
+						</fo:table-cell>
+						<fo:table-cell border-bottom="thin black solid" border-right="thin black solid"
+							border-left="thin black solid" border-top="thin black solid"
+							display-align="center" margin-left="3px" number-columns-spanned="9">
+							<fo:block color="black" font-family="맑은 고딕" font-size="8pt"
+								text-align="left" white-space-collapse="false">#PERFORM#</fo:block>
+						</fo:table-cell>
+					</fo:table-row>
+					<fo:table-row height="17.4pt">
+						<fo:table-cell>
+							<fo:block />
+						</fo:table-cell>
+					</fo:table-row>
+					<fo:table-row height="17.4pt">
+						<fo:table-cell display-align="center" margin-left="3px">
+							<fo:block absolute-position="fixed" bottom="0px" color="black"
+								font-family="맑은 고딕" font-size="10pt" font-weight="bold" height="17.4pt"
+								left="0px" min-width="56px" overflow="hidden" top="0px"
+								white-space-collapse="false" wrap-option="no-wrap">1)#WOEQUIP#</fo:block>
+						</fo:table-cell>
+					</fo:table-row>
+					<fo:table-row height="17.4pt">
+						<fo:table-cell border-bottom="thin black solid"
+							border-left="thin black solid" border-right="thin black solid"
+							border-top="thin black solid" display-align="center" margin-left="3px"
+							number-columns-spanned="2">
+							<fo:block absolute-position="fixed" bottom="0px" color="black"
+								font-family="맑은 고딕" font-size="8pt" font-weight="bold" height="17.4pt"
+								left="0px" max-width="56px" min-width="56px" overflow="hidden"
+								text-align="center" top="0px" white-space-collapse="false"
+								wrap-option="no-wrap">#EQUIPNO#</fo:block>
+						</fo:table-cell>
+						<fo:table-cell border-bottom="thin black solid"
+							border-left="thin black solid" border-right="thin black solid"
+							border-top="thin black solid" display-align="center" margin-left="3px"
+							number-columns-spanned="8">
+							<fo:block absolute-position="fixed" bottom="0px" color="black"
+								font-family="맑은 고딕" font-size="8pt" font-weight="bold" height="17.4pt"
+								left="0px" max-width="429px" min-width="56px" overflow="hidden"
+								text-align="center" top="0px" white-space-collapse="false"
+								wrap-option="no-wrap">#EQUIPNAME#</fo:block>
+						</fo:table-cell>
+					</fo:table-row>
+					<fo:table-row height="17.4pt" id='#EQ_LIST#'>
+						<fo:table-cell border-bottom="thin black solid"
+							border-left="thin black solid" border-right="thin black solid"
+							border-top="thin black solid" display-align="center" margin-left="3px"
+							number-columns-spanned="2">
+							<fo:block absolute-position="fixed" bottom="0px" color="black"
+								font-family="맑은 고딕" font-size="8pt" height="17.4pt" left="0px"
+								max-width="56px" min-width="56px" overflow="hidden" text-align="center"
+								top="0px" white-space-collapse="false" wrap-option="wrap">#ITEMNUMBER#
+							</fo:block>
+						</fo:table-cell>
+						<fo:table-cell border-bottom="thin black solid"
+							border-left="thin black solid" border-right="thin black solid"
+							border-top="thin black solid" display-align="center" margin-left="3px"
+							number-columns-spanned="8">
+							<fo:block absolute-position="fixed" bottom="0px" color="black"
+								font-family="맑은 고딕" font-size="8pt" height="17.4pt" left="0px"
+								max-width="429px" min-width="56px" overflow="hidden" text-align="left"
+								top="0px" white-space-collapse="false" wrap-option="wrap">#ITEMDESC#
+							</fo:block>
+						</fo:table-cell>
+					</fo:table-row>
+					<fo:table-row height="17.4pt">
+						<fo:table-cell>
+							<fo:block />
+						</fo:table-cell>
+					</fo:table-row>
+					<fo:table-row height="17.4pt">
+						<fo:table-cell display-align="center" margin-left="3px">
+							<fo:block absolute-position="fixed" bottom="0px" color="black"
+								font-family="맑은 고딕" font-size="10pt" font-weight="bold" height="17.4pt"
+								left="0px" min-width="56px" overflow="hidden" text-align="left"
+								top="0px" white-space-collapse="false" wrap-option="no-wrap">2)#WORKCRAFT#
+							</fo:block>
+						</fo:table-cell>
+					</fo:table-row>
+					<fo:table-row height="17.4pt">
+						<fo:table-cell border-bottom="thin black solid"
+							border-left="thin black solid" border-right="thin black solid"
+							border-top="thin black solid" display-align="center" margin-left="3px">
+							<fo:block absolute-position="fixed" bottom="0px" color="black"
+								font-family="맑은 고딕" font-size="8pt" font-weight="bold" height="17.4pt"
+								left="0px" max-width="56px" min-width="56px" overflow="hidden"
+								text-align="center" top="0px" white-space-collapse="false"
+								wrap-option="no-wrap">#EMPNUMBER#</fo:block>
+						</fo:table-cell>
+						<fo:table-cell border-bottom="thin black solid"
+							border-left="thin black solid" border-right="thin black solid"
+							border-top="thin black solid" display-align="center" margin-left="3px">
+							<fo:block absolute-position="fixed" bottom="0px" color="black"
+								font-family="맑은 고딕" font-size="8pt" font-weight="bold" height="17.4pt"
+								left="0px" max-width="56px" min-width="56px" overflow="hidden"
+								text-align="center" top="0px" white-space-collapse="false"
+								wrap-option="no-wrap">#EMPNAME#</fo:block>
+						</fo:table-cell>
+						<fo:table-cell border-bottom="thin black solid"
+							border-left="thin black solid" border-right="thin black solid"
+							border-top="thin black solid" display-align="center" margin-left="3px"
+							number-columns-spanned="2">
+							<fo:block absolute-position="fixed" bottom="0px" color="black"
+								font-family="맑은 고딕" font-size="8pt" font-weight="bold" height="17.4pt"
+								left="0px" max-width="112px" min-width="56px" overflow="hidden"
+								text-align="center" top="0px" white-space-collapse="false"
+								wrap-option="no-wrap">#STARTDATE#</fo:block>
+						</fo:table-cell>
+						<fo:table-cell border-bottom="thin black solid"
+							border-left="thin black solid" border-right="thin black solid"
+							border-top="thin black solid" display-align="center" margin-left="3px"
+							number-columns-spanned="2">
+							<fo:block absolute-position="fixed" bottom="0px" color="black"
+								font-family="맑은 고딕" font-size="8pt" font-weight="bold" height="17.4pt"
+								left="0px" max-width="118px" min-width="56px" overflow="hidden"
+								text-align="center" top="0px" white-space-collapse="false"
+								wrap-option="no-wrap">#ENDDATE#</fo:block>
+						</fo:table-cell>
+						<fo:table-cell border-bottom="thin black solid"
+							border-left="thin black solid" border-right="thin black solid"
+							border-top="thin black solid" display-align="center" margin-left="3px">
+							<fo:block absolute-position="fixed" bottom="0px" color="black"
+								font-family="맑은 고딕" font-size="8pt" font-weight="bold" height="17.4pt"
+								left="0px" max-width="56px" min-width="56px" overflow="hidden"
+								text-align="center" top="0px" white-space-collapse="false"
+								wrap-option="no-wrap">#COSTTIME2#</fo:block>
+						</fo:table-cell>
+						<fo:table-cell border-bottom="thin black solid"
+							border-left="thin black solid" border-right="thin black solid"
+							border-top="thin black solid" display-align="center" margin-left="3px"
+							number-columns-spanned="3">
+							<fo:block absolute-position="fixed" bottom="0px" color="black"
+								font-family="맑은 고딕" font-size="8pt" font-weight="bold" height="17.4pt"
+								left="0px" min-width="49px" overflow="hidden" text-align="center"
+								top="0px" white-space-collapse="false" wrap-option="no-wrap">#REMARK#</fo:block>
+						</fo:table-cell>
+					</fo:table-row>
+					<fo:table-row height="17.4pt" id='#CRAFT_LIST#'>
+						<fo:table-cell border-bottom="thin black solid"
+							border-left="thin black solid" border-right="thin black solid"
+							border-top="thin black solid" display-align="center" margin-left="3px">
+							<fo:block absolute-position="fixed" bottom="0px" color="black"
+								font-family="맑은 고딕" font-size="8pt" height="17.4pt" left="0px"
+								max-width="56px" min-width="56px" overflow="hidden" text-align="left"
+								top="0px" white-space-collapse="false" wrap-option="wrap">#CRAFTEMPNO#
+							</fo:block>
+						</fo:table-cell>
+						<fo:table-cell border-bottom="thin black solid"
+							border-left="thin black solid" border-right="thin black solid"
+							border-top="thin black solid" display-align="center" margin-left="3px">
+							<fo:block absolute-position="fixed" bottom="0px" color="black"
+								font-family="맑은 고딕" font-size="8pt" height="17.4pt" left="0px"
+								max-width="56px" min-width="56px" overflow="hidden" text-align="left"
+								top="0px" white-space-collapse="false" wrap-option="wrap">#CRAFTEMPDESC#
+							</fo:block>
+						</fo:table-cell>
+						<fo:table-cell border-bottom="thin black solid"
+							border-left="thin black solid" border-right="thin black solid"
+							border-top="thin black solid" display-align="center" margin-left="3px"
+							number-columns-spanned="2">
+							<fo:block absolute-position="fixed" bottom="0px" color="black"
+								font-family="맑은 고딕" font-size="8pt" height="17.4pt" left="0px"
+								max-width="112px" min-width="56px" overflow="hidden" text-align="center"
+								top="0px" white-space-collapse="false" wrap-option="wrap">#CRAFTSTARTDATE#
+							</fo:block>
+						</fo:table-cell>
+						<fo:table-cell border-bottom="thin black solid"
+							border-left="thin black solid" border-right="thin black solid"
+							border-top="thin black solid" display-align="center" margin-left="3px"
+							number-columns-spanned="2">
+							<fo:block absolute-position="fixed" bottom="0px" color="black"
+								font-family="맑은 고딕" font-size="8pt" height="17.4pt" left="0px"
+								max-width="118px" min-width="56px" overflow="hidden" text-align="center"
+								top="0px" white-space-collapse="false" wrap-option="wrap">#CRAFTENDDATE#
+							</fo:block>
+						</fo:table-cell>
+						<fo:table-cell border-bottom="thin black solid"
+							border-left="thin black solid" border-right="thin black solid"
+							border-top="thin black solid" display-align="center" margin-left="3px">
+							<fo:block absolute-position="fixed" bottom="0px" color="black"
+								font-family="맑은 고딕" font-size="8pt" height="17.4pt" left="0px"
+								max-width="56px" min-width="56px" overflow="hidden" text-align="left"
+								top="0px" white-space-collapse="false" wrap-option="wrap">#CRAFTWORKTIME#
+							</fo:block>
+						</fo:table-cell>
+						<fo:table-cell border-bottom="thin black solid"
+							border-left="thin black solid" border-right="thin black solid"
+							border-top="thin black solid" display-align="center" margin-left="3px"
+							number-columns-spanned="3">
+							<fo:block absolute-position="fixed" bottom="0px" color="black"
+								font-family="맑은 고딕" font-size="8pt" height="17.4pt" left="0px"
+								min-width="49px" overflow="hidden" text-align="left" top="0px"
+								white-space-collapse="false" wrap-option="wrap">#CRAFTREMARK#
+							</fo:block>
+						</fo:table-cell>
+					</fo:table-row>
+					<fo:table-row height="17.4pt">
+						<fo:table-cell display-align="center" margin-left="3px">
+							<fo:block absolute-position="fixed" bottom="0px" color="black"
+								font-family="맑은 고딕" font-size="10pt" font-weight="bold" height="17.4pt"
+								left="0px" min-width="56px" overflow="hidden" top="0px"
+								white-space-collapse="false" wrap-option="no-wrap">3)#INSERTPART#</fo:block>
+						</fo:table-cell>
+					</fo:table-row>
+					<fo:table-row height="17.4pt">
+						<fo:table-cell border-bottom="thin black solid"
+							border-left="thin black solid" border-right="thin black solid"
+							border-top="thin black solid" display-align="center" margin-left="3px">
+							<fo:block absolute-position="fixed" bottom="0px" color="black"
+								font-family="맑은 고딕" font-size="8pt" font-weight="bold" height="17.4pt"
+								left="0px" max-width="56px" min-width="56px" overflow="hidden"
+								text-align="center" top="0px" white-space-collapse="false"
+								wrap-option="no-wrap">#PARTNUMBER#</fo:block>
+						</fo:table-cell>
+						<fo:table-cell border-bottom="thin black solid"
+							border-left="thin black solid" border-right="thin black solid"
+							border-top="thin black solid" display-align="center" margin-left="3px"
+							number-columns-spanned="8">
+							<fo:block absolute-position="fixed" bottom="0px" color="black"
+								font-family="맑은 고딕" font-size="8pt" font-weight="bold" height="17.4pt"
+								left="0px" max-width="429px" min-width="56px" overflow="hidden"
+								text-align="center" top="0px" white-space-collapse="false"
+								wrap-option="no-wrap">#PARTNAMESIZE#</fo:block>
+						</fo:table-cell>
+						<fo:table-cell border-bottom="thin black solid"
+							border-left="thin black solid" border-right="thin black solid"
+							border-top="thin black solid" display-align="center" margin-left="3px">
+							<fo:block absolute-position="fixed" bottom="0px" color="black"
+								font-family="맑은 고딕" font-size="8pt" font-weight="bold" height="17.4pt"
+								left="0px" min-width="89px" overflow="hidden" text-align="center"
+								top="0px" white-space-collapse="false" wrap-option="no-wrap">#USEQTY#
+							</fo:block>
+						</fo:table-cell>
+					</fo:table-row>
+					<fo:table-row height="17.4pt" id='#PART_LIST#'>
+						<fo:table-cell border-bottom="thin black solid"
+							border-left="thin black solid" border-right="thin black solid"
+							border-top="thin black solid" display-align="center" margin-left="3px">
+							<fo:block absolute-position="fixed" bottom="0px" color="black"
+								font-family="맑은 고딕" font-size="8pt" height="17.4pt" left="0px"
+								max-width="56px" min-width="56px" overflow="hidden" text-align="center"
+								top="0px" white-space-collapse="false" wrap-option="wrap">#PARTNO#
+							</fo:block>
+						</fo:table-cell>
+						<fo:table-cell border-bottom="thin black solid"
+							border-left="thin black solid" border-right="thin black solid"
+							border-top="thin black solid" display-align="center" margin-left="3px"
+							number-columns-spanned="8">
+							<fo:block absolute-position="fixed" bottom="0px" color="black"
+								font-family="맑은 고딕" font-size="8pt" height="17.4pt" left="0px"
+								max-width="429px" min-width="56px" overflow="hidden" text-align="left"
+								top="0px" white-space-collapse="false" wrap-option="wrap">#PARTDESC#
+							</fo:block>
+						</fo:table-cell>
+						<fo:table-cell border-bottom="thin black solid"
+							border-left="thin black solid" border-right="thin black solid"
+							border-top="thin black solid" display-align="center" margin-left="3px">
+							<fo:block absolute-position="fixed" bottom="0px" color="black"
+								font-family="맑은 고딕" font-size="8pt" height="17.4pt" left="0px"
+								min-width="89px" overflow="hidden" text-align="center" top="0px"
+								white-space-collapse="false" wrap-option="wrap">#PARTUSEQTY#</fo:block>
+						</fo:table-cell>
+					</fo:table-row>
+					<fo:table-row height="17.4pt">
+						<fo:table-cell display-align="center" margin-left="3px">
+							<fo:block absolute-position="fixed" bottom="0px" color="black"
+								font-family="맑은 고딕" font-size="10pt" font-weight="bold" height="17.4pt"
+								left="0px" min-width="56px" overflow="hidden" top="0px"
+								white-space-collapse="false" wrap-option="no-wrap">4)#CHECKPOINT#</fo:block>
+						</fo:table-cell>
+					</fo:table-row>
+					<fo:table-row height="17.4pt">
+						<fo:table-cell border-bottom="thin black solid"
+							border-left="thin black solid" border-right="thin black solid"
+							border-top="thin black solid" display-align="center" margin-left="3px">
+							<fo:block absolute-position="fixed" bottom="0px" color="black"
+								font-family="맑은 고딕" font-size="8pt" font-weight="bold" height="17.4pt"
+								left="0px" max-width="56px" min-width="56px" overflow="hidden"
+								text-align="center" top="0px" white-space-collapse="false"
+								wrap-option="no-wrap">#SEQNO#</fo:block>
+						</fo:table-cell>
+						<fo:table-cell border-bottom="thin black solid"
+							border-left="thin black solid" border-right="thin black solid"
+							border-top="thin black solid" display-align="center" margin-left="3px"
+							number-columns-spanned="2">
+							<fo:block absolute-position="fixed" bottom="0px" color="black"
+								font-family="맑은 고딕" font-size="8pt" font-weight="bold" height="17.4pt"
+								left="0px" max-width="112px" min-width="56px" overflow="hidden"
+								text-align="center" top="0px" white-space-collapse="false"
+								wrap-option="no-wrap">#ASMBINSPECT#</fo:block>
+						</fo:table-cell>
+						<fo:table-cell border-bottom="thin black solid"
+							border-left="thin black solid" border-right="thin black solid"
+							border-top="thin black solid" display-align="center" margin-left="3px"
+							number-columns-spanned="2">
+							<fo:block absolute-position="fixed" bottom="0px" color="black"
+								font-family="맑은 고딕" font-size="8pt" font-weight="bold" height="17.4pt"
+								left="0px" max-width="112px" min-width="56px" overflow="hidden"
+								text-align="center" top="0px" white-space-collapse="false"
+								wrap-option="no-wrap">#CHECKMETHOD#/#FITBASIS#</fo:block>
+						</fo:table-cell>
+						<fo:table-cell border-bottom="thin black solid"
+							border-left="thin black solid" border-right="thin black solid"
+							border-top="thin black solid" display-align="center" margin-left="3px">
+							<fo:block absolute-position="fixed" bottom="0px" color="black"
+								font-family="맑은 고딕" font-size="8pt" font-weight="bold" height="17.4pt"
+								left="0px" max-width="62px" min-width="62px" overflow="hidden"
+								text-align="center" top="0px" white-space-collapse="false"
+								wrap-option="no-wrap">#CHECKTYPE#</fo:block>
+						</fo:table-cell>
+						<fo:table-cell border-bottom="thin black solid"
+							border-left="thin black solid" border-right="thin black solid"
+							border-top="thin black solid" display-align="center" margin-left="3px">
+							<fo:block absolute-position="fixed" bottom="0px" color="black"
+								font-family="맑은 고딕" font-size="8pt" font-weight="bold" height="17.4pt"
+								left="0px" max-width="56px" min-width="56px" overflow="hidden"
+								text-align="center" top="0px" white-space-collapse="false"
+								wrap-option="no-wrap">#CHECKVALUOM#</fo:block>
+						</fo:table-cell>
+						<fo:table-cell border-bottom="thin black solid"
+							border-left="thin black solid" border-right="thin black solid"
+							border-top="thin black solid" display-align="center" margin-left="3px"
+							number-columns-spanned="2">
+							<fo:block absolute-position="fixed" bottom="0px" color="black"
+								font-family="맑은 고딕" font-size="8pt" font-weight="bold" height="17.4pt"
+								left="0px" max-width="87px" min-width="49px" overflow="hidden"
+								text-align="center" top="0px" white-space-collapse="false"
+								wrap-option="no-wrap">#PMPOINTRSLTSTATUS#</fo:block>
+						</fo:table-cell>
+						<fo:table-cell border-bottom="thin black solid"
+							border-left="thin black solid" border-right="thin black solid"
+							border-top="thin black solid" display-align="center" margin-left="3px">
+							<fo:block absolute-position="fixed" bottom="0px" color="black"
+								font-family="맑은 고딕" font-size="8pt" font-weight="bold" height="17.4pt"
+								left="0px" min-width="89px" overflow="hidden" text-align="center"
+								top="0px" white-space-collapse="false" wrap-option="no-wrap">#RESULTVAL#
+							</fo:block>
+						</fo:table-cell>
+					</fo:table-row>
+					<fo:table-row height="17.4pt" id='#POINT_LIST#'>
+						<fo:table-cell border-bottom="thin black solid"
+							border-left="thin black solid" border-right="thin black solid"
+							border-top="thin black solid" display-align="center" margin-left="3px">
+							<fo:block absolute-position="fixed" bottom="0px" color="black"
+								font-family="맑은 고딕" font-size="8pt" height="17.4pt" left="0px"
+								max-width="56px" min-width="56px" overflow="hidden" top="0px"
+								white-space-collapse="false" wrap-option="wrap">#POSEQNO#</fo:block>
+						</fo:table-cell>
+						<fo:table-cell border-bottom="thin black solid"
+							border-left="thin black solid" border-right="thin black solid"
+							border-top="thin black solid" display-align="center" margin-left="3px"
+							number-columns-spanned="2">
+							<fo:block absolute-position="fixed" bottom="0px" color="black"
+								font-family="맑은 고딕" font-size="8pt" height="17.4pt" left="0px"
+								max-width="112px" min-width="56px" overflow="hidden" top="0px"
+								white-space-collapse="false" wrap-option="wrap">#POCHECKPOINT#
+							</fo:block>
+						</fo:table-cell>
+						<fo:table-cell border-bottom="thin black solid"
+							border-left="thin black solid" border-right="thin black solid"
+							border-top="thin black solid" display-align="center" margin-left="3px"
+							number-columns-spanned="2">
+							<fo:block absolute-position="fixed" bottom="0px" color="black"
+								font-family="맑은 고딕" font-size="8pt" height="17.4pt" left="0px"
+								max-width="112px" min-width="56px" overflow="hidden" top="0px"
+								white-space-collapse="false" wrap-option="wrap">#POFITBASIS#</fo:block>
+						</fo:table-cell>
+						<fo:table-cell border-bottom="thin black solid"
+							border-left="thin black solid" border-right="thin black solid"
+							border-top="thin black solid" display-align="center" margin-left="3px">
+							<fo:block absolute-position="fixed" bottom="0px" color="black"
+								font-family="맑은 고딕" font-size="8pt" height="17.4pt" left="0px"
+								max-width="62px" min-width="62px" overflow="hidden" top="0px"
+								white-space-collapse="false" wrap-option="wrap">#POCHECKTYPE#
+							</fo:block>
+						</fo:table-cell>
+						<fo:table-cell border-bottom="thin black solid"
+							border-left="thin black solid" border-right="thin black solid"
+							border-top="thin black solid" display-align="center" margin-left="3px">
+							<fo:block absolute-position="fixed" bottom="0px" color="black"
+								font-family="맑은 고딕" font-size="8pt" height="17.4pt" left="0px"
+								min-width="56px" overflow="hidden" top="0px"
+								white-space-collapse="false" wrap-option="wrap">#POUOM#</fo:block>
+						</fo:table-cell>
+						<fo:table-cell border-bottom="thin black solid"
+							border-left="thin black solid" border-right="thin black solid"
+							border-top="thin black solid" display-align="center" margin-left="3px"
+							number-columns-spanned="2">
+							<fo:block color="black" font-family="맑은 고딕" font-size="8pt"
+								white-space-collapse="false" wrap-option="wrap">#POSTATUS#</fo:block>
+						</fo:table-cell>
+						<fo:table-cell border-bottom="thin black solid"
+							border-left="thin black solid" border-right="thin black solid"
+							border-top="thin black solid" display-align="center" margin-left="3px">
+							<fo:block color="black" font-family="맑은 고딕" font-size="8pt"
+								white-space-collapse="false" wrap-option="wrap">#POVALUE#</fo:block>
+						</fo:table-cell>
+					</fo:table-row>
+					<fo:table-row height="17.4pt">
+						<fo:table-cell>
+							<fo:block />
+						</fo:table-cell>
+					</fo:table-row>
+					<fo:table-row height="17.4pt">
+						<fo:table-cell>
+							<fo:block />
+						</fo:table-cell>
+					</fo:table-row>
+					<fo:table-row height="17.4pt">
+						<fo:table-cell>
+							<fo:block />
+						</fo:table-cell>
+					</fo:table-row>
+					<fo:table-row height="17.4pt">
+						<fo:table-cell>
+							<fo:block />
+						</fo:table-cell>
+					</fo:table-row>
+					<fo:table-row height="17.4pt">
+						<fo:table-cell>
+							<fo:block />
+						</fo:table-cell>
+					</fo:table-row>
+					<fo:table-row height="17.4pt">
+						<fo:table-cell>
+							<fo:block />
+						</fo:table-cell>
+					</fo:table-row>
+					<fo:table-row height="17.4pt">
+						<fo:table-cell>
+							<fo:block />
+						</fo:table-cell>
+					</fo:table-row>
+				</fo:table-body>
+			</fo:table>
+		</fo:flow>
+	</fo:page-sequence>
+</fo:root>

@@ -1,0 +1,24 @@
+$
+SELECT
+      x.item_no itemNo--barcode
+      ,x.description itemDesc
+      , CASE WHEN LENGTH(x.setup_date)=4 or LENGTH(x.setup_date)=6 THEN
+             TO_CHAR(TO_DATE(RPAD(x.setup_date,8,'01'),'YYYYMMDD'),'YYYY-MM-DD')
+             WHEN  LENGTH(x.setup_date)=8 THEN 
+             TO_CHAR(TO_DATE(x.setup_date,'YYYYMMDD'),'YYYY-MM-DD')
+             ELSE ''
+             END setupDate    
+      ,x.equip_id equipNo
+FROM  TAEQUIPMENT x
+WHERE 1=1
+AND   comp_no = '^param1'
+AND   equip_id IN (SELECT
+                         a.skey_id
+                   FROM  TAREPORTPARAM a
+                   WHERE 1=1
+                   AND   a.comp_no   = '^param1'
+                   AND   a.user_id   = '^param2'
+                   AND   a.file_name = '^param3'
+                  )
+ORDER BY x.ord_no
+/

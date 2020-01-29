@@ -1,0 +1,34 @@
+CREATE FUNCTION [dbo].[SFACDUSRD_ALL]
+(
+      @PCOMP_NO NVARCHAR(40)
+    , @P_CDUSRD_ID BIGINT
+)
+RETURNS TABLE 
+AS
+RETURN(
+    WITH DATATABLE AS ( 
+        SELECT 
+             A.COMP_NO 
+           , A.CDUSRD_ID
+		   , A.CDUSRD_NO
+           , A.P_CDUSRD_ID
+           , 0 AS LVL
+		   , CONVERT(VARCHAR, A.CDUSRD_ID) AS SORT
+        FROM TACDUSRD A
+        WHERE 1=1
+            and COMP_NO  = @PCOMP_NO
+			and P_CDUSRD_ID = @P_CDUSRD_ID
+        UNION ALL 
+        SELECT 
+             B.COMP_NO 
+           , B.CDUSRD_ID
+		   , B.CDUSRD_NO
+           , B.P_CDUSRD_ID
+           , C.LVL+ 1
+		   , CONVERT(VARCHAR, C.SORT + '-' + CONVERT(VARCHAR, B.CDUSRD_ID)) AS SORT
+        FROM TACDUSRD B INNER JOIN DATATABLE C  ON B.COMP_NO = C.COMP_NO AND B.P_CDUSRD_ID = C.CDUSRD_ID AND B.COMP_NO= @PCOMP_NO
+        WHERE 1=1
+    ) 
+    SELECT TOP (SELECT COUNT(*) FROM DATATABLE) * FROM DATATABLE
+	ORDER BY SORT
+)

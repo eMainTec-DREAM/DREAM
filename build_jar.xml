@@ -1,0 +1,78 @@
+<?xml version="1.0" ?>
+<project name="AntTest" default="main" basedir=".">
+    <property name="Name" value="Ant Test"></property>
+    <property name="name" value="dream"></property>
+    <property name="groupid" value="net.theceres.anttest"></property>
+    <property name="project.version" value="1.0.0"></property>
+
+	<property name="project.dir" value="./"></property>
+    <property name="src.dir" value="JavaSource"></property>
+    <property name="build.dir" value="build"></property>
+    <property name="classes.dir" value="${project.dir}/WebContent/WEB-INF/classes"></property>
+	<property name="appContext.dir" value="${project.dir}/WebContent/WEB-INF/config"></property>
+    <property name="jar.dir" value="${build.dir}/jar"></property>
+	<property name="lib.dir" value="${project.dir}/WebContent/WEB-INF/lib" />
+	<property name="web.dir" value="${basedir}/WebContent"/>  
+	
+    <path id="classpath">
+        <fileset dir="${lib.dir}" includes="**/*.jar"></fileset>
+    </path>
+
+    <target name="clean">
+        <delete dir="${build.dir}"></delete>
+    	<delete dir="${classes.dir}"></delete>
+    </target>
+    <target name="init">
+        <mkdir dir="${build.dir}"></mkdir>
+        <mkdir dir="${classes.dir}"></mkdir>
+    	<mkdir dir="${classes.dir}/META-INF/resources"></mkdir>
+    	<copy todir="${classes.dir}" overwrite="true">
+    		<fileset dir="${appContext.dir}" includes="**/*.xml"></fileset>
+    	</copy>
+    	<copy todir="${classes.dir}/META-INF/resources" overwrite="true">
+    		<fileset dir="${web.dir}" includes="**/*"> 
+    			<exclude name="**/*.xml"/>
+    			<exclude name="**/*.jar"/>
+    			<exclude name="**/*.MF"/>
+    			<!--<include name="**/*.jsp"/>
+		        <include name="**/*.css"/>
+		        <include name="**/*.html"/>
+		        <include name="**/*.js"/>
+		        <include name="**/*.jpg"/>
+		        <include name="**/*.gif"/>
+    			<include name="**/*.png"/>
+		        <include name="**/*.swf"/>
+		        <include name="**/*.cab"/> 
+		        <include name="**/*.tld"/>
+		        <include name="**/*.mrd"/> 
+    			<include name="**/*.qrd"/> -->
+    		</fileset>
+    	</copy>
+    </target>
+	<!--<target name="extract.jar" depends="init">
+	    <unjar dest="${classes.dir}">
+	        <fileset dir="${lib.dir}" includes="**/*.jar"></fileset>
+	    </unjar>
+	</target> -->
+    <target name="compile" depends="init">
+        <javac srcdir="${src.dir}" destdir="${classes.dir}" classpathref="classpath" includeantruntime="false" target="1.7">
+        </javac>
+    </target>
+    <target name="jar" depends="compile">
+        <jar destfile="${jar.dir}/${name}-${project.version}.jar" basedir="${classes.dir}">
+            <manifest>
+                <attribute name="Main-Class" value="net.theceres.anttest.Main"></attribute>
+            </manifest>
+        </jar>
+    </target>
+    <target name="run" depends="compile,jar">
+        <java fork="true" classname="net.theceres.anttest.Main">
+            <classpath>
+                <path refid="classpath"></path>
+                <path location="${jar.dir}/${name}-${project.version}.jar"/>
+            </classpath>
+        </java>
+    </target>
+    <target name="main" depends="clean,jar">
+    </target>
+</project>

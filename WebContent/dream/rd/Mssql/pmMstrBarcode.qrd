@@ -1,0 +1,36 @@
+$
+select (SELECT b.item_no 
+            FROM TAEQUIPMENT b
+            WHERE b.comp_no = x.comp_no
+            AND b.equip_id = (SELECT a.equip_id
+            FROM TAPMEQUIP a
+            WHERE a.comp_no = x.comp_no
+            AND a.pm_id = x.pm_id)) item_no
+          ,x.description pmDesc
+         ,(SELECT b.item_no 
+            FROM TAEQUIPMENT b
+            WHERE b.comp_no = x.comp_no
+            AND b.equip_id = (SELECT a.equip_id
+            FROM TAPMEQUIP a
+            WHERE a.comp_no = x.comp_no
+            AND a.pm_id = x.pm_id)) item_id
+         ,(SELECT b.description 
+            FROM TAEQUIPMENT b
+            WHERE b.comp_no = x.comp_no
+            AND b.equip_id = (SELECT a.equip_id
+            FROM TAPMEQUIP a
+            WHERE a.comp_no = x.comp_no
+            AND a.pm_id = x.pm_id)) itemDesc
+FROM TAPMLST x
+WHERE 1=1
+AND   comp_no = '^param1'
+AND   pm_id IN (SELECT
+                         a.skey_id
+                   FROM  TAREPORTPARAM a
+                   WHERE 1=1
+                   AND   a.comp_no   = '^param1'
+                   AND   a.user_id   = '^param2'
+                   AND   a.file_name = '^param3'
+                  )
+order by x.pm_id
+/

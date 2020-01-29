@@ -1,0 +1,1011 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="maWoResultMstrList" pageWidth="595" pageHeight="800" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="7dc14658-3f1a-424b-8b8d-704ae77fe367">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<property name="ireport.zoom" value="1.6105100000000008"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="432"/>
+	<style name="Table_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table_CH" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 2">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 2_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 2_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 2_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 3">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 3_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 3_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 3_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 4">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 4_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 4_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 4_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 5">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 5_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 5_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 5_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 6">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 6_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 6_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 6_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 7">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 7_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 7_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 7_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 8">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 8_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 8_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 8_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 9">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 9_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 9_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 9_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<subDataset name="equipList" whenResourceMissingType="Empty" uuid="6e90f719-ceb8-4ecd-9d24-4aa8e07f8e74">
+		<parameter name="paramTest" class="java.lang.String"/>
+		<field name="ITEMNUMBER" class="java.lang.String"/>
+		<field name="ITEMDESC" class="java.lang.String"/>
+	</subDataset>
+	<subDataset name="EQ_LIST" uuid="0d9e050a-f72c-4c78-a61c-779859a4ddf7">
+		<parameter name="EQUIPNO" class="java.lang.String"/>
+		<parameter name="EQUIPNAME" class="java.lang.String"/>
+		<queryString language="SQL">
+			<![CDATA[]]>
+		</queryString>
+		<field name="ITEMNUMBER" class="java.lang.String"/>
+		<field name="ITEMDESC" class="java.lang.String"/>
+	</subDataset>
+	<subDataset name="CRAFT_LIST" uuid="5a7149e5-4655-43bf-83ff-cff0397f1aef">
+		<parameter name="EMPNUMBER" class="java.lang.String"/>
+		<parameter name="EMPNAME" class="java.lang.String"/>
+		<parameter name="STARTDATE" class="java.lang.String"/>
+		<parameter name="ENDDATE" class="java.lang.String"/>
+		<parameter name="COSTTIME2" class="java.lang.String"/>
+		<parameter name="REMARK" class="java.lang.String"/>
+		<field name="CRAFTEMPNO" class="java.lang.String"/>
+		<field name="CRAFTEMPDESC" class="java.lang.String"/>
+		<field name="CRAFTSTARTDATE" class="java.lang.String"/>
+		<field name="CRAFTENDDATE" class="java.lang.String"/>
+		<field name="CRAFTWORKTIME" class="java.lang.String"/>
+		<field name="CRAFTREMARK" class="java.lang.String"/>
+	</subDataset>
+	<subDataset name="PART_LIST" uuid="7d2b5c02-dc54-4592-b283-c79dcc12d00e">
+		<parameter name="PARTNUMBER" class="java.lang.String"/>
+		<parameter name="PARTNAMESIZE" class="java.lang.String"/>
+		<parameter name="USEQTY" class="java.lang.String"/>
+		<field name="PARTNO" class="java.lang.String"/>
+		<field name="PARTDESC" class="java.lang.String"/>
+		<field name="PARTUSEQTY" class="java.lang.String"/>
+	</subDataset>
+	<subDataset name="POINT_LIST" uuid="4c44ca27-7561-4136-b6ea-94b7ee6497f1">
+		<parameter name="SEQNO" class="java.lang.String"/>
+		<parameter name="ASMBINSPECT" class="java.lang.String"/>
+		<parameter name="CHECKMETHOD" class="java.lang.String"/>
+		<parameter name="FITBASIS" class="java.lang.String"/>
+		<parameter name="CHECKTYPE" class="java.lang.String"/>
+		<parameter name="CHECKVALUOM" class="java.lang.String"/>
+		<parameter name="PMPOINTRSLTSTATUS" class="java.lang.String"/>
+		<parameter name="RESULTVAL" class="java.lang.String"/>
+		<field name="POSEQNO" class="java.lang.String"/>
+		<field name="POCHECKPOINT" class="java.lang.String"/>
+		<field name="POFITBASIS" class="java.lang.String"/>
+		<field name="POCHECKTYPE" class="java.lang.String"/>
+		<field name="POUOM" class="java.lang.String"/>
+		<field name="POSTATUS" class="java.lang.String"/>
+		<field name="POVALUE" class="java.lang.String"/>
+	</subDataset>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="WORESULTREPORT" class="java.lang.String"/>
+	<field name="WONO" class="java.lang.String"/>
+	<field name="MANAGER" class="java.lang.String"/>
+	<field name="DEPTDESC" class="java.lang.String"/>
+	<field name="EMPDESC" class="java.lang.String"/>
+	<field name="WORKDATE" class="java.lang.String"/>
+	<field name="WODATE" class="java.lang.String">
+		<fieldDescription><![CDATA[WORKDATE]]></fieldDescription>
+	</field>
+	<field name="COSTTIME" class="java.lang.String"/>
+	<field name="WORKTIME" class="java.lang.String"/>
+	<field name="WONAME" class="java.lang.String"/>
+	<field name="WODESC" class="java.lang.String"/>
+	<field name="EQUIPLOC" class="java.lang.String"/>
+	<field name="EQLOCDESC" class="java.lang.String"/>
+	<field name="WOTYPE" class="java.lang.String"/>
+	<field name="WOTYPEDESC" class="java.lang.String"/>
+	<field name="PMTYPEDESC" class="java.lang.String"/>
+	<field name="WOREMARK" class="java.lang.String"/>
+	<field name="PERFORM" class="java.lang.String"/>
+	<field name="WOEQUIP" class="java.lang.String"/>
+	<field name="WORKCRAFT" class="java.lang.String"/>
+	<field name="INSERTPART" class="java.lang.String"/>
+	<field name="CHECKPOINT" class="java.lang.String"/>
+	<field name="EQUIPNO" class="java.lang.String"/>
+	<field name="EQUIPNAME" class="java.lang.String"/>
+	<field name="EMPNUMBER" class="java.lang.String"/>
+	<field name="EMPNAME" class="java.lang.String"/>
+	<field name="STARTDATE" class="java.lang.String"/>
+	<field name="ENDDATE" class="java.lang.String"/>
+	<field name="COSTTIME2" class="java.lang.String"/>
+	<field name="REMARK" class="java.lang.String"/>
+	<field name="PARTNUMBER" class="java.lang.String"/>
+	<field name="PARTNAMESIZE" class="java.lang.String"/>
+	<field name="USEQTY" class="java.lang.String"/>
+	<field name="SEQNO" class="java.lang.String"/>
+	<field name="ASMBINSPECT" class="java.lang.String"/>
+	<field name="CHECKMETHOD" class="java.lang.String"/>
+	<field name="FITBASIS" class="java.lang.String"/>
+	<field name="CHECKTYPE" class="java.lang.String"/>
+	<field name="CHECKVALUOM" class="java.lang.String"/>
+	<field name="PMPOINTRSLTSTATUS" class="java.lang.String"/>
+	<field name="RESULTVAL" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="800" splitType="Stretch">
+			<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.FreeLayout"/>
+			<frame>
+				<reportElement x="57" y="80" width="480" height="140" uuid="b6b01dd8-4d86-4fcc-948d-f6a2f6a36bd4"/>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement x="20" y="0" width="100" height="20" uuid="b3f0aa3c-1336-4f09-a030-5a5ded1e1aed"/>
+					<box leftPadding="5"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{WONO}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="0" y="0" width="20" height="20" uuid="9e79e380-0ef4-4878-9e54-106190301af0"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+					</textElement>
+					<text><![CDATA[#]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement x="80" y="20" width="220" height="20" uuid="2a1e761c-48ca-4c98-9e36-1348a534ce16"/>
+					<box topPadding="0" leftPadding="5" bottomPadding="0" rightPadding="0">
+						<pen lineWidth="0.5"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{WODATE}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement x="80" y="40" width="400" height="20" uuid="33bd77fc-f4f1-4305-8074-558154c0a044"/>
+					<box topPadding="0" leftPadding="5" bottomPadding="0" rightPadding="0">
+						<pen lineWidth="0.5"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{WODESC}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement x="80" y="60" width="400" height="20" uuid="2b623a6d-3540-4a12-a783-4f7aed5556a8"/>
+					<box topPadding="0" leftPadding="5" bottomPadding="0" rightPadding="0">
+						<pen lineWidth="0.5"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{EQLOCDESC}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement x="80" y="100" width="400" height="40" uuid="1b6af14c-b662-400f-8c41-e1914b320d8c"/>
+					<box topPadding="0" leftPadding="5" bottomPadding="0" rightPadding="0">
+						<pen lineWidth="0.5"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{PERFORM}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement x="380" y="20" width="100" height="20" uuid="7932f960-e615-45b0-99c0-74be65033d98"/>
+					<box topPadding="0" leftPadding="5" bottomPadding="0" rightPadding="0">
+						<pen lineWidth="0.5"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{WORKTIME}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement x="300" y="20" width="80" height="20" uuid="bcb664e8-d0bb-415a-976e-79bebb5a852a"/>
+					<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+						<pen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{COSTTIME}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement x="280" y="0" width="100" height="20" uuid="71ad9012-d44c-4911-8697-cad6b3866f1d"/>
+					<box leftPadding="5"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{MANAGER}+":"]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement x="0" y="20" width="80" height="20" uuid="63fd3291-e134-44c7-8f71-a75b55f51f5b"/>
+					<box topPadding="0" leftPadding="5" bottomPadding="0" rightPadding="0">
+						<pen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{WORKDATE}]]></textFieldExpression>
+				</textField>
+			</frame>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="77" y="246" width="112" height="20" uuid="d6b56b6b-8649-4bd2-918b-d0f1edc8ee87">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box leftPadding="5"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{WOEQUIP}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="222" y="39" width="163" height="41" uuid="25143b36-9c67-40c2-8e83-c90accc18874"/>
+				<textElement textAlignment="Center">
+					<font size="18" isBold="true" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{WORESULTREPORT}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="437" y="80" width="100" height="20" uuid="b4a30376-c027-485c-8fe8-0fdcde1cd826"/>
+				<box leftPadding="5"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{DEPTDESC}+"/"+$F{EMPDESC}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="57" y="120" width="80" height="20" uuid="21910a93-0af0-46db-a39c-50b81e0d8340"/>
+				<box topPadding="0" leftPadding="5" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{WONAME}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="57" y="140" width="80" height="20" uuid="85d64d09-15ed-4d8c-9d05-a552c7fa1d9f"/>
+				<box topPadding="0" leftPadding="5" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{EQUIPLOC}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="57" y="180" width="80" height="40" uuid="ac5ee440-c4c3-4f0e-99f8-1dca0d437713"/>
+				<box topPadding="0" leftPadding="5" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{WOREMARK}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="137" y="160" width="400" height="20" uuid="db7119f6-9a0d-476e-a6fc-4f04fa2380fe"/>
+				<box topPadding="0" leftPadding="5" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{WOTYPEDESC}+" - "+$F{PMTYPEDESC}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="57" y="160" width="80" height="20" uuid="d79c128f-b598-4e10-a64d-4f3667ee7e00"/>
+				<box topPadding="0" leftPadding="5" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{WOTYPE}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="57" y="246" width="20" height="20" uuid="f1962c72-05e9-4c6d-a064-9596e2119322"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[1)]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="77" y="340" width="112" height="20" uuid="7934c261-dc92-4fb7-b64d-964bbbefac0f">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box leftPadding="5"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{WORKCRAFT}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="57" y="340" width="20" height="20" uuid="8fa227d6-7d05-4d56-801d-bd93afd98094"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[2)]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="77" y="427" width="112" height="20" uuid="b1d42a53-2f74-47d2-9557-72d3aade827e">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box leftPadding="5"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{INSERTPART}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="57" y="427" width="20" height="20" uuid="fc11849a-ef70-41fc-9ce3-f570d2371a8e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[3)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="57" y="511" width="20" height="20" uuid="acecc20b-ec31-44b7-ba45-401dcb538320"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[4)]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="77" y="511" width="112" height="20" uuid="4d662b3f-e6a7-4bd2-bae8-871553a3cad8">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box leftPadding="5"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{CHECKPOINT}]]></textFieldExpression>
+			</textField>
+			<componentElement>
+				<reportElement key="table 1" style="table 1" x="57" y="266" width="480" height="40" uuid="e7ec0a45-bf39-4636-b444-b404a659f13d"/>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<datasetRun subDataset="EQ_LIST" uuid="ccbb0275-e527-4111-a966-e6958ec4b76a">
+						<datasetParameter name="EQUIPNO">
+							<datasetParameterExpression><![CDATA[$F{EQUIPNO}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="EQUIPNAME">
+							<datasetParameterExpression><![CDATA[$F{EQUIPNAME}]]></datasetParameterExpression>
+						</datasetParameter>
+						<dataSourceExpression><![CDATA[((net.sf.jasperreports.engine.data.JsonDataSource)$P{REPORT_DATA_SOURCE}).subDataSource("EQ_LIST")]]></dataSourceExpression>
+					</datasetRun>
+					<jr:column width="142" uuid="19cdad06-a0ac-4338-bc4c-94e19eb821ad">
+						<jr:columnHeader style="table 1_CH" height="20" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="142" height="20" uuid="913e65d8-d771-4af1-aae2-f4df516c1844"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$P{EQUIPNO}]]></textFieldExpression>
+							</textField>
+						</jr:columnHeader>
+						<jr:detailCell style="table 1_TD" height="20" rowSpan="1">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement x="0" y="0" width="142" height="20" uuid="0fb844f1-b480-45c1-904a-6e7e4b0163e6"/>
+								<textElement textAlignment="Center">
+									<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{ITEMNUMBER}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="335" uuid="b4f3c9b0-f6e4-47b8-b673-106075d58865">
+						<jr:columnHeader style="table 1_CH" height="20" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="335" height="20" uuid="3568f71c-6ff3-459e-a040-d3520f3e88c3"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$P{EQUIPNAME}]]></textFieldExpression>
+							</textField>
+						</jr:columnHeader>
+						<jr:detailCell style="table 1_TD" height="20" rowSpan="1">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement x="0" y="0" width="335" height="20" uuid="02f03fee-d72d-4a7b-b8cf-07fd98c4f39b"/>
+								<textElement>
+									<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{ITEMDESC}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+				</jr:table>
+			</componentElement>
+			<componentElement>
+				<reportElement key="table 3" style="table 3" x="57" y="360" width="480" height="51" uuid="22b4b8b5-dc61-4e6c-9a81-6578dc824682"/>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<datasetRun subDataset="CRAFT_LIST" uuid="0eb68b96-fb71-4e42-b9c4-cd42d6a7484d">
+						<datasetParameter name="EMPNUMBER">
+							<datasetParameterExpression><![CDATA[$F{EMPNUMBER}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="EMPNAME">
+							<datasetParameterExpression><![CDATA[$F{EMPNAME}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="STARTDATE">
+							<datasetParameterExpression><![CDATA[$F{STARTDATE}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="ENDDATE">
+							<datasetParameterExpression><![CDATA[$F{ENDDATE}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="COSTTIME2">
+							<datasetParameterExpression><![CDATA[$F{COSTTIME2}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="REMARK">
+							<datasetParameterExpression><![CDATA[$F{REMARK}]]></datasetParameterExpression>
+						</datasetParameter>
+						<dataSourceExpression><![CDATA[((net.sf.jasperreports.engine.data.JsonDataSource)$P{REPORT_DATA_SOURCE}).subDataSource("CRAFT_LIST")]]></dataSourceExpression>
+					</datasetRun>
+					<jr:column width="74" uuid="5d5c45b1-bef7-4793-8413-4fa8b7479cfb">
+						<jr:columnHeader style="table 3_CH" height="18" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="74" height="18" uuid="99b569ad-5df1-497f-bb40-cf12c31f685a"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$P{EMPNUMBER}]]></textFieldExpression>
+							</textField>
+						</jr:columnHeader>
+						<jr:detailCell style="table 3_TD" height="20" rowSpan="1">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement x="0" y="0" width="74" height="20" uuid="b0a96f68-4fce-4858-b241-2c1705cb5bd3"/>
+								<textElement>
+									<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{CRAFTEMPNO}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="66" uuid="3540d5d6-d694-439e-a3c4-90de8e51cad7">
+						<jr:columnHeader style="table 3_CH" height="18" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="66" height="18" uuid="25e80997-abdb-4efc-8cda-50e1b68ddedc"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$P{EMPNAME}]]></textFieldExpression>
+							</textField>
+						</jr:columnHeader>
+						<jr:detailCell style="table 3_TD" height="20" rowSpan="1">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement x="0" y="0" width="66" height="20" uuid="e85ff054-e2cc-44c0-bbcf-7aa1ff6054d0"/>
+								<textElement>
+									<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{CRAFTEMPDESC}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="80" uuid="b574d424-ec17-458b-af0d-12ef41228e6e">
+						<jr:columnHeader style="table 3_CH" height="18" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="80" height="18" uuid="843db150-438f-4df9-bbb7-adcad7182692"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$P{STARTDATE}]]></textFieldExpression>
+							</textField>
+						</jr:columnHeader>
+						<jr:detailCell style="table 3_TD" height="20" rowSpan="1">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement x="0" y="0" width="80" height="20" uuid="eea0e3da-8f6c-413a-aae1-db663a54ce2e"/>
+								<textElement>
+									<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{CRAFTSTARTDATE}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="80" uuid="abdd0bf4-defb-49b6-a918-0f7e4b6de121">
+						<jr:columnHeader style="table 3_CH" height="18" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="80" height="18" uuid="19452f40-3816-4442-99a0-5c765f57dd74"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$P{ENDDATE}]]></textFieldExpression>
+							</textField>
+						</jr:columnHeader>
+						<jr:detailCell style="table 3_TD" height="20" rowSpan="1">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement x="0" y="0" width="80" height="20" uuid="793114c2-8806-4cab-995d-d3a90c0f9614"/>
+								<textElement>
+									<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{CRAFTENDDATE}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="50" uuid="2e3058d1-2d77-4f99-8d8e-5b137a928ade">
+						<jr:columnHeader style="table 3_CH" height="18" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="50" height="18" uuid="a5d5fb03-d6dc-4a49-acab-d4759565f896"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$P{COSTTIME2}]]></textFieldExpression>
+							</textField>
+						</jr:columnHeader>
+						<jr:detailCell style="table 3_TD" height="20" rowSpan="1">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement x="0" y="0" width="50" height="20" uuid="c3fd172b-32ff-4bb7-8d8d-2a8653b4af32"/>
+								<textElement>
+									<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{CRAFTWORKTIME}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="126" uuid="3441f827-d2a8-4199-ae41-5c3059d6ac96">
+						<jr:columnHeader style="table 3_CH" height="18" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="126" height="18" uuid="8d0156a4-646c-498d-9e7a-75480ad02257"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$P{REMARK}]]></textFieldExpression>
+							</textField>
+						</jr:columnHeader>
+						<jr:detailCell style="table 3_TD" height="20" rowSpan="1">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement x="0" y="0" width="126" height="20" uuid="3193558d-f0bb-4212-9a38-5f6d7ea3ee8e"/>
+								<textElement>
+									<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{CRAFTREMARK}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+				</jr:table>
+			</componentElement>
+			<componentElement>
+				<reportElement key="table 5" style="table 5" x="57" y="447" width="480" height="39" uuid="9f1bb711-c557-40c1-8bcc-096e6ce0027a"/>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<datasetRun subDataset="PART_LIST" uuid="9904537e-f866-4cff-a4c9-02c894f45692">
+						<datasetParameter name="PARTNUMBER">
+							<datasetParameterExpression><![CDATA[$F{PARTNUMBER}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="PARTNAMESIZE">
+							<datasetParameterExpression><![CDATA[$F{PARTNAMESIZE}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="USEQTY">
+							<datasetParameterExpression><![CDATA[$F{USEQTY}]]></datasetParameterExpression>
+						</datasetParameter>
+						<dataSourceExpression><![CDATA[((net.sf.jasperreports.engine.data.JsonDataSource)$P{REPORT_DATA_SOURCE}).subDataSource("PART_LIST")]]></dataSourceExpression>
+					</datasetRun>
+					<jr:column width="100" uuid="d1f531f8-8091-41c3-8893-871cbc64deac">
+						<jr:columnHeader style="table 5_CH" height="19" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="100" height="19" uuid="b0206b15-786c-468f-9494-12b535721ba4"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$P{PARTNUMBER}]]></textFieldExpression>
+							</textField>
+						</jr:columnHeader>
+						<jr:detailCell style="table 5_TD" height="20" rowSpan="1">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement x="0" y="0" width="100" height="20" uuid="55a5e8f4-66aa-4261-9a65-cf914fbcf7c8"/>
+								<textElement>
+									<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{PARTNO}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="319" uuid="f72d1642-590b-4f1d-bf3b-951aebd1cfce">
+						<jr:columnHeader style="table 5_CH" height="19" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="319" height="19" uuid="1def6556-f7b5-430e-820d-e1c446303f32"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$P{PARTNAMESIZE}]]></textFieldExpression>
+							</textField>
+						</jr:columnHeader>
+						<jr:detailCell style="table 5_TD" height="20" rowSpan="1">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement x="0" y="0" width="319" height="20" uuid="728449e3-f282-4be5-b08a-91ef76e80dff"/>
+								<textElement>
+									<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{PARTDESC}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="60" uuid="090b9618-9f2f-4655-9e89-cee150855f27">
+						<jr:columnHeader style="table 5_CH" height="19" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="60" height="19" uuid="92056d77-7eee-4b8c-8cd7-85da71538217"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$P{USEQTY}]]></textFieldExpression>
+							</textField>
+						</jr:columnHeader>
+						<jr:detailCell style="table 5_TD" height="20" rowSpan="1">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement x="0" y="0" width="60" height="20" uuid="d36f8f8b-40a4-4608-a978-2896af094834"/>
+								<textElement>
+									<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{PARTUSEQTY}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+				</jr:table>
+			</componentElement>
+			<componentElement>
+				<reportElement key="table 7" style="table 7" x="57" y="531" width="480" height="39" uuid="9e161202-b1df-49af-bff3-872e9a903509"/>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<datasetRun subDataset="POINT_LIST" uuid="474ab7c2-3b9b-4672-a797-da9faccb445e">
+						<datasetParameter name="SEQNO">
+							<datasetParameterExpression><![CDATA[$F{SEQNO}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="ASMBINSPECT">
+							<datasetParameterExpression><![CDATA[$F{ASMBINSPECT}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="CHECKMETHOD">
+							<datasetParameterExpression><![CDATA[$F{CHECKMETHOD}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="FITBASIS">
+							<datasetParameterExpression><![CDATA[$F{FITBASIS}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="CHECKTYPE">
+							<datasetParameterExpression><![CDATA[$F{CHECKTYPE}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="CHECKVALUOM">
+							<datasetParameterExpression><![CDATA[$F{CHECKVALUOM}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="PMPOINTRSLTSTATUS">
+							<datasetParameterExpression><![CDATA[$F{PMPOINTRSLTSTATUS}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="RESULTVAL">
+							<datasetParameterExpression><![CDATA[$F{RESULTVAL}]]></datasetParameterExpression>
+						</datasetParameter>
+						<dataSourceExpression><![CDATA[((net.sf.jasperreports.engine.data.JsonDataSource)$P{REPORT_DATA_SOURCE}).subDataSource("POINT_LIST")]]></dataSourceExpression>
+					</datasetRun>
+					<jr:column width="30" uuid="e9281aca-620e-4d82-aa61-0414c3cfe851">
+						<jr:columnHeader style="table 7_CH" height="19" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="30" height="19" uuid="0f6316cb-14c9-4846-a142-6c15e2ca543b"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$P{SEQNO}]]></textFieldExpression>
+							</textField>
+						</jr:columnHeader>
+						<jr:detailCell style="table 7_TD" height="20" rowSpan="1">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement x="0" y="0" width="30" height="20" uuid="61bcbc08-3483-473e-a117-f76566489656"/>
+								<textElement textAlignment="Center">
+									<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{POSEQNO}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="109" uuid="0fd1ccc0-bc2f-4c5d-ad6b-4c2e43f903ca">
+						<jr:columnHeader style="table 7_CH" height="19" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="109" height="19" uuid="b3aaf653-beb7-4743-992c-8e4bddbcaa00"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$P{ASMBINSPECT}]]></textFieldExpression>
+							</textField>
+						</jr:columnHeader>
+						<jr:detailCell style="table 7_TD" height="20" rowSpan="1">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement x="0" y="0" width="109" height="20" uuid="745e1808-d045-4b94-a2a6-a12d907fb110"/>
+								<textElement>
+									<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{POCHECKPOINT}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="117" uuid="dbb6cb8b-fa3c-4ce8-9f07-d94823df70eb">
+						<jr:columnHeader style="table 7_CH" height="19" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="117" height="19" uuid="d07a0dab-55b0-43e6-b83c-54f4763ba336"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$P{CHECKMETHOD}+"/"+$P{FITBASIS}]]></textFieldExpression>
+							</textField>
+						</jr:columnHeader>
+						<jr:detailCell style="table 7_TD" height="20" rowSpan="1">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement x="0" y="0" width="117" height="20" uuid="1f828a22-f9e5-437a-bfb0-f26910fe5c0f"/>
+								<textElement>
+									<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{POFITBASIS}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="61" uuid="7afcf685-1f07-45c2-bfd2-bcbe16ba4e8d">
+						<jr:columnHeader style="table 7_CH" height="19" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="61" height="19" uuid="fd43ebd7-ccb4-4b89-af0b-0031a68d7389"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$P{CHECKTYPE}]]></textFieldExpression>
+							</textField>
+						</jr:columnHeader>
+						<jr:detailCell style="table 7_TD" height="20" rowSpan="1">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement x="0" y="0" width="61" height="20" uuid="596e201e-ac9e-401d-9e8f-0407a9d46f41"/>
+								<textElement>
+									<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{POCHECKTYPE}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="50" uuid="7aa38407-eb88-4ebf-856d-45fe7e6e979a">
+						<jr:columnHeader style="table 7_CH" height="19" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="50" height="19" uuid="43ce8817-b06b-4307-8e21-45d72add7337"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$P{CHECKVALUOM}]]></textFieldExpression>
+							</textField>
+						</jr:columnHeader>
+						<jr:detailCell style="table 7_TD" height="20" rowSpan="1">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement x="0" y="0" width="50" height="20" uuid="36438ea8-e7e2-401c-8575-6c906c3f1804"/>
+								<textElement>
+									<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{POUOM}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="47" uuid="d3fb248c-4418-446c-9698-1eb512964356">
+						<jr:columnHeader style="table 7_CH" height="19" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="47" height="19" uuid="e03b4ba6-6a12-49eb-b519-0a077cb02d91"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$P{PMPOINTRSLTSTATUS}]]></textFieldExpression>
+							</textField>
+						</jr:columnHeader>
+						<jr:detailCell style="table 7_TD" height="20" rowSpan="1">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement x="0" y="0" width="47" height="20" uuid="7b0d9345-c0e9-48c9-a3fe-d4aecd4d0759"/>
+								<textElement>
+									<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{POSTATUS}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="66" uuid="2fb9fb88-d8a0-47f3-9ea8-7a4996c61722">
+						<jr:columnHeader style="table 7_CH" height="19" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="66" height="19" uuid="2aec650b-7457-442d-a31f-6b21da93d592"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$P{RESULTVAL}]]></textFieldExpression>
+							</textField>
+						</jr:columnHeader>
+						<jr:detailCell style="table 7_TD" height="20" rowSpan="1">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement x="0" y="0" width="66" height="20" uuid="d093519f-c023-4879-8de9-05b450e22b93"/>
+								<textElement>
+									<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{POVALUE}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+				</jr:table>
+			</componentElement>
+		</band>
+	</detail>
+</jasperReport>

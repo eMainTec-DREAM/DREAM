@@ -1,0 +1,1892 @@
+$
+SELECT 
+		 TO_CHAR(to_date('^param3','yyyy-mm'), 'YYYY-MM') mmyyyy
+		,TO_CHAR(sysdate,'yyyy. mm. dd') yyyymmdd
+from dual
+/
+$
+select * from (
+SELECT
+        (SELECT (SELECT b.description FROM TADEPT b WHERE b.comp_no = a.comp_no AND b.dept_id = a.p_dept_id) || ' > ' || a.description FROM TADEPT a WHERE a.comp_no = x.comp_no AND a.dept_id = x.usage_dept) eqloc
+        , SUM(x.planMonth)             planMonth
+        , SUM(x.resultMonth)         resultMonth
+        , TO_CHAR(ROUND(NVL(SUM(x.resultMonth)/CASE SUM(x.planMonth) WHEN 0 THEN NULL ELSE SUM(x.planMonth) END,0)*100,2) ,'FM9999990D00')||'%'  resultMonthRate
+        , SUM(x.planYear)             planYear
+        , SUM(x.resultYear)         resultYear
+        , TO_CHAR( ROUND(NVL(SUM(x.resultYear)/CASE SUM(x.planYear) WHEN 0 THEN NULL ELSE SUM(x.planYear) END,0)*100,2) ,'FM9999990D00')||'%' resultYearRate
+        , SUM(x.planNext)             planNext
+        , SUBSTR('^param3',0,4) yyyy
+        , SUBSTR('^param3',6,2) mm
+        , TO_CHAR(add_months(to_date('^param3'||'01','yyyy-mmdd'),1), 'mm') nextmm
+FROM (
+        SELECT 
+              x.comp_no 
+            , x.equip_id
+            ,  (SELECT c.dept_id
+                FROM TADEPT c
+                WHERE DEPT_CATEG = 'L2'
+                START WITH c.dept_id = x.usage_dept
+                CONNECT BY PRIOR p_dept_id = dept_id
+               ) usage_dept
+            ,(SELECT count(1) planMonth
+                FROM tapminssched a
+                WHERE a.comp_no = '^param1'
+                AND a.sched_date LIKE substr('^param3',0,4)||substr('^param3',6,2)||'%'
+                AND a.equip_id = x.equip_id
+                ) planMonth
+            ,(SELECT 
+                        count(decode(a.pmsched_status,'C',1)) resultMonth
+                FROM tapminssched a
+                WHERE a.comp_no = '^param1'
+                AND a.sched_date LIKE substr('^param3',0,4)||substr('^param3',6,2)||'%'
+                AND a.equip_id = x.equip_id
+                ) resultMonth
+            ,(SELECT 
+                        count(1) planYear
+                FROM tapminssched a
+                WHERE a.comp_no = '^param1'
+                AND a.sched_date LIKE substr('^param3',0,4)||'%'
+                AND a.equip_id = x.equip_id
+                ) planYear
+            ,(SELECT 
+                        count(decode(a.pmsched_status,'C',1)) resultYear
+                FROM tapminssched a
+                WHERE a.comp_no = '^param1'
+                AND a.sched_date LIKE substr('^param3',0,4)||'%'
+                AND a.equip_id = x.equip_id
+                ) resultYear
+            ,(SELECT 
+                        count(1)
+                FROM tapminssched a
+                WHERE a.comp_no = '^param1'
+                AND a.sched_date LIKE to_char(add_months(to_date(substr('^param3',0,4)||substr('^param3',6,2),'yyyymm'), 1),'yyyymm')||'%'
+                AND a.equip_id = x.equip_id
+                ) planNext
+FROM TAEQUIPMENT x
+WHERE 1=1
+AND x.plant = '^param5'
+AND x.comp_no = '^param1'
+)x
+WHERE 1=1
+AND x.usage_dept IS NOT NULL
+GROUP BY x.comp_no, x.usage_dept
+ORDER BY x.comp_no, x.usage_dept
+)
+UNION ALL
+SELECT '' locDesc
+        , SUM(x.planMonth)             planMonth
+        , SUM(x.resultMonth)         resultMonth
+        , TO_CHAR(ROUND(NVL(SUM(x.resultMonth)/CASE SUM(x.planMonth) WHEN 0 THEN NULL ELSE SUM(x.planMonth) END,0)*100,2) ,'FM9999990D00')||'%'  resultMonthRate
+        , SUM(x.planYear)             planYear
+        , SUM(x.resultYear)         resultYear
+        , TO_CHAR( ROUND(NVL(SUM(x.resultYear)/CASE SUM(x.planYear) WHEN 0 THEN NULL ELSE SUM(x.planYear) END,0)*100,2) ,'FM9999990D00')||'%' resultYearRate
+        , SUM(x.planNext)             planNext
+        , SUBSTR('^param3',0,4) yyyy
+        , SUBSTR('^param3',6,2) mm
+        , TO_CHAR(add_months(to_date('^param3'||'01','yyyy-mmdd'),1), 'mm') nextmm
+FROM (
+        SELECT 
+              x.comp_no 
+            , x.equip_id
+            ,  (SELECT c.dept_id
+                FROM TADEPT c
+                WHERE DEPT_CATEG = 'L2'
+                START WITH c.dept_id = x.usage_dept
+                CONNECT BY PRIOR p_dept_id = dept_id
+               ) usage_dept
+       		,(SELECT count(1) resultMonth
+                FROM tapminssched a
+                WHERE a.comp_no = '^param1'
+                AND a.sched_date LIKE substr('^param3',0,4)||substr('^param3',6,2)||'%'
+                AND a.equip_id = x.equip_id
+                ) planMonth
+            ,(SELECT 
+                        count(decode(a.pmsched_status,'C',1)) resultMonth
+                FROM tapminssched a
+                WHERE a.comp_no = '^param1'
+                AND a.sched_date LIKE substr('^param3',0,4)||substr('^param3',6,2)||'%'
+                AND a.equip_id = x.equip_id
+                ) resultMonth
+            ,(SELECT 
+                        count(1) resultYear
+                FROM tapminssched a
+                WHERE a.comp_no = '^param1'
+                AND a.sched_date LIKE substr('^param3',0,4)||'%'
+                AND a.equip_id = x.equip_id
+                ) planYear
+            ,(SELECT 
+                        count(decode(a.pmsched_status,'C',1)) resultYear
+                FROM tapminssched a
+                WHERE a.comp_no = '^param1'
+                AND a.sched_date LIKE substr('^param3',0,4)||'%'
+                AND a.equip_id = x.equip_id
+                ) resultYear
+            ,(SELECT 
+                        count(1)
+                FROM tapminssched a
+                WHERE a.comp_no = '^param1'
+                AND a.sched_date LIKE to_char(add_months(to_date(substr('^param3',0,4)||substr('^param3',6,2),'yyyymm'), 1),'yyyymm')||'%'
+                AND a.equip_id = x.equip_id
+                ) planNext
+FROM TAEQUIPMENT x
+WHERE 1=1
+AND x.plant = '^param5'
+AND x.comp_no = '^param1'
+)x
+WHERE 1=1
+AND x.usage_dept IS NOT NULL
+GROUP BY x.comp_no
+/
+$
+SELECT TO_CHAR(to_date(x.tmonth||'01','yyyymmdd'), 'YYYY-MM') MONTH
+           ,100 PLAN
+           ,TO_CHAR(NVL(ROUND(y.completeCnt/DECODE(y.planCnt,0,NULL,y.planCnt)*100,2),0),'FM9999990D00') result
+FROM TAMONTH x, (SELECT 
+                substr(a.sched_date,0,6) planMonth
+                ,count(1) planCnt
+                ,count(decode(a.pmsched_status,'C',1)) completeCnt
+                FROM tapminssched a
+                WHERE a.comp_no = '^param1'
+                AND a.sched_date LIKE substr('^param3',0,4)||'%'
+                AND a.equip_id IN (
+                SELECT b.equip_id 
+                FROM taequipment b
+                WHERE b.eqloc_id IN (
+                        SELECT c.eqloc_id
+                           FROM taeqloc c 
+                           WHERE c.comp_no = '^param1'
+                           AND c.plant =  '^param5')
+                                           )
+   GROUP BY a.comp_no , substr(a.sched_date,0,6)) y
+WHERE x.tmonth = y.planMonth(+)
+AND x.tyyyy  = substr('^param3',0,4)
+ORDER BY x.tmonth
+/
+$
+SELECT * FROM (
+SELECT 
+	(SELECT (SELECT b.description FROM TADEPT b WHERE b.comp_no = a.comp_no AND b.dept_id = a.p_dept_id) || ' > ' || a.description FROM TADEPT a WHERE a.comp_no = x.comp_no AND a.dept_id = x.usage_dept) locDesc
+    , SUM(x.planMonth)             planMonth
+    , SUM(x.resultMonth)         resultMonth
+    , TO_CHAR(ROUND(NVL(SUM(x.resultMonth)/CASE SUM(x.planMonth) WHEN 0 THEN NULL ELSE SUM(x.planMonth) END,0)*100,2) ,'FM9999990D00')||'%'  resultMonthRate
+    , SUM(x.planYear)             planYear
+    , SUM(x.resultYear)         resultYear
+    , TO_CHAR( ROUND(NVL(SUM(x.resultYear)/CASE SUM(x.planYear) WHEN 0 THEN NULL ELSE SUM(x.planYear) END,0)*100,2) ,'FM9999990D00')||'%' resultYearRate
+    , SUM(x.planNext)             planNext
+    , SUBSTR('^param3',0,4) yyyy
+    , SUBSTR('^param3',6,2) mm
+    , TO_CHAR(add_months(to_date('^param3'||'01','yyyy-mmdd'),1), 'mm') nextmm
+FROM (
+	SELECT
+              x.comp_no 
+            , x.equip_id
+            ,  (SELECT c.dept_id
+                FROM TADEPT c
+                WHERE DEPT_CATEG = 'L2'
+                START WITH c.dept_id = x.usage_dept
+                CONNECT BY PRIOR p_dept_id = dept_id
+               ) usage_dept
+            ,(SELECT 
+                    count(1) resultMonth
+            FROM taworkorder a INNER JOIN tawoequip aa
+            ON a.comp_no = aa.comp_no
+            AND a.wkor_id = aa.wkor_id
+            WHERE a.comp_no = '^param1'
+            AND a.wo_type <> 'PMC'
+            AND a.wo_type <> 'PMI'
+            AND a.wkor_date LIKE substr('^param3',0,4)||substr('^param3',6,2)||'%'
+            AND aa.equip_id = x.equip_id) planMonth
+        ,(SELECT 
+                    count(decode(a.wo_status,'C',1)) resultMonth
+            FROM taworkorder a INNER JOIN tawoequip aa
+            ON a.comp_no = aa.comp_no
+            AND a.wkor_id = aa.wkor_id
+            WHERE a.comp_no = '^param1'
+            AND a.wo_type <> 'PMC'
+            AND a.wo_type <> 'PMI'
+            AND a.wkor_date LIKE substr('^param3',0,4)||substr('^param3',6,2)||'%'
+            AND aa.equip_id = x.equip_id) resultMonth
+        ,(SELECT 
+                    count(1) planYear
+            FROM taworkorder a INNER JOIN tawoequip aa
+            ON a.comp_no = aa.comp_no
+            AND a.wkor_id = aa.wkor_id
+            WHERE a.comp_no = '^param1'
+            AND a.wo_type <> 'PMC'
+            AND a.wo_type <> 'PMI'
+            AND a.wkor_date LIKE substr('^param3',0,4)||'%'
+            AND aa.equip_id = x.equip_id) planYear
+        ,(SELECT 
+                    count(decode(a.wo_status,'C',1)) resultYear
+            FROM taworkorder a INNER JOIN tawoequip aa
+            ON a.comp_no = aa.comp_no
+            AND a.wkor_id = aa.wkor_id
+            WHERE a.comp_no = '^param1'
+            AND a.wo_type <> 'PMC'
+            AND a.wo_type <> 'PMI'
+            AND a.wkor_date LIKE substr('^param3',0,4)||'%'
+            AND aa.equip_id = x.equip_id) resultYear
+        ,(SELECT 
+                    count(1)
+            FROM taworkorder a INNER JOIN tawoequip aa
+            ON a.comp_no = aa.comp_no
+            AND a.wkor_id = aa.wkor_id
+            WHERE a.comp_no = '^param1'
+            AND a.wo_type <> 'PMC'
+            AND a.wo_type <> 'PMI'
+            AND a.wkor_date LIKE to_char(add_months(to_date(substr('^param3',0,4)||substr('^param3',6,2),'yyyymm'), 1),'yyyymm')||'%'
+            AND aa.equip_id = x.equip_id) planNext
+FROM TAEQUIPMENT x
+WHERE 1=1
+AND x.plant = '^param5'
+AND x.comp_no = '^param1'
+)x
+WHERE 1=1
+AND x.usage_dept IS NOT NULL
+GROUP BY x.comp_no, x.usage_dept
+ORDER BY x.comp_no, x.usage_dept
+)
+UNION ALL
+SELECT '' locDesc
+        , SUM(x.planMonth)             planMonth
+        , SUM(x.resultMonth)         resultMonth
+        , TO_CHAR(ROUND(NVL(SUM(x.resultMonth)/CASE SUM(x.planMonth) WHEN 0 THEN NULL ELSE SUM(x.planMonth) END,0)*100,2) ,'FM9999990D00')||'%'  resultMonthRate
+        , SUM(x.planYear)             planYear
+        , SUM(x.resultYear)         resultYear
+        , TO_CHAR( ROUND(NVL(SUM(x.resultYear)/CASE SUM(x.planYear) WHEN 0 THEN NULL ELSE SUM(x.planYear) END,0)*100,2) ,'FM9999990D00')||'%' resultYearRate
+        , SUM(x.planNext)             planNext
+        , SUBSTR('^param3',0,4) yyyy
+        , SUBSTR('^param3',6,2) mm
+        , TO_CHAR(add_months(to_date('^param3'||'01','yyyy-mmdd'),1), 'mm') nextmm
+FROM (
+		SELECT 
+              x.comp_no 
+            , x.equip_id
+            ,  (SELECT c.dept_id
+                FROM TADEPT c
+                WHERE DEPT_CATEG = 'L2'
+                START WITH c.dept_id = x.usage_dept
+                CONNECT BY PRIOR p_dept_id = dept_id
+               ) usage_dept
+            ,(SELECT 
+                        count(1) planMonth
+                FROM taworkorder a INNER JOIN tawoequip aa
+                ON a.comp_no = aa.comp_no
+                AND a.wkor_id = aa.wkor_id
+                WHERE a.comp_no = '^param1'
+                AND a.wo_type <> 'PMC'
+                AND a.wo_type <> 'PMI'
+                AND a.wkor_date LIKE substr('^param3',0,4)||substr('^param3',6,2)||'%'
+            	AND aa.equip_id = x.equip_id) planMonth
+            ,(SELECT 
+                        count(decode(a.wo_status,'C',1)) resultMonth
+                FROM taworkorder a INNER JOIN tawoequip aa
+                ON a.comp_no = aa.comp_no
+                AND a.wkor_id = aa.wkor_id
+                WHERE a.comp_no = '^param1'
+                AND a.wo_type <> 'PMC'
+                AND a.wo_type <> 'PMI'
+                AND a.wkor_date LIKE substr('^param3',0,4)||substr('^param3',6,2)||'%'
+            	AND aa.equip_id = x.equip_id) resultMonth
+            ,(SELECT 
+                        count(1) resultYear
+                FROM taworkorder a INNER JOIN tawoequip aa
+                ON a.comp_no = aa.comp_no
+                AND a.wkor_id = aa.wkor_id
+                WHERE a.comp_no = '^param1'
+                AND a.wo_type <> 'PMC'
+                AND a.wo_type <> 'PMI'
+                AND a.wkor_date LIKE substr('^param3',0,4)||'%'
+            	AND aa.equip_id = x.equip_id) planYear
+            ,(SELECT 
+                        count(decode(a.wo_status,'C',1)) resultYear
+                FROM taworkorder a INNER JOIN tawoequip aa
+                ON a.comp_no = aa.comp_no
+                AND a.wkor_id = aa.wkor_id
+                WHERE a.comp_no = '^param1'
+                AND a.wo_type <> 'PMC'
+                AND a.wo_type <> 'PMI'
+                AND a.wkor_date LIKE substr('^param3',0,4)||'%'
+            	AND aa.equip_id = x.equip_id) resultYear
+            ,(SELECT 
+                        count(1)
+                FROM taworkorder a INNER JOIN tawoequip aa
+                ON a.comp_no = aa.comp_no
+                AND a.wkor_id = aa.wkor_id
+                WHERE a.comp_no = '^param1'
+                AND a.wo_type <> 'PMC'
+                AND a.wo_type <> 'PMI'
+                AND a.wkor_date LIKE to_char(add_months(to_date(substr('^param3',0,4)||substr('^param3',6,2),'yyyymm'), 1),'yyyymm')||'%'
+            	AND aa.equip_id = x.equip_id) planNext
+FROM TAEQUIPMENT x
+WHERE 1=1
+AND x.plant = '^param5'
+AND x.comp_no = '^param1'
+)x
+WHERE 1=1
+AND x.usage_dept IS NOT NULL
+GROUP BY x.comp_no
+/
+$
+SELECT TO_CHAR(to_date(x.tmonth||'01','yyyymmdd'), 'YYYY-MM') MONTH
+           ,100 PLAN
+           ,TO_CHAR(NVL(ROUND(y.completeCnt/DECODE(y.planCnt,0,NULL,y.planCnt)*100,2),0),'FM9999990D00') result
+FROM TAMONTH x, (SELECT 
+                substr(a.wkor_date,0,6) planMonth
+                ,count(1) planCnt
+                ,count(decode(a.wo_status,'C',1)) completeCnt
+                FROM taworkorder a INNER JOIN tawoequip aa
+                ON a.comp_no = aa.comp_no
+                AND a.wkor_id = aa.wkor_id
+                WHERE a.comp_no = '^param1'
+                AND a.wo_type <> 'PMC'
+                AND a.wo_type <> 'PMI'
+                AND a.wkor_date LIKE substr('^param3',0,4)||'%'
+                AND aa.equip_id IN (
+                SELECT b.equip_id 
+                FROM taequipment b
+                WHERE b.eqloc_id IN (
+                        SELECT c.eqloc_id
+                           FROM taeqloc c 
+                           WHERE c.comp_no = '^param1'
+                           AND c.plant =  '^param5')
+                                           )
+   GROUP BY a.comp_no , substr(a.wkor_date,0,6)) y
+WHERE x.tmonth = y.planMonth(+)
+AND x.tyyyy  = substr('^param3',0,4)
+ORDER BY x.tmonth
+/
+$
+SELECT x.description woType
+        ,(SELECT count(1)
+            FROM TAWORKORDER a
+            WHERE a.comp_no = '^param1'
+            AND a.wo_type = x.cdsysd_no
+            AND a.wkor_date LIKE substr('^param3',0,4)||substr('^param3',6,2)||'%') planMonth
+        ,(SELECT count(1)
+            FROM TAWORKORDER a
+            WHERE a.comp_no = '^param1'
+            AND a.wo_type = x.cdsysd_no
+            AND a.wo_status='C'
+            AND a.wkor_date LIKE substr('^param3',0,4)||substr('^param3',6,2)||'%') resultMonth
+        ,(SELECT TO_CHAR(ROUND(nvl(count(decode(a.wo_status,'C',1))/decode(count(1),0,NULL,count(1)),0)*100,2),'FM9999990D00')||'%' resultMonthRate
+            FROM TAWORKORDER a
+            WHERE a.comp_no = '^param1'
+            AND a.wo_type = x.cdsysd_no
+            AND a.wkor_date LIKE substr('^param3',0,4)||substr('^param3',6,2)||'%') resultMonthRate
+        ,(SELECT count(1)
+            FROM TAWORKORDER a
+            WHERE a.comp_no = '^param1'
+            AND a.wo_type = x.cdsysd_no
+            AND a.wkor_date LIKE substr('^param3',0,4)||'%') planYear
+        ,(SELECT count(1)
+            FROM TAWORKORDER a
+            WHERE a.comp_no = '^param1'
+            AND a.wo_type = x.cdsysd_no
+            AND a.wo_status='C'
+            AND a.wkor_date LIKE substr('^param3',0,4)||'%') resultYear
+        ,(SELECT TO_CHAR(ROUND(nvl(count(decode(a.wo_status,'C',1))/decode(count(1),0,NULL,count(1)),0)*100,2),'FM9999990D00')||'%' resultYearRate
+            FROM TAWORKORDER a
+            WHERE a.comp_no = '^param1'
+            AND a.wo_type = x.cdsysd_no
+            AND a.wkor_date LIKE substr('^param3',0,4)||'%') resultYearRate
+        ,(SELECT count(1)
+            FROM TAWORKORDER a
+            WHERE a.comp_no = '^param1'
+            AND a.wo_type = x.cdsysd_no
+            AND a.wkor_date LIKE to_char(add_months(to_date(substr('^param3',0,4)||substr('^param3',6,2),'yyyymm'), 1),'yyyymm')||'%') planNext
+        ,substr('^param3',0,4) yyyy
+        ,substr('^param3',6,2) mm
+        ,TO_CHAR(add_months(to_date('^param3'||'01','yyyy-mmdd'),1), 'mm') nextmm
+FROM TACDSYSD x
+WHERE x.list_type='WO_TYPE' 
+AND x.cdsysd_no IN ('PMW','BM','TI','CM')
+ORDER BY x.ord_no
+/
+$
+SELECT x.description woType
+        ,(SELECT count(1)
+            FROM TAWORKORDER a
+            WHERE a.comp_no = '^param1'
+            AND a.wo_type = x.cdsysd_no
+            AND a.wo_status='C'
+            AND a.wkor_date LIKE substr('^param3',0,4)||substr('^param3',6,2)||'%') resultMonth
+FROM TACDSYSD x
+WHERE x.list_type='WO_TYPE' 
+AND x.cdsysd_no IN ('PMW','BM','TI','CM')
+ORDER BY x.ord_no
+/
+$
+SELECT * FROM (
+SELECT
+    (SELECT (SELECT b.description FROM TADEPT b WHERE b.comp_no = a.comp_no AND b.dept_id = a.p_dept_id) || ' > ' || a.description FROM TADEPT a WHERE a.comp_no = x.comp_no AND a.dept_id = x.usage_dept) locDesc
+    , TO_CHAR(ROUND(NVL(SUM(y.monthWorkTime) / CASE SUM(y.monthCnt) WHEN 0 THEN NULL ELSE SUM(y.monthCnt) END ,0),2),'FM9999990D00')  resultMonth
+    , TO_CHAR(ROUND(NVL(SUM(x.yearWorkTime) / CASE SUM(x.yearCnt) WHEN 0 THEN NULL ELSE SUM(x.yearCnt) END ,0),2),'FM9999990D00')  resultYear
+    , SUBSTR('^param3',0,4) yyyy
+    , SUBSTR('^param3',6,2) mm
+FROM (
+SELECT
+    x.comp_no 
+    , x.equip_id
+    ,  (SELECT c.dept_id
+        FROM TADEPT c
+        WHERE DEPT_CATEG = 'L2'
+        START WITH c.dept_id = x.usage_dept
+        CONNECT BY PRIOR p_dept_id = dept_id
+        ) usage_dept
+	, NVL(j.workCnt,0) yearCnt
+    , NVL(workTime,0) yearWorkTime
+FROM TAEQUIPMENT x LEFT OUTER JOIN (SELECT
+                                    	SUM(CASE WHEN A.workse LIKE '%R' THEN A.sumworktime END) ruTime 
+                                       ,COUNT(TO_CHAR(A.workentm,'YYYY-MM-DD')) * b.loadtm stTime 
+                                       ,SUM(A.sumworktime) 
+                                       ,b.equip_id
+                                      FROM TXDWHP_POPEQACT A INNER JOIN TXDWHP_POPEQ b             
+                                        ON A.eqpid = b.eqpid       
+                                     WHERE A.workentm IS NOT NULL     
+                                       AND b.equip_id IS NOT NULL
+            						   AND TO_CHAR(a.workentm,'YYYYMMDD') LIKE SUBSTR('^param3',0,4)||'%'                                       
+                                     GROUP BY b.equip_id, b.loadtm
+                                   )  d ON  x.equip_id = d.equip_id    
+         LEFT OUTER JOIN
+         (	SELECT
+            	SUM(eqdn_work_time) eqdntime
+                , SUM(h.work_time) workTime
+                , f.equip_id
+                , COUNT(1) workCnt
+            FROM TAWOEQUIP f LEFT OUTER JOIN TAWORKORDER h ON f.wkor_id = h.wkor_id
+            LEFT OUTER JOIN TAWOFAIL i ON f.wkor_id = i.wkor_id AND i.eqdn_start_date IS NOT NULL
+          WHERE 1= 1
+AND h.wkor_date LIKE SUBSTR('^param3',0,4)||'%'         
+AND h.comp_no = '^param1'
+AND h.wo_type <> 'PMC'
+AND h.wo_type <> 'PMI'
+AND h.wo_status = 'C'
+GROUP BY f.equip_id
+) j ON j.equip_id = x.equip_id CROSS JOIN ( SELECT ROUND(SUM(ruTime)/COUNT(equip_id),0) avgTime
+                                                  ,ROUND(SUM(totTime)/COUNT(equip_id),0) avgTotTime
+                                              FROM (
+                                                  SELECT
+                                                      SUM(CASE WHEN A.workse LIKE '%R' THEN A.sumworktime END)  ruTime 
+                                                      ,SUM(A.sumworktime) totTime
+                                                      ,b.equip_id
+                                                   FROM TXDWHP_POPEQACT A INNER JOIN TXDWHP_POPEQ b             
+                                                     ON A.eqpid = b.eqpid       
+                                                  WHERE A.workentm IS NOT NULL     
+                                                    AND b.equip_id IS NOT NULL     
+													AND TO_CHAR(a.workentm,'YYYYMMDD') LIKE SUBSTR('^param3',0,4)||'%'      
+                                                  GROUP BY b.equip_id
+                                                   )
+                                          ) o
+WHERE 1=1
+AND x.plant = '^param5'
+AND x.comp_no = '^param1'
+)x INNER JOIN (
+SELECT
+    x.comp_no 
+    , x.equip_id
+    ,  (SELECT c.dept_id
+        FROM TADEPT c
+        WHERE DEPT_CATEG = 'L2'
+        START WITH c.dept_id = x.usage_dept
+        CONNECT BY PRIOR p_dept_id = dept_id
+        ) usage_dept
+	, NVL(j.workCnt,0) monthCnt
+    , NVL(workTime,0)  monthWorkTime
+FROM TAEQUIPMENT x LEFT OUTER JOIN (SELECT
+                                    	SUM(CASE WHEN A.workse LIKE '%R' THEN A.sumworktime END) ruTime 
+                                       ,COUNT(TO_CHAR(A.workentm,'YYYY-MM-DD')) * b.loadtm stTime 
+                                       ,SUM(A.sumworktime) 
+                                       ,b.equip_id
+                                      FROM TXDWHP_POPEQACT A INNER JOIN TXDWHP_POPEQ b             
+                                        ON A.eqpid = b.eqpid       
+                                     WHERE A.workentm IS NOT NULL     
+                                       AND b.equip_id IS NOT NULL
+            						   AND TO_CHAR(a.workentm,'YYYYMMDD') LIKE SUBSTR('^param3',0,4)||SUBSTR('^param3',6,2)||'%'                                        
+                                     GROUP BY b.equip_id, b.loadtm
+                                   )  d ON  x.equip_id = d.equip_id    
+         LEFT OUTER JOIN
+         (	SELECT
+            	SUM(eqdn_work_time) eqdntime
+                , SUM(h.work_time) workTime
+                , f.equip_id
+                , COUNT(1) workCnt
+            FROM TAWOEQUIP f LEFT OUTER JOIN TAWORKORDER h ON f.wkor_id = h.wkor_id
+            LEFT OUTER JOIN TAWOFAIL i ON f.wkor_id = i.wkor_id AND i.eqdn_start_date IS NOT NULL
+          WHERE 1= 1
+AND h.wkor_date LIKE SUBSTR('^param3',0,4)||SUBSTR('^param3',6,2)||'%'         
+AND h.comp_no = '^param1'
+AND h.wo_type <> 'PMC'
+AND h.wo_type <> 'PMI'
+AND h.wo_status = 'C'
+GROUP BY f.equip_id
+) j ON j.equip_id = x.equip_id CROSS JOIN ( SELECT ROUND(SUM(ruTime)/COUNT(equip_id),0) avgTime
+                                                  ,ROUND(SUM(totTime)/COUNT(equip_id),0) avgTotTime
+                                              FROM (
+                                                  SELECT
+                                                      SUM(CASE WHEN A.workse LIKE '%R' THEN A.sumworktime END)  ruTime 
+                                                      ,SUM(A.sumworktime) totTime
+                                                      ,b.equip_id
+                                                   FROM TXDWHP_POPEQACT A INNER JOIN TXDWHP_POPEQ b             
+                                                     ON A.eqpid = b.eqpid       
+                                                  WHERE A.workentm IS NOT NULL     
+                                                    AND b.equip_id IS NOT NULL     
+													AND TO_CHAR(a.workentm,'YYYYMMDD') LIKE SUBSTR('^param3',0,4)||SUBSTR('^param3',6,2)||'%'  
+                                                  GROUP BY b.equip_id
+                                                   )
+                                          ) o
+WHERE 1=1
+AND x.plant = '^param5'
+AND x.comp_no = '^param1'
+) y
+ON x.comp_no = y.comp_no
+AND x.equip_id = y.equip_id
+AND x.usage_dept = y.usage_dept
+WHERE 1=1
+AND x.usage_dept IS NOT NULL
+GROUP BY x.comp_no, x.usage_dept
+ORDER BY x.comp_no, x.usage_dept
+)
+UNION ALL
+SELECT
+    '' locDesc
+    , TO_CHAR(ROUND(NVL(SUM(y.monthWorkTime) / CASE SUM(y.monthCnt) WHEN 0 THEN NULL ELSE SUM(y.monthCnt) END ,0),2),'FM9999990D00')  resultMonth
+    , TO_CHAR(ROUND(NVL(SUM(x.yearWorkTime) / CASE SUM(x.yearCnt) WHEN 0 THEN NULL ELSE SUM(x.yearCnt) END ,0),2),'FM9999990D00')  resultYear
+    , SUBSTR('^param3',0,4) yyyy
+    , SUBSTR('^param3',6,2) mm
+FROM (
+SELECT
+    x.comp_no 
+    , x.equip_id
+    ,  (SELECT c.dept_id
+        FROM TADEPT c
+        WHERE DEPT_CATEG = 'L2'
+        START WITH c.dept_id = x.usage_dept
+        CONNECT BY PRIOR p_dept_id = dept_id
+        ) usage_dept
+	, NVL(j.workCnt,0) yearCnt
+    , NVL(workTime,0)  yearWorkTime
+FROM TAEQUIPMENT x LEFT OUTER JOIN (SELECT
+                                    	SUM(CASE WHEN A.workse LIKE '%R' THEN A.sumworktime END) ruTime 
+                                       ,COUNT(TO_CHAR(A.workentm,'YYYY-MM-DD')) * b.loadtm stTime 
+                                       ,SUM(A.sumworktime) 
+                                       ,b.equip_id
+                                      FROM TXDWHP_POPEQACT A INNER JOIN TXDWHP_POPEQ b             
+                                        ON A.eqpid = b.eqpid       
+                                     WHERE A.workentm IS NOT NULL     
+                                       AND b.equip_id IS NOT NULL
+            						   AND TO_CHAR(a.workentm,'YYYYMMDD') LIKE SUBSTR('^param3',0,4)||'%'                                       
+                                     GROUP BY b.equip_id, b.loadtm
+                                   )  d ON  x.equip_id = d.equip_id    
+         LEFT OUTER JOIN
+         (	SELECT
+            	SUM(eqdn_work_time) eqdntime
+                , SUM(h.work_time) workTime
+                , f.equip_id
+                , COUNT(1) workCnt
+            FROM TAWOEQUIP f LEFT OUTER JOIN TAWORKORDER h ON f.wkor_id = h.wkor_id
+            LEFT OUTER JOIN TAWOFAIL i ON f.wkor_id = i.wkor_id AND i.eqdn_start_date IS NOT NULL
+          WHERE 1= 1
+AND h.wkor_date LIKE SUBSTR('^param3',0,4)||'%'         
+AND h.comp_no = '^param1'
+AND h.wo_type <> 'PMC'
+AND h.wo_type <> 'PMI'
+AND h.wo_status = 'C'
+GROUP BY f.equip_id
+) j ON j.equip_id = x.equip_id CROSS JOIN ( SELECT ROUND(SUM(ruTime)/COUNT(equip_id),0) avgTime
+                                                  ,ROUND(SUM(totTime)/COUNT(equip_id),0) avgTotTime
+                                              FROM (
+                                                  SELECT
+                                                      SUM(CASE WHEN A.workse LIKE '%R' THEN A.sumworktime END)  ruTime 
+                                                      ,SUM(A.sumworktime) totTime
+                                                      ,b.equip_id
+                                                   FROM TXDWHP_POPEQACT A INNER JOIN TXDWHP_POPEQ b             
+                                                     ON A.eqpid = b.eqpid       
+                                                  WHERE A.workentm IS NOT NULL     
+                                                    AND b.equip_id IS NOT NULL     
+													AND TO_CHAR(a.workentm,'YYYYMMDD') LIKE SUBSTR('^param3',0,4)||'%'      
+                                                  GROUP BY b.equip_id
+                                                   )
+                                          ) o
+WHERE 1=1
+AND x.plant = '^param5'
+AND x.comp_no = '^param1'
+)x INNER JOIN (
+SELECT
+    x.comp_no 
+    , x.equip_id
+    ,  (SELECT c.dept_id
+        FROM TADEPT c
+        WHERE DEPT_CATEG = 'L2'
+        START WITH c.dept_id = x.usage_dept
+        CONNECT BY PRIOR p_dept_id = dept_id
+        ) usage_dept
+	, NVL(j.workCnt,0) monthCnt
+    , NVL(workTime,0)  monthWorkTime
+FROM TAEQUIPMENT x LEFT OUTER JOIN (SELECT
+                                    	SUM(CASE WHEN A.workse LIKE '%R' THEN A.sumworktime END) ruTime 
+                                       ,COUNT(TO_CHAR(A.workentm,'YYYY-MM-DD')) * b.loadtm stTime 
+                                       ,SUM(A.sumworktime) 
+                                       ,b.equip_id
+                                      FROM TXDWHP_POPEQACT A INNER JOIN TXDWHP_POPEQ b             
+                                        ON A.eqpid = b.eqpid       
+                                     WHERE A.workentm IS NOT NULL     
+                                       AND b.equip_id IS NOT NULL
+            						   AND TO_CHAR(a.workentm,'YYYYMMDD') LIKE SUBSTR('^param3',0,4)||SUBSTR('^param3',6,2)||'%'                                        
+                                     GROUP BY b.equip_id, b.loadtm
+                                   )  d ON  x.equip_id = d.equip_id    
+         LEFT OUTER JOIN
+         (	SELECT
+            	SUM(eqdn_work_time) eqdntime
+                , SUM(h.work_time) workTime
+                , f.equip_id
+                , COUNT(1) workCnt
+            FROM TAWOEQUIP f LEFT OUTER JOIN TAWORKORDER h ON f.wkor_id = h.wkor_id
+            LEFT OUTER JOIN TAWOFAIL i ON f.wkor_id = i.wkor_id AND i.eqdn_start_date IS NOT NULL
+          WHERE 1= 1
+AND h.wkor_date LIKE SUBSTR('^param3',0,4)||SUBSTR('^param3',6,2)||'%'         
+AND h.comp_no = '^param1'
+AND h.wo_type <> 'PMC'
+AND h.wo_type <> 'PMI'
+AND h.wo_status = 'C'
+GROUP BY f.equip_id
+) j ON j.equip_id = x.equip_id CROSS JOIN ( SELECT ROUND(SUM(ruTime)/COUNT(equip_id),0) avgTime
+                                                  ,ROUND(SUM(totTime)/COUNT(equip_id),0) avgTotTime
+                                              FROM (
+                                                  SELECT
+                                                      SUM(CASE WHEN A.workse LIKE '%R' THEN A.sumworktime END)  ruTime 
+                                                      ,SUM(A.sumworktime) totTime
+                                                      ,b.equip_id
+                                                   FROM TXDWHP_POPEQACT A INNER JOIN TXDWHP_POPEQ b             
+                                                     ON A.eqpid = b.eqpid       
+                                                  WHERE A.workentm IS NOT NULL     
+                                                    AND b.equip_id IS NOT NULL     
+													AND TO_CHAR(a.workentm,'YYYYMMDD') LIKE SUBSTR('^param3',0,4)||SUBSTR('^param3',6,2)||'%'  
+                                                  GROUP BY b.equip_id
+                                                   )
+                                          ) o
+WHERE 1=1
+AND x.plant = '^param5'
+AND x.comp_no = '^param1'
+) y
+ON x.comp_no = y.comp_no
+AND x.equip_id = y.equip_id
+AND x.usage_dept = y.usage_dept
+WHERE 1=1
+AND x.usage_dept IS NOT NULL
+GROUP BY x.comp_no
+/
+$
+SELECT 
+	TO_CHAR(to_date(x.tmonth||'01','yyyymmdd'), 'YYYY-MM') MONTH
+    ,TO_CHAR(ROUND(NVL(y.workTime/decode(y.planCnt,0,NULL,y.planCnt),0),2),'FM9999990D00') result
+FROM TAMONTH x, (
+SELECT
+    x.comp_no 
+    , NVL(SUM(j.workCnt),0) planCnt
+    , NVL(SUM(workTime),0) workTime
+    , wkor_date planMonth
+FROM TAEQUIPMENT x LEFT OUTER JOIN (SELECT
+                                        SUM(CASE WHEN A.workse LIKE '%R' THEN A.sumworktime END) ruTime 
+                                       ,COUNT(TO_CHAR(A.workentm,'YYYY-MM-DD')) * b.loadtm stTime 
+                                       ,SUM(A.sumworktime) 
+                                       ,b.equip_id
+                                      FROM TXDWHP_POPEQACT A INNER JOIN TXDWHP_POPEQ b             
+                                        ON A.eqpid = b.eqpid       
+                                     WHERE A.workentm IS NOT NULL     
+                                       AND b.equip_id IS NOT NULL
+                                       AND TO_CHAR(a.workentm,'YYYYMMDD') LIKE SUBSTR('^param3',0,4)||'%'                                
+                                     GROUP BY b.equip_id, b.loadtm
+                                   )  d ON  x.equip_id = d.equip_id    
+         LEFT OUTER JOIN
+         (    SELECT
+                SUM(eqdn_work_time) eqdntime
+                , SUM(h.work_time) workTime
+                , f.equip_id
+                , COUNT(1) workCnt
+                , SUBSTR(h.wkor_date,0,6) wkor_Date
+            FROM TAWOEQUIP f LEFT OUTER JOIN TAWORKORDER h ON f.wkor_id = h.wkor_id
+            LEFT OUTER JOIN TAWOFAIL i ON f.wkor_id = i.wkor_id AND i.eqdn_start_date IS NOT NULL
+          WHERE 1= 1
+AND h.wkor_date LIKE SUBSTR('^param3',0,4)||'%'         
+AND h.comp_no = '^param1'
+AND h.wo_type <> 'PMC'
+AND h.wo_type <> 'PMI'
+AND h.wo_status = 'C'
+GROUP BY f.equip_id, SUBSTR(h.wkor_date,0,6)
+) j ON j.equip_id = x.equip_id CROSS JOIN ( SELECT ROUND(SUM(ruTime)/COUNT(equip_id),0) avgTime
+                                                  ,ROUND(SUM(totTime)/COUNT(equip_id),0) avgTotTime
+                                              FROM (
+                                                  SELECT
+                                                      SUM(CASE WHEN A.workse LIKE '%R' THEN A.sumworktime END)  ruTime 
+                                                      ,SUM(A.sumworktime) totTime
+                                                      ,b.equip_id
+                                                   FROM TXDWHP_POPEQACT A INNER JOIN TXDWHP_POPEQ b             
+                                                     ON A.eqpid = b.eqpid       
+                                                  WHERE A.workentm IS NOT NULL     
+                                                    AND b.equip_id IS NOT NULL     
+													AND TO_CHAR(a.workentm,'YYYYMMDD') LIKE SUBSTR('^param3',0,4)||'%'      
+                                                  GROUP BY b.equip_id
+                                                   )
+                                          ) o
+WHERE 1=1
+AND x.plant = '^param5'
+AND x.comp_no = '^param1'
+AND x.usage_dept IS NOT NULL
+AND j.wkor_date IS NOT NULL
+GROUP BY x.comp_no, wkor_date
+) y
+WHERE x.tmonth = y.planMonth(+)
+AND x.tyyyy  = substr('^param3',0,4)
+ORDER BY x.tmonth
+/
+$
+SELECT * FROM (
+SELECT
+    (SELECT (SELECT b.description FROM TADEPT b WHERE b.comp_no = a.comp_no AND b.dept_id = a.p_dept_id) || ' > ' || a.description FROM TADEPT a WHERE a.comp_no = x.comp_no AND a.dept_id = x.usage_dept) locDesc
+    , TO_CHAR(ROUND(NVL((SUM(y.loadTime) - SUM(y.monthWorkTime) ) / CASE SUM(y.monthCnt) WHEN 0 THEN NULL ELSE SUM(y.monthCnt) END ,0),2),'FM9999990D00')  resultMonth
+    , TO_CHAR(ROUND(NVL((SUM(x.loadTime) - SUM(x.yearWorkTime) ) / CASE SUM(x.yearCnt) WHEN 0 THEN NULL ELSE SUM(x.yearCnt) END ,0),2),'FM9999990D00')  resultYear
+    , SUBSTR('^param3',0,4) yyyy
+    , SUBSTR('^param3',6,2) mm
+FROM (
+SELECT
+    x.comp_no 
+    , x.equip_id
+    ,  (SELECT c.dept_id
+        FROM TADEPT c
+        WHERE DEPT_CATEG = 'L2'
+        START WITH c.dept_id = x.usage_dept
+        CONNECT BY PRIOR p_dept_id = dept_id
+        ) usage_dept
+	, NVL(j.workCnt,0) yearCnt
+    , NVL(workTime,0) yearWorkTime
+	, NVL(ruTime,avgTime) loadTime
+FROM TAEQUIPMENT x LEFT OUTER JOIN (SELECT
+                                    	SUM(CASE WHEN A.workse LIKE '%R' THEN A.sumworktime END) ruTime 
+                                       ,COUNT(TO_CHAR(A.workentm,'YYYY-MM-DD')) * b.loadtm stTime 
+                                       ,SUM(A.sumworktime) 
+                                       ,b.equip_id
+                                      FROM TXDWHP_POPEQACT A INNER JOIN TXDWHP_POPEQ b             
+                                        ON A.eqpid = b.eqpid       
+                                     WHERE A.workentm IS NOT NULL     
+                                       AND b.equip_id IS NOT NULL
+            						   AND TO_CHAR(a.workentm,'YYYYMMDD') LIKE SUBSTR('^param3',0,4)||'%'                                       
+                                     GROUP BY b.equip_id, b.loadtm
+                                   )  d ON  x.equip_id = d.equip_id    
+         LEFT OUTER JOIN
+         (	SELECT
+            	SUM(eqdn_work_time) eqdntime
+                , SUM(h.work_time) workTime
+                , f.equip_id
+                , COUNT(1) workCnt
+            FROM TAWOEQUIP f LEFT OUTER JOIN TAWORKORDER h ON f.wkor_id = h.wkor_id
+            LEFT OUTER JOIN TAWOFAIL i ON f.wkor_id = i.wkor_id AND i.eqdn_start_date IS NOT NULL
+          WHERE 1= 1
+AND h.wkor_date LIKE SUBSTR('^param3',0,4)||'%'         
+AND h.comp_no = '^param1'
+AND h.wo_type <> 'PMC'
+AND h.wo_type <> 'PMI'
+AND h.wo_status = 'C'
+GROUP BY f.equip_id
+) j ON j.equip_id = x.equip_id CROSS JOIN ( SELECT ROUND(SUM(ruTime)/COUNT(equip_id),0) avgTime
+                                                  ,ROUND(SUM(totTime)/COUNT(equip_id),0) avgTotTime
+                                              FROM (
+                                                  SELECT
+                                                      SUM(CASE WHEN A.workse LIKE '%R' THEN A.sumworktime END)  ruTime 
+                                                      ,SUM(A.sumworktime) totTime
+                                                      ,b.equip_id
+                                                   FROM TXDWHP_POPEQACT A INNER JOIN TXDWHP_POPEQ b             
+                                                     ON A.eqpid = b.eqpid       
+                                                  WHERE A.workentm IS NOT NULL     
+                                                    AND b.equip_id IS NOT NULL     
+													AND TO_CHAR(a.workentm,'YYYYMMDD') LIKE SUBSTR('^param3',0,4)||'%'      
+                                                  GROUP BY b.equip_id
+                                                   )
+                                          ) o
+WHERE 1=1
+AND x.plant = '^param5'
+AND x.comp_no = '^param1'
+)x INNER JOIN (
+SELECT
+    x.comp_no 
+    , x.equip_id
+    ,  (SELECT c.dept_id
+        FROM TADEPT c
+        WHERE DEPT_CATEG = 'L2'
+        START WITH c.dept_id = x.usage_dept
+        CONNECT BY PRIOR p_dept_id = dept_id
+        ) usage_dept
+	, NVL(j.workCnt,0) monthCnt
+    , NVL(workTime,0)  monthWorkTime
+	, NVL(ruTime,avgTime) loadTime
+FROM TAEQUIPMENT x LEFT OUTER JOIN (SELECT
+                                    	SUM(CASE WHEN A.workse LIKE '%R' THEN A.sumworktime END) ruTime 
+                                       ,COUNT(TO_CHAR(A.workentm,'YYYY-MM-DD')) * b.loadtm stTime 
+                                       ,SUM(A.sumworktime) 
+                                       ,b.equip_id
+                                      FROM TXDWHP_POPEQACT A INNER JOIN TXDWHP_POPEQ b             
+                                        ON A.eqpid = b.eqpid       
+                                     WHERE A.workentm IS NOT NULL     
+                                       AND b.equip_id IS NOT NULL
+            						   AND TO_CHAR(a.workentm,'YYYYMMDD') LIKE SUBSTR('^param3',0,4)||SUBSTR('^param3',6,2)||'%'                                        
+                                     GROUP BY b.equip_id, b.loadtm
+                                   )  d ON  x.equip_id = d.equip_id    
+         LEFT OUTER JOIN
+         (	SELECT
+            	SUM(eqdn_work_time) eqdntime
+                , SUM(h.work_time) workTime
+                , f.equip_id
+                , COUNT(1) workCnt
+            FROM TAWOEQUIP f LEFT OUTER JOIN TAWORKORDER h ON f.wkor_id = h.wkor_id
+            LEFT OUTER JOIN TAWOFAIL i ON f.wkor_id = i.wkor_id AND i.eqdn_start_date IS NOT NULL
+          WHERE 1= 1
+AND h.wkor_date LIKE SUBSTR('^param3',0,4)||SUBSTR('^param3',6,2)||'%'         
+AND h.comp_no = '^param1'
+AND h.wo_type <> 'PMC'
+AND h.wo_type <> 'PMI'
+AND h.wo_status = 'C'
+GROUP BY f.equip_id
+) j ON j.equip_id = x.equip_id CROSS JOIN ( SELECT ROUND(SUM(ruTime)/COUNT(equip_id),0) avgTime
+                                                  ,ROUND(SUM(totTime)/COUNT(equip_id),0) avgTotTime
+                                              FROM (
+                                                  SELECT
+                                                      SUM(CASE WHEN A.workse LIKE '%R' THEN A.sumworktime END)  ruTime 
+                                                      ,SUM(A.sumworktime) totTime
+                                                      ,b.equip_id
+                                                   FROM TXDWHP_POPEQACT A INNER JOIN TXDWHP_POPEQ b             
+                                                     ON A.eqpid = b.eqpid       
+                                                  WHERE A.workentm IS NOT NULL     
+                                                    AND b.equip_id IS NOT NULL     
+													AND TO_CHAR(a.workentm,'YYYYMMDD') LIKE SUBSTR('^param3',0,4)||SUBSTR('^param3',6,2)||'%'  
+                                                  GROUP BY b.equip_id
+                                                   )
+                                          ) o
+WHERE 1=1
+AND x.plant = '^param5'
+AND x.comp_no = '^param1'
+) y
+ON x.comp_no = y.comp_no
+AND x.equip_id = y.equip_id
+AND x.usage_dept = y.usage_dept
+WHERE 1=1
+AND x.usage_dept IS NOT NULL
+GROUP BY x.comp_no, x.usage_dept
+ORDER BY x.comp_no, x.usage_dept
+)
+UNION ALL
+SELECT
+    '' locDesc
+    , TO_CHAR(ROUND(NVL((SUM(y.loadTime) - SUM(y.monthWorkTime) ) / CASE SUM(y.monthCnt) WHEN 0 THEN NULL ELSE SUM(y.monthCnt) END ,0),2),'FM9999990D00')  resultMonth
+    , TO_CHAR(ROUND(NVL((SUM(x.loadTime) - SUM(x.yearWorkTime) ) / CASE SUM(x.yearCnt) WHEN 0 THEN NULL ELSE SUM(x.yearCnt) END ,0),2),'FM9999990D00')  resultYear
+    , SUBSTR('^param3',0,4) yyyy
+    , SUBSTR('^param3',6,2) mm
+FROM (
+SELECT
+    x.comp_no 
+    , x.equip_id
+    ,  (SELECT c.dept_id
+        FROM TADEPT c
+        WHERE DEPT_CATEG = 'L2'
+        START WITH c.dept_id = x.usage_dept
+        CONNECT BY PRIOR p_dept_id = dept_id
+        ) usage_dept
+	, NVL(j.workCnt,0) yearCnt
+    , NVL(workTime,0)  yearWorkTime
+	, NVL(ruTime,avgTime) loadTime
+FROM TAEQUIPMENT x LEFT OUTER JOIN (SELECT
+                                    	SUM(CASE WHEN A.workse LIKE '%R' THEN A.sumworktime END) ruTime 
+                                       ,COUNT(TO_CHAR(A.workentm,'YYYY-MM-DD')) * b.loadtm stTime 
+                                       ,SUM(A.sumworktime) 
+                                       ,b.equip_id
+                                      FROM TXDWHP_POPEQACT A INNER JOIN TXDWHP_POPEQ b             
+                                        ON A.eqpid = b.eqpid       
+                                     WHERE A.workentm IS NOT NULL     
+                                       AND b.equip_id IS NOT NULL
+            						   AND TO_CHAR(a.workentm,'YYYYMMDD') LIKE SUBSTR('^param3',0,4)||'%'                                       
+                                     GROUP BY b.equip_id, b.loadtm
+                                   )  d ON  x.equip_id = d.equip_id    
+         LEFT OUTER JOIN
+         (	SELECT
+            	SUM(eqdn_work_time) eqdntime
+                , SUM(h.work_time) workTime
+                , f.equip_id
+                , COUNT(1) workCnt
+            FROM TAWOEQUIP f LEFT OUTER JOIN TAWORKORDER h ON f.wkor_id = h.wkor_id
+            LEFT OUTER JOIN TAWOFAIL i ON f.wkor_id = i.wkor_id AND i.eqdn_start_date IS NOT NULL
+          WHERE 1= 1
+AND h.wkor_date LIKE SUBSTR('^param3',0,4)||'%'         
+AND h.comp_no = '^param1'
+AND h.wo_type <> 'PMC'
+AND h.wo_type <> 'PMI'
+AND h.wo_status = 'C'
+GROUP BY f.equip_id
+) j ON j.equip_id = x.equip_id CROSS JOIN ( SELECT ROUND(SUM(ruTime)/COUNT(equip_id),0) avgTime
+                                                  ,ROUND(SUM(totTime)/COUNT(equip_id),0) avgTotTime
+                                              FROM (
+                                                  SELECT
+                                                      SUM(CASE WHEN A.workse LIKE '%R' THEN A.sumworktime END)  ruTime 
+                                                      ,SUM(A.sumworktime) totTime
+                                                      ,b.equip_id
+                                                   FROM TXDWHP_POPEQACT A INNER JOIN TXDWHP_POPEQ b             
+                                                     ON A.eqpid = b.eqpid       
+                                                  WHERE A.workentm IS NOT NULL     
+                                                    AND b.equip_id IS NOT NULL     
+													AND TO_CHAR(a.workentm,'YYYYMMDD') LIKE SUBSTR('^param3',0,4)||'%'      
+                                                  GROUP BY b.equip_id
+                                                   )
+                                          ) o
+WHERE 1=1
+AND x.plant = '^param5'
+AND x.comp_no = '^param1'
+)x INNER JOIN (
+SELECT
+    x.comp_no 
+    , x.equip_id
+    ,  (SELECT c.dept_id
+        FROM TADEPT c
+        WHERE DEPT_CATEG = 'L2'
+        START WITH c.dept_id = x.usage_dept
+        CONNECT BY PRIOR p_dept_id = dept_id
+        ) usage_dept
+	, NVL(j.workCnt,0) monthCnt
+    , NVL(workTime,0)  monthWorkTime
+	, NVL(ruTime,avgTime) loadTime
+FROM TAEQUIPMENT x LEFT OUTER JOIN (SELECT
+                                    	SUM(CASE WHEN A.workse LIKE '%R' THEN A.sumworktime END) ruTime 
+                                       ,COUNT(TO_CHAR(A.workentm,'YYYY-MM-DD')) * b.loadtm stTime 
+                                       ,SUM(A.sumworktime) 
+                                       ,b.equip_id
+                                      FROM TXDWHP_POPEQACT A INNER JOIN TXDWHP_POPEQ b             
+                                        ON A.eqpid = b.eqpid       
+                                     WHERE A.workentm IS NOT NULL     
+                                       AND b.equip_id IS NOT NULL
+            						   AND TO_CHAR(a.workentm,'YYYYMMDD') LIKE SUBSTR('^param3',0,4)||SUBSTR('^param3',6,2)||'%'                                        
+                                     GROUP BY b.equip_id, b.loadtm
+                                   )  d ON  x.equip_id = d.equip_id    
+         LEFT OUTER JOIN
+         (	SELECT
+            	SUM(eqdn_work_time) eqdntime
+                , SUM(h.work_time) workTime
+                , f.equip_id
+                , COUNT(1) workCnt
+            FROM TAWOEQUIP f LEFT OUTER JOIN TAWORKORDER h ON f.wkor_id = h.wkor_id
+            LEFT OUTER JOIN TAWOFAIL i ON f.wkor_id = i.wkor_id AND i.eqdn_start_date IS NOT NULL
+          WHERE 1= 1
+AND h.wkor_date LIKE SUBSTR('^param3',0,4)||SUBSTR('^param3',6,2)||'%'         
+AND h.comp_no = '^param1'
+AND h.wo_type <> 'PMC'
+AND h.wo_type <> 'PMI'
+AND h.wo_status = 'C'
+GROUP BY f.equip_id
+) j ON j.equip_id = x.equip_id CROSS JOIN ( SELECT ROUND(SUM(ruTime)/COUNT(equip_id),0) avgTime
+                                                  ,ROUND(SUM(totTime)/COUNT(equip_id),0) avgTotTime
+                                              FROM (
+                                                  SELECT
+                                                      SUM(CASE WHEN A.workse LIKE '%R' THEN A.sumworktime END)  ruTime 
+                                                      ,SUM(A.sumworktime) totTime
+                                                      ,b.equip_id
+                                                   FROM TXDWHP_POPEQACT A INNER JOIN TXDWHP_POPEQ b             
+                                                     ON A.eqpid = b.eqpid       
+                                                  WHERE A.workentm IS NOT NULL     
+                                                    AND b.equip_id IS NOT NULL     
+													AND TO_CHAR(a.workentm,'YYYYMMDD') LIKE SUBSTR('^param3',0,4)||SUBSTR('^param3',6,2)||'%'  
+                                                  GROUP BY b.equip_id
+                                                   )
+                                          ) o
+WHERE 1=1
+AND x.plant = '^param5'
+AND x.comp_no = '^param1'
+) y
+ON x.comp_no = y.comp_no
+AND x.equip_id = y.equip_id
+AND x.usage_dept = y.usage_dept
+WHERE 1=1
+AND x.usage_dept IS NOT NULL
+GROUP BY x.comp_no
+/
+$
+SELECT 
+	TO_CHAR(to_date(substr('^param3',0,4)||'01'||'01'), 'YYYY-MM') MONTH
+	, TO_CHAR(ROUND(NVL((SUM(x.loadTime) - SUM(x.yearWorkTime) ) / CASE SUM(x.yearCnt) WHEN 0 THEN NULL ELSE SUM(x.yearCnt) END ,0),2),'FM9999990D00')  result
+FROM
+(SELECT
+    x.comp_no 
+    , x.equip_id
+    ,  (SELECT c.dept_id
+        FROM TADEPT c
+        WHERE DEPT_CATEG = 'L2'
+        START WITH c.dept_id = x.usage_dept
+        CONNECT BY PRIOR p_dept_id = dept_id
+        ) usage_dept
+	, NVL(j.workCnt,0) yearCnt
+    , NVL(workTime,0)  yearWorkTime
+	, NVL(ruTime,avgTime) loadTime
+FROM TAEQUIPMENT x LEFT OUTER JOIN (SELECT
+                                    	SUM(CASE WHEN A.workse LIKE '%R' THEN A.sumworktime END) ruTime 
+                                       ,COUNT(TO_CHAR(A.workentm,'YYYY-MM-DD')) * b.loadtm stTime 
+                                       ,SUM(A.sumworktime) 
+                                       ,b.equip_id
+                                      FROM TXDWHP_POPEQACT A INNER JOIN TXDWHP_POPEQ b             
+                                        ON A.eqpid = b.eqpid       
+                                     WHERE A.workentm IS NOT NULL     
+                                       AND b.equip_id IS NOT NULL
+            						   AND TO_CHAR(a.workentm,'YYYYMMDD') LIKE SUBSTR('^param3',0,4)||'01%'                                       
+                                     GROUP BY b.equip_id, b.loadtm
+                                   )  d ON  x.equip_id = d.equip_id    
+         LEFT OUTER JOIN
+         (	SELECT
+            	SUM(eqdn_work_time) eqdntime
+                , SUM(h.work_time) workTime
+                , f.equip_id
+                , COUNT(1) workCnt
+            FROM TAWOEQUIP f LEFT OUTER JOIN TAWORKORDER h ON f.wkor_id = h.wkor_id
+            LEFT OUTER JOIN TAWOFAIL i ON f.wkor_id = i.wkor_id AND i.eqdn_start_date IS NOT NULL
+          WHERE 1= 1
+AND h.wkor_date LIKE SUBSTR('^param3',0,4)||'01%'         
+AND h.comp_no = '^param1'
+AND h.wo_type <> 'PMC'
+AND h.wo_type <> 'PMI'
+AND h.wo_status = 'C'
+GROUP BY f.equip_id
+) j ON j.equip_id = x.equip_id CROSS JOIN ( SELECT ROUND(SUM(ruTime)/COUNT(equip_id),0) avgTime
+                                                  ,ROUND(SUM(totTime)/COUNT(equip_id),0) avgTotTime
+                                              FROM (
+                                                  SELECT
+                                                      SUM(CASE WHEN A.workse LIKE '%R' THEN A.sumworktime END)  ruTime 
+                                                      ,SUM(A.sumworktime) totTime
+                                                      ,b.equip_id
+                                                   FROM TXDWHP_POPEQACT A INNER JOIN TXDWHP_POPEQ b             
+                                                     ON A.eqpid = b.eqpid       
+                                                  WHERE A.workentm IS NOT NULL     
+                                                    AND b.equip_id IS NOT NULL     
+													AND TO_CHAR(a.workentm,'YYYYMMDD') LIKE SUBSTR('^param3',0,4)||'01%'      
+                                                  GROUP BY b.equip_id
+                                                   )
+                                          ) o
+WHERE 1=1
+AND x.plant = '^param5'
+AND x.comp_no = '^param1'
+)x
+WHERE 1=1
+AND x.usage_dept IS NOT NULL
+GROUP BY x.comp_no
+UNION ALL
+SELECT 
+	TO_CHAR(to_date(substr('^param3',0,4)||'02'||'01'), 'YYYY-MM') MONTH
+	, TO_CHAR(ROUND(NVL((SUM(x.loadTime) - SUM(x.yearWorkTime) ) / CASE SUM(x.yearCnt) WHEN 0 THEN NULL ELSE SUM(x.yearCnt) END ,0),2),'FM9999990D00')  result
+FROM
+(SELECT
+    x.comp_no 
+    , x.equip_id
+    ,  (SELECT c.dept_id
+        FROM TADEPT c
+        WHERE DEPT_CATEG = 'L2'
+        START WITH c.dept_id = x.usage_dept
+        CONNECT BY PRIOR p_dept_id = dept_id
+        ) usage_dept
+	, NVL(j.workCnt,0) yearCnt
+    , NVL(workTime,0)  yearWorkTime
+	, NVL(ruTime,avgTime) loadTime
+FROM TAEQUIPMENT x LEFT OUTER JOIN (SELECT
+                                    	SUM(CASE WHEN A.workse LIKE '%R' THEN A.sumworktime END) ruTime 
+                                       ,COUNT(TO_CHAR(A.workentm,'YYYY-MM-DD')) * b.loadtm stTime 
+                                       ,SUM(A.sumworktime) 
+                                       ,b.equip_id
+                                      FROM TXDWHP_POPEQACT A INNER JOIN TXDWHP_POPEQ b             
+                                        ON A.eqpid = b.eqpid       
+                                     WHERE A.workentm IS NOT NULL     
+                                       AND b.equip_id IS NOT NULL
+            						   AND TO_CHAR(a.workentm,'YYYYMMDD') LIKE SUBSTR('^param3',0,4)||'02%'                                       
+                                     GROUP BY b.equip_id, b.loadtm
+                                   )  d ON  x.equip_id = d.equip_id    
+         LEFT OUTER JOIN
+         (	SELECT
+            	SUM(eqdn_work_time) eqdntime
+                , SUM(h.work_time) workTime
+                , f.equip_id
+                , COUNT(1) workCnt
+            FROM TAWOEQUIP f LEFT OUTER JOIN TAWORKORDER h ON f.wkor_id = h.wkor_id
+            LEFT OUTER JOIN TAWOFAIL i ON f.wkor_id = i.wkor_id AND i.eqdn_start_date IS NOT NULL
+          WHERE 1= 1
+AND h.wkor_date LIKE SUBSTR('^param3',0,4)||'02%'         
+AND h.comp_no = '^param1'
+AND h.wo_type <> 'PMC'
+AND h.wo_type <> 'PMI'
+AND h.wo_status = 'C'
+GROUP BY f.equip_id
+) j ON j.equip_id = x.equip_id CROSS JOIN ( SELECT ROUND(SUM(ruTime)/COUNT(equip_id),0) avgTime
+                                                  ,ROUND(SUM(totTime)/COUNT(equip_id),0) avgTotTime
+                                              FROM (
+                                                  SELECT
+                                                      SUM(CASE WHEN A.workse LIKE '%R' THEN A.sumworktime END)  ruTime 
+                                                      ,SUM(A.sumworktime) totTime
+                                                      ,b.equip_id
+                                                   FROM TXDWHP_POPEQACT A INNER JOIN TXDWHP_POPEQ b             
+                                                     ON A.eqpid = b.eqpid       
+                                                  WHERE A.workentm IS NOT NULL     
+                                                    AND b.equip_id IS NOT NULL     
+													AND TO_CHAR(a.workentm,'YYYYMMDD') LIKE SUBSTR('^param3',0,4)||'02%'      
+                                                  GROUP BY b.equip_id
+                                                   )
+                                          ) o
+WHERE 1=1
+AND x.plant = '^param5'
+AND x.comp_no = '^param1'
+)x
+WHERE 1=1
+AND x.usage_dept IS NOT NULL
+GROUP BY x.comp_no
+UNION ALL
+SELECT 
+	TO_CHAR(to_date(substr('^param3',0,4)||'03'||'01'), 'YYYY-MM') MONTH
+	, TO_CHAR(ROUND(NVL((SUM(x.loadTime) - SUM(x.yearWorkTime) ) / CASE SUM(x.yearCnt) WHEN 0 THEN NULL ELSE SUM(x.yearCnt) END ,0),2),'FM9999990D00')  result
+FROM
+(SELECT
+    x.comp_no 
+    , x.equip_id
+    ,  (SELECT c.dept_id
+        FROM TADEPT c
+        WHERE DEPT_CATEG = 'L2'
+        START WITH c.dept_id = x.usage_dept
+        CONNECT BY PRIOR p_dept_id = dept_id
+        ) usage_dept
+	, NVL(j.workCnt,0) yearCnt
+    , NVL(workTime,0)  yearWorkTime
+	, NVL(ruTime,avgTime) loadTime
+FROM TAEQUIPMENT x LEFT OUTER JOIN (SELECT
+                                    	SUM(CASE WHEN A.workse LIKE '%R' THEN A.sumworktime END) ruTime 
+                                       ,COUNT(TO_CHAR(A.workentm,'YYYY-MM-DD')) * b.loadtm stTime 
+                                       ,SUM(A.sumworktime) 
+                                       ,b.equip_id
+                                      FROM TXDWHP_POPEQACT A INNER JOIN TXDWHP_POPEQ b             
+                                        ON A.eqpid = b.eqpid       
+                                     WHERE A.workentm IS NOT NULL     
+                                       AND b.equip_id IS NOT NULL
+            						   AND TO_CHAR(a.workentm,'YYYYMMDD') LIKE SUBSTR('^param3',0,4)||'03%'                                       
+                                     GROUP BY b.equip_id, b.loadtm
+                                   )  d ON  x.equip_id = d.equip_id    
+         LEFT OUTER JOIN
+         (	SELECT
+            	SUM(eqdn_work_time) eqdntime
+                , SUM(h.work_time) workTime
+                , f.equip_id
+                , COUNT(1) workCnt
+            FROM TAWOEQUIP f LEFT OUTER JOIN TAWORKORDER h ON f.wkor_id = h.wkor_id
+            LEFT OUTER JOIN TAWOFAIL i ON f.wkor_id = i.wkor_id AND i.eqdn_start_date IS NOT NULL
+          WHERE 1= 1
+AND h.wkor_date LIKE SUBSTR('^param3',0,4)||'03%'         
+AND h.comp_no = '^param1'
+AND h.wo_type <> 'PMC'
+AND h.wo_type <> 'PMI'
+AND h.wo_status = 'C'
+GROUP BY f.equip_id
+) j ON j.equip_id = x.equip_id CROSS JOIN ( SELECT ROUND(SUM(ruTime)/COUNT(equip_id),0) avgTime
+                                                  ,ROUND(SUM(totTime)/COUNT(equip_id),0) avgTotTime
+                                              FROM (
+                                                  SELECT
+                                                      SUM(CASE WHEN A.workse LIKE '%R' THEN A.sumworktime END)  ruTime 
+                                                      ,SUM(A.sumworktime) totTime
+                                                      ,b.equip_id
+                                                   FROM TXDWHP_POPEQACT A INNER JOIN TXDWHP_POPEQ b             
+                                                     ON A.eqpid = b.eqpid       
+                                                  WHERE A.workentm IS NOT NULL     
+                                                    AND b.equip_id IS NOT NULL     
+													AND TO_CHAR(a.workentm,'YYYYMMDD') LIKE SUBSTR('^param3',0,4)||'03%'      
+                                                  GROUP BY b.equip_id
+                                                   )
+                                          ) o
+WHERE 1=1
+AND x.plant = '^param5'
+AND x.comp_no = '^param1'
+)x
+WHERE 1=1
+AND x.usage_dept IS NOT NULL
+GROUP BY x.comp_no
+UNION ALL
+SELECT 
+	TO_CHAR(to_date(substr('^param3',0,4)||'04'||'01'), 'YYYY-MM') MONTH
+	, TO_CHAR(ROUND(NVL((SUM(x.loadTime) - SUM(x.yearWorkTime) ) / CASE SUM(x.yearCnt) WHEN 0 THEN NULL ELSE SUM(x.yearCnt) END ,0),2),'FM9999990D00')  result
+FROM
+(SELECT
+    x.comp_no 
+    , x.equip_id
+    ,  (SELECT c.dept_id
+        FROM TADEPT c
+        WHERE DEPT_CATEG = 'L2'
+        START WITH c.dept_id = x.usage_dept
+        CONNECT BY PRIOR p_dept_id = dept_id
+        ) usage_dept
+	, NVL(j.workCnt,0) yearCnt
+    , NVL(workTime,0)  yearWorkTime
+	, NVL(ruTime,avgTime) loadTime
+FROM TAEQUIPMENT x LEFT OUTER JOIN (SELECT
+                                    	SUM(CASE WHEN A.workse LIKE '%R' THEN A.sumworktime END) ruTime 
+                                       ,COUNT(TO_CHAR(A.workentm,'YYYY-MM-DD')) * b.loadtm stTime 
+                                       ,SUM(A.sumworktime) 
+                                       ,b.equip_id
+                                      FROM TXDWHP_POPEQACT A INNER JOIN TXDWHP_POPEQ b             
+                                        ON A.eqpid = b.eqpid       
+                                     WHERE A.workentm IS NOT NULL     
+                                       AND b.equip_id IS NOT NULL
+            						   AND TO_CHAR(a.workentm,'YYYYMMDD') LIKE SUBSTR('^param3',0,4)||'04%'                                       
+                                     GROUP BY b.equip_id, b.loadtm
+                                   )  d ON  x.equip_id = d.equip_id    
+         LEFT OUTER JOIN
+         (	SELECT
+            	SUM(eqdn_work_time) eqdntime
+                , SUM(h.work_time) workTime
+                , f.equip_id
+                , COUNT(1) workCnt
+            FROM TAWOEQUIP f LEFT OUTER JOIN TAWORKORDER h ON f.wkor_id = h.wkor_id
+            LEFT OUTER JOIN TAWOFAIL i ON f.wkor_id = i.wkor_id AND i.eqdn_start_date IS NOT NULL
+          WHERE 1= 1
+AND h.wkor_date LIKE SUBSTR('^param3',0,4)||'04%'         
+AND h.comp_no = '^param1'
+AND h.wo_type <> 'PMC'
+AND h.wo_type <> 'PMI'
+AND h.wo_status = 'C'
+GROUP BY f.equip_id
+) j ON j.equip_id = x.equip_id CROSS JOIN ( SELECT ROUND(SUM(ruTime)/COUNT(equip_id),0) avgTime
+                                                  ,ROUND(SUM(totTime)/COUNT(equip_id),0) avgTotTime
+                                              FROM (
+                                                  SELECT
+                                                      SUM(CASE WHEN A.workse LIKE '%R' THEN A.sumworktime END)  ruTime 
+                                                      ,SUM(A.sumworktime) totTime
+                                                      ,b.equip_id
+                                                   FROM TXDWHP_POPEQACT A INNER JOIN TXDWHP_POPEQ b             
+                                                     ON A.eqpid = b.eqpid       
+                                                  WHERE A.workentm IS NOT NULL     
+                                                    AND b.equip_id IS NOT NULL     
+													AND TO_CHAR(a.workentm,'YYYYMMDD') LIKE SUBSTR('^param3',0,4)||'04%'      
+                                                  GROUP BY b.equip_id
+                                                   )
+                                          ) o
+WHERE 1=1
+AND x.plant = '^param5'
+AND x.comp_no = '^param1'
+)x
+WHERE 1=1
+AND x.usage_dept IS NOT NULL
+GROUP BY x.comp_no
+UNION ALL
+SELECT 
+	TO_CHAR(to_date(substr('^param3',0,4)||'05'||'01'), 'YYYY-MM') MONTH
+	, TO_CHAR(ROUND(NVL((SUM(x.loadTime) - SUM(x.yearWorkTime) ) / CASE SUM(x.yearCnt) WHEN 0 THEN NULL ELSE SUM(x.yearCnt) END ,0),2),'FM9999990D00')  result
+FROM
+(SELECT
+    x.comp_no 
+    , x.equip_id
+    ,  (SELECT c.dept_id
+        FROM TADEPT c
+        WHERE DEPT_CATEG = 'L2'
+        START WITH c.dept_id = x.usage_dept
+        CONNECT BY PRIOR p_dept_id = dept_id
+        ) usage_dept
+	, NVL(j.workCnt,0) yearCnt
+    , NVL(workTime,0)  yearWorkTime
+	, NVL(ruTime,avgTime) loadTime
+FROM TAEQUIPMENT x LEFT OUTER JOIN (SELECT
+                                    	SUM(CASE WHEN A.workse LIKE '%R' THEN A.sumworktime END) ruTime 
+                                       ,COUNT(TO_CHAR(A.workentm,'YYYY-MM-DD')) * b.loadtm stTime 
+                                       ,SUM(A.sumworktime) 
+                                       ,b.equip_id
+                                      FROM TXDWHP_POPEQACT A INNER JOIN TXDWHP_POPEQ b             
+                                        ON A.eqpid = b.eqpid       
+                                     WHERE A.workentm IS NOT NULL     
+                                       AND b.equip_id IS NOT NULL
+            						   AND TO_CHAR(a.workentm,'YYYYMMDD') LIKE SUBSTR('^param3',0,4)||'05%'                                       
+                                     GROUP BY b.equip_id, b.loadtm
+                                   )  d ON  x.equip_id = d.equip_id    
+         LEFT OUTER JOIN
+         (	SELECT
+            	SUM(eqdn_work_time) eqdntime
+                , SUM(h.work_time) workTime
+                , f.equip_id
+                , COUNT(1) workCnt
+            FROM TAWOEQUIP f LEFT OUTER JOIN TAWORKORDER h ON f.wkor_id = h.wkor_id
+            LEFT OUTER JOIN TAWOFAIL i ON f.wkor_id = i.wkor_id AND i.eqdn_start_date IS NOT NULL
+          WHERE 1= 1
+AND h.wkor_date LIKE SUBSTR('^param3',0,4)||'05%'         
+AND h.comp_no = '^param1'
+AND h.wo_type <> 'PMC'
+AND h.wo_type <> 'PMI'
+AND h.wo_status = 'C'
+GROUP BY f.equip_id
+) j ON j.equip_id = x.equip_id CROSS JOIN ( SELECT ROUND(SUM(ruTime)/COUNT(equip_id),0) avgTime
+                                                  ,ROUND(SUM(totTime)/COUNT(equip_id),0) avgTotTime
+                                              FROM (
+                                                  SELECT
+                                                      SUM(CASE WHEN A.workse LIKE '%R' THEN A.sumworktime END)  ruTime 
+                                                      ,SUM(A.sumworktime) totTime
+                                                      ,b.equip_id
+                                                   FROM TXDWHP_POPEQACT A INNER JOIN TXDWHP_POPEQ b             
+                                                     ON A.eqpid = b.eqpid       
+                                                  WHERE A.workentm IS NOT NULL     
+                                                    AND b.equip_id IS NOT NULL     
+													AND TO_CHAR(a.workentm,'YYYYMMDD') LIKE SUBSTR('^param3',0,4)||'05%'      
+                                                  GROUP BY b.equip_id
+                                                   )
+                                          ) o
+WHERE 1=1
+AND x.plant = '^param5'
+AND x.comp_no = '^param1'
+)x
+WHERE 1=1
+AND x.usage_dept IS NOT NULL
+GROUP BY x.comp_no
+UNION ALL
+SELECT 
+	TO_CHAR(to_date(substr('^param3',0,4)||'06'||'01'), 'YYYY-MM') MONTH
+	, TO_CHAR(ROUND(NVL((SUM(x.loadTime) - SUM(x.yearWorkTime) ) / CASE SUM(x.yearCnt) WHEN 0 THEN NULL ELSE SUM(x.yearCnt) END ,0),2),'FM9999990D00')  result
+FROM
+(SELECT
+    x.comp_no 
+    , x.equip_id
+    ,  (SELECT c.dept_id
+        FROM TADEPT c
+        WHERE DEPT_CATEG = 'L2'
+        START WITH c.dept_id = x.usage_dept
+        CONNECT BY PRIOR p_dept_id = dept_id
+        ) usage_dept
+	, NVL(j.workCnt,0) yearCnt
+    , NVL(workTime,0)  yearWorkTime
+	, NVL(ruTime,avgTime) loadTime
+FROM TAEQUIPMENT x LEFT OUTER JOIN (SELECT
+                                    	SUM(CASE WHEN A.workse LIKE '%R' THEN A.sumworktime END) ruTime 
+                                       ,COUNT(TO_CHAR(A.workentm,'YYYY-MM-DD')) * b.loadtm stTime 
+                                       ,SUM(A.sumworktime) 
+                                       ,b.equip_id
+                                      FROM TXDWHP_POPEQACT A INNER JOIN TXDWHP_POPEQ b             
+                                        ON A.eqpid = b.eqpid       
+                                     WHERE A.workentm IS NOT NULL     
+                                       AND b.equip_id IS NOT NULL
+            						   AND TO_CHAR(a.workentm,'YYYYMMDD') LIKE SUBSTR('^param3',0,4)||'06%'                                       
+                                     GROUP BY b.equip_id, b.loadtm
+                                   )  d ON  x.equip_id = d.equip_id    
+         LEFT OUTER JOIN
+         (	SELECT
+            	SUM(eqdn_work_time) eqdntime
+                , SUM(h.work_time) workTime
+                , f.equip_id
+                , COUNT(1) workCnt
+            FROM TAWOEQUIP f LEFT OUTER JOIN TAWORKORDER h ON f.wkor_id = h.wkor_id
+            LEFT OUTER JOIN TAWOFAIL i ON f.wkor_id = i.wkor_id AND i.eqdn_start_date IS NOT NULL
+          WHERE 1= 1
+AND h.wkor_date LIKE SUBSTR('^param3',0,4)||'06%'         
+AND h.comp_no = '^param1'
+AND h.wo_type <> 'PMC'
+AND h.wo_type <> 'PMI'
+AND h.wo_status = 'C'
+GROUP BY f.equip_id
+) j ON j.equip_id = x.equip_id CROSS JOIN ( SELECT ROUND(SUM(ruTime)/COUNT(equip_id),0) avgTime
+                                                  ,ROUND(SUM(totTime)/COUNT(equip_id),0) avgTotTime
+                                              FROM (
+                                                  SELECT
+                                                      SUM(CASE WHEN A.workse LIKE '%R' THEN A.sumworktime END)  ruTime 
+                                                      ,SUM(A.sumworktime) totTime
+                                                      ,b.equip_id
+                                                   FROM TXDWHP_POPEQACT A INNER JOIN TXDWHP_POPEQ b             
+                                                     ON A.eqpid = b.eqpid       
+                                                  WHERE A.workentm IS NOT NULL     
+                                                    AND b.equip_id IS NOT NULL     
+													AND TO_CHAR(a.workentm,'YYYYMMDD') LIKE SUBSTR('^param3',0,4)||'06%'      
+                                                  GROUP BY b.equip_id
+                                                   )
+                                          ) o
+WHERE 1=1
+AND x.plant = '^param5'
+AND x.comp_no = '^param1'
+)x
+WHERE 1=1
+AND x.usage_dept IS NOT NULL
+GROUP BY x.comp_no
+UNION ALL
+SELECT 
+	TO_CHAR(to_date(substr('^param3',0,4)||'07'||'01'), 'YYYY-MM') MONTH
+	, TO_CHAR(ROUND(NVL((SUM(x.loadTime) - SUM(x.yearWorkTime) ) / CASE SUM(x.yearCnt) WHEN 0 THEN NULL ELSE SUM(x.yearCnt) END ,0),2),'FM9999990D00')  result
+FROM
+(SELECT
+    x.comp_no 
+    , x.equip_id
+    ,  (SELECT c.dept_id
+        FROM TADEPT c
+        WHERE DEPT_CATEG = 'L2'
+        START WITH c.dept_id = x.usage_dept
+        CONNECT BY PRIOR p_dept_id = dept_id
+        ) usage_dept
+	, NVL(j.workCnt,0) yearCnt
+    , NVL(workTime,0)  yearWorkTime
+	, NVL(ruTime,avgTime) loadTime
+FROM TAEQUIPMENT x LEFT OUTER JOIN (SELECT
+                                    	SUM(CASE WHEN A.workse LIKE '%R' THEN A.sumworktime END) ruTime 
+                                       ,COUNT(TO_CHAR(A.workentm,'YYYY-MM-DD')) * b.loadtm stTime 
+                                       ,SUM(A.sumworktime) 
+                                       ,b.equip_id
+                                      FROM TXDWHP_POPEQACT A INNER JOIN TXDWHP_POPEQ b             
+                                        ON A.eqpid = b.eqpid       
+                                     WHERE A.workentm IS NOT NULL     
+                                       AND b.equip_id IS NOT NULL
+            						   AND TO_CHAR(a.workentm,'YYYYMMDD') LIKE SUBSTR('^param3',0,4)||'07%'                                       
+                                     GROUP BY b.equip_id, b.loadtm
+                                   )  d ON  x.equip_id = d.equip_id    
+         LEFT OUTER JOIN
+         (	SELECT
+            	SUM(eqdn_work_time) eqdntime
+                , SUM(h.work_time) workTime
+                , f.equip_id
+                , COUNT(1) workCnt
+            FROM TAWOEQUIP f LEFT OUTER JOIN TAWORKORDER h ON f.wkor_id = h.wkor_id
+            LEFT OUTER JOIN TAWOFAIL i ON f.wkor_id = i.wkor_id AND i.eqdn_start_date IS NOT NULL
+          WHERE 1= 1
+AND h.wkor_date LIKE SUBSTR('^param3',0,4)||'07%'         
+AND h.comp_no = '^param1'
+AND h.wo_type <> 'PMC'
+AND h.wo_type <> 'PMI'
+AND h.wo_status = 'C'
+GROUP BY f.equip_id
+) j ON j.equip_id = x.equip_id CROSS JOIN ( SELECT ROUND(SUM(ruTime)/COUNT(equip_id),0) avgTime
+                                                  ,ROUND(SUM(totTime)/COUNT(equip_id),0) avgTotTime
+                                              FROM (
+                                                  SELECT
+                                                      SUM(CASE WHEN A.workse LIKE '%R' THEN A.sumworktime END)  ruTime 
+                                                      ,SUM(A.sumworktime) totTime
+                                                      ,b.equip_id
+                                                   FROM TXDWHP_POPEQACT A INNER JOIN TXDWHP_POPEQ b             
+                                                     ON A.eqpid = b.eqpid       
+                                                  WHERE A.workentm IS NOT NULL     
+                                                    AND b.equip_id IS NOT NULL     
+													AND TO_CHAR(a.workentm,'YYYYMMDD') LIKE SUBSTR('^param3',0,4)||'07%'      
+                                                  GROUP BY b.equip_id
+                                                   )
+                                          ) o
+WHERE 1=1
+AND x.plant = '^param5'
+AND x.comp_no = '^param1'
+)x
+WHERE 1=1
+AND x.usage_dept IS NOT NULL
+GROUP BY x.comp_no
+UNION ALL
+SELECT 
+	TO_CHAR(to_date(substr('^param3',0,4)||'08'||'01'), 'YYYY-MM') MONTH
+	, TO_CHAR(ROUND(NVL((SUM(x.loadTime) - SUM(x.yearWorkTime) ) / CASE SUM(x.yearCnt) WHEN 0 THEN NULL ELSE SUM(x.yearCnt) END ,0),2),'FM9999990D00')  result
+FROM
+(SELECT
+    x.comp_no 
+    , x.equip_id
+    ,  (SELECT c.dept_id
+        FROM TADEPT c
+        WHERE DEPT_CATEG = 'L2'
+        START WITH c.dept_id = x.usage_dept
+        CONNECT BY PRIOR p_dept_id = dept_id
+        ) usage_dept
+	, NVL(j.workCnt,0) yearCnt
+    , NVL(workTime,0)  yearWorkTime
+	, NVL(ruTime,avgTime) loadTime
+FROM TAEQUIPMENT x LEFT OUTER JOIN (SELECT
+                                    	SUM(CASE WHEN A.workse LIKE '%R' THEN A.sumworktime END) ruTime 
+                                       ,COUNT(TO_CHAR(A.workentm,'YYYY-MM-DD')) * b.loadtm stTime 
+                                       ,SUM(A.sumworktime) 
+                                       ,b.equip_id
+                                      FROM TXDWHP_POPEQACT A INNER JOIN TXDWHP_POPEQ b             
+                                        ON A.eqpid = b.eqpid       
+                                     WHERE A.workentm IS NOT NULL     
+                                       AND b.equip_id IS NOT NULL
+            						   AND TO_CHAR(a.workentm,'YYYYMMDD') LIKE SUBSTR('^param3',0,4)||'08%'                                       
+                                     GROUP BY b.equip_id, b.loadtm
+                                   )  d ON  x.equip_id = d.equip_id    
+         LEFT OUTER JOIN
+         (	SELECT
+            	SUM(eqdn_work_time) eqdntime
+                , SUM(h.work_time) workTime
+                , f.equip_id
+                , COUNT(1) workCnt
+            FROM TAWOEQUIP f LEFT OUTER JOIN TAWORKORDER h ON f.wkor_id = h.wkor_id
+            LEFT OUTER JOIN TAWOFAIL i ON f.wkor_id = i.wkor_id AND i.eqdn_start_date IS NOT NULL
+          WHERE 1= 1
+AND h.wkor_date LIKE SUBSTR('^param3',0,4)||'08%'         
+AND h.comp_no = '^param1'
+AND h.wo_type <> 'PMC'
+AND h.wo_type <> 'PMI'
+AND h.wo_status = 'C'
+GROUP BY f.equip_id
+) j ON j.equip_id = x.equip_id CROSS JOIN ( SELECT ROUND(SUM(ruTime)/COUNT(equip_id),0) avgTime
+                                                  ,ROUND(SUM(totTime)/COUNT(equip_id),0) avgTotTime
+                                              FROM (
+                                                  SELECT
+                                                      SUM(CASE WHEN A.workse LIKE '%R' THEN A.sumworktime END)  ruTime 
+                                                      ,SUM(A.sumworktime) totTime
+                                                      ,b.equip_id
+                                                   FROM TXDWHP_POPEQACT A INNER JOIN TXDWHP_POPEQ b             
+                                                     ON A.eqpid = b.eqpid       
+                                                  WHERE A.workentm IS NOT NULL     
+                                                    AND b.equip_id IS NOT NULL     
+													AND TO_CHAR(a.workentm,'YYYYMMDD') LIKE SUBSTR('^param3',0,4)||'08%'      
+                                                  GROUP BY b.equip_id
+                                                   )
+                                          ) o
+WHERE 1=1
+AND x.plant = '^param5'
+AND x.comp_no = '^param1'
+)x
+WHERE 1=1
+AND x.usage_dept IS NOT NULL
+GROUP BY x.comp_no
+UNION ALL
+SELECT 
+	TO_CHAR(to_date(substr('^param3',0,4)||'09'||'01'), 'YYYY-MM') MONTH
+	, TO_CHAR(ROUND(NVL((SUM(x.loadTime) - SUM(x.yearWorkTime) ) / CASE SUM(x.yearCnt) WHEN 0 THEN NULL ELSE SUM(x.yearCnt) END ,0),2),'FM9999990D00')  result
+FROM
+(SELECT
+    x.comp_no 
+    , x.equip_id
+    ,  (SELECT c.dept_id
+        FROM TADEPT c
+        WHERE DEPT_CATEG = 'L2'
+        START WITH c.dept_id = x.usage_dept
+        CONNECT BY PRIOR p_dept_id = dept_id
+        ) usage_dept
+	, NVL(j.workCnt,0) yearCnt
+    , NVL(workTime,0)  yearWorkTime
+	, NVL(ruTime,avgTime) loadTime
+FROM TAEQUIPMENT x LEFT OUTER JOIN (SELECT
+                                    	SUM(CASE WHEN A.workse LIKE '%R' THEN A.sumworktime END) ruTime 
+                                       ,COUNT(TO_CHAR(A.workentm,'YYYY-MM-DD')) * b.loadtm stTime 
+                                       ,SUM(A.sumworktime) 
+                                       ,b.equip_id
+                                      FROM TXDWHP_POPEQACT A INNER JOIN TXDWHP_POPEQ b             
+                                        ON A.eqpid = b.eqpid       
+                                     WHERE A.workentm IS NOT NULL     
+                                       AND b.equip_id IS NOT NULL
+            						   AND TO_CHAR(a.workentm,'YYYYMMDD') LIKE SUBSTR('^param3',0,4)||'09%'                                       
+                                     GROUP BY b.equip_id, b.loadtm
+                                   )  d ON  x.equip_id = d.equip_id    
+         LEFT OUTER JOIN
+         (	SELECT
+            	SUM(eqdn_work_time) eqdntime
+                , SUM(h.work_time) workTime
+                , f.equip_id
+                , COUNT(1) workCnt
+            FROM TAWOEQUIP f LEFT OUTER JOIN TAWORKORDER h ON f.wkor_id = h.wkor_id
+            LEFT OUTER JOIN TAWOFAIL i ON f.wkor_id = i.wkor_id AND i.eqdn_start_date IS NOT NULL
+          WHERE 1= 1
+AND h.wkor_date LIKE SUBSTR('^param3',0,4)||'09%'         
+AND h.comp_no = '^param1'
+AND h.wo_type <> 'PMC'
+AND h.wo_type <> 'PMI'
+AND h.wo_status = 'C'
+GROUP BY f.equip_id
+) j ON j.equip_id = x.equip_id CROSS JOIN ( SELECT ROUND(SUM(ruTime)/COUNT(equip_id),0) avgTime
+                                                  ,ROUND(SUM(totTime)/COUNT(equip_id),0) avgTotTime
+                                              FROM (
+                                                  SELECT
+                                                      SUM(CASE WHEN A.workse LIKE '%R' THEN A.sumworktime END)  ruTime 
+                                                      ,SUM(A.sumworktime) totTime
+                                                      ,b.equip_id
+                                                   FROM TXDWHP_POPEQACT A INNER JOIN TXDWHP_POPEQ b             
+                                                     ON A.eqpid = b.eqpid       
+                                                  WHERE A.workentm IS NOT NULL     
+                                                    AND b.equip_id IS NOT NULL     
+													AND TO_CHAR(a.workentm,'YYYYMMDD') LIKE SUBSTR('^param3',0,4)||'09%'      
+                                                  GROUP BY b.equip_id
+                                                   )
+                                          ) o
+WHERE 1=1
+AND x.plant = '^param5'
+AND x.comp_no = '^param1'
+)x
+WHERE 1=1
+AND x.usage_dept IS NOT NULL
+GROUP BY x.comp_no
+UNION ALL
+SELECT 
+	TO_CHAR(to_date(substr('^param3',0,4)||'10'||'01'), 'YYYY-MM') MONTH
+	, TO_CHAR(ROUND(NVL((SUM(x.loadTime) - SUM(x.yearWorkTime) ) / CASE SUM(x.yearCnt) WHEN 0 THEN NULL ELSE SUM(x.yearCnt) END ,0),2),'FM9999990D00')  result
+FROM
+(SELECT
+    x.comp_no 
+    , x.equip_id
+    ,  (SELECT c.dept_id
+        FROM TADEPT c
+        WHERE DEPT_CATEG = 'L2'
+        START WITH c.dept_id = x.usage_dept
+        CONNECT BY PRIOR p_dept_id = dept_id
+        ) usage_dept
+	, NVL(j.workCnt,0) yearCnt
+    , NVL(workTime,0)  yearWorkTime
+	, NVL(ruTime,avgTime) loadTime
+FROM TAEQUIPMENT x LEFT OUTER JOIN (SELECT
+                                    	SUM(CASE WHEN A.workse LIKE '%R' THEN A.sumworktime END) ruTime 
+                                       ,COUNT(TO_CHAR(A.workentm,'YYYY-MM-DD')) * b.loadtm stTime 
+                                       ,SUM(A.sumworktime) 
+                                       ,b.equip_id
+                                      FROM TXDWHP_POPEQACT A INNER JOIN TXDWHP_POPEQ b             
+                                        ON A.eqpid = b.eqpid       
+                                     WHERE A.workentm IS NOT NULL     
+                                       AND b.equip_id IS NOT NULL
+            						   AND TO_CHAR(a.workentm,'YYYYMMDD') LIKE SUBSTR('^param3',0,4)||'10%'                                       
+                                     GROUP BY b.equip_id, b.loadtm
+                                   )  d ON  x.equip_id = d.equip_id    
+         LEFT OUTER JOIN
+         (	SELECT
+            	SUM(eqdn_work_time) eqdntime
+                , SUM(h.work_time) workTime
+                , f.equip_id
+                , COUNT(1) workCnt
+            FROM TAWOEQUIP f LEFT OUTER JOIN TAWORKORDER h ON f.wkor_id = h.wkor_id
+            LEFT OUTER JOIN TAWOFAIL i ON f.wkor_id = i.wkor_id AND i.eqdn_start_date IS NOT NULL
+          WHERE 1= 1
+AND h.wkor_date LIKE SUBSTR('^param3',0,4)||'10%'         
+AND h.comp_no = '^param1'
+AND h.wo_type <> 'PMC'
+AND h.wo_type <> 'PMI'
+AND h.wo_status = 'C'
+GROUP BY f.equip_id
+) j ON j.equip_id = x.equip_id CROSS JOIN ( SELECT ROUND(SUM(ruTime)/COUNT(equip_id),0) avgTime
+                                                  ,ROUND(SUM(totTime)/COUNT(equip_id),0) avgTotTime
+                                              FROM (
+                                                  SELECT
+                                                      SUM(CASE WHEN A.workse LIKE '%R' THEN A.sumworktime END)  ruTime 
+                                                      ,SUM(A.sumworktime) totTime
+                                                      ,b.equip_id
+                                                   FROM TXDWHP_POPEQACT A INNER JOIN TXDWHP_POPEQ b             
+                                                     ON A.eqpid = b.eqpid       
+                                                  WHERE A.workentm IS NOT NULL     
+                                                    AND b.equip_id IS NOT NULL     
+													AND TO_CHAR(a.workentm,'YYYYMMDD') LIKE SUBSTR('^param3',0,4)||'10%'      
+                                                  GROUP BY b.equip_id
+                                                   )
+                                          ) o
+WHERE 1=1
+AND x.plant = '^param5'
+AND x.comp_no = '^param1'
+)x
+WHERE 1=1
+AND x.usage_dept IS NOT NULL
+GROUP BY x.comp_no
+UNION ALL
+SELECT 
+	TO_CHAR(to_date(substr('^param3',0,4)||'11'||'01'), 'YYYY-MM') MONTH
+	, TO_CHAR(ROUND(NVL((SUM(x.loadTime) - SUM(x.yearWorkTime) ) / CASE SUM(x.yearCnt) WHEN 0 THEN NULL ELSE SUM(x.yearCnt) END ,0),2),'FM9999990D00')  result
+FROM
+(SELECT
+    x.comp_no 
+    , x.equip_id
+    ,  (SELECT c.dept_id
+        FROM TADEPT c
+        WHERE DEPT_CATEG = 'L2'
+        START WITH c.dept_id = x.usage_dept
+        CONNECT BY PRIOR p_dept_id = dept_id
+        ) usage_dept
+	, NVL(j.workCnt,0) yearCnt
+    , NVL(workTime,0)  yearWorkTime
+	, NVL(ruTime,avgTime) loadTime
+FROM TAEQUIPMENT x LEFT OUTER JOIN (SELECT
+                                    	SUM(CASE WHEN A.workse LIKE '%R' THEN A.sumworktime END) ruTime 
+                                       ,COUNT(TO_CHAR(A.workentm,'YYYY-MM-DD')) * b.loadtm stTime 
+                                       ,SUM(A.sumworktime) 
+                                       ,b.equip_id
+                                      FROM TXDWHP_POPEQACT A INNER JOIN TXDWHP_POPEQ b             
+                                        ON A.eqpid = b.eqpid       
+                                     WHERE A.workentm IS NOT NULL     
+                                       AND b.equip_id IS NOT NULL
+            						   AND TO_CHAR(a.workentm,'YYYYMMDD') LIKE SUBSTR('^param3',0,4)||'11%'                                       
+                                     GROUP BY b.equip_id, b.loadtm
+                                   )  d ON  x.equip_id = d.equip_id    
+         LEFT OUTER JOIN
+         (	SELECT
+            	SUM(eqdn_work_time) eqdntime
+                , SUM(h.work_time) workTime
+                , f.equip_id
+                , COUNT(1) workCnt
+            FROM TAWOEQUIP f LEFT OUTER JOIN TAWORKORDER h ON f.wkor_id = h.wkor_id
+            LEFT OUTER JOIN TAWOFAIL i ON f.wkor_id = i.wkor_id AND i.eqdn_start_date IS NOT NULL
+          WHERE 1= 1
+AND h.wkor_date LIKE SUBSTR('^param3',0,4)||'11%'         
+AND h.comp_no = '^param1'
+AND h.wo_type <> 'PMC'
+AND h.wo_type <> 'PMI'
+AND h.wo_status = 'C'
+GROUP BY f.equip_id
+) j ON j.equip_id = x.equip_id CROSS JOIN ( SELECT ROUND(SUM(ruTime)/COUNT(equip_id),0) avgTime
+                                                  ,ROUND(SUM(totTime)/COUNT(equip_id),0) avgTotTime
+                                              FROM (
+                                                  SELECT
+                                                      SUM(CASE WHEN A.workse LIKE '%R' THEN A.sumworktime END)  ruTime 
+                                                      ,SUM(A.sumworktime) totTime
+                                                      ,b.equip_id
+                                                   FROM TXDWHP_POPEQACT A INNER JOIN TXDWHP_POPEQ b             
+                                                     ON A.eqpid = b.eqpid       
+                                                  WHERE A.workentm IS NOT NULL     
+                                                    AND b.equip_id IS NOT NULL     
+													AND TO_CHAR(a.workentm,'YYYYMMDD') LIKE SUBSTR('^param3',0,4)||'11%'      
+                                                  GROUP BY b.equip_id
+                                                   )
+                                          ) o
+WHERE 1=1
+AND x.plant = '^param5'
+AND x.comp_no = '^param1'
+)x
+WHERE 1=1
+AND x.usage_dept IS NOT NULL
+GROUP BY x.comp_no
+UNION ALL
+SELECT 
+	TO_CHAR(to_date(substr('^param3',0,4)||'12'||'01'), 'YYYY-MM') MONTH
+	, TO_CHAR(ROUND(NVL((SUM(x.loadTime) - SUM(x.yearWorkTime) ) / CASE SUM(x.yearCnt) WHEN 0 THEN NULL ELSE SUM(x.yearCnt) END ,0),2),'FM9999990D00')  result
+FROM
+(SELECT
+    x.comp_no 
+    , x.equip_id
+    ,  (SELECT c.dept_id
+        FROM TADEPT c
+        WHERE DEPT_CATEG = 'L2'
+        START WITH c.dept_id = x.usage_dept
+        CONNECT BY PRIOR p_dept_id = dept_id
+        ) usage_dept
+	, NVL(j.workCnt,0) yearCnt
+    , NVL(workTime,0)  yearWorkTime
+	, NVL(ruTime,avgTime) loadTime
+FROM TAEQUIPMENT x LEFT OUTER JOIN (SELECT
+                                    	SUM(CASE WHEN A.workse LIKE '%R' THEN A.sumworktime END) ruTime 
+                                       ,COUNT(TO_CHAR(A.workentm,'YYYY-MM-DD')) * b.loadtm stTime 
+                                       ,SUM(A.sumworktime) 
+                                       ,b.equip_id
+                                      FROM TXDWHP_POPEQACT A INNER JOIN TXDWHP_POPEQ b             
+                                        ON A.eqpid = b.eqpid       
+                                     WHERE A.workentm IS NOT NULL     
+                                       AND b.equip_id IS NOT NULL
+            						   AND TO_CHAR(a.workentm,'YYYYMMDD') LIKE SUBSTR('^param3',0,4)||'12%'                                       
+                                     GROUP BY b.equip_id, b.loadtm
+                                   )  d ON  x.equip_id = d.equip_id    
+         LEFT OUTER JOIN
+         (	SELECT
+            	SUM(eqdn_work_time) eqdntime
+                , SUM(h.work_time) workTime
+                , f.equip_id
+                , COUNT(1) workCnt
+            FROM TAWOEQUIP f LEFT OUTER JOIN TAWORKORDER h ON f.wkor_id = h.wkor_id
+            LEFT OUTER JOIN TAWOFAIL i ON f.wkor_id = i.wkor_id AND i.eqdn_start_date IS NOT NULL
+          WHERE 1= 1
+AND h.wkor_date LIKE SUBSTR('^param3',0,4)||'12%'         
+AND h.comp_no = '^param1'
+AND h.wo_type <> 'PMC'
+AND h.wo_type <> 'PMI'
+AND h.wo_status = 'C'
+GROUP BY f.equip_id
+) j ON j.equip_id = x.equip_id CROSS JOIN ( SELECT ROUND(SUM(ruTime)/COUNT(equip_id),0) avgTime
+                                                  ,ROUND(SUM(totTime)/COUNT(equip_id),0) avgTotTime
+                                              FROM (
+                                                  SELECT
+                                                      SUM(CASE WHEN A.workse LIKE '%R' THEN A.sumworktime END)  ruTime 
+                                                      ,SUM(A.sumworktime) totTime
+                                                      ,b.equip_id
+                                                   FROM TXDWHP_POPEQACT A INNER JOIN TXDWHP_POPEQ b             
+                                                     ON A.eqpid = b.eqpid       
+                                                  WHERE A.workentm IS NOT NULL     
+                                                    AND b.equip_id IS NOT NULL     
+													AND TO_CHAR(a.workentm,'YYYYMMDD') LIKE SUBSTR('^param3',0,4)||'12%'      
+                                                  GROUP BY b.equip_id
+                                                   )
+                                          ) o
+WHERE 1=1
+AND x.plant = '^param5'
+AND x.comp_no = '^param1'
+)x
+WHERE 1=1
+AND x.usage_dept IS NOT NULL
+GROUP BY x.comp_no
+/
+$
+SELECT 
+		 TO_CHAR(to_date('^param3','yyyy-mm'), 'YYYY-MM') yyyymm
+from dual
+/
+$
+SELECT ROWNUM seqNo
+            ,(SELECT 
+                (SELECT 
+                    (SELECT 
+                        (SELECT E.description FROM TADEPT E 
+                          WHERE E.comp_no = d.comp_no AND E.dept_id = d.p_dept_id)
+                             ||' > '|| d.description FROM TADEPT d 
+                                WHERE d.comp_no = c.comp_no AND d.dept_id = c.p_dept_id) 
+                                    || ' > ' || c.description FROM TADEPT c 
+                 WHERE c.comp_no = a.compNo AND c.dept_id = bb.usage_dept) 
+                FROM TAEQUIPMENT bb
+                WHERE bb.comp_no = a.compNo
+                AND bb.equip_id = a.equip) eqLoc
+              ,(SELECT bb.description
+                                                FROM TAEQUIPMENT bb
+                                                WHERE bb.comp_no = a.compNo
+                                                AND bb.equip_id = a.equip) equip
+              ,a.bmCnt
+              ,a.bmTime
+FROM
+(
+SELECT x.comp_no compNo
+            ,y.equip_id equip
+            ,count(y.equip_id) bmCnt
+            ,sum(x.work_time) bmTime
+FROM taworkorder x INNER JOIN tawoequip y
+ON x.comp_no = y.comp_no
+AND x.wkor_id = y.wkor_id
+WHERE 1=1
+AND x.comp_no = '^param1'
+AND x.wkor_date LIKE substr('^param3',0,4)||substr('^param3',6,2)||'%'
+AND x.wo_type <> 'PMC'
+AND x.wo_type <> 'PMI'
+AND x.wo_status = 'C'
+and y.equip_id in (SELECT equip_id FROM TAEQUIPMENT where comp_no = '^param1' and plant = '^param5')
+GROUP BY x.comp_no, y.equip_id
+ORDER BY y.equip_id, count(y.equip_id) desc, sum(x.work_time) desc
+) a
+WHERE ROWNUM < 11
+/
+$
+SELECT 
+		 TO_CHAR(to_date('^param3','yyyy-mm'), 'YYYY') yyyy
+from dual
+/
+$
+SELECT ROWNUM seqNo
+            ,(SELECT 
+                (SELECT 
+                    (SELECT 
+                        (SELECT E.description FROM TADEPT E 
+                          WHERE E.comp_no = d.comp_no AND E.dept_id = d.p_dept_id)
+                             ||' > '|| d.description FROM TADEPT d 
+                                WHERE d.comp_no = c.comp_no AND d.dept_id = c.p_dept_id) 
+                                    || ' > ' || c.description FROM TADEPT c 
+                 WHERE c.comp_no = a.compNo AND c.dept_id = bb.usage_dept) 
+                FROM TAEQUIPMENT bb
+                WHERE bb.comp_no = a.compNo
+                AND bb.equip_id = a.equip) eqLoc
+              ,(SELECT bb.description
+                                                FROM TAEQUIPMENT bb
+                                                WHERE bb.comp_no = a.compNo
+                                                AND bb.equip_id = a.equip) equip
+              ,a.bmCnt
+              ,a.bmTime
+FROM
+(
+SELECT x.comp_no compNo
+            ,y.equip_id equip
+            ,count(y.equip_id) bmCnt
+            ,sum(x.work_time) bmTime
+FROM taworkorder x INNER JOIN tawoequip y
+ON x.comp_no = y.comp_no
+AND x.wkor_id = y.wkor_id
+WHERE 1=1
+AND x.comp_no = '^param1'
+AND x.wkor_date <=to_char(sysdate,'yyyymmdd')
+and x.wkor_date >=to_char(sysdate-365,'yyyymmdd')
+AND x.wo_type <> 'PMC'
+AND x.wo_type <> 'PMI'
+AND x.wo_status = 'C'
+and y.equip_id in (SELECT equip_id FROM TAEQUIPMENT where comp_no = '^param1' and plant = '^param5')
+GROUP BY x.comp_no, y.equip_id
+ORDER BY y.equip_id, count(y.equip_id) desc, sum(x.work_time) desc
+) a
+WHERE ROWNUM < 11
+/

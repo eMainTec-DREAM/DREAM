@@ -1,0 +1,54 @@
+$
+SELECT              
+		'^param4' AS yyyy
+        ,'Form info.:HPE05-005E-F01 (Ver. 2.00)'         docNo        
+/
+$
+SELECT x.rowNum	seqNo
+            ,x.equip
+            ,x.roomNo
+            ,x.roomName
+            ,x.dept
+            ,x.grade
+            ,x.itemNo
+            ,x.setupDate
+            ,x.maker
+            ,x.country
+            ,x.MODEL
+            ,x.serial
+            ,x.utilCapa
+            ,x.capacity
+            ,x.remark
+FROM
+(
+SELECT '' seqNo
+			,ROW_NUMBER() OVER(ORDER BY x.dept_id, x.description)	rowNum
+            ,x.description equip
+            ,x.eqstrloc_no roomNo
+            ,dbo.SFACODE_TO_DESC(x.eqstrloc_no, 'EQSTRLOC_NO', 'USR', x.comp_no, '^param3') roomName
+            ,(SELECT description                                            
+                 FROM TADEPT                                                
+                 WHERE comp_no = x.comp_no                                    
+                AND dept_id = x.dept_id)                dept
+            ,dbo.SFACODE_TO_DESC(x.eq_grade,'EQ_GRADE','SYS','', '^param3') grade 
+            ,x.item_no itemNo
+            ,CASE WHEN x.setup_date IS NULL THEN '-'
+    	   		  ELSE SUBSTRING(x.setup_date,1,4)+'-'+
+             		   SUBSTRING(x.setup_date,5,2)+'-'+
+             		   SUBSTRING(x.setup_date,7,2)		
+                  END										  setupDate
+            ,REPLACE(REPLACE(x.maker,char(10),''),char(13),' ') maker
+            ,x.country_maker country
+            ,x.model_no MODEL
+            ,x.serial_no serial
+            ,x.util_capa utilCapa
+            ,REPLACE(REPLACE(x.capacity,char(10),''),char(13),' ') capacity
+            ,REPLACE(REPLACE(x.remark,char(10),''),char(13),' ') remark
+			,x.dept_id
+			,x.description
+FROM TAEQUIPMENT x
+WHERE x.comp_no = '^param1'
+AND eqctg_type='^param4'
+) x
+ORDER BY x.dept_id, x.description
+/

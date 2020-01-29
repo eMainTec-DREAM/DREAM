@@ -1,0 +1,67 @@
+$
+SELECT 
+		 TO_CHAR(to_date('^param3','yyyy-mm'), 'YYYY-MM') mmyyyy
+		,TO_CHAR(sysdate,'yyyy. mm. dd') yyyymmdd
+from dual
+/
+$
+SELECT
+            x.description deptDesc
+            ,(SELECT count(1) 
+                FROM TAPMINSSCHED a INNER JOIN TAPMLST b
+                ON a.comp_no = b.comp_no
+                AND a.pm_id = b.pm_id
+                WHERE 1=1
+                AND a.comp_no = x.comp_no
+                AND a.sched_date LIKE substr('^param3',0,4)||substr('^param3',6,2)||'%'
+                AND b.dept_id = x.dept_id) pmPlan
+            ,(SELECT count(1) 
+                FROM TAPMINSLIST a INNER JOIN TAPMLST b
+                ON a.comp_no = b.comp_no
+                AND a.pm_id = b.pm_id
+                WHERE 1=1
+                AND a.comp_no = x.comp_no
+                AND a.pmsched_status = 'C'
+                AND a.wkor_date LIKE substr('^param3',0,4)||substr('^param3',6,2)||'%'
+                AND b.dept_id = x.dept_id) pmResult
+              ,(SELECT count(1)
+                FROM TAWORKORDER a
+                WHERE 1=1
+                AND a.comp_no = x.comp_no
+                AND a.wo_type <> 'PMC'
+                AND a.wkor_date LIKE substr('^param3',0,4)||substr('^param3',6,2)||'%'
+                AND a.dept_id = x.dept_id) bmPlan
+              ,(SELECT count(1)
+                FROM TAWORKORDER a
+                WHERE 1=1
+                AND a.comp_no = x.comp_no
+                AND a.wo_status='C'
+                AND a.wo_type <> 'PMC'
+                AND a.wkor_date LIKE substr('^param3',0,4)||substr('^param3',6,2)||'%'
+                AND a.dept_id = x.dept_id) bmResult
+FROM TADEPT x
+WHERE x.comp_no = '^param1'
+AND x.is_maint = 'Y'
+/
+$
+SELECT x.description deptDesc
+            ,(SELECT count(1)
+                FROM TAPMINSSCHED a INNER JOIN TAPMLST b
+                ON a.comp_no = b.comp_no
+                AND a.pm_id = b.pm_id
+                WHERE 1=1
+                AND a.comp_no = x.comp_no
+                AND a.sched_date LIKE substr('^param3',0,4)||substr('^param3',6,2)||'%'
+                AND b.dept_id = x.dept_id) pmPlan
+            ,x.description deptDesc2
+            ,(SELECT count(1)
+                FROM TAWORKORDER a
+                WHERE 1=1
+                AND a.comp_no = x.comp_no
+                AND a.wo_type <> 'PMC'
+                AND a.wkor_date LIKE substr('^param3',0,4)||substr('^param3',6,2)||'%'
+                AND a.dept_id = x.dept_id) bmPlan
+FROM TADEPT x
+WHERE x.comp_no = '^param1'
+AND x.is_maint = 'Y'
+/

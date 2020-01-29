@@ -1,0 +1,32 @@
+$
+ SELECT x.ptprlist_no reqNo
+ 		,CONVERT(varchar(10),getdate(),120) printDate
+ 		,(SELECT a.user_name FROM TAUSER a WHERE a.comp_no = x.comp_no AND a.user_id = x.user_id) reqBy
+ 		,(SELECT a.description FROM TADEPT a WHERE a.comp_no = x.comp_no and a.dept_id = x.dept_id ) reqDept
+ 		,convert(varchar(10),CONVERT(datetime,x.req_date),120) reqDate
+ 		,x.description reqTitle
+ FROM TAPTPRLIST x
+WHERE x.comp_no = '^param1'
+AND x.ptprlist_id = ^param4
+/
+$
+SELECT row_number() over(order by y.part_no asc) no
+		,y.full_desc  partNo
+		,x.rec_qty qty
+		,y.uom uom
+        , CONVERT(VARCHAR,CONVERT(money,x.unit_price),1) unitcost
+        , CONVERT(VARCHAR,CONVERT(money,ROUND(x.rec_qty * x.unit_price,3)),1) totalCost
+        ,x.remark remark
+ FROM TAPTPRITEM x INNER JOIN TAPARTS y
+ ON x.comp_no = y.comp_no
+ AND x.part_id = y.part_id
+ WHERE 1=1
+ AND x.comp_no = '^param1'
+ AND x.ptprlist_id = ^param4
+/
+$
+SELECT x.remark
+FROM TAPTPRLIST x
+WHERE x.comp_no      = '^param1'
+AND x.ptprlist_id = ^param4
+/

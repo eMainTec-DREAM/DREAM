@@ -1,0 +1,30 @@
+CREATE FUNCTION [dbo].[SFAEHMENU_PALL]
+(
+      @EHMENU_ID BIGINT
+	, @DESCRIPTION NVARCHAR(40)
+)
+RETURNS TABLE 
+AS
+RETURN(
+    WITH DATATABLE AS ( 
+        SELECT 
+             A.EHMENU_ID
+           , A.P_EHMENU_ID
+           , 0 AS LVL
+		   , CONVERT(VARCHAR, A.EHMENU_ID) AS SORT
+        FROM TAEHMENU A
+        WHERE 1=1
+            and EHMENU_ID = CASE @EHMENU_ID WHEN '' THEN EHMENU_ID ELSE @EHMENU_ID END
+			and upper(description) like CASE @EHMENU_ID WHEN '' THEN '%'+upper(@DESCRIPTION)+'%' ELSE upper(description) END
+        UNION ALL 
+        SELECT 
+             B.EHMENU_ID
+           , B.P_EHMENU_ID
+           , C.LVL+ 1
+		   , CONVERT(VARCHAR, C.SORT + '-' + CONVERT(VARCHAR, B.EHMENU_ID)) AS SORT
+        FROM TAEHMENU B INNER JOIN DATATABLE C  ON B.EHMENU_ID = C.P_EHMENU_ID 
+        WHERE 1=1
+    ) 
+    SELECT TOP (SELECT COUNT(*) FROM DATATABLE) * FROM DATATABLE
+	ORDER BY SORT
+)

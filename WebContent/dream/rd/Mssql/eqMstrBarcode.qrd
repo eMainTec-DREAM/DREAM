@@ -1,0 +1,24 @@
+$
+SELECT
+      x.item_no itemNo--barcode
+      ,x.description itemDesc
+      , CASE WHEN LEN(x.setup_date)=6 THEN
+             CONVERT(CHAR(10), CONVERT(DATE, x.setup_date+'01'),120)
+             WHEN LEN(x.setup_date)=4 or LEN(x.setup_date)=8 THEN 
+             CONVERT(CHAR(10), CONVERT(DATE, x.setup_date),120)
+             ELSE ''
+             END setupDate    
+      ,x.equip_id equipNo
+FROM  TAEQUIPMENT x
+WHERE 1=1
+AND   comp_no = '^param1'
+AND   equip_id IN (SELECT
+                         a.skey_id
+                   FROM  TAREPORTPARAM a
+                   WHERE 1=1
+                   AND   a.comp_no   = '^param1'
+                   AND   a.user_id   = '^param2'
+                   AND   a.file_name = '^param3'
+                  )
+ORDER BY x.ord_no
+/

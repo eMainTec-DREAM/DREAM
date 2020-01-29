@@ -1,0 +1,1371 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="maWoResultPmGnlMstrDetail" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" whenResourceMissingType="Empty" uuid="24a0f8f6-af64-4b44-958d-4f919d5d445a">
+	<property name="ireport.zoom" value="1.3636363636363655"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="table">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+		<paragraph lineSpacing="Single"/>
+	</style>
+	<style name="table_TH" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_CH" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<subDataset name="CALIB_STD_EQ_LIST" uuid="e1677469-a473-412d-9ae2-fe3ee7644a78">
+		<parameter name="USEDCALIBEQ" class="java.lang.String"/>
+		<parameter name="USE" class="java.lang.String"/>
+		<parameter name="CALIBEQ" class="java.lang.String"/>
+		<parameter name="CALIBEQNO" class="java.lang.String"/>
+		<parameter name="CALIBRSTNO" class="java.lang.String"/>
+		<parameter name="NEXTPLANDATE" class="java.lang.String"/>
+		<queryString language="SQL">
+			<![CDATA[]]>
+		</queryString>
+		<field name="CALIBEQVAL" class="java.lang.String"/>
+		<field name="CALIBEQNOVAL" class="java.lang.String"/>
+		<field name="CALIBRSTNOVAL" class="java.lang.String"/>
+		<field name="NEXTPLANDATEVAL" class="java.lang.String"/>
+		<field name="TEXT" class="java.lang.String"/>
+	</subDataset>
+	<field name="SCALECALIBRST" class="java.lang.String"/>
+	<field name="LOCATION" class="java.lang.String"/>
+	<field name="EQUIPNAME" class="java.lang.String"/>
+	<field name="EQUIPNO" class="java.lang.String"/>
+	<field name="TOOLNAME" class="java.lang.String"/>
+	<field name="TOOLNO" class="java.lang.String"/>
+	<field name="MAKER" class="java.lang.String"/>
+	<field name="MODEL" class="java.lang.String"/>
+	<field name="SERIALNO" class="java.lang.String"/>
+	<field name="MEASURERANGE" class="java.lang.String"/>
+	<field name="MINUNITVAL" class="java.lang.String"/>
+	<field name="ALLOWVALUE" class="java.lang.String"/>
+	<field name="CALIBTYPE" class="java.lang.String"/>
+	<field name="PLANCALDATE" class="java.lang.String"/>
+	<field name="NEXTPLANCALDATE" class="java.lang.String"/>
+	<field name="EXEMETHOD" class="java.lang.String"/>
+	<field name="CALIBSOPDOCNO" class="java.lang.String"/>
+	<field name="LOCATIONVAL" class="java.lang.String"/>
+	<field name="EQUIPNAMEVAL" class="java.lang.String"/>
+	<field name="EQUIPNOVAL" class="java.lang.String"/>
+	<field name="TOOLDESCVAL" class="java.lang.String"/>
+	<field name="TOOLNOVAL" class="java.lang.String"/>
+	<field name="MAKERVAL" class="java.lang.String"/>
+	<field name="MODELVAL" class="java.lang.String"/>
+	<field name="SERIALNOVAL" class="java.lang.String"/>
+	<field name="TOLERANCE" class="java.lang.String"/>
+	<field name="CALTYPEVAL" class="java.lang.String"/>
+	<field name="WKORDATEVAL" class="java.lang.String"/>
+	<field name="PERFORMVAL" class="java.lang.String"/>
+	<field name="CALRESSTAT" class="java.lang.String"/>
+	<field name="CALRSLTSTATVAL" class="java.lang.String"/>
+	<field name="REMARK" class="java.lang.String"/>
+	<field name="CALENVVAL" class="java.lang.String"/>
+	<field name="USEDCALIBEQ" class="java.lang.String"/>
+	<field name="USE" class="java.lang.String"/>
+	<field name="CALIBEQ" class="java.lang.String"/>
+	<field name="CALIBEQNO" class="java.lang.String"/>
+	<field name="CALIBRSTNO" class="java.lang.String"/>
+	<field name="NEXTPLANDATE" class="java.lang.String"/>
+	<field name="MINUNITVALUE" class="java.lang.String"/>
+	<field name="CALIBRANGE" class="java.lang.String"/>
+	<field name="USERANGE" class="java.lang.String"/>
+	<field name="NEXTPLANCALDATEVAL" class="java.lang.String"/>
+	<field name="MANAGER" class="java.lang.String"/>
+	<field name="NAME" class="java.lang.String"/>
+	<field name="DATELABEL" class="java.lang.String"/>
+	<field name="MANAGERVAL" class="java.lang.String"/>
+	<field name="UOM" class="java.lang.String"/>
+	<field name="LINEARITY" class="java.lang.String"/>
+	<field name="INCREASE" class="java.lang.String"/>
+	<field name="DOWN" class="java.lang.String"/>
+	<field name="ECCENTRICITYERROR" class="java.lang.String"/>
+	<field name="CENTER" class="java.lang.String"/>
+	<field name="BEFORE" class="java.lang.String"/>
+	<field name="AFTER" class="java.lang.String"/>
+	<field name="LEFT" class="java.lang.String"/>
+	<field name="RIGHT" class="java.lang.String"/>
+	<field name="PRECISION" class="java.lang.String"/>
+	<field name="LIVALUE0" class="java.lang.String"/>
+	<field name="LIVALUE25" class="java.lang.String"/>
+	<field name="LIVALUE50" class="java.lang.String"/>
+	<field name="LIVALUE75" class="java.lang.String"/>
+	<field name="LIVALUE100" class="java.lang.String"/>
+	<field name="LDVALUE75" class="java.lang.String"/>
+	<field name="LDVALUE50" class="java.lang.String"/>
+	<field name="LDVALUE25" class="java.lang.String"/>
+	<field name="LDVALUE0" class="java.lang.String"/>
+	<field name="ECNTRVALUE" class="java.lang.String"/>
+	<field name="EBEFVALUE" class="java.lang.String"/>
+	<field name="EAFTVALUE" class="java.lang.String"/>
+	<field name="ELFTVALUE" class="java.lang.String"/>
+	<field name="ERIGVALUE" class="java.lang.String"/>
+	<field name="DEGREE1" class="java.lang.String"/>
+	<field name="DEGREE2" class="java.lang.String"/>
+	<field name="DEGREE3" class="java.lang.String"/>
+	<field name="CALTYPE" class="java.lang.String"/>
+	<field name="VALUE" class="java.lang.String"/>
+	<field name="OPENDATEVAL" class="java.lang.String"/>
+	<field name="CLOSEBYVAL" class="java.lang.String"/>
+	<field name="CLOSEDATEVAL" class="java.lang.String"/>
+	<field name="FORMINFO" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="26" splitType="Stretch">
+			<textField>
+				<reportElement x="180" y="0" width="214" height="26" uuid="b30fa137-5693-4263-acdc-12f960c8f5c4"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" isBold="true" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA["저울 교정 결과서"]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="521" splitType="Stretch">
+			<frame>
+				<reportElement x="33" y="16" width="491" height="175" uuid="a665818c-f7e5-442d-b372-0a8e82ba691f"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="0" y="25" width="101" height="25" uuid="010537d3-edd5-4ec3-832e-2ceb5770f0ab"/>
+					<box>
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.25"/>
+						<leftPen lineWidth="0.25"/>
+						<bottomPen lineWidth="0.25"/>
+						<rightPen lineWidth="0.25"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+					</textElement>
+					<textFieldExpression><![CDATA["제작처/모델"]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="0" y="50" width="101" height="25" uuid="66f9264a-39d6-4bf4-9e8b-ed60fd22dc3f"/>
+					<box>
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.25"/>
+						<leftPen lineWidth="0.25"/>
+						<bottomPen lineWidth="0.25"/>
+						<rightPen lineWidth="0.25"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+					</textElement>
+					<textFieldExpression><![CDATA["위치"]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="0" y="75" width="101" height="25" uuid="adcdc27e-e576-40ef-a5bc-7dadd4232664"/>
+					<box>
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.25"/>
+						<leftPen lineWidth="0.25"/>
+						<bottomPen lineWidth="0.25"/>
+						<rightPen lineWidth="0.25"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+					</textElement>
+					<textFieldExpression><![CDATA["전체범위"]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="245" y="100" width="101" height="25" uuid="efcfb63f-921b-40be-9459-f894cbd634cd"/>
+					<box>
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.25"/>
+						<leftPen lineWidth="0.25"/>
+						<bottomPen lineWidth="0.25"/>
+						<rightPen lineWidth="0.25"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+					</textElement>
+					<textFieldExpression><![CDATA["교정사유"]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="0" y="125" width="101" height="25" uuid="d294583c-7b4d-42d0-b24c-87a267441954"/>
+					<box>
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.25"/>
+						<leftPen lineWidth="0.25"/>
+						<bottomPen lineWidth="0.25"/>
+						<rightPen lineWidth="0.25"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+					</textElement>
+					<textFieldExpression><![CDATA["교정일자"]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="0" y="150" width="101" height="25" uuid="e1ea40d0-642f-468b-a749-bf0c722db564"/>
+					<box>
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.25"/>
+						<leftPen lineWidth="0.25"/>
+						<bottomPen lineWidth="0.25"/>
+						<rightPen lineWidth="0.25"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+					</textElement>
+					<textFieldExpression><![CDATA["실 시 방 법"]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="101" y="50" width="144" height="25" uuid="6cd4d6b7-063b-459c-af9a-37811473c42a"/>
+					<box>
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.25"/>
+						<leftPen lineWidth="0.25"/>
+						<bottomPen lineWidth="0.25"/>
+						<rightPen lineWidth="0.25"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{LOCATIONVAL}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="101" y="25" width="144" height="25" uuid="4bf3bcb1-1787-400f-8c29-58ad97500e8b"/>
+					<box>
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.25"/>
+						<leftPen lineWidth="0.25"/>
+						<bottomPen lineWidth="0.25"/>
+						<rightPen lineWidth="0.25"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{MAKERVAL}+" / "+$F{MODELVAL}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="101" y="75" width="144" height="25" uuid="7d35bc6b-8b8c-4edd-9f3a-b2a5a3679b9f"/>
+					<box>
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.25"/>
+						<leftPen lineWidth="0.25"/>
+						<bottomPen lineWidth="0.25"/>
+						<rightPen lineWidth="0.25"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{CALIBRANGE}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="346" y="100" width="145" height="25" uuid="3872e893-5d80-4130-9519-23a8c2a7a9c3"/>
+					<box>
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.25"/>
+						<leftPen lineWidth="0.25"/>
+						<bottomPen lineWidth="0.25"/>
+						<rightPen lineWidth="0.25"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{CALTYPEVAL}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="101" y="125" width="144" height="25" uuid="8b525fad-433e-483b-aa34-f61255fdce80"/>
+					<box>
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.25"/>
+						<leftPen lineWidth="0.25"/>
+						<bottomPen lineWidth="0.25"/>
+						<rightPen lineWidth="0.25"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{WKORDATEVAL}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="0" y="0" width="101" height="25" uuid="1e20b5e1-d470-45f9-aabf-1e19b1cf0f9e"/>
+					<box>
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.25"/>
+						<leftPen lineWidth="0.25"/>
+						<bottomPen lineWidth="0.25"/>
+						<rightPen lineWidth="0.25"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+					</textElement>
+					<textFieldExpression><![CDATA["설비명/설비번호"]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="245" y="0" width="101" height="25" uuid="f0f2293e-b377-4489-bcd2-e4e07e49a233"/>
+					<box>
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.25"/>
+						<leftPen lineWidth="0.25"/>
+						<bottomPen lineWidth="0.25"/>
+						<rightPen lineWidth="0.25"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+					</textElement>
+					<textFieldExpression><![CDATA["계측기 번호"]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="245" y="50" width="101" height="25" uuid="1773e020-9b5e-4ea7-8986-f0152b3d4b05"/>
+					<box>
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.25"/>
+						<leftPen lineWidth="0.25"/>
+						<bottomPen lineWidth="0.25"/>
+						<rightPen lineWidth="0.25"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+					</textElement>
+					<textFieldExpression><![CDATA["최소눈금"]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="245" y="125" width="101" height="25" uuid="a8ed7b64-914f-4009-afd9-c8458dc26aa4"/>
+					<box>
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.25"/>
+						<leftPen lineWidth="0.25"/>
+						<bottomPen lineWidth="0.25"/>
+						<rightPen lineWidth="0.25"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+					</textElement>
+					<textFieldExpression><![CDATA["차기 교정일"]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="101" y="0" width="144" height="25" uuid="e14fa3da-c67e-4223-9db7-4ba68c8e0543"/>
+					<box>
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.25"/>
+						<leftPen lineWidth="0.25"/>
+						<bottomPen lineWidth="0.25"/>
+						<rightPen lineWidth="0.25"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{EQUIPNAMEVAL}+" / "+$F{EQUIPNOVAL}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="346" y="0" width="145" height="25" uuid="3536c7b1-4edf-47d1-ab7d-d1427bec23ef"/>
+					<box>
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.25"/>
+						<leftPen lineWidth="0.25"/>
+						<bottomPen lineWidth="0.25"/>
+						<rightPen lineWidth="0.25"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{TOOLNOVAL}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="346" y="50" width="145" height="25" uuid="2fa2a167-9eec-4293-8ccd-e796b617b473"/>
+					<box>
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.25"/>
+						<leftPen lineWidth="0.25"/>
+						<bottomPen lineWidth="0.25"/>
+						<rightPen lineWidth="0.25"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{MINUNITVALUE}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="346" y="125" width="145" height="25" uuid="800423ee-6f5d-446e-a582-651eb32ccc7c"/>
+					<box>
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.25"/>
+						<leftPen lineWidth="0.25"/>
+						<bottomPen lineWidth="0.25"/>
+						<rightPen lineWidth="0.25"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{NEXTPLANCALDATEVAL}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="101" y="150" width="390" height="25" uuid="4507dab0-f7f4-428a-ac81-773b4868489e"/>
+					<box>
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.25"/>
+						<leftPen lineWidth="0.25"/>
+						<bottomPen lineWidth="0.25"/>
+						<rightPen lineWidth="0.25"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+					</textElement>
+					<textFieldExpression><![CDATA["1. 교정방법은 \"저울 사용 및 교정방법(HVQ03-005)\"에 따라 실시한다."]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="245" y="25" width="101" height="25" uuid="aebeed0b-738b-4aa1-bfd1-ece27603d322"/>
+					<box>
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.25"/>
+						<leftPen lineWidth="0.25"/>
+						<bottomPen lineWidth="0.25"/>
+						<rightPen lineWidth="0.25"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+					</textElement>
+					<textFieldExpression><![CDATA["기기번호"]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="346" y="25" width="145" height="25" uuid="9729a227-9c06-4e1c-8bff-d51757e2971b"/>
+					<box>
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.25"/>
+						<leftPen lineWidth="0.25"/>
+						<bottomPen lineWidth="0.25"/>
+						<rightPen lineWidth="0.25"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{SERIALNOVAL}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="101" y="100" width="144" height="25" uuid="374373d1-4f5a-4b7f-a1cc-cea85d4b72ef"/>
+					<box>
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.25"/>
+						<leftPen lineWidth="0.25"/>
+						<bottomPen lineWidth="0.25"/>
+						<rightPen lineWidth="0.25"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{TOLERANCE}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="0" y="100" width="101" height="25" uuid="073392c0-5495-46cd-9c20-184b14cf1ea4"/>
+					<box>
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.25"/>
+						<leftPen lineWidth="0.25"/>
+						<bottomPen lineWidth="0.25"/>
+						<rightPen lineWidth="0.25"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+					</textElement>
+					<textFieldExpression><![CDATA["허용오차"]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="346" y="75" width="145" height="25" uuid="d72bb6d2-694a-4766-bac4-461cf34c5ae2"/>
+					<box>
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.25"/>
+						<leftPen lineWidth="0.25"/>
+						<bottomPen lineWidth="0.25"/>
+						<rightPen lineWidth="0.25"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{USERANGE}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="245" y="75" width="101" height="25" uuid="f0822509-6e3b-4c20-995e-f71390b68708"/>
+					<box>
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.25"/>
+						<leftPen lineWidth="0.25"/>
+						<bottomPen lineWidth="0.25"/>
+						<rightPen lineWidth="0.25"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+					</textElement>
+					<textFieldExpression><![CDATA["교정범위"]]></textFieldExpression>
+				</textField>
+			</frame>
+			<componentElement>
+				<reportElement key="table" style="table" positionType="Float" x="33" y="191" width="491" height="10" uuid="042ac297-d29c-4854-9d37-1dc9d4f0831f"/>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" whenNoDataType="AllSectionsNoDetail">
+					<datasetRun subDataset="CALIB_STD_EQ_LIST" uuid="ecfe4d86-d521-4caf-94cc-455f78a84858">
+						<datasetParameter name="CALIBEQ">
+							<datasetParameterExpression><![CDATA[$F{CALIBEQ}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="CALIBEQNO">
+							<datasetParameterExpression><![CDATA[$F{CALIBEQNO}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="CALIBRSTNO">
+							<datasetParameterExpression><![CDATA[$F{CALIBRSTNO}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="NEXTPLANDATE">
+							<datasetParameterExpression><![CDATA[$F{NEXTPLANDATE}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="USEDCALIBEQ">
+							<datasetParameterExpression><![CDATA[$F{USEDCALIBEQ}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="USE">
+							<datasetParameterExpression><![CDATA[$F{USE}]]></datasetParameterExpression>
+						</datasetParameter>
+						<dataSourceExpression><![CDATA[((net.sf.jasperreports.engine.data.JsonDataSource)$P{REPORT_DATA_SOURCE}).subDataSource("CALIB_STD_EQ_LIST")]]></dataSourceExpression>
+					</datasetRun>
+					<jr:column width="101" uuid="977414d1-5779-4b16-b246-cc98c0104b3f">
+						<jr:columnHeader height="22" rowSpan="1"/>
+						<jr:detailCell height="21" rowSpan="1">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement x="0" y="0" width="101" height="21" uuid="581fc2f3-a5c9-46d7-9ec5-7e12b8c9cc60"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{TEXT}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="37" uuid="c4479480-35a0-4d02-aa27-c4bc54b902c9">
+						<jr:columnHeader style="table_CH" height="22" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="37" height="22" uuid="f9c469db-9bd6-4285-9453-41d474815dd9"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+								</textElement>
+								<textFieldExpression><![CDATA["사용"]]></textFieldExpression>
+							</textField>
+						</jr:columnHeader>
+						<jr:detailCell style="table_TD" height="21" rowSpan="1">
+							<rectangle>
+								<reportElement x="16" y="8" width="6" height="6" uuid="78ddb1d5-4b6e-4506-aa9d-3131f383f7ed"/>
+							</rectangle>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="97" uuid="5d2474a6-d564-4b06-abc3-359a22922b2d">
+						<jr:columnHeader style="table_CH" height="22" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="97" height="22" uuid="b8a5b542-45b8-4643-966f-a24dd8067d8a"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+								</textElement>
+								<textFieldExpression><![CDATA["표준장비명"]]></textFieldExpression>
+							</textField>
+						</jr:columnHeader>
+						<jr:detailCell style="table_TD" height="21" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="97" height="21" uuid="1342b0c5-4ed3-4550-99d3-984552b6efc6"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{CALIBEQVAL}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="121" uuid="56e9ba07-0fb7-49c0-b4b5-b4499a8fe159">
+						<jr:columnHeader style="table_CH" height="22" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="121" height="22" uuid="f051ecfa-fd33-4798-bea8-49403d71e8f0"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+								</textElement>
+								<textFieldExpression><![CDATA["표준장비 번호"]]></textFieldExpression>
+							</textField>
+						</jr:columnHeader>
+						<jr:detailCell style="table_TD" height="21" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="121" height="21" uuid="edf59b28-f310-48f9-8438-3d59c345af23"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{CALIBEQNOVAL}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="66" uuid="6522cc63-2b12-4f84-963a-082bce9316d0">
+						<jr:columnHeader style="table_CH" height="22" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="66" height="22" uuid="a7d8a119-36f8-4fab-9905-6d41710c8305"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+								</textElement>
+								<textFieldExpression><![CDATA["교정 성적서 번호"]]></textFieldExpression>
+							</textField>
+						</jr:columnHeader>
+						<jr:detailCell style="table_TD" height="21" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="66" height="21" uuid="36c1efcf-caba-40aa-8f7f-17d06e373834"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{CALIBRSTNOVAL}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="69" uuid="a16680c1-7217-4553-b848-5aecf268e61d">
+						<jr:columnHeader style="table_CH" height="22" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="69" height="22" uuid="3030f86d-fab2-4475-8661-c9789b6aa55c"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+								</textElement>
+								<textFieldExpression><![CDATA["차기 교정일"]]></textFieldExpression>
+							</textField>
+						</jr:columnHeader>
+						<jr:detailCell style="table_TD" height="21" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="69" height="21" uuid="45783b13-f08c-4956-83e2-90e2b0ae70af"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{NEXTPLANDATEVAL}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+				</jr:table>
+			</componentElement>
+			<frame>
+				<reportElement positionType="Float" x="33" y="201" width="491" height="200" uuid="5c944df7-0d76-4961-9aa1-9ee8a28d9455"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="0" y="0" width="101" height="25" uuid="659b8b47-47f5-40ce-9be2-dc28c951d8f9"/>
+					<box>
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.25"/>
+						<leftPen lineWidth="0.25"/>
+						<bottomPen lineWidth="0.25"/>
+						<rightPen lineWidth="0.25"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+					</textElement>
+					<textFieldExpression><![CDATA["검사항목"]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="101" y="0" width="390" height="25" uuid="76d82e32-c685-4158-969b-69cf6d122887"/>
+					<box>
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.25"/>
+						<leftPen lineWidth="0.25"/>
+						<bottomPen lineWidth="0.25"/>
+						<rightPen lineWidth="0.25"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+					</textElement>
+					<textFieldExpression><![CDATA["지 시 값 (단위 : "+$F{UOM}+" )"]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="0" y="25" width="101" height="100" uuid="818ad47a-8d70-4151-8180-496420d5a7ff"/>
+					<box>
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.25"/>
+						<leftPen lineWidth="0.25"/>
+						<bottomPen lineWidth="0.25"/>
+						<rightPen lineWidth="0.25"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+					</textElement>
+					<textFieldExpression><![CDATA["직선성"]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="0" y="125" width="101" height="50" uuid="b85e329a-d932-49dc-ad65-ce905c72f39c"/>
+					<box>
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.25"/>
+						<leftPen lineWidth="0.25"/>
+						<bottomPen lineWidth="0.25"/>
+						<rightPen lineWidth="0.25"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+					</textElement>
+					<textFieldExpression><![CDATA["편심 오차"]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="0" y="175" width="101" height="25" uuid="76119b8a-65df-4383-86b0-ac14d6ff4121"/>
+					<box>
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.25"/>
+						<leftPen lineWidth="0.25"/>
+						<bottomPen lineWidth="0.25"/>
+						<rightPen lineWidth="0.25"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+					</textElement>
+					<textFieldExpression><![CDATA["정밀도"]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="101" y="25" width="35" height="50" uuid="b162277f-e214-433a-b54c-f144a150bd2a"/>
+					<box>
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.25"/>
+						<leftPen lineWidth="0.25"/>
+						<bottomPen lineWidth="0.25"/>
+						<rightPen lineWidth="0.25"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+					</textElement>
+					<textFieldExpression><![CDATA["증\n가"]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="101" y="75" width="35" height="50" uuid="1af5aac1-bddc-4e6f-8c1e-476dc6d7301f"/>
+					<box>
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.25"/>
+						<leftPen lineWidth="0.25"/>
+						<bottomPen lineWidth="0.25"/>
+						<rightPen lineWidth="0.25"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+					</textElement>
+					<textFieldExpression><![CDATA["감\n소"]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="136" y="25" width="71" height="25" uuid="01cd2750-9816-4ad7-99b5-e28bd6348cfa"/>
+					<box>
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.25"/>
+						<leftPen lineWidth="0.25"/>
+						<bottomPen lineWidth="0.25"/>
+						<rightPen lineWidth="0.25"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+					</textElement>
+					<text><![CDATA[0%]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="207" y="25" width="71" height="25" uuid="85168b1c-e869-4a61-87c1-0fa710e2eeb3"/>
+					<box>
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.25"/>
+						<leftPen lineWidth="0.25"/>
+						<bottomPen lineWidth="0.25"/>
+						<rightPen lineWidth="0.25"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+					</textElement>
+					<text><![CDATA[25%]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="278" y="25" width="71" height="25" uuid="fd393fdb-e412-4991-a151-7a0b4d019ca0"/>
+					<box>
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.25"/>
+						<leftPen lineWidth="0.25"/>
+						<bottomPen lineWidth="0.25"/>
+						<rightPen lineWidth="0.25"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+					</textElement>
+					<text><![CDATA[50%]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="349" y="25" width="71" height="25" uuid="43ca6fb4-f639-439b-b3ba-652364ac0537"/>
+					<box>
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.25"/>
+						<leftPen lineWidth="0.25"/>
+						<bottomPen lineWidth="0.25"/>
+						<rightPen lineWidth="0.25"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+					</textElement>
+					<text><![CDATA[75%]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="420" y="25" width="71" height="25" uuid="6d035910-ab69-4510-88d8-8057678e3c2d"/>
+					<box>
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.25"/>
+						<leftPen lineWidth="0.25"/>
+						<bottomPen lineWidth="0.25"/>
+						<rightPen lineWidth="0.25"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+					</textElement>
+					<text><![CDATA[100%]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="349" y="50" width="71" height="25" uuid="8ab12b60-7ae8-45a2-acbc-97ad4da9914f"/>
+					<box>
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.25"/>
+						<leftPen lineWidth="0.25"/>
+						<bottomPen lineWidth="0.25"/>
+						<rightPen lineWidth="0.25"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{LIVALUE75}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="420" y="50" width="71" height="25" uuid="8dda2d13-004c-43fd-a145-c6e54cec0ca5"/>
+					<box>
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.25"/>
+						<leftPen lineWidth="0.25"/>
+						<bottomPen lineWidth="0.25"/>
+						<rightPen lineWidth="0.25"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{LIVALUE100}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="207" y="50" width="71" height="25" uuid="6be8da92-9b21-415e-ab47-6ed8b1d4c906"/>
+					<box>
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.25"/>
+						<leftPen lineWidth="0.25"/>
+						<bottomPen lineWidth="0.25"/>
+						<rightPen lineWidth="0.25"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{LIVALUE25}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="136" y="50" width="71" height="25" uuid="e4de763c-fed6-4921-9318-afd7d1d7df54"/>
+					<box>
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.25"/>
+						<leftPen lineWidth="0.25"/>
+						<bottomPen lineWidth="0.25"/>
+						<rightPen lineWidth="0.25"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{LIVALUE0}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="278" y="50" width="71" height="25" uuid="034d5673-1d34-495b-8269-066c06834b98"/>
+					<box>
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.25"/>
+						<leftPen lineWidth="0.25"/>
+						<bottomPen lineWidth="0.25"/>
+						<rightPen lineWidth="0.25"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{LIVALUE50}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="136" y="75" width="88" height="25" uuid="bf46ef7d-4a2d-4c4c-9bb6-0bb213e06a7d"/>
+					<box>
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.25"/>
+						<leftPen lineWidth="0.25"/>
+						<bottomPen lineWidth="0.25"/>
+						<rightPen lineWidth="0.25"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+					</textElement>
+					<text><![CDATA[75%]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="224" y="75" width="89" height="25" uuid="d9b89756-8f2c-4b68-ba03-6bc84409eb51"/>
+					<box>
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.25"/>
+						<leftPen lineWidth="0.25"/>
+						<bottomPen lineWidth="0.25"/>
+						<rightPen lineWidth="0.25"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+					</textElement>
+					<text><![CDATA[50%]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="313" y="75" width="89" height="25" uuid="7706d636-0294-4c2d-936a-2025687f43a9"/>
+					<box>
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.25"/>
+						<leftPen lineWidth="0.25"/>
+						<bottomPen lineWidth="0.25"/>
+						<rightPen lineWidth="0.25"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+					</textElement>
+					<text><![CDATA[25%]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="402" y="75" width="89" height="25" uuid="a5fb10c1-278a-4f9d-840a-692265e9edbc"/>
+					<box>
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.25"/>
+						<leftPen lineWidth="0.25"/>
+						<bottomPen lineWidth="0.25"/>
+						<rightPen lineWidth="0.25"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+					</textElement>
+					<text><![CDATA[0%]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="313" y="100" width="89" height="25" uuid="84fd6c03-aca3-422e-8e18-0b24c9b66ce4"/>
+					<box>
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.25"/>
+						<leftPen lineWidth="0.25"/>
+						<bottomPen lineWidth="0.25"/>
+						<rightPen lineWidth="0.25"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{LDVALUE25}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="224" y="100" width="89" height="25" uuid="564d7a4d-4b6f-4a60-a911-e36ee64e4fce"/>
+					<box>
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.25"/>
+						<leftPen lineWidth="0.25"/>
+						<bottomPen lineWidth="0.25"/>
+						<rightPen lineWidth="0.25"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{LDVALUE50}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="136" y="100" width="88" height="25" uuid="737c8a2b-518d-4c27-b744-38d6d7ed09fc"/>
+					<box>
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.25"/>
+						<leftPen lineWidth="0.25"/>
+						<bottomPen lineWidth="0.25"/>
+						<rightPen lineWidth="0.25"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{LDVALUE75}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="402" y="100" width="89" height="25" uuid="11e67406-d87f-47e9-9c6a-7027fc86f3c1"/>
+					<box>
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.25"/>
+						<leftPen lineWidth="0.25"/>
+						<bottomPen lineWidth="0.25"/>
+						<rightPen lineWidth="0.25"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{LDVALUE0}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="349" y="125" width="71" height="25" uuid="441df5af-c6ea-4260-8231-2713a7b41ff8"/>
+					<box>
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.25"/>
+						<leftPen lineWidth="0.25"/>
+						<bottomPen lineWidth="0.25"/>
+						<rightPen lineWidth="0.25"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+					</textElement>
+					<textFieldExpression><![CDATA["좌"]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="207" y="125" width="71" height="25" uuid="aa90690f-5173-4fab-a961-b87e8f57f96e"/>
+					<box>
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.25"/>
+						<leftPen lineWidth="0.25"/>
+						<bottomPen lineWidth="0.25"/>
+						<rightPen lineWidth="0.25"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+					</textElement>
+					<textFieldExpression><![CDATA["전"]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="101" y="125" width="106" height="25" uuid="d825ed39-efef-4bf0-bfe3-cab9c30fa5fd"/>
+					<box>
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.25"/>
+						<leftPen lineWidth="0.25"/>
+						<bottomPen lineWidth="0.25"/>
+						<rightPen lineWidth="0.25"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+					</textElement>
+					<textFieldExpression><![CDATA["중 앙"]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="420" y="125" width="71" height="25" uuid="48f20ab8-e564-4748-8f79-bd6aad8265d7"/>
+					<box>
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.25"/>
+						<leftPen lineWidth="0.25"/>
+						<bottomPen lineWidth="0.25"/>
+						<rightPen lineWidth="0.25"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+					</textElement>
+					<textFieldExpression><![CDATA["우"]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="278" y="125" width="71" height="25" uuid="337a99be-35df-4c14-a6c5-41ad510a24b2"/>
+					<box>
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.25"/>
+						<leftPen lineWidth="0.25"/>
+						<bottomPen lineWidth="0.25"/>
+						<rightPen lineWidth="0.25"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+					</textElement>
+					<textFieldExpression><![CDATA["후"]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="420" y="150" width="71" height="25" uuid="93df4eff-eeca-4dc7-99a6-916f4eaa68ef"/>
+					<box>
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.25"/>
+						<leftPen lineWidth="0.25"/>
+						<bottomPen lineWidth="0.25"/>
+						<rightPen lineWidth="0.25"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{ERIGVALUE}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="349" y="150" width="71" height="25" uuid="e0388679-9ed4-43c6-b912-367bdf5afa17"/>
+					<box>
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.25"/>
+						<leftPen lineWidth="0.25"/>
+						<bottomPen lineWidth="0.25"/>
+						<rightPen lineWidth="0.25"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{ELFTVALUE}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="101" y="150" width="106" height="25" uuid="3dcd4d11-92a1-43cc-97d1-84ef85d2d909"/>
+					<box>
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.25"/>
+						<leftPen lineWidth="0.25"/>
+						<bottomPen lineWidth="0.25"/>
+						<rightPen lineWidth="0.25"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{ECNTRVALUE}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="207" y="150" width="71" height="25" uuid="81afb779-635e-4865-a5ec-c29c2619174d"/>
+					<box>
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.25"/>
+						<leftPen lineWidth="0.25"/>
+						<bottomPen lineWidth="0.25"/>
+						<rightPen lineWidth="0.25"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{EBEFVALUE}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="278" y="150" width="71" height="25" uuid="cdd9f7b1-6a0c-4266-a417-f3b8aabea71b"/>
+					<box>
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.25"/>
+						<leftPen lineWidth="0.25"/>
+						<bottomPen lineWidth="0.25"/>
+						<rightPen lineWidth="0.25"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{EAFTVALUE}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="101" y="175" width="130" height="25" uuid="9026835f-0eac-4585-b6b7-3fddafd55657"/>
+					<box>
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.25"/>
+						<leftPen lineWidth="0.25"/>
+						<bottomPen lineWidth="0.25"/>
+						<rightPen lineWidth="0.25"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{DEGREE1}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="231" y="175" width="130" height="25" uuid="5998d6b2-0845-4979-899b-480e31d2b925"/>
+					<box>
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.25"/>
+						<leftPen lineWidth="0.25"/>
+						<bottomPen lineWidth="0.25"/>
+						<rightPen lineWidth="0.25"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{DEGREE2}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="361" y="175" width="130" height="25" uuid="54c2f83d-31a8-43b9-b3e7-d6e61a2d6999"/>
+					<box>
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.25"/>
+						<leftPen lineWidth="0.25"/>
+						<bottomPen lineWidth="0.25"/>
+						<rightPen lineWidth="0.25"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{DEGREE3}]]></textFieldExpression>
+				</textField>
+			</frame>
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" x="33" y="401" width="491" height="29" uuid="96251996-d1fd-4081-a9ad-b9cc2f48dd76"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font isBold="false" isUnderline="false" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA["교정 결과  종합 판정: "+$F{CALRSLTSTATVAL}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" x="33" y="430" width="491" height="28" uuid="4a8bd29e-0594-4eea-ad66-79ef49ff5516"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement>
+					<font isBold="false" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA["의견: "+$F{PERFORMVAL}]]></textFieldExpression>
+			</textField>
+			<frame>
+				<reportElement positionType="Float" x="33" y="458" width="491" height="28" uuid="059b29fa-cdec-47d3-b983-8de7e2f20b9c"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="1" y="0" width="69" height="28" uuid="ea514b7b-41ec-4f19-b69a-78fa5fbf3672"/>
+					<textElement verticalAlignment="Middle">
+						<font isBold="false" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+					</textElement>
+					<textFieldExpression><![CDATA["교정 담당자"]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="70" y="0" width="53" height="28" uuid="ae6c70e3-da2f-4cd9-9eb0-485f24e49e6c"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font isBold="false" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+					</textElement>
+					<textFieldExpression><![CDATA["성명"]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="123" y="0" width="101" height="28" uuid="dbff62c0-da7e-49a7-8ead-92639273ab6b"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="false" isUnderline="false" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{MANAGERVAL}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="224" y="0" width="40" height="28" uuid="d24ada01-b78c-4a0c-a245-39c799f0ae89"/>
+					<textElement verticalAlignment="Middle">
+						<font isBold="false" isUnderline="false" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+					</textElement>
+					<textFieldExpression><![CDATA["(인)"]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="264" y="0" width="38" height="28" uuid="06f5dd8a-0cc0-4016-a8b1-f24bde534a5e"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font isBold="false" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+					</textElement>
+					<textFieldExpression><![CDATA["날짜"]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="302" y="0" width="118" height="28" uuid="2e859795-892d-4f3c-9723-ca5f7cf29246"/>
+					<box>
+						<pen lineWidth="0.0"/>
+						<topPen lineWidth="0.0"/>
+						<leftPen lineWidth="0.0"/>
+						<bottomPen lineWidth="0.0"/>
+						<rightPen lineWidth="0.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="false" isUnderline="false" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{OPENDATEVAL}]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement x="123" y="21" width="122" height="1" uuid="3908e93b-3c71-4d7b-b28b-f6330557ece5"/>
+				</line>
+				<line>
+					<reportElement x="320" y="20" width="100" height="1" uuid="ada9f96d-a693-448b-ba92-e6c450ffe725"/>
+				</line>
+			</frame>
+			<frame>
+				<reportElement positionType="Float" x="33" y="486" width="491" height="28" uuid="7c7896d5-f3df-43af-9630-f5e7b93c6023"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="123" y="0" width="101" height="28" uuid="ae6f2ed9-3f53-46c4-a2fd-fa4c2bf51a34"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="false" isUnderline="false" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{CLOSEBYVAL}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="224" y="0" width="40" height="28" uuid="b7fd1375-02bb-429f-8a8e-9072e7ef2b5f"/>
+					<textElement verticalAlignment="Middle">
+						<font isBold="false" isUnderline="false" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+					</textElement>
+					<textFieldExpression><![CDATA["(인)"]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="70" y="0" width="53" height="28" uuid="b4cea247-7dbe-42cf-a9e4-9d0eea1d1c46"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font isBold="false" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+					</textElement>
+					<textFieldExpression><![CDATA["성명"]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="302" y="0" width="118" height="28" uuid="d88b47e1-fbbb-4046-b0ee-f9ee6b4166a0"/>
+					<box>
+						<pen lineWidth="0.0"/>
+						<topPen lineWidth="0.0"/>
+						<leftPen lineWidth="0.0"/>
+						<bottomPen lineWidth="0.0"/>
+						<rightPen lineWidth="0.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="false" isUnderline="false" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{CLOSEDATEVAL}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="0" y="0" width="69" height="28" uuid="f1ced01f-207e-4f49-a3e2-8f8f2f38aa60"/>
+					<textElement verticalAlignment="Middle">
+						<font isBold="false" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+					</textElement>
+					<textFieldExpression><![CDATA["교정 확인자"]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="264" y="0" width="38" height="28" uuid="5fe095f8-3ea6-456a-ada4-ce3299c0bdc5"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font isBold="false" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H"/>
+					</textElement>
+					<textFieldExpression><![CDATA["날짜"]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement x="123" y="21" width="122" height="1" uuid="18cea208-df79-4624-8edd-f88ec635a845"/>
+				</line>
+				<line>
+					<reportElement x="320" y="20" width="100" height="1" uuid="2ff4d545-859a-4b5a-a43f-928c11d65ab6"/>
+				</line>
+			</frame>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="21">
+			<line>
+				<reportElement positionType="Float" x="33" y="0" width="491" height="1" uuid="28baa8b2-99a3-411c-8800-13c5124cc715"/>
+			</line>
+			<textField>
+				<reportElement positionType="Float" x="435" y="0" width="89" height="15" uuid="a86426c3-91b6-4a50-a9b0-1da44c787186"/>
+				<textElement textAlignment="Right">
+					<font isBold="true" isItalic="true" pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["CONFIDENTIAL"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="33" y="0" width="254" height="15" uuid="2f2339bf-9bdf-4855-a602-f19b5be21054"/>
+				<textElement>
+					<font pdfFontName="HYGoThic-Medium" pdfEncoding="UniKS-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Form info.: "+$F{FORMINFO}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>

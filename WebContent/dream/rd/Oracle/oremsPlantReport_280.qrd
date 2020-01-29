@@ -1,0 +1,258 @@
+$
+	SELECT 
+         TO_CHAR(to_date('^param4'||'01','yyyy-mmdd'), ' YYYY / MONTH', 'NLS_DATE_LANGUAGE=KOREAN') yyyymm
+        ,TO_CHAR(sysdate,'yyyy. mm. dd') yyyymmdd
+        ,(SELECT a.description FROM TACOMP a WHERE a.comp_no = '^param1') as comp
+from dual
+/
+$
+SELECT 
+           substr( x.wkor_date,7,2) wkorDate
+            ,NVL(ROUND(SUM(DECODE(x.dept_id,1112,DECODE(x.wo_status,'C',1,0),0)) / CASE SUM(DECODE(x.dept_id,1112,1,0)) WHEN 0 THEN null ELSE SUM(DECODE(x.dept_id,1112,1,0))  END * 100 ,2),0) AS product1
+            ,NVL(ROUND(SUM(DECODE(x.dept_id,1113,DECODE(x.wo_status,'C',1,0),0)) / CASE SUM(DECODE(x.dept_id,1113,1,0)) WHEN 0 THEN null ELSE SUM(DECODE(x.dept_id,1113,1,0))  END * 100 ,2),0) AS product2
+            ,NVL(ROUND(SUM(DECODE(x.dept_id,1114,DECODE(x.wo_status,'C',1,0),0)) / CASE SUM(DECODE(x.dept_id,1114,1,0)) WHEN 0 THEN null ELSE SUM(DECODE(x.dept_id,1114,1,0))  END * 100 ,2),0) AS product3
+            ,NVL(ROUND(SUM(DECODE(x.dept_id,1116,DECODE(x.wo_status,'C',1,0),0)) / CASE SUM(DECODE(x.dept_id,1116,1,0)) WHEN 0 THEN null ELSE SUM(DECODE(x.dept_id,1116,1,0))  END * 100 ,2),0) AS product4
+            ,NVL(ROUND(SUM(DECODE(x.dept_id,1117,DECODE(x.wo_status,'C',1,0),0)) / CASE SUM(DECODE(x.dept_id,1117,1,0)) WHEN 0 THEN null ELSE SUM(DECODE(x.dept_id,1117,1,0))  END * 100 ,2),0) AS product5
+            ,NVL(ROUND(SUM(DECODE(x.dept_id,1122,DECODE(x.wo_status,'C',1,0),0)) / CASE SUM(DECODE(x.dept_id,1122,1,0)) WHEN 0 THEN null ELSE SUM(DECODE(x.dept_id,1122,1,0))  END * 100 ,2),0) AS product6
+            ,NVL(ROUND(SUM(DECODE(x.dept_id,1124,DECODE(x.wo_status,'C',1,0),0)) / CASE SUM(DECODE(x.dept_id,1124,1,0)) WHEN 0 THEN null ELSE SUM(DECODE(x.dept_id,1124,1,0))  END * 100 ,2),0) AS product7
+            ,NVL(ROUND(SUM(DECODE(x.dept_id,1127,DECODE(x.wo_status,'C',1,0),0)) / CASE SUM(DECODE(x.dept_id,1127,1,0)) WHEN 0 THEN null ELSE SUM(DECODE(x.dept_id,1127,1,0))  END * 100 ,2),0) AS product8
+            ,NVL(ROUND(SUM(DECODE(x.dept_id,1129,DECODE(x.wo_status,'C',1,0),0)) / CASE SUM(DECODE(x.dept_id,1129,1,0)) WHEN 0 THEN null ELSE SUM(DECODE(x.dept_id,1129,1,0))  END * 100 ,2),0) AS product9
+            ,NVL(ROUND(SUM(DECODE(x.dept_id,1130,DECODE(x.wo_status,'C',1,0),0)) / CASE SUM(DECODE(x.dept_id,1130,1,0)) WHEN 0 THEN null ELSE SUM(DECODE(x.dept_id,1130,1,0))  END * 100 ,2),0) AS product10
+FROM TAWORKORDER x
+WHERE x.comp_no = '^param1'
+AND x.wo_type in ('PMI','PMC','PMW')
+AND x.pm_id IN (SELECT pm_id FROM TAPMLST a WHERE a.comp_no = '^param1')
+AND x.wkor_date like substr('^param4',0,4)||substr('^param4',6,2)||'__'
+GROUP BY x.wkor_date
+ORDER BY x.wkor_date
+/
+$
+SELECT 
+           TO_CHAR(to_date('^param4'||'01','yyyy-mmdd'), ' YYYY / MONTH', 'NLS_DATE_LANGUAGE=KOREAN') yyyymm
+          ,NVL(ROUND(SUM(DECODE(x.wo_status,'C',1,0)) / CASE  sum(1) WHEN 0 THEN null ELSE  sum(1) END * 100 ,2 ),0) as total
+FROM TAWORKORDER x
+WHERE x.comp_no = '^param1'
+AND x.wo_type in ('PMI','PMC','PMW')
+AND x.pm_id IN (SELECT pm_id FROM TAPMLST a WHERE a.comp_no = '^param1')
+AND x.wkor_date like substr('^param4',0,4)||substr('^param4',6,2)||'__'
+ORDER BY x.wkor_date
+/
+$
+SELECT 
+           TO_CHAR(to_date(substr(x.wkor_date,0,6)||'01','yyyymmdd'), ' MONTH', 'NLS_DATE_LANGUAGE=KOREAN') wkorDate
+            ,NVL(ROUND(SUM(DECODE(x.dept_id,1112,DECODE(x.wo_status,'C',1,0),0)) / CASE SUM(DECODE(x.dept_id,1112,1,0)) WHEN 0 THEN null ELSE SUM(DECODE(x.dept_id,1112,1,0))  END * 100 ,2),0) AS product1
+            ,NVL(ROUND(SUM(DECODE(x.dept_id,1113,DECODE(x.wo_status,'C',1,0),0)) / CASE SUM(DECODE(x.dept_id,1113,1,0)) WHEN 0 THEN null ELSE SUM(DECODE(x.dept_id,1113,1,0))  END * 100 ,2),0) AS product2
+            ,NVL(ROUND(SUM(DECODE(x.dept_id,1114,DECODE(x.wo_status,'C',1,0),0)) / CASE SUM(DECODE(x.dept_id,1114,1,0)) WHEN 0 THEN null ELSE SUM(DECODE(x.dept_id,1114,1,0))  END * 100 ,2),0) AS product3
+            ,NVL(ROUND(SUM(DECODE(x.dept_id,1116,DECODE(x.wo_status,'C',1,0),0)) / CASE SUM(DECODE(x.dept_id,1116,1,0)) WHEN 0 THEN null ELSE SUM(DECODE(x.dept_id,1116,1,0))  END * 100 ,2),0) AS product4
+            ,NVL(ROUND(SUM(DECODE(x.dept_id,1117,DECODE(x.wo_status,'C',1,0),0)) / CASE SUM(DECODE(x.dept_id,1117,1,0)) WHEN 0 THEN null ELSE SUM(DECODE(x.dept_id,1117,1,0))  END * 100 ,2),0) AS product5
+            ,NVL(ROUND(SUM(DECODE(x.dept_id,1122,DECODE(x.wo_status,'C',1,0),0)) / CASE SUM(DECODE(x.dept_id,1122,1,0)) WHEN 0 THEN null ELSE SUM(DECODE(x.dept_id,1122,1,0))  END * 100 ,2),0) AS product6
+            ,NVL(ROUND(SUM(DECODE(x.dept_id,1124,DECODE(x.wo_status,'C',1,0),0)) / CASE SUM(DECODE(x.dept_id,1124,1,0)) WHEN 0 THEN null ELSE SUM(DECODE(x.dept_id,1124,1,0))  END * 100 ,2),0) AS product7
+            ,NVL(ROUND(SUM(DECODE(x.dept_id,1127,DECODE(x.wo_status,'C',1,0),0)) / CASE SUM(DECODE(x.dept_id,1127,1,0)) WHEN 0 THEN null ELSE SUM(DECODE(x.dept_id,1127,1,0))  END * 100 ,2),0) AS product8
+            ,NVL(ROUND(SUM(DECODE(x.dept_id,1129,DECODE(x.wo_status,'C',1,0),0)) / CASE SUM(DECODE(x.dept_id,1129,1,0)) WHEN 0 THEN null ELSE SUM(DECODE(x.dept_id,1129,1,0))  END * 100 ,2),0) AS product9
+            ,NVL(ROUND(SUM(DECODE(x.dept_id,1130,DECODE(x.wo_status,'C',1,0),0)) / CASE SUM(DECODE(x.dept_id,1130,1,0)) WHEN 0 THEN null ELSE SUM(DECODE(x.dept_id,1130,1,0))  END * 100 ,2),0) AS product10
+FROM TAWORKORDER x
+WHERE x.comp_no = '^param1'
+AND x.wo_type in ('PMI','PMC','PMW')
+AND x.pm_id IN (SELECT pm_id FROM TAPMLST a WHERE a.comp_no = '^param1')
+AND x.wkor_date like substr('^param4',0,4)||'____'
+GROUP BY substr(x.wkor_date,0,6)
+ORDER BY substr(x.wkor_date,0,6)
+/
+$
+SELECT 
+           TO_CHAR(to_date('^param4'||'01','yyyy-mmdd'), ' YYYY', 'NLS_DATE_LANGUAGE=KOREAN') yyyymm
+          ,NVL(ROUND(SUM(DECODE(x.wo_status,'C',1,0)) / CASE  sum(1) WHEN 0 THEN null ELSE  sum(1) END * 100 ,2 ),0) as total
+FROM TAWORKORDER x
+WHERE x.comp_no = '^param1'
+AND x.wo_type in ('PMI','PMC','PMW')
+AND x.pm_id IN (SELECT pm_id FROM TAPMLST a WHERE a.comp_no = '^param1')
+AND x.wkor_date like substr('^param4',0,4)||'____'
+ORDER BY substr(x.wkor_date,0,6)
+/
+$
+SELECT 
+           substr( x.wkor_date,7,2) wkorDate
+            ,NVL(ROUND(SUM(DECODE(x.dept_id,1112,DECODE(x.wo_status,'C',1,0),0)) / CASE SUM(DECODE(x.dept_id,1112,1,0)) WHEN 0 THEN null ELSE SUM(DECODE(x.dept_id,1112,1,0))  END * 100 ,2),0) AS product1
+            ,NVL(ROUND(SUM(DECODE(x.dept_id,1113,DECODE(x.wo_status,'C',1,0),0)) / CASE SUM(DECODE(x.dept_id,1113,1,0)) WHEN 0 THEN null ELSE SUM(DECODE(x.dept_id,1113,1,0))  END * 100 ,2),0) AS product2
+            ,NVL(ROUND(SUM(DECODE(x.dept_id,1114,DECODE(x.wo_status,'C',1,0),0)) / CASE SUM(DECODE(x.dept_id,1114,1,0)) WHEN 0 THEN null ELSE SUM(DECODE(x.dept_id,1114,1,0))  END * 100 ,2),0) AS product3
+            ,NVL(ROUND(SUM(DECODE(x.dept_id,1116,DECODE(x.wo_status,'C',1,0),0)) / CASE SUM(DECODE(x.dept_id,1116,1,0)) WHEN 0 THEN null ELSE SUM(DECODE(x.dept_id,1116,1,0))  END * 100 ,2),0) AS product4
+            ,NVL(ROUND(SUM(DECODE(x.dept_id,1117,DECODE(x.wo_status,'C',1,0),0)) / CASE SUM(DECODE(x.dept_id,1117,1,0)) WHEN 0 THEN null ELSE SUM(DECODE(x.dept_id,1117,1,0))  END * 100 ,2),0) AS product5
+            ,NVL(ROUND(SUM(DECODE(x.dept_id,1122,DECODE(x.wo_status,'C',1,0),0)) / CASE SUM(DECODE(x.dept_id,1122,1,0)) WHEN 0 THEN null ELSE SUM(DECODE(x.dept_id,1122,1,0))  END * 100 ,2),0) AS product6
+            ,NVL(ROUND(SUM(DECODE(x.dept_id,1124,DECODE(x.wo_status,'C',1,0),0)) / CASE SUM(DECODE(x.dept_id,1124,1,0)) WHEN 0 THEN null ELSE SUM(DECODE(x.dept_id,1124,1,0))  END * 100 ,2),0) AS product7
+            ,NVL(ROUND(SUM(DECODE(x.dept_id,1127,DECODE(x.wo_status,'C',1,0),0)) / CASE SUM(DECODE(x.dept_id,1127,1,0)) WHEN 0 THEN null ELSE SUM(DECODE(x.dept_id,1127,1,0))  END * 100 ,2),0) AS product8
+            ,NVL(ROUND(SUM(DECODE(x.dept_id,1129,DECODE(x.wo_status,'C',1,0),0)) / CASE SUM(DECODE(x.dept_id,1129,1,0)) WHEN 0 THEN null ELSE SUM(DECODE(x.dept_id,1129,1,0))  END * 100 ,2),0) AS product9
+            ,NVL(ROUND(SUM(DECODE(x.dept_id,1130,DECODE(x.wo_status,'C',1,0),0)) / CASE SUM(DECODE(x.dept_id,1130,1,0)) WHEN 0 THEN null ELSE SUM(DECODE(x.dept_id,1130,1,0))  END * 100 ,2),0) AS product10
+FROM TAWORKORDER x
+WHERE x.comp_no = '^param1'
+AND x.pm_id is null
+AND x.wkor_date like substr('^param4',0,4)||substr('^param4',6,2)||'__'
+GROUP BY x.wkor_date
+ORDER BY x.wkor_date
+/
+$
+SELECT 
+           TO_CHAR(to_date('^param4'||'01','yyyy-mmdd'), ' YYYY / MONTH', 'NLS_DATE_LANGUAGE=KOREAN') yyyymm
+          ,NVL(ROUND(SUM(DECODE(x.wo_status,'C',1,0)) / CASE  sum(1) WHEN 0 THEN null ELSE  sum(1) END * 100 ,2 ),0) as total
+FROM TAWORKORDER x
+WHERE x.comp_no = '^param1'
+AND x.pm_id is null
+AND x.wkor_date like substr('^param4',0,4)||substr('^param4',6,2)||'__'
+ORDER BY x.wkor_date
+/
+$
+SELECT 
+           TO_CHAR(to_date(substr(x.wkor_date,0,6)||'01','yyyymmdd'), ' MONTH', 'NLS_DATE_LANGUAGE=KOREAN') wkorDate
+            ,NVL(ROUND(SUM(DECODE(x.dept_id,1112,DECODE(x.wo_status,'C',1,0),0)) / CASE SUM(DECODE(x.dept_id,1112,1,0)) WHEN 0 THEN null ELSE SUM(DECODE(x.dept_id,1112,1,0))  END * 100 ,2),0) AS product1
+            ,NVL(ROUND(SUM(DECODE(x.dept_id,1113,DECODE(x.wo_status,'C',1,0),0)) / CASE SUM(DECODE(x.dept_id,1113,1,0)) WHEN 0 THEN null ELSE SUM(DECODE(x.dept_id,1113,1,0))  END * 100 ,2),0) AS product2
+            ,NVL(ROUND(SUM(DECODE(x.dept_id,1114,DECODE(x.wo_status,'C',1,0),0)) / CASE SUM(DECODE(x.dept_id,1114,1,0)) WHEN 0 THEN null ELSE SUM(DECODE(x.dept_id,1114,1,0))  END * 100 ,2),0) AS product3
+            ,NVL(ROUND(SUM(DECODE(x.dept_id,1116,DECODE(x.wo_status,'C',1,0),0)) / CASE SUM(DECODE(x.dept_id,1116,1,0)) WHEN 0 THEN null ELSE SUM(DECODE(x.dept_id,1116,1,0))  END * 100 ,2),0) AS product4
+            ,NVL(ROUND(SUM(DECODE(x.dept_id,1117,DECODE(x.wo_status,'C',1,0),0)) / CASE SUM(DECODE(x.dept_id,1117,1,0)) WHEN 0 THEN null ELSE SUM(DECODE(x.dept_id,1117,1,0))  END * 100 ,2),0) AS product5
+            ,NVL(ROUND(SUM(DECODE(x.dept_id,1122,DECODE(x.wo_status,'C',1,0),0)) / CASE SUM(DECODE(x.dept_id,1122,1,0)) WHEN 0 THEN null ELSE SUM(DECODE(x.dept_id,1122,1,0))  END * 100 ,2),0) AS product6
+            ,NVL(ROUND(SUM(DECODE(x.dept_id,1124,DECODE(x.wo_status,'C',1,0),0)) / CASE SUM(DECODE(x.dept_id,1124,1,0)) WHEN 0 THEN null ELSE SUM(DECODE(x.dept_id,1124,1,0))  END * 100 ,2),0) AS product7
+            ,NVL(ROUND(SUM(DECODE(x.dept_id,1127,DECODE(x.wo_status,'C',1,0),0)) / CASE SUM(DECODE(x.dept_id,1127,1,0)) WHEN 0 THEN null ELSE SUM(DECODE(x.dept_id,1127,1,0))  END * 100 ,2),0) AS product8
+            ,NVL(ROUND(SUM(DECODE(x.dept_id,1129,DECODE(x.wo_status,'C',1,0),0)) / CASE SUM(DECODE(x.dept_id,1129,1,0)) WHEN 0 THEN null ELSE SUM(DECODE(x.dept_id,1129,1,0))  END * 100 ,2),0) AS product9
+            ,NVL(ROUND(SUM(DECODE(x.dept_id,1130,DECODE(x.wo_status,'C',1,0),0)) / CASE SUM(DECODE(x.dept_id,1130,1,0)) WHEN 0 THEN null ELSE SUM(DECODE(x.dept_id,1130,1,0))  END * 100 ,2),0) AS product10
+FROM TAWORKORDER x
+WHERE x.comp_no = '^param1'
+AND x.pm_id is null
+AND x.wkor_date like substr('^param4',0,4)||'____'
+GROUP BY substr(x.wkor_date,0,6)
+ORDER BY substr(x.wkor_date,0,6)
+/
+$
+SELECT 
+           TO_CHAR(to_date('^param4'||'01','yyyy-mmdd'), ' YYYY', 'NLS_DATE_LANGUAGE=KOREAN') yyyymm
+          ,NVL(ROUND(SUM(DECODE(x.wo_status,'C',1,0)) / CASE  sum(1) WHEN 0 THEN null ELSE  sum(1) END * 100 ,2 ),0) as total
+FROM TAWORKORDER x
+WHERE x.comp_no = '^param1'
+AND x.pm_id is null
+AND x.wkor_date like substr('^param4',0,4)||'____'
+ORDER BY substr(x.wkor_date,0,6)
+/
+$
+select 
+           substr( x.login_date,7,2) wkorDate
+            ,SUM(DECODE(y.dept_id,1112,1,0)) AS product1
+            ,SUM(DECODE(y.dept_id,1113,1,0)) AS product2
+            ,SUM(DECODE(y.dept_id,1114,1,0)) AS product3
+            ,SUM(DECODE(y.dept_id,1116,1,0)) AS product4
+            ,SUM(DECODE(y.dept_id,1117,1,0)) AS product5
+            ,SUM(DECODE(y.dept_id,1122,1,0)) AS product6
+            ,SUM(DECODE(y.dept_id,1124,1,0)) AS product7
+            ,SUM(DECODE(y.dept_id,1127,1,0)) AS product8
+            ,SUM(DECODE(y.dept_id,1129,1,0)) AS product9
+            ,SUM(DECODE(y.dept_id,1130,1,0)) AS product10
+FROM talogincclog x INNER JOIN
+    (SELECT a.comp_no, b.dept_id , a.user_id
+        FROM TAUSER a INNER JOIN TAEMP b
+        ON a.comp_no = b.comp_no
+        AND a.emp_id = b.emp_id
+        WHERE 1=1 
+        AND a.comp_no = '^param1'
+        AND is_monitor='Y') y
+ON x.comp_no = y.comp_no
+AND x.user_id = y.user_id
+WHERE 1=1
+AND x.comp_no = '^param1'
+AND x.login_date like substr('^param4',0,4)||substr('^param4',6,2)||'__'
+GROUP BY x.login_date 
+ORDER BY  x.login_date 
+/
+$
+select 
+           TO_CHAR(to_date('^param4'||'01','yyyy-mmdd'), ' YYYY / MONTH', 'NLS_DATE_LANGUAGE=KOREAN') yyyymm
+            ,SUM(1) AS total
+FROM talogincclog x INNER JOIN
+    (SELECT a.comp_no, b.dept_id , a.user_id
+        FROM TAUSER a INNER JOIN TAEMP b
+        ON a.comp_no = b.comp_no
+        AND a.emp_id = b.emp_id
+        WHERE 1=1 
+        AND a.comp_no = '^param1'
+        AND is_monitor='Y') y
+ON x.comp_no = y.comp_no
+AND x.user_id = y.user_id
+WHERE 1=1
+AND x.comp_no = '^param1'
+AND x.login_date like substr('^param4',0,4)||substr('^param4',6,2)||'__'
+ORDER BY  x.login_date 
+/
+$
+select 
+          TO_CHAR(to_date(substr(x.login_date,0,6)||'01','yyyymmdd'), ' MONTH', 'NLS_DATE_LANGUAGE=KOREAN') wkorDate
+            ,SUM(DECODE(y.dept_id,1112,1,0)) AS product1
+            ,SUM(DECODE(y.dept_id,1113,1,0)) AS product2
+            ,SUM(DECODE(y.dept_id,1114,1,0)) AS product3
+            ,SUM(DECODE(y.dept_id,1116,1,0)) AS product4
+            ,SUM(DECODE(y.dept_id,1117,1,0)) AS product5
+            ,SUM(DECODE(y.dept_id,1122,1,0)) AS product6
+            ,SUM(DECODE(y.dept_id,1124,1,0)) AS product7
+            ,SUM(DECODE(y.dept_id,1127,1,0)) AS product8
+            ,SUM(DECODE(y.dept_id,1129,1,0)) AS product9
+            ,SUM(DECODE(y.dept_id,1130,1,0)) AS product10
+FROM TALOGINCCLOG x INNER JOIN
+    (SELECT a.comp_no, b.dept_id , a.user_id
+        FROM TAUSER a INNER JOIN TAEMP b
+        ON a.comp_no = b.comp_no
+        AND a.emp_id = b.emp_id
+        WHERE 1=1 
+        AND a.comp_no = '^param1'
+        AND is_monitor='Y') y
+ON x.comp_no = y.comp_no
+AND x.user_id = y.user_id
+WHERE 1=1
+AND x.comp_no = '^param1'
+AND x.login_date like substr('^param4',0,4)||'____'
+GROUP BY substr(x.login_date ,0,6)
+ORDER BY substr(x.login_date ,0,6)
+/
+$
+select 
+           TO_CHAR(to_date('^param4'||'01','yyyy-mmdd'), ' YYYY ', 'NLS_DATE_LANGUAGE=KOREAN') yyyymm
+            ,SUM(1) AS total
+FROM talogincclog x INNER JOIN
+    (SELECT a.comp_no, b.dept_id , a.user_id
+        FROM TAUSER a INNER JOIN TAEMP b
+        ON a.comp_no = b.comp_no
+        AND a.emp_id = b.emp_id
+        WHERE 1=1 
+        AND a.comp_no = '^param1'
+        AND is_monitor='Y') y
+ON x.comp_no = y.comp_no
+AND x.user_id = y.user_id
+WHERE 1=1
+AND x.comp_no = '^param1'
+AND x.login_date like substr('^param4',0,4)||'____'
+ORDER BY  x.login_date 
+/
+$
+SELECT rownum seqNo
+            ,description
+            ,dept
+            ,cnt
+            ,time
+FROM (
+SELECT * 
+FROM (
+SELECT
+        MIN(z.description) as description
+        ,MIN((SELECT a.description FROM TADEPT a WHERE a.comp_no = x.comp_no AND a.dept_id =z.dept_id)) as dept
+        ,SUM(1) as cnt
+        ,SUM(x.work_time) as time
+FROM TAWORKORDER x inner join TAWOEQUIP y
+ON x.comp_no = y.comp_no
+AND x.wkor_id = y.wkor_id
+INNER JOIN TAEQUIPMENT z
+ON y.comp_no = z.comp_no
+AND y.equip_id = z.equip_id
+WHERE 1=1
+AND x.comp_no = '^param1'
+AND x.wo_status='C'
+AND x.wkor_date like substr('^param4',0,4)||substr('^param4',6,2)||'__'
+AND x.wo_type='BM'
+GROUP BY x.comp_no, y.equip_id
+)
+order by cnt, time
+)
+where rownum <=10
+/

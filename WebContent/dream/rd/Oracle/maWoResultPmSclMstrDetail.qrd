@@ -1,0 +1,106 @@
+$
+SELECT              
+                NVL((SELECT aa.description FROM TAEQUIPMENT aa WHERE aa.equip_id=b.p_equip_id AND aa.comp_no = '^param1'),'N/A')||' / '||
+                    NVL((SELECT aa.item_no FROM TAEQUIPMENT aa WHERE aa.equip_id=b.p_equip_id AND aa.comp_no = '^param1'),'N/A')           equip    
+                ,NVL(b.item_no,'N/A')                                                                                                      eqToolNo                    
+                ,NVL(b.maker,'N/A')||' / '||NVL(b.MODEL_no,'N/A')                                                                          maker             
+                ,NVL(b.serial_no,'N/A')                                                                                                    serialNo             
+                ,NVL((SELECT aa.description                                                                                                                                                              
+                    FROM TAEQLOC aa                                                                                                                                                               
+                    WHERE aa.comp_no='^param1'                                                              
+                    AND aa.eqloc_id=b.eqloc_id),'N/A')          eqLoc  
+                ,NVL(TO_CHAR((SELECT aa.min_unit_value FROM TAEQTOOL aa WHERE aa.equip_id=b.equip_id AND aa.comp_no='^param1')),'N/A') minUnitValue              
+                ,NVL((SELECT aa.all_range FROM TAEQTOOL aa WHERE aa.equip_id=b.equip_id AND aa.comp_no='^param1'),'N/A') allRange              
+                ,NVL((SELECT aa.use_range FROM TAEQTOOL aa WHERE aa.equip_id=b.equip_id AND aa.comp_no='^param1'),'N/A') useRange     
+                ,NVL((SELECT aa.tolerance FROM TAEQTOOL aa WHERE aa.equip_id=b.equip_id AND aa.comp_no='^param1'),'N/A') diff     
+                ,NVL(SFACODE_TO_DESC(y.calib_type,'CALIB_TYPE','SYS','','^param3'),'N/A')                                pmcType                     
+                ,CASE WHEN x.wkor_date IS NOT NULL THEN 
+                	SUBSTR(x.wkor_date,1,4)||'-'                                                                                                                                             
+                    ||SUBSTR(x.wkor_date,5,2)||'-'                                                                                                                                           
+                    ||SUBSTR(x.wkor_date,7,2)||''   ELSE '-' END                                                         schedDate     
+                ,NVL((SELECT SUBSTR(MIN(b.sched_date),1,4)||'-'||SUBSTR(MIN(b.sched_date),5,2)||'-'||SUBSTR(MIN(b.sched_date),7,2)
+                  FROM TAPMEQUIP A INNER JOIN TAPMSCHED b
+                  ON A.pm_id = b.pm_id AND b.pmsched_status <> 'C'
+                  WHERE A.pm_id = x.pm_id
+                       AND b.sched_date > x.wkor_date
+                 ) , 'N/A') nextSchedDate
+                ,'Form info.: HVQ03-005-F01 (Ver. 2.00)'         docNo        
+        FROM TAWORKORDER x LEFT OUTER JOIN TAWOCALIB y           
+          ON x.comp_no = y.comp_no     
+          AND x.wkor_id = y.wkor_id     
+        LEFT OUTER JOIN TAWOEQUIP a         
+          ON a.wkor_id = x.wkor_id                                                 
+          AND a.comp_no = x.comp_no             
+        LEFT OUTER JOIN TAEQUIPMENT b         
+          ON a.comp_no = b.comp_no                                                     
+          AND a.equip_id = b.equip_id                                                   
+        WHERE 1=1        
+        AND x.comp_no ='^param1'
+        AND x.wkor_id = ^param4
+/
+$
+SELECT NVL(y.description,'N/A') stdEq
+            ,NVL(y.item_no,'N/A') stdEqNo
+            ,NVL(y.serial_no,'N/A') serialNo
+            ,NVL(x.wo_no,'N/A') woNo
+            ,NVL2(next_plan_date,SUBSTR(x.next_plan_date,1,4)||'-'                                                                                                                                             
+                    ||SUBSTR(x.next_plan_date,5,2)||'-'                                                                                                                                           
+                    ||SUBSTR(x.next_plan_date,7,2)||'','N/A') nextSched
+FROM tawocalibstdeq x INNER JOIN taequipment y
+ON x.comp_no = y.comp_no
+AND x.equip_id =y.equip_id
+WHERE x.wkor_id=^param4
+AND x.comp_no='^param1'
+/
+$
+SELECT nvl(wm_concat(y.measure_unit),'N/A') uom
+FROM taeqtool y
+WHERE y.equip_id IN (SELECT x.equip_id 
+FROM tawoequip x
+WHERE x.wkor_id=^param4
+AND x.comp_no = '^param1')
+and y.comp_no = '^param1'
+/
+$
+SELECT                                                                                
+                NVL(MAX(li0_value),'N/A')             AS liValue0                             
+                ,NVL(MAX(li25_value),'N/A')         AS liValue25                              
+                ,NVL(MAX(li50_value),'N/A')         AS liValue50                              
+                ,NVL(MAX(li75_value),'N/A')         AS liValue75                              
+                ,NVL(MAX(li100_value),'N/A')         AS liValue100                            
+                ,NVL(MAX(ld75_value),'N/A')         AS ldValue75                          
+                ,NVL(MAX(ld50_value),'N/A')         AS ldValue50                          
+                ,NVL(MAX(ld25_value),'N/A')         AS ldValue25                          
+                ,NVL(MAX(ld0_value),'N/A')             AS ldValue0                            
+                ,NVL(MAX(ecntr_value),'N/A')         AS ecntrValue                        
+                ,NVL(MAX(ebef_value),'N/A')         AS ebefValue                          
+                ,NVL(MAX(eaft_value),'N/A')         AS eaftValue                          
+                ,NVL(MAX(elft_value),'N/A')         AS elftValue                              
+                ,NVL(MAX(erig_value),'N/A')         AS erigValue                              
+                ,NVL(MAX(degree1),'N/A')             AS degree1                               
+                ,NVL(MAX(degree2),'N/A')             AS degree2                               
+                ,NVL(MAX(degree3),'N/A')             AS degree3                               
+        FROM   TAWOCALIBSCLVALUE x                                             
+        WHERE  1=1     
+		AND x.wkor_id=^param4
+		AND x.comp_no='^param1'
+/
+$
+SELECT
+            CASE WHEN y.calib_result_status='P' THEN '1' ELSE '0' END calibResult1
+            ,CASE WHEN y.calib_result_status='F' THEN '1' ELSE '0' END calibResult2
+            ,x.perform remark
+            ,(SELECT aa.emp_name FROM TAEMP aa WHERE aa.comp_no='^param1' AND aa.emp_id=x.emp_id) empName
+            ,SUBSTR(x.wkor_date,1,4) empYyyy                                                      
+            ,SUBSTR(x.wkor_date,5,2) empMm
+            ,SUBSTR(x.wkor_date,7,2) empDd         
+            ,(SELECT aa.user_name FROM TAUSER aa WHERE aa.comp_no='^param1' AND aa.user_id=x.close_id) comName      
+            ,SUBSTR(x.close_date,1,4) comYyyy                                                      
+            ,SUBSTR(x.close_date,5,2) comMm
+            ,SUBSTR(x.close_date,7,2) comDd           
+FROM TAWORKORDER x LEFT OUTER JOIN TAWOCALIB y
+ON x.comp_no = y.comp_no
+AND x.wkor_id = y.wkor_id
+WHERE x.wkor_id=^param4
+AND x.comp_no='^param1'
+/

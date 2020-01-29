@@ -1,0 +1,19 @@
+$
+SELECT
+      x.part_no partNo
+      ,x.description||', '||x.model partDesc         
+      ,x.part_no partId --barcode
+      ,(select max(y.bin_no) FROM taptstock y where y.comp_no = x.comp_no and y.part_id =x.part_id group by y.part_id) location
+      ,x.vendor_code vendorCode
+FROM  TAPARTS x
+WHERE 1=1
+AND   comp_no = '^param1'
+AND   part_id IN (SELECT
+                         a.part_id
+                   FROM  TAPTBCPRINT a
+                   WHERE 1=1
+                   AND   a.comp_no = '^param1'
+                   AND   a.user_id = '^param2'
+                  )
+ order by x.part_no
+/

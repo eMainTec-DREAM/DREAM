@@ -1,0 +1,64 @@
+$
+SELECT 
+            (SELECT (SELECT c.description||'/'||c.item_no FROM TAEQUIPMENT c WHERE c.comp_no = b.comp_no AND c.equip_id = b.p_equip_id)
+              FROM TAEQASSLIST A INNER JOIN TAEQUIPMENT b ON A.equip_id = b.equip_id
+              WHERE A.eqasslist_id = EQASSLISTID
+             )  pEquipDescNo
+             ,(SELECT (SELECT (SELECT d.full_desc FROM TAEQLOC d WHERE d.comp_no = b.comp_no AND d.eqloc_id = c.eqloc_id)||'/'||c.eqstrloc_no FROM TAEQUIPMENT c WHERE c.comp_no = b.comp_no AND c.equip_id = b.p_equip_id)
+              FROM TAEQASSLIST A INNER JOIN TAEQUIPMENT b ON A.equip_id = b.equip_id
+              WHERE A.eqasslist_id = EQASSLISTID
+             )  pEquipLocRn
+             ,(SELECT b.item_no
+              FROM TAEQASSLIST A INNER JOIN TAEQUIPMENT b ON A.equip_id = b.equip_id
+              WHERE A.eqasslist_id = EQASSLISTID
+             ) toolNo
+            ,(SELECT NVL(b.REMARK, description)
+              FROM TAEQASSLIST A INNER JOIN TAEQUIPMENT b ON A.equip_id = b.equip_id
+              WHERE A.eqasslist_id = EQASSLISTID
+             ) toolDesc
+            ,MAX(DECODE(asspointtypeid||num, 'RISK1' , eqasspvaldesc)) r1
+            ,MAX(DECODE(asspointtypeid||num, 'RISK2' , eqasspvaldesc)) r2
+            ,SUM(DECODE(asspointtypeid, 'RISK' , eqasspvaldesc)) rsum
+            ,MAX(DECODE(asspointtypeid||num, 'WEIGHT1' , eqasspvaldesc)) w1
+            ,MAX(DECODE(asspointtypeid||num, 'WEIGHT2' , eqasspvaldesc)) w2
+            ,MAX(DECODE(asspointtypeid||num, 'WEIGHT3' , eqasspvaldesc)) w3
+            ,MAX(DECODE(asspointtypeid||num, 'WEIGHT4' , eqasspvaldesc)) w4
+            ,SUM(DECODE(asspointtypeid, 'WEIGHT' , eqasspvaldesc)) wsum
+            ,(SELECT SFACODE_TO_DESC(A.eq_grade,'EQ_GRADE','SYS','','^param3')
+              FROM TAEQASSLIST A
+              WHERE A.eqasslist_id = EQASSLISTID
+             ) gradeCode
+FROM (
+SELECT                                                            
+       ''                                 AS seqNo                
+       ,''                                AS isDelCheck           
+       , x.eqasspval_id                   AS eqAssPValId          
+       , SFACODE_TO_DESC(x.ASS_POINT_TYPE, 'ASS_POINT_TYPE', 'SYS', x.comp_no, '^param3') AS assPointTypeDesc      
+       , row_number() OVER (PARTITION BY ass_point_type ORDER BY eqasspval_id) num
+       , x.ass_point_type                 AS assPointTypeId       
+       , x.assbasepoint_id                AS assBasePointId       
+       , x.ass_point                      AS assBasePointDesc     
+       , x.assbasepval_id                 AS assBasePValId        
+       , x.ass_eval                       AS assEvalDesc          
+       , x.eval_value                     AS eqAssPValDesc        
+       , x.REMARK                         AS REMARK               
+       , x.eqasslist_id                   AS EQASSLISTID          
+       , (SELECT A.assbaselist_id                                 
+          FROM TAASSBASEPVAL A                                    
+          WHERE A.comp_no = x.comp_no                             
+              AND A.assbasepval_id = x.assbasepval_id) AS assBaseListId       
+FROM TAEQASSPVAL x                                                
+WHERE  1=1                                                        
+  AND  x.comp_no='^param1'
+  AND  x.eqasslist_id=^param4
+ORDER BY x.eqasspval_id
+)
+GROUP BY EQASSLISTID
+/
+$
+SELECT 
+	'From info : HVQ03-001-F03 (Ver.2.00)' docNo
+	,'CONFIDENTIAL' con
+FROM DUAL
+
+/

@@ -1,0 +1,1135 @@
+$
+select
+b.*,
+NVL(ROUND(b.assydn / DECODE(b.assycall, 0, NULL, b.assycall),1), 0) assyMttr,
+NVL(ROUND(b.mecadn / DECODE(b.mecacall, 0, NULL, b.mecacall),1), 0) mecaMttr,
+NVL(ROUND(b.asrsdn / DECODE(b.asrscall, 0, NULL, b.asrscall),1), 0) asrsMttr,
+NVL(ROUND(b.foamdn / DECODE(b.foamcall, 0, NULL, b.foamcall),1), 0) foamMttr,
+SUBSTR('^param3','7')||'/'||SUBSTR('^param3','5','2')||'/'||SUBSTR('^param3','0','4')printDate
+from
+(
+select
+/*PMI*/
+(SELECT                                                                        
+      COUNT(1)                                                                
+FROM TAWORKORDER x                                                            
+WHERE 1=1                                                                     
+  AND  x.comp_no = '^param1'                                               
+  AND  x.wkor_date >= '^param3'       
+  AND  x.wkor_date <= '^param3'          
+ AND x.wo_type = 'PMI'
+AND x.wkor_id IN (SELECT a.wkor_id                          
+                    FROM TAWOEQUIP a, TAEQUIPMENT b            
+                    WHERE a.comp_no = b.comp_no                
+                    AND   a.equip_id = b.equip_id            
+  AND  a.comp_no='^param1'
+AND b.eqloc_id IN (    SELECT eqloc_id                            
+                        FROM TAEQLOC                            
+                        WHERE comp_no = '^param1'            
+                        START wITH eqloc_id = '1078'            
+                        CONNECT BY PRIOR eqloc_id = p_eqloc_id    
+                    )                                            
+                    ))AssemblyInspPlan,
+                    (SELECT                                                                        
+      COUNT(1)                                                                
+FROM TAWORKORDER x                                                            
+WHERE 1=1                                                                     
+  AND  x.comp_no = '^param1'                                               
+  AND  x.wkor_date >= '^param3'       
+  AND  x.wkor_date <= '^param3'
+ AND x.wo_type = 'PMI'
+AND x.wkor_id IN (SELECT a.wkor_id                          
+                    FROM TAWOEQUIP a, TAEQUIPMENT b            
+                    WHERE a.comp_no = b.comp_no                
+                    AND   a.equip_id = b.equip_id            
+  AND  a.comp_no='^param1'
+AND b.eqloc_id IN (    SELECT eqloc_id                            
+                        FROM TAEQLOC                            
+                        WHERE comp_no = '^param1'            
+                        START wITH eqloc_id = '1079'            
+                        CONNECT BY PRIOR eqloc_id = p_eqloc_id    
+                    )                                            
+                    ))mechaInspPlan,
+                    (SELECT                                                                        
+      COUNT(1)                                                                
+FROM TAWORKORDER x                                                            
+WHERE 1=1                                                                     
+  AND  x.comp_no = '^param1'                                               
+  AND  x.wkor_date >= '^param3'       
+  AND  x.wkor_date <= '^param3'          
+ AND x.wo_type = 'PMI'
+AND x.wkor_id IN (SELECT a.wkor_id                          
+                    FROM TAWOEQUIP a, TAEQUIPMENT b            
+                    WHERE a.comp_no = b.comp_no                
+                    AND   a.equip_id = b.equip_id            
+  AND  a.comp_no='^param1'
+AND b.eqloc_id IN (    SELECT eqloc_id                            
+                        FROM TAEQLOC                            
+                        WHERE comp_no = '^param1'            
+                        START wITH eqloc_id = '1080'            
+                        CONNECT BY PRIOR eqloc_id = p_eqloc_id    
+                    )                                            
+                    ))asrsInspPlan,
+                    (SELECT                                                                        
+      COUNT(1)                                                                
+FROM TAWORKORDER x                                                            
+WHERE 1=1                                                                     
+  AND  x.comp_no = '^param1'                                               
+  AND  x.wkor_date >= '^param3'       
+  AND  x.wkor_date <= '^param3'          
+ AND x.wo_type = 'PMI'
+AND x.wkor_id IN (SELECT a.wkor_id                          
+                    FROM TAWOEQUIP a, TAEQUIPMENT b            
+                    WHERE a.comp_no = b.comp_no                
+                    AND   a.equip_id = b.equip_id            
+  AND  a.comp_no='^param1'
+AND b.eqloc_id IN (    SELECT eqloc_id                            
+                        FROM TAEQLOC                            
+                        WHERE comp_no = '^param1'            
+                        START wITH eqloc_id = '1081'            
+                        CONNECT BY PRIOR eqloc_id = p_eqloc_id    
+                    )                                            
+                    ))foamInspPlan,
+                    (SELECT                                                                        
+      COUNT(1)                                                                
+FROM TAWORKORDER x                                                            
+WHERE 1=1                                                                     
+  AND  x.comp_no = '^param1'                                               
+  AND  x.wkor_date >= '^param3'       
+  AND  x.wkor_date <= '^param3'          
+ AND x.wo_type = 'PMI'
+  AND x.wo_status = 'C'
+AND x.wkor_id IN (SELECT a.wkor_id                          
+                    FROM TAWOEQUIP a, TAEQUIPMENT b            
+                    WHERE a.comp_no = b.comp_no                
+                    AND   a.equip_id = b.equip_id            
+  AND  a.comp_no='^param1'
+AND b.eqloc_id IN (    SELECT eqloc_id                            
+                        FROM TAEQLOC                            
+                        WHERE comp_no = '^param1'            
+                        START wITH eqloc_id = '1078'            
+                        CONNECT BY PRIOR eqloc_id = p_eqloc_id    
+                    )                                            
+                    ))AssemblyInspComp,
+                    (SELECT                                                                        
+      COUNT(1)                                                                
+FROM TAWORKORDER x                                                            
+WHERE 1=1                                                                     
+  AND  x.comp_no = '^param1'                                               
+  AND  x.wkor_date >= '^param3'       
+  AND  x.wkor_date <= '^param3'          
+ AND x.wo_type = 'PMI'
+  AND x.wo_status = 'C'
+AND x.wkor_id IN (SELECT a.wkor_id                          
+                    FROM TAWOEQUIP a, TAEQUIPMENT b            
+                    WHERE a.comp_no = b.comp_no                
+                    AND   a.equip_id = b.equip_id            
+  AND  a.comp_no='^param1'
+AND b.eqloc_id IN (    SELECT eqloc_id                            
+                        FROM TAEQLOC                            
+                        WHERE comp_no = '^param1'            
+                        START wITH eqloc_id = '1079'            
+                        CONNECT BY PRIOR eqloc_id = p_eqloc_id    
+                    )                                            
+                    ))mechaInspComp,
+                    (SELECT                                                                        
+      COUNT(1)                                                                
+FROM TAWORKORDER x                                                            
+WHERE 1=1                                                                     
+  AND  x.comp_no = '^param1'                                               
+  AND  x.wkor_date >= '^param3'       
+  AND  x.wkor_date <= '^param3'          
+ AND x.wo_type = 'PMI'
+  AND x.wo_status = 'C'
+AND x.wkor_id IN (SELECT a.wkor_id                          
+                    FROM TAWOEQUIP a, TAEQUIPMENT b            
+                    WHERE a.comp_no = b.comp_no                
+                    AND   a.equip_id = b.equip_id            
+  AND  a.comp_no='^param1'
+AND b.eqloc_id IN (    SELECT eqloc_id                            
+                        FROM TAEQLOC                            
+                        WHERE comp_no = '^param1'            
+                        START wITH eqloc_id = '1080'            
+                        CONNECT BY PRIOR eqloc_id = p_eqloc_id    
+                    )                                            
+                    ))asrsInspComp,
+                    (SELECT                                                                        
+      COUNT(1)                                                                
+FROM TAWORKORDER x                                                            
+WHERE 1=1                                                                     
+  AND  x.comp_no = '^param1'                                               
+  AND  x.wkor_date >= '^param3'       
+  AND  x.wkor_date <= '^param3'          
+ AND x.wo_type = 'PMI'
+  AND x.wo_status = 'C'
+AND x.wkor_id IN (SELECT a.wkor_id                          
+                    FROM TAWOEQUIP a, TAEQUIPMENT b            
+                    WHERE a.comp_no = b.comp_no                
+                    AND   a.equip_id = b.equip_id            
+  AND  a.comp_no='^param1'
+AND b.eqloc_id IN (    SELECT eqloc_id                            
+                        FROM TAEQLOC                            
+                        WHERE comp_no = '^param1'            
+                        START wITH eqloc_id = '1081'            
+                        CONNECT BY PRIOR eqloc_id = p_eqloc_id    
+                    )                                            
+                    ))foamInspPComp ,
+/*PMW*/
+                    (SELECT                                                                        
+      COUNT(1)                                                                
+FROM TAWORKORDER x                                                            
+WHERE 1=1                                                                     
+  AND  x.comp_no = '^param1'                                               
+  AND  x.wkor_date >= '^param3'       
+  AND  x.wkor_date <= '^param3'          
+ AND x.wo_type = 'PMW'
+AND x.wkor_id IN (SELECT a.wkor_id                          
+                    FROM TAWOEQUIP a, TAEQUIPMENT b            
+                    WHERE a.comp_no = b.comp_no                
+                    AND   a.equip_id = b.equip_id            
+  AND  a.comp_no='^param1'
+AND b.eqloc_id IN (    SELECT eqloc_id                            
+                        FROM TAEQLOC                            
+                        WHERE comp_no = '^param1'            
+                        START wITH eqloc_id = '1078'            
+                        CONNECT BY PRIOR eqloc_id = p_eqloc_id    
+                    )                                            
+                    ))AssemblyWorkPlan,
+                    (SELECT                                                                        
+      COUNT(1)                                                                
+FROM TAWORKORDER x                                                            
+WHERE 1=1                                                                     
+  AND  x.comp_no = '^param1'                                               
+  AND  x.wkor_date >= '^param3'       
+  AND  x.wkor_date <= '^param3'          
+ AND x.wo_type = 'PMW'
+AND x.wkor_id IN (SELECT a.wkor_id                          
+                    FROM TAWOEQUIP a, TAEQUIPMENT b            
+                    WHERE a.comp_no = b.comp_no                
+                    AND   a.equip_id = b.equip_id            
+  AND  a.comp_no='^param1'
+AND b.eqloc_id IN (    SELECT eqloc_id                            
+                        FROM TAEQLOC                            
+                        WHERE comp_no = '^param1'            
+                        START wITH eqloc_id = '1079'            
+                        CONNECT BY PRIOR eqloc_id = p_eqloc_id    
+                    )                                            
+                    ))mechaWorkPlan,
+                    (SELECT                                                                        
+      COUNT(1)                                                                
+FROM TAWORKORDER x                                                            
+WHERE 1=1                                                                     
+  AND  x.comp_no = '^param1'                                               
+  AND  x.wkor_date >= '^param3'       
+  AND  x.wkor_date <= '^param3'          
+ AND x.wo_type = 'PMW'
+AND x.wkor_id IN (SELECT a.wkor_id                          
+                    FROM TAWOEQUIP a, TAEQUIPMENT b            
+                    WHERE a.comp_no = b.comp_no                
+                    AND   a.equip_id = b.equip_id            
+  AND  a.comp_no='^param1'
+AND b.eqloc_id IN (    SELECT eqloc_id                            
+                        FROM TAEQLOC                            
+                        WHERE comp_no = '^param1'            
+                        START wITH eqloc_id = '1080'            
+                        CONNECT BY PRIOR eqloc_id = p_eqloc_id    
+                    )                                            
+                    ))asrsWorkPlan,
+                    (SELECT                                                                        
+      COUNT(1)                                                                
+FROM TAWORKORDER x                                                            
+WHERE 1=1                                                                     
+  AND  x.comp_no = '^param1'                                               
+  AND  x.wkor_date >= '^param3'       
+  AND  x.wkor_date <= '^param3'          
+ AND x.wo_type = 'PMW'
+AND x.wkor_id IN (SELECT a.wkor_id                          
+                    FROM TAWOEQUIP a, TAEQUIPMENT b            
+                    WHERE a.comp_no = b.comp_no                
+                    AND   a.equip_id = b.equip_id            
+  AND  a.comp_no='^param1'
+AND b.eqloc_id IN (    SELECT eqloc_id                            
+                        FROM TAEQLOC                            
+                        WHERE comp_no = '^param1'            
+                        START wITH eqloc_id = '1081'            
+                        CONNECT BY PRIOR eqloc_id = p_eqloc_id    
+                    )                                            
+                    ))foamWorkPlan,
+                    (SELECT                                                                        
+      COUNT(1)                                                                
+FROM TAWORKORDER x                                                            
+WHERE 1=1                                                                     
+  AND  x.comp_no = '^param1'                                               
+  AND  x.wkor_date >= '^param3'       
+  AND  x.wkor_date <= '^param3'          
+ AND x.wo_type = 'PMW'
+  AND x.wo_status = 'C'
+AND x.wkor_id IN (SELECT a.wkor_id                          
+                    FROM TAWOEQUIP a, TAEQUIPMENT b            
+                    WHERE a.comp_no = b.comp_no                
+                    AND   a.equip_id = b.equip_id            
+  AND  a.comp_no='^param1'
+AND b.eqloc_id IN (    SELECT eqloc_id                            
+                        FROM TAEQLOC                            
+                        WHERE comp_no = '^param1'            
+                        START wITH eqloc_id = '1078'            
+                        CONNECT BY PRIOR eqloc_id = p_eqloc_id    
+                    )                                            
+                    ))AssemblyWorkComp,
+                    (SELECT                                                                        
+      COUNT(1)                                                                
+FROM TAWORKORDER x                                                            
+WHERE 1=1                                                                     
+  AND  x.comp_no = '^param1'                                               
+  AND  x.wkor_date >= '^param3'       
+  AND  x.wkor_date <= '^param3'          
+ AND x.wo_type = 'PMW'
+  AND x.wo_status = 'C'
+AND x.wkor_id IN (SELECT a.wkor_id                          
+                    FROM TAWOEQUIP a, TAEQUIPMENT b            
+                    WHERE a.comp_no = b.comp_no                
+                    AND   a.equip_id = b.equip_id            
+  AND  a.comp_no='^param1'
+AND b.eqloc_id IN (    SELECT eqloc_id                            
+                        FROM TAEQLOC                            
+                        WHERE comp_no = '^param1'            
+                        START wITH eqloc_id = '1079'            
+                        CONNECT BY PRIOR eqloc_id = p_eqloc_id    
+                    )                                            
+                    ))mechaWorkComp,
+                    (SELECT                                                                        
+      COUNT(1)                                                                
+FROM TAWORKORDER x                                                            
+WHERE 1=1                                                                     
+  AND  x.comp_no = '^param1'                                               
+  AND  x.wkor_date >= '^param3'       
+  AND  x.wkor_date <= '^param3'          
+ AND x.wo_type = 'PMW'
+  AND x.wo_status = 'C'
+AND x.wkor_id IN (SELECT a.wkor_id                          
+                    FROM TAWOEQUIP a, TAEQUIPMENT b            
+                    WHERE a.comp_no = b.comp_no                
+                    AND   a.equip_id = b.equip_id            
+  AND  a.comp_no='^param1'
+AND b.eqloc_id IN (    SELECT eqloc_id                            
+                        FROM TAEQLOC                            
+                        WHERE comp_no = '^param1'            
+                        START wITH eqloc_id = '1080'            
+                        CONNECT BY PRIOR eqloc_id = p_eqloc_id    
+                    )                                            
+                    ))asrsWorkComp,
+                    (SELECT                                                                        
+      COUNT(1)                                                                
+FROM TAWORKORDER x                                                            
+WHERE 1=1                                                                     
+  AND  x.comp_no = '^param1'                                               
+  AND  x.wkor_date >= '^param3'       
+  AND  x.wkor_date <= '^param3'          
+ AND x.wo_type = 'PMW'
+  AND x.wo_status = 'C'
+AND x.wkor_id IN (SELECT a.wkor_id                          
+                    FROM TAWOEQUIP a, TAEQUIPMENT b            
+                    WHERE a.comp_no = b.comp_no                
+                    AND   a.equip_id = b.equip_id            
+  AND  a.comp_no='^param1'
+AND b.eqloc_id IN (    SELECT eqloc_id                            
+                        FROM TAEQLOC                            
+                        WHERE comp_no = '^param1'            
+                        START wITH eqloc_id = '1081'            
+                        CONNECT BY PRIOR eqloc_id = p_eqloc_id    
+                    )                                            
+                    ))foamWorkPComp,    
+                    /*BM*/
+(SELECT                                                                        
+      COUNT(1)                                                                
+FROM TAWORKORDER x                                                            
+WHERE 1=1                                                                     
+  AND  x.comp_no = '^param1'                                               
+  AND  x.wkor_date >= '^param3'       
+  AND  x.wkor_date <= '^param3'          
+ AND x.wo_type = 'BM'
+AND x.wkor_id IN (SELECT a.wkor_id                          
+                    FROM TAWOEQUIP a, TAEQUIPMENT b            
+                    WHERE a.comp_no = b.comp_no                
+                    AND   a.equip_id = b.equip_id            
+  AND  a.comp_no='^param1'
+AND b.eqloc_id IN (    SELECT eqloc_id                            
+                        FROM TAEQLOC                            
+                        WHERE comp_no = '^param1'            
+                        START wITH eqloc_id = '1078'            
+                        CONNECT BY PRIOR eqloc_id = p_eqloc_id    
+                    )                                            
+                    ))AssemblyBmPlan,
+                    (SELECT                                                                        
+      COUNT(1)                                                                
+FROM TAWORKORDER x                                                            
+WHERE 1=1                                                                     
+  AND  x.comp_no = '^param1'                                               
+  AND  x.wkor_date >= '^param3'       
+  AND  x.wkor_date <= '^param3'          
+ AND x.wo_type = 'BM'
+AND x.wkor_id IN (SELECT a.wkor_id                          
+                    FROM TAWOEQUIP a, TAEQUIPMENT b            
+                    WHERE a.comp_no = b.comp_no                
+                    AND   a.equip_id = b.equip_id            
+  AND  a.comp_no='^param1'
+AND b.eqloc_id IN (    SELECT eqloc_id                            
+                        FROM TAEQLOC                            
+                        WHERE comp_no = '^param1'            
+                        START wITH eqloc_id = '1079'            
+                        CONNECT BY PRIOR eqloc_id = p_eqloc_id    
+                    )                                            
+                    ))mechaBmPlan,
+                    (SELECT                                                                        
+      COUNT(1)                                                                
+FROM TAWORKORDER x                                                            
+WHERE 1=1                                                                     
+  AND  x.comp_no = '^param1'                                               
+  AND  x.wkor_date >= '^param3'       
+  AND  x.wkor_date <= '^param3'          
+ AND x.wo_type = 'BM'
+AND x.wkor_id IN (SELECT a.wkor_id                          
+                    FROM TAWOEQUIP a, TAEQUIPMENT b            
+                    WHERE a.comp_no = b.comp_no                
+                    AND   a.equip_id = b.equip_id            
+  AND  a.comp_no='^param1'
+AND b.eqloc_id IN (    SELECT eqloc_id                            
+                        FROM TAEQLOC                            
+                        WHERE comp_no = '^param1'            
+                        START wITH eqloc_id = '1080'            
+                        CONNECT BY PRIOR eqloc_id = p_eqloc_id    
+                    )                                            
+                    ))asrsBmPlan,
+                    (SELECT                                                                        
+      COUNT(1)                                                                
+FROM TAWORKORDER x                                                            
+WHERE 1=1                                                                     
+  AND  x.comp_no = '^param1'                                               
+  AND  x.wkor_date >= '^param3'       
+  AND  x.wkor_date <= '^param3'          
+ AND x.wo_type = 'BM'
+AND x.wkor_id IN (SELECT a.wkor_id                          
+                    FROM TAWOEQUIP a, TAEQUIPMENT b            
+                    WHERE a.comp_no = b.comp_no                
+                    AND   a.equip_id = b.equip_id            
+  AND  a.comp_no='^param1'
+AND b.eqloc_id IN (    SELECT eqloc_id                            
+                        FROM TAEQLOC                            
+                        WHERE comp_no = '^param1'            
+                        START wITH eqloc_id = '1081'            
+                        CONNECT BY PRIOR eqloc_id = p_eqloc_id    
+                    )                                            
+                    ))foamBmPlan,
+                    (SELECT                                                                        
+      COUNT(1)                                                                
+FROM TAWORKORDER x                                                            
+WHERE 1=1                                                                     
+  AND  x.comp_no = '^param1'                                               
+  AND  x.wkor_date >= '^param3'       
+  AND  x.wkor_date <= '^param3'          
+ AND x.wo_type = 'BM'
+  AND x.wo_status = 'C'
+AND x.wkor_id IN (SELECT a.wkor_id                          
+                    FROM TAWOEQUIP a, TAEQUIPMENT b            
+                    WHERE a.comp_no = b.comp_no                
+                    AND   a.equip_id = b.equip_id            
+  AND  a.comp_no='^param1'
+AND b.eqloc_id IN (    SELECT eqloc_id                            
+                        FROM TAEQLOC                            
+                        WHERE comp_no = '^param1'            
+                        START wITH eqloc_id = '1078'            
+                        CONNECT BY PRIOR eqloc_id = p_eqloc_id    
+                    )                                            
+                    ))AssemblyBmComp,
+                    (SELECT                                                                        
+      COUNT(1)                                                                
+FROM TAWORKORDER x                                                            
+WHERE 1=1                                                                     
+  AND  x.comp_no = '^param1'                                               
+  AND  x.wkor_date >= '^param3'       
+  AND  x.wkor_date <= '^param3'          
+ AND x.wo_type = 'BM'
+  AND x.wo_status = 'C'
+AND x.wkor_id IN (SELECT a.wkor_id                          
+                    FROM TAWOEQUIP a, TAEQUIPMENT b            
+                    WHERE a.comp_no = b.comp_no                
+                    AND   a.equip_id = b.equip_id            
+  AND  a.comp_no='^param1'
+AND b.eqloc_id IN (    SELECT eqloc_id                            
+                        FROM TAEQLOC                            
+                        WHERE comp_no = '^param1'            
+                        START wITH eqloc_id = '1079'            
+                        CONNECT BY PRIOR eqloc_id = p_eqloc_id    
+                    )                                            
+                    ))mechaBmComp,
+                    (SELECT                                                                        
+      COUNT(1)                                                                
+FROM TAWORKORDER x                                                            
+WHERE 1=1                                                                     
+  AND  x.comp_no = '^param1'                                               
+  AND  x.wkor_date >= '^param3'       
+  AND  x.wkor_date <= '^param3'          
+ AND x.wo_type = 'BM'
+  AND x.wo_status = 'C'
+AND x.wkor_id IN (SELECT a.wkor_id                          
+                    FROM TAWOEQUIP a, TAEQUIPMENT b            
+                    WHERE a.comp_no = b.comp_no                
+                    AND   a.equip_id = b.equip_id            
+  AND  a.comp_no='^param1'
+AND b.eqloc_id IN (    SELECT eqloc_id                            
+                        FROM TAEQLOC                            
+                        WHERE comp_no = '^param1'            
+                        START wITH eqloc_id = '1080'            
+                        CONNECT BY PRIOR eqloc_id = p_eqloc_id    
+                    )                                            
+                    ))asrsBmComp,
+                    (SELECT                                                                        
+      COUNT(1)                                                                
+FROM TAWORKORDER x                                                            
+WHERE 1=1                                                                     
+  AND  x.comp_no = '^param1'                                               
+  AND  x.wkor_date >= '^param3'       
+  AND  x.wkor_date <= '^param3'          
+ AND x.wo_type = 'BM'
+  AND x.wo_status = 'C'
+AND x.wkor_id IN (SELECT a.wkor_id                          
+                    FROM TAWOEQUIP a, TAEQUIPMENT b            
+                    WHERE a.comp_no = b.comp_no                
+                    AND   a.equip_id = b.equip_id            
+  AND  a.comp_no='^param1'
+AND b.eqloc_id IN (    SELECT eqloc_id                            
+                        FROM TAEQLOC                            
+                        WHERE comp_no = '^param1'            
+                        START wITH eqloc_id = '1081'            
+                        CONNECT BY PRIOR eqloc_id = p_eqloc_id    
+                    )                                            
+                    ))foamBmPComp ,   
+                    /*CM*/
+(SELECT                                                                        
+      COUNT(1)                                                                
+FROM TAWORKORDER x                                                            
+WHERE 1=1                                                                     
+  AND  x.comp_no = '^param1'                                               
+  AND  x.wkor_date >= '^param3'       
+  AND  x.wkor_date <= '^param3'          
+ AND x.wo_type = 'CM'
+AND x.wkor_id IN (SELECT a.wkor_id                          
+                    FROM TAWOEQUIP a, TAEQUIPMENT b            
+                    WHERE a.comp_no = b.comp_no                
+                    AND   a.equip_id = b.equip_id            
+  AND  a.comp_no='^param1'
+AND b.eqloc_id IN (    SELECT eqloc_id                            
+                        FROM TAEQLOC                            
+                        WHERE comp_no = '^param1'            
+                        START wITH eqloc_id = '1078'            
+                        CONNECT BY PRIOR eqloc_id = p_eqloc_id    
+                    )                                            
+                    ))AssemblyCmPlan,
+                    (SELECT                                                                        
+      COUNT(1)                                                                
+FROM TAWORKORDER x                                                            
+WHERE 1=1                                                                     
+  AND  x.comp_no = '^param1'                                               
+  AND  x.wkor_date >= '^param3'       
+  AND  x.wkor_date <= '^param3'          
+ AND x.wo_type = 'CM'
+AND x.wkor_id IN (SELECT a.wkor_id                          
+                    FROM TAWOEQUIP a, TAEQUIPMENT b            
+                    WHERE a.comp_no = b.comp_no                
+                    AND   a.equip_id = b.equip_id            
+  AND  a.comp_no='^param1'
+AND b.eqloc_id IN (    SELECT eqloc_id                            
+                        FROM TAEQLOC                            
+                        WHERE comp_no = '^param1'            
+                        START wITH eqloc_id = '1079'            
+                        CONNECT BY PRIOR eqloc_id = p_eqloc_id    
+                    )                                            
+                    ))mechaCmPlan,
+                    (SELECT                                                                        
+      COUNT(1)                                                                
+FROM TAWORKORDER x                                                            
+WHERE 1=1                                                                     
+  AND  x.comp_no = '^param1'                                               
+  AND  x.wkor_date >= '^param3'       
+  AND  x.wkor_date <= '^param3'          
+ AND x.wo_type = 'CM'
+AND x.wkor_id IN (SELECT a.wkor_id                          
+                    FROM TAWOEQUIP a, TAEQUIPMENT b            
+                    WHERE a.comp_no = b.comp_no                
+                    AND   a.equip_id = b.equip_id            
+  AND  a.comp_no='^param1'
+AND b.eqloc_id IN (    SELECT eqloc_id                            
+                        FROM TAEQLOC                            
+                        WHERE comp_no = '^param1'            
+                        START wITH eqloc_id = '1080'            
+                        CONNECT BY PRIOR eqloc_id = p_eqloc_id    
+                    )                                            
+                    ))asrsCmPlan,
+                    (SELECT                                                                        
+      COUNT(1)                                                                
+FROM TAWORKORDER x                                                            
+WHERE 1=1                                                                     
+  AND  x.comp_no = '^param1'                                               
+  AND  x.wkor_date >= '^param3'       
+  AND  x.wkor_date <= '^param3'          
+ AND x.wo_type = 'CM'
+AND x.wkor_id IN (SELECT a.wkor_id                          
+                    FROM TAWOEQUIP a, TAEQUIPMENT b            
+                    WHERE a.comp_no = b.comp_no                
+                    AND   a.equip_id = b.equip_id            
+  AND  a.comp_no='^param1'
+AND b.eqloc_id IN (    SELECT eqloc_id                            
+                        FROM TAEQLOC                            
+                        WHERE comp_no = '^param1'            
+                        START wITH eqloc_id = '1081'            
+                        CONNECT BY PRIOR eqloc_id = p_eqloc_id    
+                    )                                            
+                    ))foamCmPlan,
+                    (SELECT                                                                        
+      COUNT(1)                                                                
+FROM TAWORKORDER x                                                            
+WHERE 1=1                                                                     
+  AND  x.comp_no = '^param1'                                               
+  AND  x.wkor_date >= '^param3'       
+  AND  x.wkor_date <= '^param3'          
+ AND x.wo_type = 'CM'
+  AND x.wo_status = 'C'
+AND x.wkor_id IN (SELECT a.wkor_id                          
+                    FROM TAWOEQUIP a, TAEQUIPMENT b            
+                    WHERE a.comp_no = b.comp_no                
+                    AND   a.equip_id = b.equip_id            
+  AND  a.comp_no='^param1'
+AND b.eqloc_id IN (    SELECT eqloc_id                            
+                        FROM TAEQLOC                            
+                        WHERE comp_no = '^param1'            
+                        START wITH eqloc_id = '1078'            
+                        CONNECT BY PRIOR eqloc_id = p_eqloc_id    
+                    )                                            
+                    ))AssemblyCmComp,
+                    (SELECT                                                                        
+      COUNT(1)                                                                
+FROM TAWORKORDER x                                                            
+WHERE 1=1                                                                     
+  AND  x.comp_no = '^param1'                                               
+  AND  x.wkor_date >= '^param3'       
+  AND  x.wkor_date <= '^param3'          
+ AND x.wo_type = 'CM'
+  AND x.wo_status = 'C'
+AND x.wkor_id IN (SELECT a.wkor_id                          
+                    FROM TAWOEQUIP a, TAEQUIPMENT b            
+                    WHERE a.comp_no = b.comp_no                
+                    AND   a.equip_id = b.equip_id            
+  AND  a.comp_no='^param1'
+AND b.eqloc_id IN (    SELECT eqloc_id                            
+                        FROM TAEQLOC                            
+                        WHERE comp_no = '^param1'            
+                        START wITH eqloc_id = '1079'            
+                        CONNECT BY PRIOR eqloc_id = p_eqloc_id    
+                    )                                            
+                    ))mechaCmComp,
+                    (SELECT                                                                        
+      COUNT(1)                                                                
+FROM TAWORKORDER x                                                            
+WHERE 1=1                                                                     
+  AND  x.comp_no = '^param1'                                               
+  AND  x.wkor_date >= '^param3'       
+  AND  x.wkor_date <= '^param3'          
+ AND x.wo_type = 'CM'
+  AND x.wo_status = 'C'
+AND x.wkor_id IN (SELECT a.wkor_id                          
+                    FROM TAWOEQUIP a, TAEQUIPMENT b            
+                    WHERE a.comp_no = b.comp_no                
+                    AND   a.equip_id = b.equip_id            
+  AND  a.comp_no='^param1'
+AND b.eqloc_id IN (    SELECT eqloc_id                            
+                        FROM TAEQLOC                            
+                        WHERE comp_no = '^param1'            
+                        START wITH eqloc_id = '1080'            
+                        CONNECT BY PRIOR eqloc_id = p_eqloc_id    
+                    )                                            
+                    ))asrsCmComp,
+                    (SELECT                                                                        
+      COUNT(1)                                                                
+FROM TAWORKORDER x                                                            
+WHERE 1=1                                                                     
+  AND  x.comp_no = '^param1'                                               
+  AND  x.wkor_date >= '^param3'       
+  AND  x.wkor_date <= '^param3'          
+ AND x.wo_type = 'CM'
+  AND x.wo_status = 'C'
+AND x.wkor_id IN (SELECT a.wkor_id                          
+                    FROM TAWOEQUIP a, TAEQUIPMENT b            
+                    WHERE a.comp_no = b.comp_no                
+                    AND   a.equip_id = b.equip_id            
+  AND  a.comp_no='^param1'
+AND b.eqloc_id IN (    SELECT eqloc_id                            
+                        FROM TAEQLOC                            
+                        WHERE comp_no = '^param1'            
+                        START wITH eqloc_id = '1081'            
+                        CONNECT BY PRIOR eqloc_id = p_eqloc_id    
+                    )                                            
+                    ))foamCmPComp ,
+/*Maint KPI*/                      
+(SELECT                                                                            
+       x.dtime+ntime+etime                                          
+FROM   TALNWRKTIME x                                                    
+WHERE  x.comp_no      = '^param1'                                    
+AND wrk_date='^param3'
+and eqloc_id='1078')assyRun,
+(SELECT                                                                            
+       x.dtime+ntime+etime                                          
+FROM   TALNWRKTIME x                                                    
+WHERE  x.comp_no      = '^param1'                                    
+AND wrk_date='^param3'
+and eqloc_id='1079')mecaRun,
+(SELECT                                                                            
+       x.dtime+ntime+etime                                          
+FROM   TALNWRKTIME x                                                    
+WHERE  x.comp_no      = '^param1'                                    
+AND wrk_date='^param3'
+and eqloc_id='1080')asrsRun,
+(SELECT                                                                            
+       x.dtime+ntime+etime                                          
+FROM   TALNWRKTIME x                                                    
+WHERE  x.comp_no      = '^param1'                                    
+AND wrk_date='^param3'
+and eqloc_id='1081')foamRun,    
+/*Failure Calls*/
+(SELECT                                                                        
+      COUNT(1)                                                                
+FROM TAWORKORDER x                                                            
+WHERE 1=1                                                                     
+  AND  x.comp_no = '^param1'                                               
+  AND  x.wkor_date >= '^param3'       
+  AND  x.wkor_date <= '^param3'          
+ AND x.wo_type = 'BM'
+ AND x.wkor_id in (select wkor_id from tawofail where lndn_work_time>0)
+AND x.wkor_id IN (SELECT a.wkor_id                          
+                    FROM TAWOEQUIP a, TAEQUIPMENT b            
+                    WHERE a.comp_no = b.comp_no                
+                    AND   a.equip_id = b.equip_id            
+  AND  a.comp_no='^param1'
+AND b.eqloc_id IN (    SELECT eqloc_id                            
+                        FROM TAEQLOC                            
+                        WHERE comp_no = '^param1'            
+                        START wITH eqloc_id = '1078'            
+                        CONNECT BY PRIOR eqloc_id = p_eqloc_id    
+                    )                                            
+                    )) assyCall  ,
+                    (SELECT                                                                        
+      COUNT(1)                                                                
+FROM TAWORKORDER x                                                            
+WHERE 1=1                                                                     
+  AND  x.comp_no = '^param1'                                               
+  AND  x.wkor_date >= '^param3'       
+  AND  x.wkor_date <= '^param3'          
+ AND x.wo_type = 'BM'
+  AND x.wkor_id in (select wkor_id from tawofail where lndn_work_time>0)
+AND x.wkor_id IN (SELECT a.wkor_id                          
+                    FROM TAWOEQUIP a, TAEQUIPMENT b            
+                    WHERE a.comp_no = b.comp_no                
+                    AND   a.equip_id = b.equip_id            
+  AND  a.comp_no='^param1'
+AND b.eqloc_id IN (    SELECT eqloc_id                            
+                        FROM TAEQLOC                            
+                        WHERE comp_no = '^param1'            
+                        START wITH eqloc_id = '1079'            
+                        CONNECT BY PRIOR eqloc_id = p_eqloc_id    
+                    )                                            
+                    )) mecaCall ,
+                    (SELECT                                                                        
+      COUNT(1)                                                                
+FROM TAWORKORDER x                                                            
+WHERE 1=1                                                                     
+  AND  x.comp_no = '^param1'                                               
+  AND  x.wkor_date >= '^param3'       
+  AND  x.wkor_date <= '^param3'          
+ AND x.wo_type = 'BM'
+  AND x.wkor_id in (select wkor_id from tawofail where lndn_work_time>0)
+AND x.wkor_id IN (SELECT a.wkor_id                          
+                    FROM TAWOEQUIP a, TAEQUIPMENT b            
+                    WHERE a.comp_no = b.comp_no                
+                    AND   a.equip_id = b.equip_id            
+  AND  a.comp_no='^param1'
+AND b.eqloc_id IN (    SELECT eqloc_id                            
+                        FROM TAEQLOC                            
+                        WHERE comp_no = '^param1'            
+                        START wITH eqloc_id = '1080'            
+                        CONNECT BY PRIOR eqloc_id = p_eqloc_id    
+                    )                                            
+                    )) asrsCall ,
+                    (SELECT                                                                        
+      COUNT(1)                                                                
+FROM TAWORKORDER x                                                            
+WHERE 1=1                                                                     
+  AND  x.comp_no = '^param1'                                               
+  AND  x.wkor_date >= '^param3'       
+  AND  x.wkor_date <= '^param3'          
+ AND x.wo_type = 'BM'
+  AND x.wkor_id in (select wkor_id from tawofail where lndn_work_time>0)
+AND x.wkor_id IN (SELECT a.wkor_id                          
+                    FROM TAWOEQUIP a, TAEQUIPMENT b            
+                    WHERE a.comp_no = b.comp_no                
+                    AND   a.equip_id = b.equip_id            
+  AND  a.comp_no='^param1'
+AND b.eqloc_id IN (    SELECT eqloc_id                            
+                        FROM TAEQLOC                            
+                        WHERE comp_no = '^param1'            
+                        START wITH eqloc_id = '1081'            
+                        CONNECT BY PRIOR eqloc_id = p_eqloc_id    
+                    )                                            
+                    )) foamCall,
+/*DownTime*/
+(SELECT                                                                        
+      NVL(SUM((select b.lndn_work_time FROM TAWOFAIL b where x.wkor_id=b.wkor_id)),'0')DnAssy                                                              
+FROM TAWORKORDER x                                                            
+WHERE 1=1                                                                     
+  AND  x.comp_no = '^param1'                                               
+  AND  x.wkor_date >= '^param3'       
+  AND  x.wkor_date <= '^param3'          
+ AND x.wo_type = 'BM'
+   AND x.wkor_id in (select wkor_id from tawofail where lndn_work_time>0)
+AND x.wkor_id IN (SELECT a.wkor_id                          
+                    FROM TAWOEQUIP a, TAEQUIPMENT b            
+                    WHERE a.comp_no = b.comp_no                
+                    AND   a.equip_id = b.equip_id            
+  AND  a.comp_no='^param1'
+AND b.eqloc_id IN (    SELECT eqloc_id                            
+                        FROM TAEQLOC                            
+                        WHERE comp_no = '^param1'            
+                        START wITH eqloc_id = '1078'            
+                        CONNECT BY PRIOR eqloc_id = p_eqloc_id    )))assyDn,
+                        (SELECT                                                                        
+      NVL(SUM((select b.lndn_work_time FROM TAWOFAIL b where x.wkor_id=b.wkor_id)),'0')DnAssy                                                              
+FROM TAWORKORDER x                                                            
+WHERE 1=1                                                                     
+  AND  x.comp_no = '^param1'                                               
+  AND  x.wkor_date >= '^param3'       
+  AND  x.wkor_date <= '^param3'          
+ AND x.wo_type = 'BM'
+   AND x.wkor_id in (select wkor_id from tawofail where lndn_work_time>0)
+AND x.wkor_id IN (SELECT a.wkor_id                          
+                    FROM TAWOEQUIP a, TAEQUIPMENT b            
+                    WHERE a.comp_no = b.comp_no                
+                    AND   a.equip_id = b.equip_id            
+  AND  a.comp_no='^param1'
+AND b.eqloc_id IN (    SELECT eqloc_id                            
+                        FROM TAEQLOC                            
+                        WHERE comp_no = '^param1'            
+                        START wITH eqloc_id = '1079'            
+                        CONNECT BY PRIOR eqloc_id = p_eqloc_id    )))mecaDn,
+                        (SELECT                                                                        
+      NVL(SUM((select b.lndn_work_time FROM TAWOFAIL b where x.wkor_id=b.wkor_id)),'0')DnAssy                                                              
+FROM TAWORKORDER x                                                            
+WHERE 1=1                                                                     
+  AND  x.comp_no = '^param1'                                               
+  AND  x.wkor_date >= '^param3'       
+  AND  x.wkor_date <= '^param3'          
+ AND x.wo_type = 'BM'
+   AND x.wkor_id in (select wkor_id from tawofail where lndn_work_time>0)
+AND x.wkor_id IN (SELECT a.wkor_id                          
+                    FROM TAWOEQUIP a, TAEQUIPMENT b            
+                    WHERE a.comp_no = b.comp_no                
+                    AND   a.equip_id = b.equip_id            
+  AND  a.comp_no='^param1'
+AND b.eqloc_id IN (    SELECT eqloc_id                            
+                        FROM TAEQLOC                            
+                        WHERE comp_no = '^param1'            
+                        START wITH eqloc_id = '1080'            
+                        CONNECT BY PRIOR eqloc_id = p_eqloc_id    )))asrsDn,
+                        (SELECT                                                                        
+      NVL(SUM((select b.lndn_work_time FROM TAWOFAIL b where x.wkor_id=b.wkor_id)),'0')DnAssy                                                              
+FROM TAWORKORDER x                                                            
+WHERE 1=1                                                                     
+  AND  x.comp_no = '^param1'                                               
+  AND  x.wkor_date >= '^param3'       
+  AND  x.wkor_date <= '^param3'          
+ AND x.wo_type = 'BM'
+   AND x.wkor_id in (select wkor_id from tawofail where lndn_work_time>0)
+AND x.wkor_id IN (SELECT a.wkor_id                          
+                    FROM TAWOEQUIP a, TAEQUIPMENT b            
+                    WHERE a.comp_no = b.comp_no                
+                    AND   a.equip_id = b.equip_id            
+  AND  a.comp_no='^param1'
+AND b.eqloc_id IN (    SELECT eqloc_id                            
+                        FROM TAEQLOC                            
+                        WHERE comp_no = '^param1'            
+                        START wITH eqloc_id = '1081'            
+                        CONNECT BY PRIOR eqloc_id = p_eqloc_id    )))foamDn,
+/*MTBF*/
+ROUND(DECODE((SELECT                                                                        
+      COUNT(1)                                                                
+FROM TAWORKORDER x                                                            
+WHERE 1=1                                                                     
+  AND  x.comp_no = '^param1'                                               
+  AND  x.wkor_date >= '^param3'       
+  AND  x.wkor_date <= '^param3'          
+ AND x.wo_type = 'BM'
+ AND x.wkor_id in (select wkor_id from tawofail where lndn_work_time>0)
+AND x.wkor_id IN (SELECT a.wkor_id                          
+                    FROM TAWOEQUIP a, TAEQUIPMENT b            
+                    WHERE a.comp_no = b.comp_no                
+                    AND   a.equip_id = b.equip_id            
+  AND  a.comp_no='^param1'
+AND b.eqloc_id IN (    SELECT eqloc_id                            
+                        FROM TAEQLOC                            
+                        WHERE comp_no = '^param1'            
+                        START wITH eqloc_id = '1078'            
+                        CONNECT BY PRIOR eqloc_id = p_eqloc_id    
+                    ))) ,0,0,(SELECT                                                                            
+       x.dtime+ntime+etime                                          
+FROM   TALNWRKTIME x                                                    
+WHERE  x.comp_no      = '^param1'                                    
+AND wrk_date='^param3'
+and eqloc_id='1078')- (SELECT                                                                        
+      NVL(SUM((select b.lndn_work_time FROM TAWOFAIL b where x.wkor_id=b.wkor_id)),'0')DnAssy                                                              
+FROM TAWORKORDER x                                                            
+WHERE 1=1                                                                     
+  AND  x.comp_no = '^param1'                                               
+  AND  x.wkor_date >= '^param3'       
+  AND  x.wkor_date <= '^param3'          
+ AND x.wo_type = 'BM'
+   AND x.wkor_id in (select wkor_id from tawofail where lndn_work_time>0)
+AND x.wkor_id IN (SELECT a.wkor_id                          
+                    FROM TAWOEQUIP a, TAEQUIPMENT b            
+                    WHERE a.comp_no = b.comp_no                
+                    AND   a.equip_id = b.equip_id            
+  AND  a.comp_no='^param1'
+AND b.eqloc_id IN (    SELECT eqloc_id                            
+                        FROM TAEQLOC                            
+                        WHERE comp_no = '^param1'            
+                        START wITH eqloc_id = '1078'            
+                        CONNECT BY PRIOR eqloc_id = p_eqloc_id    )))  / (SELECT                                                                        
+      COUNT(1)                                                                
+FROM TAWORKORDER x                                                            
+WHERE 1=1                                                                     
+  AND  x.comp_no = '^param1'                                               
+  AND  x.wkor_date >= '^param3'       
+  AND  x.wkor_date <= '^param3'          
+ AND x.wo_type = 'BM'
+ AND x.wkor_id in (select wkor_id from tawofail where lndn_work_time>0)
+AND x.wkor_id IN (SELECT a.wkor_id                          
+                    FROM TAWOEQUIP a, TAEQUIPMENT b            
+                    WHERE a.comp_no = b.comp_no                
+                    AND   a.equip_id = b.equip_id            
+  AND  a.comp_no='^param1'
+AND b.eqloc_id IN (    SELECT eqloc_id                            
+                        FROM TAEQLOC                            
+                        WHERE comp_no = '^param1'            
+                        START wITH eqloc_id = '1078'            
+                        CONNECT BY PRIOR eqloc_id = p_eqloc_id    
+                    )                                            
+                    ))),1)  assymtbf ,                    
+ ROUND(DECODE((SELECT                                                                        
+      COUNT(1)                                                                
+FROM TAWORKORDER x                                                            
+WHERE 1=1                                                                     
+  AND  x.comp_no = '^param1'                                               
+  AND  x.wkor_date >= '^param3'       
+  AND  x.wkor_date <= '^param3'          
+ AND x.wo_type = 'BM'
+ AND x.wkor_id in (select wkor_id from tawofail where lndn_work_time>0)
+AND x.wkor_id IN (SELECT a.wkor_id                          
+                    FROM TAWOEQUIP a, TAEQUIPMENT b            
+                    WHERE a.comp_no = b.comp_no                
+                    AND   a.equip_id = b.equip_id            
+  AND  a.comp_no='^param1'
+AND b.eqloc_id IN (    SELECT eqloc_id                            
+                        FROM TAEQLOC                            
+                        WHERE comp_no = '^param1'            
+                        START wITH eqloc_id = '1079'            
+                        CONNECT BY PRIOR eqloc_id = p_eqloc_id    
+                    ))) ,0,0,(SELECT                                                                            
+       x.dtime+ntime+etime                                          
+FROM   TALNWRKTIME x                                                    
+WHERE  x.comp_no      = '^param1'                                    
+AND wrk_date='^param3'
+and eqloc_id='1079')- (SELECT                                                                        
+      NVL(SUM((select b.lndn_work_time FROM TAWOFAIL b where x.wkor_id=b.wkor_id)),'0')DnAssy                                                              
+FROM TAWORKORDER x                                                            
+WHERE 1=1                                                                     
+  AND  x.comp_no = '^param1'                                               
+  AND  x.wkor_date >= '^param3'       
+  AND  x.wkor_date <= '^param3'          
+ AND x.wo_type = 'BM'
+   AND x.wkor_id in (select wkor_id from tawofail where lndn_work_time>0)
+AND x.wkor_id IN (SELECT a.wkor_id                          
+                    FROM TAWOEQUIP a, TAEQUIPMENT b            
+                    WHERE a.comp_no = b.comp_no                
+                    AND   a.equip_id = b.equip_id            
+  AND  a.comp_no='^param1'
+AND b.eqloc_id IN (    SELECT eqloc_id                            
+                        FROM TAEQLOC                            
+                        WHERE comp_no = '^param1'            
+                        START wITH eqloc_id = '1079'            
+                        CONNECT BY PRIOR eqloc_id = p_eqloc_id    )))  / (SELECT                                                                        
+      COUNT(1)                                                                
+FROM TAWORKORDER x                                                            
+WHERE 1=1                                                                     
+  AND  x.comp_no = '^param1'                                               
+  AND  x.wkor_date >= '^param3'       
+  AND  x.wkor_date <= '^param3'          
+ AND x.wo_type = 'BM'
+ AND x.wkor_id in (select wkor_id from tawofail where lndn_work_time>0)
+AND x.wkor_id IN (SELECT a.wkor_id                          
+                    FROM TAWOEQUIP a, TAEQUIPMENT b            
+                    WHERE a.comp_no = b.comp_no                
+                    AND   a.equip_id = b.equip_id            
+  AND  a.comp_no='^param1'
+AND b.eqloc_id IN (    SELECT eqloc_id                            
+                        FROM TAEQLOC                            
+                        WHERE comp_no = '^param1'            
+                        START wITH eqloc_id = '1079'            
+                        CONNECT BY PRIOR eqloc_id = p_eqloc_id    
+                    )                                            
+                    ))),1)  mecamtbf,
+                    ROUND(DECODE((SELECT                                                                        
+      COUNT(1)                                                                
+FROM TAWORKORDER x                                                            
+WHERE 1=1                                                                     
+  AND  x.comp_no = '^param1'                                               
+  AND  x.wkor_date >= '^param3'       
+  AND  x.wkor_date <= '^param3'          
+ AND x.wo_type = 'BM'
+ AND x.wkor_id in (select wkor_id from tawofail where lndn_work_time>0)
+AND x.wkor_id IN (SELECT a.wkor_id                          
+                    FROM TAWOEQUIP a, TAEQUIPMENT b            
+                    WHERE a.comp_no = b.comp_no                
+                    AND   a.equip_id = b.equip_id            
+  AND  a.comp_no='^param1'
+AND b.eqloc_id IN (    SELECT eqloc_id                            
+                        FROM TAEQLOC                            
+                        WHERE comp_no = '^param1'            
+                        START wITH eqloc_id = '1080'            
+                        CONNECT BY PRIOR eqloc_id = p_eqloc_id    
+                    ))) ,0,0,(SELECT                                                                            
+       x.dtime+ntime+etime                                          
+FROM   TALNWRKTIME x                                                    
+WHERE  x.comp_no      = '^param1'                                    
+AND wrk_date='^param3'
+and eqloc_id='1080')- (SELECT                                                                        
+      NVL(SUM((select b.lndn_work_time FROM TAWOFAIL b where x.wkor_id=b.wkor_id)),'0')DnAssy                                                              
+FROM TAWORKORDER x                                                            
+WHERE 1=1                                                                     
+  AND  x.comp_no = '^param1'                                               
+  AND  x.wkor_date >= '^param3'       
+  AND  x.wkor_date <= '^param3'          
+ AND x.wo_type = 'BM'
+   AND x.wkor_id in (select wkor_id from tawofail where lndn_work_time>0)
+AND x.wkor_id IN (SELECT a.wkor_id                          
+                    FROM TAWOEQUIP a, TAEQUIPMENT b            
+                    WHERE a.comp_no = b.comp_no                
+                    AND   a.equip_id = b.equip_id            
+  AND  a.comp_no='^param1'
+AND b.eqloc_id IN (    SELECT eqloc_id                            
+                        FROM TAEQLOC                            
+                        WHERE comp_no = '^param1'            
+                        START wITH eqloc_id = '1080'            
+                        CONNECT BY PRIOR eqloc_id = p_eqloc_id    )))  / (SELECT                                                                        
+      COUNT(1)                                                                
+FROM TAWORKORDER x                                                            
+WHERE 1=1                                                                     
+  AND  x.comp_no = '^param1'                                               
+  AND  x.wkor_date >= '^param3'       
+  AND  x.wkor_date <= '^param3'          
+ AND x.wo_type = 'BM'
+ AND x.wkor_id in (select wkor_id from tawofail where lndn_work_time>0)
+AND x.wkor_id IN (SELECT a.wkor_id                          
+                    FROM TAWOEQUIP a, TAEQUIPMENT b            
+                    WHERE a.comp_no = b.comp_no                
+                    AND   a.equip_id = b.equip_id            
+  AND  a.comp_no='^param1'
+AND b.eqloc_id IN (    SELECT eqloc_id                            
+                        FROM TAEQLOC                            
+                        WHERE comp_no = '^param1'            
+                        START wITH eqloc_id = '1080'            
+                        CONNECT BY PRIOR eqloc_id = p_eqloc_id    
+                    )                                            
+                    ))),1)  asrsmtbf,   
+  ROUND(DECODE((SELECT                                                                        
+      COUNT(1)                                                                
+FROM TAWORKORDER x                                                            
+WHERE 1=1                                                                     
+  AND  x.comp_no = '^param1'                                               
+  AND  x.wkor_date >= '^param3'       
+  AND  x.wkor_date <= '^param3'          
+ AND x.wo_type = 'BM'
+ AND x.wkor_id in (select wkor_id from tawofail where lndn_work_time>0)
+AND x.wkor_id IN (SELECT a.wkor_id                          
+                    FROM TAWOEQUIP a, TAEQUIPMENT b            
+                    WHERE a.comp_no = b.comp_no                
+                    AND   a.equip_id = b.equip_id            
+  AND  a.comp_no='^param1'
+AND b.eqloc_id IN (    SELECT eqloc_id                            
+                        FROM TAEQLOC                            
+                        WHERE comp_no = '^param1'            
+                        START wITH eqloc_id = '1081'            
+                        CONNECT BY PRIOR eqloc_id = p_eqloc_id    
+                    ))) ,0,0,(SELECT                                                                            
+       x.dtime+ntime+etime                                          
+FROM   TALNWRKTIME x                                                    
+WHERE  x.comp_no      = '^param1'                                    
+AND wrk_date='^param3'
+and eqloc_id='1081')- (SELECT                                                                        
+      NVL(SUM((select b.lndn_work_time FROM TAWOFAIL b where x.wkor_id=b.wkor_id)),'0')DnAssy                                                              
+FROM TAWORKORDER x                                                            
+WHERE 1=1                                                                     
+  AND  x.comp_no = '^param1'                                               
+  AND  x.wkor_date >= '^param3'       
+  AND  x.wkor_date <= '^param3'          
+ AND x.wo_type = 'BM'
+   AND x.wkor_id in (select wkor_id from tawofail where lndn_work_time>0)
+AND x.wkor_id IN (SELECT a.wkor_id                          
+                    FROM TAWOEQUIP a, TAEQUIPMENT b            
+                    WHERE a.comp_no = b.comp_no                
+                    AND   a.equip_id = b.equip_id            
+  AND  a.comp_no='^param1'
+AND b.eqloc_id IN (    SELECT eqloc_id                            
+                        FROM TAEQLOC                            
+                        WHERE comp_no = '^param1'            
+                        START wITH eqloc_id = '1081'            
+                        CONNECT BY PRIOR eqloc_id = p_eqloc_id    )))  / (SELECT                                                                        
+      COUNT(1)                                                                
+FROM TAWORKORDER x                                                            
+WHERE 1=1                                                                     
+  AND  x.comp_no = '^param1'                                               
+  AND  x.wkor_date >= '^param3'       
+  AND  x.wkor_date <= '^param3'          
+ AND x.wo_type = 'BM'
+ AND x.wkor_id in (select wkor_id from tawofail where lndn_work_time>0)
+AND x.wkor_id IN (SELECT a.wkor_id                          
+                    FROM TAWOEQUIP a, TAEQUIPMENT b            
+                    WHERE a.comp_no = b.comp_no                
+                    AND   a.equip_id = b.equip_id            
+  AND  a.comp_no='^param1'
+AND b.eqloc_id IN (    SELECT eqloc_id                            
+                        FROM TAEQLOC                            
+                        WHERE comp_no = '^param1'            
+                        START wITH eqloc_id = '1081'            
+                        CONNECT BY PRIOR eqloc_id = p_eqloc_id    
+                    )                                            
+                    ))),1)  foammtbf                                                                                  
+from dual                    
+)b
+/
+$
+SELECT    
+        (SELECT TO_CHAR(WM_CONCAT(b.description))                                    
+            FROM TAWOEQUIP a, TAEQUIPMENT b                                            
+            WHERE a.comp_no = b.comp_no                                                
+                AND a.equip_id = b.equip_id                                            
+                AND a.wkor_id = x.wkor_id                                            
+                AND a.comp_no = x.comp_no                                            
+            GROUP By a.comp_no, a.wkor_id    )                         AS equipDesc,
+            TO_CHAR(TO_DATE(y.lndn_start_time,'HH24:MI'),'HH24:MI')dnstartTime,   
+            TO_CHAR(TO_DATE(y.lndn_end_time,'HH24:MI'),'HH24:MI')dnendTime,   
+            y.lndn_work_time,                    
+x.perform,
+x.pmaction
+FROM TAWORKORDER x, TAWOFAIL y
+WHERE x.wkor_id=y.wkor_id
+ AND  x.wkor_date >= '^param3'       
+  AND  x.wkor_date <= '^param3'          
+ AND x.wo_type = 'BM'
+  ORDER BY NVL(lndn_work_time,0) desc
+/

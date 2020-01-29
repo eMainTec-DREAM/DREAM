@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context>
+	<!-- 
+	<Resource auth="Container" driverClassName="oracle.jdbc.driver.OracleDriver" 
+	maxActive="16" maxIdle="16" maxWait="-1" name="com.emaintec.datasource" username="dream_dev"
+	password="dream_dev" type="javax.sql.DataSource" url="jdbc:oracle:thin:@ora.emaintec.com:1522:tiger" 
+	factory="org.apache.tomcat.jdbc.pool.DataSourceFactory" testWhileIdle="true" timeBetweenEvictionRunsMillis="30000" 
+	validationQuery="select 1 from dual" testOnBorrow="false"
+	/>
+	-->
+
+<!-- 
+ -->
+	<Resource auth="Container" driverClassName="com.microsoft.sqlserver.jdbc.SQLServerDriver" 
+    maxActive="520" maxIdle="5" maxWait="10000" name="com.emaintec.datasource" 
+    password="dream_dev" type="javax.sql.DataSource" url="jdbc:sqlserver://202.133.21.180:1433;databaseName=dream_dev"
+    factory="org.apache.tomcat.jdbc.pool.DataSourceFactory" testWhileIdle="true" timeBetweenEvictionRunsMillis="30000" 
+    validationQuery="select 1" testOnBorrow="false"
+    username="dream_dev"/>
+   <!-- 
+    	<Resource auth="Container" driverClassName="oracle.jdbc.driver.OracleDriver" 
+	maxActive="520" maxIdle="5" maxWait="10000" name="com.emaintec.datasource" password="OOra123##" 
+	type="javax.sql.DataSource" url="jdbc:oracle:thin:@132.145.95.133:1521:dreamdb" username="c##dream"
+	factory="org.apache.tomcat.jdbc.pool.DataSourceFactory" testWhileIdle="true" timeBetweenEvictionRunsMillis="30000" 
+	validationQuery="select 1 from dual" testOnBorrow="true"
+	/>
+ --> 
+</Context>

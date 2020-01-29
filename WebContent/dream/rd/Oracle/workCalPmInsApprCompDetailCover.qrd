@@ -1,0 +1,6 @@
+$
+SELECT                                                                                   
+     '^param3'							AS yyyy
+     ,'AMS05001-05(Rev.00,2018/04/02)'	AS docNo
+FROM dual
+/

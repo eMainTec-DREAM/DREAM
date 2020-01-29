@@ -1,0 +1,189 @@
+$
+SELECT 
+            --DECODE(GROUPING_ID(plant , usageDept),3, '총합계',plant) plant
+            DECODE(GROUPING_ID(plant , usageDept),3, (SELECT a.key_name FROM TALANG a WHERE a.key_no = 'totAmt' AND key_type = 'LABEL' AND lang = '^param4'),plant) plant
+            ,usageDept
+           -- ,invt_kind
+            ,TO_CHAR(SUM(DECODE(invt_kind, 'PLN', 1, 0) ), 'FM9,999,999,999,999') planCnt   
+            ,TO_CHAR(SUM(DECODE(invt_kind, 'PLN', DECODE(cont_amt, '', 0 , 1) , 0) ), 'FM9,999,999,999,999')  planProCnt  
+            ,TO_CHAR(ROUND((SUM(DECODE(invt_kind, 'PLN', DECODE(cont_amt, '', 0 , 1) , 0) ) / CASE SUM(DECODE(invt_kind, 'PLN', 1, 0) ) WHEN 0 THEN NULL ELSE SUM(DECODE(invt_kind, 'PLN', 1, 0) ) END) *100,2), 'FM9,999,999,999,999')  planProPer  
+            ,TO_CHAR(SUM(DECODE(c.invt_kind, 'PLN', plan_amt, 0)), 'FM9,999,999,999,999') planPlanAmt 
+            ,TO_CHAR(SUM(DECODE(c.invt_kind, 'PLN', cont_amt, 0)), 'FM9,999,999,999,999') planContAmt 
+            ,TO_CHAR(SUM(DECODE(c.invt_kind, 'PLN', tot_price, 0)), 'FM9,999,999,999,999') planPaidAmt
+            ,TO_CHAR(SUM(DECODE(c.invt_kind, 'EMG', 1, 0)), 'FM9,999,999,999,999')  emgCnt  
+            ,TO_CHAR(SUM(DECODE(invt_kind, 'EMG', DECODE(cont_amt, '', 0 , 1) , 0) ), 'FM9,999,999,999,999')  emgProCnt  
+            ,TO_CHAR(NVL(ROUND((SUM(DECODE(invt_kind, 'EMG', DECODE(cont_amt, '', 0 , 1) , 0) ) / CASE SUM(DECODE(invt_kind, 'EMG', 1, 0) ) WHEN 0 THEN NULL ELSE SUM(DECODE(invt_kind, 'EMG', 1, 0) ) END) *100,2) ,0), 'FM9,999,999,999,999')  emgProPer 
+            ,TO_CHAR(SUM(DECODE(c.invt_kind, 'EMG', plan_amt, 0)), 'FM9,999,999,999,999')  emgPlanAmt 
+            ,TO_CHAR(SUM(DECODE(c.invt_kind, 'EMG', cont_amt, 0)), 'FM9,999,999,999,999')  emgContAmt 
+            ,TO_CHAR(SUM(DECODE(c.invt_kind, 'EMG', tot_price, 0)), 'FM9,999,999,999,999')  emgPaidAmt 
+            ,TO_CHAR(SUM(DECODE(c.invt_kind, 'PLN', plan_amt, 0)) + SUM(DECODE(c.invt_kind, 'EMG', plan_amt, 0)), 'FM9,999,999,999,999')  totPlanAmt 
+            ,TO_CHAR(SUM(DECODE(c.invt_kind, 'PLN', cont_amt, 0)) + SUM(DECODE(c.invt_kind, 'EMG', cont_amt, 0)), 'FM9,999,999,999,999')  totContAmt 
+            ,TO_CHAR(SUM(DECODE(c.invt_kind, 'PLN', tot_price, 0))  + SUM(DECODE(c.invt_kind, 'EMG', tot_price, 0)), 'FM9,999,999,999,999') totPaidAmt   
+            ,ROUND(SUM(DECODE(invt_kind, 'PLN', DECODE(cont_amt, '', 0 , 1) , 0) ) / SUM(DECODE(invt_kind, 'PLN', 1, 0) ) , 2) || '%' rate  
+FROM (
+            SELECT
+                 z.description plant
+                 ,(SELECT b.description
+                  FROM TADEPT b
+                  WHERE dept_categ = 'L2'
+                  START WITH b.dept_id = x.usage_dept
+                  CONNECT BY PRIOR b.p_dept_id = b.dept_id) usageDept
+                 ,invt_kind
+                 ,plan_amt 
+                 ,x.cont_amt
+                 ,y.tot_price
+            FROM TAINVTLIST x LEFT OUTER JOIN TAPTPRRECLIST y ON x.invtlist_id = y.invtlist_id
+            LEFT OUTER JOIN TAPLANT z ON x.plant = z.plant
+            WHERE x.plant IS NOT NULL
+) c
+GROUP BY  ROLLUP(plant , usageDept) HAVING GROUPING_ID(plant , usageDept) IN(0,3)
+/
+$
+SELECT * FROM (
+SELECT        
+            DECODE(GROUPING_ID(plant) || GROUPING_ID(team),'01' 
+            		,(SELECT a.key_name FROM TALANG a WHERE a.key_no = 'total' AND key_type = 'LABEL' AND lang = '^param4'), '11'
+            		,(SELECT a.key_name FROM TALANG a WHERE a.key_no = 'totAmt' AND key_type = 'LABEL' AND lang = '^param4'), plant) plant    
+            ,team 
+            ,TO_CHAR(SUM(DECODE(invtType, 'CAPEX', month1, 0)), 'FM9,999,999,999,999')  month1C 
+            ,TO_CHAR(SUM(DECODE(invtType, 'OPEX', month1, 0)) , 'FM9,999,999,999,999')  month1O 
+            ,TO_CHAR(SUM(DECODE(invtType, 'CAPEX', month2, 0)), 'FM9,999,999,999,999')  month2C 
+            ,TO_CHAR(SUM(DECODE(invtType, 'OPEX', month2, 0)) , 'FM9,999,999,999,999')  month2O 
+            ,TO_CHAR(SUM(DECODE(invtType, 'CAPEX', month3, 0)), 'FM9,999,999,999,999')  month3C 
+            ,TO_CHAR(SUM(DECODE(invtType, 'OPEX', month3, 0)) , 'FM9,999,999,999,999')  month3O 
+            ,TO_CHAR(SUM(DECODE(invtType, 'CAPEX', MONTH4, 0)), 'FM9,999,999,999,999')  month4C 
+            ,TO_CHAR(SUM(DECODE(invtType, 'OPEX', month4, 0)) , 'FM9,999,999,999,999')  month4O 
+            ,TO_CHAR(SUM(DECODE(invtType, 'CAPEX', month5, 0)), 'FM9,999,999,999,999')  month5C 
+            ,TO_CHAR(SUM(DECODE(invtType, 'OPEX', month5, 0)) , 'FM9,999,999,999,999')  month5O 
+            ,TO_CHAR(SUM(DECODE(invtType, 'CAPEX', month6, 0)), 'FM9,999,999,999,999')  month6C 
+            ,TO_CHAR(SUM(DECODE(invtType, 'OPEX', month6, 0)) , 'FM9,999,999,999,999')  month6O 
+            ,TO_CHAR(SUM(DECODE(invtType, 'CAPEX', month7, 0)), 'FM9,999,999,999,999')  month7C 
+            ,TO_CHAR(SUM(DECODE(invtType, 'OPEX', month7, 0)) , 'FM9,999,999,999,999')  month7O 
+            ,TO_CHAR(SUM(DECODE(invtType, 'CAPEX', month8, 0)), 'FM9,999,999,999,999')  month8C 
+            ,TO_CHAR(SUM(DECODE(invtType, 'OPEX', month8, 0)) , 'FM9,999,999,999,999')  month8O 
+            ,TO_CHAR(SUM(DECODE(invtType, 'CAPEX', month9, 0)), 'FM9,999,999,999,999')  month9C 
+            ,TO_CHAR(SUM(DECODE(invtType, 'OPEX', month9, 0)) , 'FM9,999,999,999,999')  month9O 
+            ,TO_CHAR(SUM(DECODE(invtType, 'CAPEX', month10, 0)),'FM9,999,999,999,999')  month10C 
+            ,TO_CHAR(SUM(DECODE(invtType, 'OPEX', month10, 0)) ,'FM9,999,999,999,999')  month10O 
+            ,TO_CHAR(SUM(DECODE(invtType, 'CAPEX', month11, 0)),'FM9,999,999,999,999')  month11C 
+            ,TO_CHAR(SUM(DECODE(invtType, 'OPEX', month11, 0)) ,'FM9,999,999,999,999')  month11O 
+            ,TO_CHAR(SUM(DECODE(invtType, 'CAPEX', month12, 0)),'FM9,999,999,999,999')  month12C 
+            ,TO_CHAR(SUM(DECODE(invtType, 'OPEX', month12, 0)) ,'FM9,999,999,999,999')  month12O 
+            ,GROUPING_ID(plant) pg
+            ,GROUPING_ID(team)  tg
+FROM (    
+SELECT    
+            (SELECT description   
+             FROM TADEPT b    
+             WHERE b.dept_categ = 'L2'    
+             START WITH b.dept_id = z.usage_dept  
+             CONNECT BY PRIOR p_dept_id = dept_id 
+            ) team    
+            ,(SELECT param3 
+               FROM TACDSYSD
+               WHERE list_type ='INVT_TYPE'
+                   AND cdsysd_no = z.invt_type
+              ) invtType     
+            ,CASE WHEN SUBSTR(x.rec_date,5,2)='01'                                                            
+                                THEN x.tot_price                                                      
+                                ELSE 0                                                                
+                                END    month1                                                         
+            , CASE WHEN SUBSTR(x.rec_date,5,2)='02'                                                   
+                                THEN x.tot_price                                                      
+                                ELSE 0                                                                
+                                END    month2                                                         
+            , CASE WHEN SUBSTR(x.rec_date,5,2)='03'                                                   
+                                THEN x.tot_price                                                      
+                                ELSE 0                                                                
+                                END    month3                                                         
+            , CASE WHEN SUBSTR(x.rec_date,5,2)='04'                                                   
+                                THEN x.tot_price                                                      
+                                ELSE 0                                                                
+                                END    month4                                                         
+            , CASE WHEN SUBSTR(x.rec_date,5,2)='05'                                                   
+                                THEN x.tot_price                                                      
+                                ELSE 0                                                                
+                                END    month5                                                         
+            , CASE WHEN SUBSTR(x.rec_date,5,2)='06'                                                   
+                                THEN x.tot_price                                                      
+                                ELSE 0                                                                
+                                END    month6                                                         
+            , CASE WHEN SUBSTR(x.rec_date,5,2)='07'                                                   
+                                THEN x.tot_price                                                      
+                                ELSE 0                                                                
+                                END    month7                                                         
+            , CASE WHEN SUBSTR(x.rec_date,5,2)='08'                                                   
+                                THEN x.tot_price                                                      
+                                ELSE 0                                                                
+                                END    month8                                                         
+            , CASE WHEN SUBSTR(x.rec_date,5,2)='09'                                                   
+                                THEN x.tot_price                                                      
+                                ELSE 0                                                                
+                                END    month9                                                         
+            , CASE WHEN SUBSTR(x.rec_date,5,2)='10'                                                   
+                                THEN x.tot_price                                                      
+                                ELSE 0                                                                
+                                END    month10                                                        
+            , CASE WHEN SUBSTR(x.rec_date,5,2)='11'                                                   
+                                THEN x.tot_price                                                      
+                                ELSE 0                                                                
+                                END    month11                                                        
+            , CASE WHEN SUBSTR(x.rec_date,5,2)='12'                                                   
+                                THEN x.tot_price                                                      
+                                ELSE 0                                                                
+                                END    month12                                                        
+             , x.tot_price      total         
+             ,z.invtlist_id       
+             ,c.description plant                                 
+FROM TAINVTLIST z LEFT OUTER JOIN TAPTPRRECLIST x ON z.invtlist_id = x.invtlist_id AND x.prreclist_status = 'C'
+  AND  SUBSTR(x.rec_date,0,4) = '^param3'
+    LEFT OUTER JOIN TXDWPTCONTITEM y ON z.invtlist_id = y.invtlist_id 
+    LEFT OUTER JOIN TAPLANT c ON z.plant = c.plant    
+    WHERE 1 = 1    
+ AND z.invt_type IS NOT NULL
+ AND z.usage_dept IS NOT NULL
+)A   
+GROUP BY ROLLUP(plant, team )-- HAVING GROUPING_ID(team) not IN(1) 
+) 
+WHERE pg||tg NOT IN ('001')
+/
+$
+SELECT
+  SUBSTR(x.tmonth,5,2) ||(SELECT a.key_name FROM TALANG a WHERE a.key_type = 'LABEL' AND a.key_no = 'month' AND a.lang = '^param4')  MONTH
+ ,NVL(SUM(y.capex),0) capex
+ ,NVL(SUM(y.opex),0) opex
+ ,NVL(SUM(y.total),0) total
+FROM TAMONTH x  LEFT OUTER JOIN (
+SELECT        
+             a.MONTH
+            ,SUM(DECODE(invtType, 'CAPEX', a.MONTH, 0)) capex 
+            ,SUM(DECODE(invtType, 'OPEX', a.MONTH, 0)) opex 
+            , NVL(SUM(a.MONTH),0)                total
+FROM (    
+SELECT    
+            (SELECT param3 
+               FROM TACDSYSD
+               WHERE list_type ='INVT_TYPE'
+                   AND cdsysd_no = z.invt_type
+              ) invtType     
+              , SUBSTR(x.rec_date,5,2) MONTH
+             , x.tot_price      total         
+             ,z.invtlist_id       
+             ,c.description plant                                 
+FROM TAINVTLIST z LEFT OUTER JOIN TAPTPRRECLIST x ON z.invtlist_id = x.invtlist_id AND x.prreclist_status = 'C'
+  AND  SUBSTR(x.rec_date,0,4) = '^param3'
+    LEFT OUTER JOIN TXDWPTCONTITEM y ON z.invtlist_id = y.invtlist_id 
+    LEFT OUTER JOIN TAPLANT c ON z.plant = c.plant    
+    WHERE 1 = 1    
+ AND z.invt_type IS NOT NULL
+ AND z.usage_dept IS NOT NULL
+)A
+--GROUP BY ROLLUP(a.MONTH)-- HAVING GROUPING_ID(team) not IN(1)
+GROUP BY a.MONTH 
+) y
+ON x.tmonth = '^param3'||y.MONTH
+WHERE 1=1
+AND x.tyyyy = '^param3'
+GROUP BY x.tmonth
+ORDER BY x.tmonth
+/

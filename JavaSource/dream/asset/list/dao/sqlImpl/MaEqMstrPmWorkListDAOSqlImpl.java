@@ -1,0 +1,231 @@
+package dream.asset.list.dao.sqlImpl;
+
+import java.util.List;
+
+import common.bean.MwareConfig;
+import common.bean.User;
+import common.spring.BaseJdbcDaoSupportSql;
+import common.util.DateUtil;
+import common.util.QuerySqlBuffer;
+import dream.asset.list.dao.MaEqMstrPmWorkListDAO;
+import dream.asset.list.dto.MaEqMstrCommonDTO;
+import dream.asset.list.dto.MaEqMstrPmWorkListDTO;
+
+/**
+ * 설비 예방작업 목록 dao
+ * @author  kim21017
+ * @version $Id: MaEqMstrPmWorkListDAOSqlImpl.java,v 1.0 2015/12/02 09:14:12 kim21017 Exp $
+ * @since   1.0
+ * @spring.bean id="maEqMstrPmWorkListDAOTarget"
+ * @spring.txbn id="maEqMstrPmWorkListDAO"
+ * @spring.property name="dataSource" ref="dataSource"
+ */
+public class MaEqMstrPmWorkListDAOSqlImpl extends BaseJdbcDaoSupportSql implements MaEqMstrPmWorkListDAO
+{
+
+	@Override
+	public List findEqPmWorkList(MaEqMstrCommonDTO maEqMstrCommonDTO, MaEqMstrPmWorkListDTO maEqMstrPmWorkListDTO, User user)
+			throws Exception {
+		QuerySqlBuffer query = new QuerySqlBuffer();
+		
+		query.append("SELECT '' AS isDelCehck							");
+		query.append("		,'' AS seqNo								");
+		query.append("		,x.pm_id AS pmId							");
+		query.append("		,y.pmequip_id AS pmEquipId					");
+		query.append("		,x.pm_no AS pmNo							");
+		query.append("		,x.pm_type AS pmTypeId						");
+		query.append("		,dbo.SFACODE_TO_DESC(x.pm_type,'PMW_TYPE','SYS','','"+user.getLangId()+"') AS pmTypeDesc    ");
+		query.append("		,x.description AS description				");
+		query.append("      ,(CASE WHEN x.schedule_type != 'T' THEN x.USAGE END) USAGE		");
+		query.append("      ,(CASE WHEN x.schedule_type = 'T' THEN x.CYCLE END ) AS cycle		");
+		query.append("		,x.period_type AS periodType				");
+		query.append("      ,(SELECT (CASE WHEN x.schedule_type = 'T' THEN dbo.SFACODE_TO_DESC(x.period_type,'PERIOD_TYPE','SYS','','"+user.getLangId()+"') END) 		");
+		query.append("       ) AS periodTypeDesc						");
+		query.append("		,y.init_wrk_date AS initWrkDate				");
+		query.append("		,x.dept_id AS deptId						");
+		query.append("		,(SELECT a.description						");
+		query.append("			FROM TADEPT a 							");
+		query.append("			WHERE 1=1								");
+		query.append("			AND a.comp_no = x.comp_no				");
+		query.append("			AND a.dept_id = x.dept_id				");
+		query.append("		) AS deptDesc								");
+		query.append("		,x.wkctr_id AS wkCtrId						");
+		query.append("		,(SELECT a.description						");
+		query.append("			FROM TAWKCTR a 							");
+		query.append("			WHERE 1=1								");
+		query.append("			AND a.comp_no = x.comp_no				");
+		query.append("			AND a.wkctr_id = x.wkctr_id				");
+		query.append("		) AS wkCtrDesc								");
+		query.append("		,x.emp_id AS empId							");
+		query.append("		,(SELECT a.emp_name							");
+		query.append("			FROM TAEMP a 							");
+		query.append("			WHERE 1=1								");
+		query.append("			AND a.comp_no = x.comp_no				");
+		query.append("			AND a.emp_id = x.emp_id					");
+		query.append("		) AS empDesc								");
+		query.append("		,x.is_active AS isActive					");
+		query.append("      ,(SELECT dbo.SFACODE_TO_DESC(x.schedule_type, 'SCHEDULE_TYPE', 'SYS', x.comp_no, '"+user.getLangId()+"') 		");
+		query.append("        ) 								scheduleTypeDesc				");
+		query.append("FROM TAPMLST x INNER JOIN TAPMEQUIP y				");
+		query.append("ON x.comp_no = y.comp_no							");
+		query.append("AND x.pm_id = y.pm_id 							");
+		query.getAndQuery("x.is_deleted", "N");
+		query.getAndQuery("y.is_deleted", "N");
+		query.append("WHERE 1=1											");
+		query.append("AND x.is_active = 'Y'         ");
+		query.append(this.getWhere(maEqMstrCommonDTO, maEqMstrPmWorkListDTO, user));
+		query.getOrderByQuery("x.pm_id", "x.pm_no", maEqMstrPmWorkListDTO.getOrderBy(), maEqMstrPmWorkListDTO.getDirection());
+        
+        
+        return getJdbcTemplate().queryForList(query.toString(maEqMstrPmWorkListDTO.getIsLoadMaxCount(), maEqMstrPmWorkListDTO.getFirstRow()));
+	}
+	
+	private String getWhere(MaEqMstrCommonDTO maEqMstrCommonDTO, MaEqMstrPmWorkListDTO maEqMstrPmWorkListDTO,User user)
+    {
+		QuerySqlBuffer query = new QuerySqlBuffer();
+		
+		query.getAndQuery("x.comp_no", user.getCompNo());
+		query.getAndQuery("x.wo_type", "PMW");
+		//query.getAndQuery("y.equip_id", maEqMstrCommonDTO.getEquipId());
+		
+		if(!"".equals(maEqMstrPmWorkListDTO.getPmId()) && !"".equals(maEqMstrPmWorkListDTO.getPmEquipId())){
+			query.getAndQuery("x.pm_id", maEqMstrPmWorkListDTO.getPmId());
+			query.getAndQuery("y.pmequip_id", maEqMstrPmWorkListDTO.getPmEquipId());
+			return query.toString();
+		}
+
+    	query.append("AND y.equip_id IN (SELECT b.equip_id						");
+    	query.append("					 FROM TAEQUIPMENT b 					");
+    	query.append("					 WHERE 1=1 								");
+    	query.getAndQuery("b.comp_no", user.getCompNo());
+    	query.append("					  AND b.item_no=(SELECT c.item_no		");
+    	query.append("									 FROM TAEQUIPMENT c 	");
+    	query.append("									 WHERE 1=1 				");
+    	query.getAndQuery("c.comp_no", user.getCompNo());
+    	query.getAndQuery("c.equip_id", maEqMstrCommonDTO.getEquipId());
+    	query.append("									)						");
+    	query.getAndQuery("b.is_last_version", "Y");
+    	query.append("					)										");
+    	
+    	if("Y".equals(MwareConfig.getIsUsePmRevision())){
+    		query.append("AND x.is_last_version = 'Y'              				");
+    	}
+    	query.append("AND x.is_active = 'Y'     								");
+    	
+		return query.toString();
+    }
+
+
+	@Override
+	public String findTotalCount(MaEqMstrCommonDTO maEqMstrCommonDTO, MaEqMstrPmWorkListDTO maEqMstrPmWorkListDTO, User user)
+			throws Exception {
+		QuerySqlBuffer query = new QuerySqlBuffer();
+		
+		query.append("SELECT COUNT(1)								");
+		query.append("FROM TAPMLST x INNER JOIN TAPMEQUIP y			");
+		query.append("ON x.comp_no = y.comp_no						");
+		query.append("AND x.pm_id = y.pm_id 						");
+		query.getAndQuery("x.is_deleted", "N");
+		query.getAndQuery("y.is_deleted", "N");
+		query.append("WHERE 1=1										");
+		query.append(this.getWhere(maEqMstrCommonDTO, maEqMstrPmWorkListDTO, user));
+		
+		List resultList=  getJdbcTemplate().queryForList(query.toString());
+        return QuerySqlBuffer.listToString(resultList);
+	}
+
+	@Override
+	public int deletePmPart(String pmId, User user) throws Exception {
+		
+		QuerySqlBuffer query = new QuerySqlBuffer();
+		
+		query.append("UPDATE TAPMPART 				");
+		query.append("SET 	is_deleted 		= ?		");
+		query.append("		,delete_by 		= ?		");
+		query.append("		,delete_time 	= ?		");
+		query.append("WHERE comp_no 	= ?			");
+		query.append("AND   pm_id	 	= ?			");
+		
+		Object[] objects = new Object[]{
+			"Y"
+			,user.getUserId()
+			,DateUtil.getDate()
+			,user.getCompNo()
+			,pmId
+		};
+		
+		return this.getJdbcTemplate().update(query.toString(), objects);
+	}
+
+	@Override
+	public int deletePmEquip(String pmId, String pmEquipId, User user) throws Exception {
+		
+		QuerySqlBuffer query = new QuerySqlBuffer();
+		
+		query.append("UPDATE TAPMEQUIP 								");
+		query.append("SET 	is_deleted 		= ?						");
+		query.append("		,description 	= ?+	description		");
+		query.append("		,delete_by 		= ?						");
+		query.append("		,delete_time 	= ?						");
+		query.append("WHERE comp_no 	= ?							");
+		query.append("AND   pm_id	 	= ?							");
+		query.append("AND   pmequip_id 	= ?							");
+		
+		Object[] objects = new Object[]{
+				"Y"
+				,"[DELETED]"
+				,user.getUserId()
+				,DateUtil.getDate()
+				,user.getCompNo()
+				,pmId
+				,pmEquipId
+		};
+		
+		return this.getJdbcTemplate().update(query.toString(), objects);
+	}
+
+	@Override
+	public int deletePmList(String pmId, User user) throws Exception {
+		
+		QuerySqlBuffer query = new QuerySqlBuffer();
+		
+		query.append("UPDATE TAPMLST 								");
+		query.append("SET 	is_deleted 		= ?						");
+		query.append("		,description 	= ?+	description		");
+		query.append("		,delete_by 		= ?						");
+		query.append("		,delete_time 	= ?						");
+		query.append("WHERE comp_no 	= ?							");
+		query.append("AND   pm_id	 	= ?							");
+		
+		Object[] objects = new Object[]{
+				"Y"
+				,"[DELETED]"
+				,user.getUserId()
+				,DateUtil.getDate()
+				,user.getCompNo()
+				,pmId
+		};
+		
+		return this.getJdbcTemplate().update(query.toString(), objects);
+	}
+
+	@Override
+	public int checkOtherPmEquip(String pmId, User user) throws Exception {
+		QuerySqlBuffer query = new QuerySqlBuffer();
+		
+		query.append("SELECT COUNT(*)			");
+		query.append("FROM TAPMEQUIP			");
+		query.append("WHERE 1=1					");
+		query.append("AND comp_no 	= ?			");
+		query.append("AND pm_id		= ?			");
+		query.append("AND is_deleted= ?			");
+		
+		Object[] objects = new Object[]{
+				user.getCompNo()
+				,pmId
+				,"N"
+		};
+		
+		return Integer.parseInt(QuerySqlBuffer.listToString(this.getJdbcTemplate().queryForList(query.toString(), objects)));
+	}
+}

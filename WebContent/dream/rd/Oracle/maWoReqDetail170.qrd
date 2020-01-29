@@ -1,0 +1,152 @@
+$
+SELECT 
+    MAX(apprName1) 	apprName1   ,MAX(apprName2) 	apprName2	,MAX(apprName3) 	apprName3   ,MAX(apprName4) 	apprName4
+   ,MAX(apprStat1)	apprStat1   ,MAX(apprStat2) 	apprStat2	,MAX(apprStat3) 	apprStat3	,MAX(apprStat4) 	apprStat4
+   ,MAX(apprDate1)	apprDate1	,MAX(apprDate2)		apprDate2	,MAX(apprDate3)		apprDate3	,MAX(apprDate4)		apprDate4
+   ,MAX(refName1)	refName1    ,MAX(refName2)   	refName2	,MAX(refName3)   	refName3	,MAX(refName4)   	refName4  	  	  	
+   ,MAX(refStat1)  	refStat1   	,MAX(refStat2)  	refStat2	,MAX(refStat3)  	refStat3	,MAX(refStat4)  	refStat4   	   	   	
+   ,MAX(refDate1)	refDate1	,MAX(refDate2)		refDate2	,MAX(refDate3)		refDate3	,MAX(refDate4)		refDate4
+FROM (
+SELECT
+    a.apprlist_id 
+    , a.comp_no
+    , CASE a.appr_seq WHEN 1 THEN a.apprName END apprName1
+    , CASE a.appr_seq WHEN 2 THEN a.apprName END apprName2
+    , CASE a.appr_seq WHEN 3 THEN a.apprName END apprName3
+    , CASE a.appr_seq WHEN 4 THEN a.apprName END apprName4
+    , CASE a.appr_seq WHEN 1 THEN a.apprStat END apprStat1
+    , CASE a.appr_seq WHEN 2 THEN a.apprStat END apprStat2
+    , CASE a.appr_seq WHEN 3 THEN a.apprStat END apprStat3
+    , CASE a.appr_seq WHEN 4 THEN a.apprStat END apprStat4
+    , CASE a.appr_seq WHEN 1 THEN a.apprDate END apprDate1
+    , CASE a.appr_seq WHEN 2 THEN a.apprDate END apprDate2
+    , CASE a.appr_seq WHEN 3 THEN a.apprDate END apprDate3
+    , CASE a.appr_seq WHEN 4 THEN a.apprDate END apprDate4
+    , CASE b.appr_seq WHEN 1 THEN b.refName END refName1
+    , CASE b.appr_seq WHEN 2 THEN b.refName END refName2
+    , CASE b.appr_seq WHEN 3 THEN b.refName END refName3
+    , CASE b.appr_seq WHEN 4 THEN b.refName END refName4
+    , CASE b.appr_seq WHEN 1 THEN b.refStat END refStat1
+    , CASE b.appr_seq WHEN 2 THEN b.refStat END refStat2
+    , CASE b.appr_seq WHEN 3 THEN b.refStat END refStat3
+    , CASE b.appr_seq WHEN 4 THEN b.refStat END refStat4
+    , CASE b.appr_seq WHEN 1 THEN b.refDate END refDate1
+    , CASE b.appr_seq WHEN 2 THEN b.refDate END refDate2
+    , CASE b.appr_seq WHEN 3 THEN b.refDate END refDate3
+    , CASE b.appr_seq WHEN 4 THEN b.refDate END refDate4
+FROM (
+SELECT                            
+    row_number() OVER(ORDER BY x.appr_seq) appr_seq  
+       ,x.apprlist_id
+       ,x.comp_no
+       ,y.emp_name                                  apprName                 
+       ,SFACODE_TO_DESC(x.apprusr_status,'APPRUSR_STATUS','SYS','','^param3') apprStat
+       ,TO_CHAR(TO_DATE(x.appr_date, 'yyyymmdd'),'yyyy.mm.dd') apprDate                                                                                                                  
+FROM TAAPPRUSR x INNER JOIN TAEMP y                         
+ON x.appr_by = y.emp_id                        
+AND  x.comp_no = y.comp_no                    
+WHERE 1=1
+AND  x.comp_no = '^param1'
+AND x.appr_seq != '0'
+AND x.apprusr_type = 'AP'
+AND  x.apprlist_id  = (SELECT                             
+                                       z.apprlist_id apprlistId    
+                                FROM   TAAPPRLIST z                
+                                WHERE  1 = 1                       
+                                  AND  z.comp_no = '^param1'
+                                  AND  z.object_id = ^param4
+                                  AND  z.appr_type = 'REQWORK'
+                               )  
+        ) a 
+ FULL OUTER JOIN ( SELECT                            
+    row_number() OVER(ORDER BY x.appr_seq) appr_seq  
+       ,x.apprlist_id
+       ,x.comp_no
+       ,y.emp_name                                  refName                 
+       ,SFACODE_TO_DESC(x.apprusr_status,'APPRUSR_STATUS','SYS','','^param3') refStat
+       ,TO_CHAR(TO_DATE(x.appr_date, 'yyyymmdd'),'yyyy.mm.dd') refDate                                                                                                                  
+FROM TAAPPRUSR x INNER JOIN TAEMP y                         
+ON x.appr_by = y.emp_id                        
+AND  x.comp_no = y.comp_no                    
+WHERE 1=1
+AND  x.comp_no = '^param1'
+AND x.appr_seq != '0'
+AND x.apprusr_type = 'RF'
+AND  x.apprlist_id  = (SELECT                             
+                                       z.apprlist_id apprlistId    
+                                FROM   TAAPPRLIST z                
+                                WHERE  1 = 1                       
+                                  AND  z.comp_no = '^param1'
+                                  AND  z.object_id = ^param4
+                                  AND  z.appr_type = 'REQWORK'
+                               )  
+        ) b 
+ON a.comp_no = b.comp_no AND a.apprlist_id = b.apprlist_id
+) d
+GROUP BY d.comp_no, d.apprlist_id 
+/
+$
+SELECT									
+       x.woreq_no	woReqNo					
+	  ,SFACODE_TO_DESC(x.woreq_status,'WOREQ_STATUS','SYS','','^param3')	woReqStatusDesc	
+      ,x.req_date 														reqDate				
+	  ,(SELECT a.emp_name					
+		  FROM TAEMP a					
+		 WHERE a.comp_no = x.comp_no		
+		   AND a.emp_id = x.req_emp_id		
+		)||'/'||						
+		(SELECT a.description			
+		   FROM TADEPT a					
+		  WHERE a.comp_no = x.comp_no		
+		    AND a.dept_id = x.req_dept_id	
+		)																reqEmpDesc		
+      ,x.req_phone 														reqPhone				
+      ,x.req_email 														reqEmail					
+	  ,SFACODE_TO_DESC(x.eq_class,'EQ_CLASS','SYS','','^param3')			eqClassDesc
+	  ,(SELECT a.full_desc				
+		  FROM TAEQLOC a					
+		 WHERE a.comp_no = x.comp_no		
+	       AND a.eqloc_id = x.eqloc_id)									reqEqLocDesc			  
+	  ,(SELECT a.description				
+		  FROM TAEQUIPMENT a				
+		 WHERE a.comp_no = x.comp_no		
+	   	   AND a.equip_id = x.equip_id)									reqEquipDesc         
+      ,x.description 													reqDesc						 
+      ,(SELECT a.emp_name                 
+            FROM TAEMP a                  
+            WHERE a.comp_no = x.comp_no   
+            AND a.emp_id = x.rec_emp_id   
+            ) as 														recEmpName
+      ,(SELECT a.description              
+            FROM TADEPT a                 
+            WHERE a.comp_no = x.comp_no   
+            AND a.dept_id = x.rec_dept_id 
+            )             												recDeptDesc			
+      ,x.req_com_date													reqComDate
+		,SFACODE_TO_DESC(x.req_priority,'REQ_PRIORITY','SYS','','^param3')	reqPriorityDesc	
+      ,x.request 														reqRequest	
+      ,x.review 														review				
+FROM TAWOREQ x																				
+WHERE 1=1																						
+  AND x.comp_no = '^param1'																		
+  AND x.woreq_id = ^param4	
+/
+$
+SELECT                                                                            
+   row_number() OVER(ORDER BY x.doc_id) seqNo                                 
+   ,y.file_name             fileName                  
+   ,(SELECT a.emp_name FROM TAEMP a WHERE a.comp_no = x.comp_no AND a.emp_id = x.reg_id) regName 
+   ,(y.file_size/1000)||' kb'     fileSize
+FROM TADOCUMENT x INNER JOIN TADOCDATA y                                       
+ON x.comp_no = y.comp_no                                                      
+AND x.doc_id = y.doc_id                                                       
+WHERE  1  = 1                                                                     
+AND  x.comp_no = '^param1'
+AND x.object_type = 'WOREQ'
+AND EXISTS (SELECT 1 FROM TAOBJDOC a 
+                  WHERE a.comp_no = x.comp_no
+                  AND a.doc_id = x.doc_id
+                  AND a.object_id = '^param4'
+                  AND a.object_type = 'WOREQ'
+                  )
+/

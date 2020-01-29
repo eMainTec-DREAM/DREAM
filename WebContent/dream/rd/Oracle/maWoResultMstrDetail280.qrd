@@ -1,0 +1,132 @@
+$
+SELECT x.wo_no woNo
+            ,SFACODE_TO_DESC(x.wo_status,'WO_STATUS','SYS','','^param3') woStatus
+            ,SFACODE_TO_DESC(x.wo_type,'WO_TYPE','SYS','','^param3') woType
+            ,SFACODE_TO_DESC(x.pm_type,x.wo_type||'_TYPE','SYS','','^param3') pmType
+            ,(SELECT a.full_desc FROM TAEQLOC a WHERE a.comp_no = z.comp_no AND a.eqloc_id = z.eqloc_id) eqLoc
+            ,x.description      	workDesc
+            ,z.description 			equip
+            ,SUBSTR(x.wkor_date,1,4)||'-'||
+             SUBSTR(x.wkor_date,5,2)||'-'||
+             SUBSTR(x.wkor_date,7,2)                    workDate
+            ,(SELECT a.description FROM TADEPT a WHERE a.comp_no = x.comp_no AND a.dept_id = x.dept_id) dept
+            ,(SELECT a.emp_name FROM TAEMP a WHERE a.comp_no = x.comp_no AND a.emp_id = x.emp_id) emp
+            ,SFACODE_TO_DESC(x.self_vendor_Type, 'SELF_VENDOR_TYPE', 'SYS',x.comp_no,'^param3') selfVendorType
+            ,NVL2(x.vendor_id
+                , (SELECT a.description FROM TAVENDOR a WHERE a.comp_no = x.comp_no AND a.vendor_id = x.vendor_id) 
+                , x.vendor_desc)  	vendorDesc
+            ,TO_CHAR(x.tot_amt, 'FM9,999,999,999,999') 				amount
+            ,CASE WHEN x.start_date IS NOT NULL THEN
+             SUBSTR(x.start_date,1,4)||'-'||
+             SUBSTR(x.start_date,5,2)||'-'||
+             SUBSTR(x.start_date,7,2) 		    ELSE '' END
+             ||' '||
+             CASE WHEN x.start_time IS NOT NULL THEN
+             SUBSTR(x.start_time,1,2)||':'||
+             SUBSTR(x.start_time,3,2)           ELSE '' END 		startTime
+            ,CASE WHEN x.end_date IS NOT NULL   THEN 
+             SUBSTR(x.end_date,1,4)||'-'||
+             SUBSTR(x.end_date,5,2)||'-'||
+             SUBSTR(x.end_date,7,2) 			ELSE '' END 
+             ||' '||
+             CASE WHEN x.end_time IS NOT NULL   THEN
+             SUBSTR(x.end_time,1,2)||':'||
+             SUBSTR(x.end_time,3,2)             ELSE '' END 		endTime
+            ,REPLACE(REPLACE(x.perform,chr(10),'$enter'),chr(13),'$enter') as perform
+FROM taworkorder x INNER JOIN 
+(SELECT * FROM TAWOEQUIP WHERE comp_no = '^param1' AND wkor_id = ^param4 and rownum=1) y
+ON x.comp_no = y.comp_no
+AND x.wkor_id = y.wkor_id
+INNER JOIN TAEQUIPMENT z 
+ON y.comp_no = z.comp_no
+AND y.equip_id = z.equip_id
+WHERE 1=1
+AND x.comp_no = '^param1'
+AND x.wkor_id = ^param4
+/
+$
+	SELECT row_number() over(order by x.emp_id) seqNo
+			,(SELECT a.emp_name FROM TAEMP a WHERE a.comp_no = x.comp_no AND a.emp_id = x.emp_id) emp
+			,CASE WHEN x.start_date IS NOT NULL THEN
+			 SUBSTR(x.start_date,1,4)||'-'||
+             SUBSTR(x.start_date,5,2)||'-'||
+             SUBSTR(x.start_date,7,2) 			ELSE '' END
+             ||' '||
+             CASE WHEN x.start_time IS NOT NULL THEN
+             SUBSTR(x.start_time,1,2)||':'||
+             SUBSTR(x.start_time,3,2)			ELSE 
+             	CASE WHEN y.start_time IS NOT NULL THEN	
+		             SUBSTR(y.start_time,1,2)||':'||
+		             SUBSTR(y.start_time,3,2)
+		          ELSE '' END
+              END
+             ||' ~ '||
+             CASE WHEN x.end_date IS NOT NULL   THEN 
+             SUBSTR(x.end_date,1,4)||'-'||
+             SUBSTR(x.end_date,5,2)||'-'||
+             SUBSTR(x.end_date,7,2) 			ELSE '' END
+             ||' '||
+             CASE WHEN x.end_time IS NOT NULL   THEN
+             SUBSTR(x.end_time,1,2)||':'||
+             SUBSTR(x.end_time,3,2) 			ELSE 
+             	CASE WHEN y.start_time IS NOT NULL THEN	
+		             SUBSTR(y.start_time,1,2)||':'||
+		             SUBSTR(y.start_time,3,2)
+		          ELSE '' END
+		     END 	workPeriod
+			,x.work_time workTime
+	FROM TAWOCRAFT x INNER JOIN TAWORKORDER y
+	ON x.comp_no = y.comp_no
+	AND x.wkor_id = y.wkor_id
+	WHERE 1=1
+	AND x.comp_no = '^param1'
+	AND x.wkor_id = ^param4
+/
+$
+	SELECT row_number() over(order by x.part_id) seqNo
+			,CASE WHEN x.part_id is null THEN '-' ELSE
+			 (SELECT a.part_no FROM TAPARTS a WHERE a.comp_no = x.comp_no AND a.part_id = x.part_id) END AS partNo
+			,CASE WHEN x.part_id is null THEN x.pt_desc ELSE
+			(SELECT a.full_desc FROM TAPARTS a WHERE a.comp_no = x.comp_no AND a.part_id = x.part_id) END AS partDesc
+			,x.use_qty qty
+	FROM TAWOPARTS x
+	WHERE 1=1
+	AND x.comp_no = '^param1'
+	AND x.wkor_id = ^param4
+/
+$
+SELECT row_number() over(order by z.wkor_date desc) seqNo, z.wkor_date wkorDate, z.asmb||', '||z.description||'$enter'||z.perform||'$enter' description, z.emp, z.parts, z.totAmt
+FROM  (
+SELECT 
+		CASE WHEN y.wkor_date IS NOT NULL THEN
+	    SUBSTR(y.wkor_date,1,4)||'-'||
+	    SUBSTR(y.wkor_date,5,2)||'-'||
+	    SUBSTR(y.wkor_date,7,2)			  ELSE '-' END 	wkor_date
+            ,(SELECT (SELECT b.full_desc
+                    FROM TAEQASMB b
+                    WHERE b.comp_no = a.comp_no
+                    AND b.eqasmb_id = a.eqasmb_id) FROM TAWOFAIL a
+                    WHERE a.comp_no = y.comp_no
+                    AND a.wkor_id = y.wkor_id) asmb
+             ,y.description description
+             ,REPLACE(REPLACE(y.perform,chr(10),''),chr(13),'  ') perform
+             ,(SELECT aa.emp_name FROM TAEMP aa WHERE aa.comp_no = y.comp_no AND aa.emp_id = y.emp_id) emp
+			 ,(SELECT WM_CONCAT('('||b.part_no||')'|| b.description||' '||b.pt_size || '$enter')  
+                     FROM TAWOPARTS a INNER JOIN TAPARTS b
+                     ON a.comp_no = b.comp_no
+                     AND a.part_id = b.part_id 
+                     WHERE 1=1
+                     AND a.comp_no = x.comp_no
+                     AND a.wkor_id = x.wkor_id ) parts
+            ,TO_CHAR(y.tot_amt, 'FM9,999,999,999,999')				totAmt
+FROM TAWOEQUIP x INNER JOIN TAWORKORDER y
+ON x.comp_no = y.comp_no
+AND x.wkor_id = y.wkor_id
+AND x.comp_no = '^param1'
+AND x.equip_id = (SELECT MAX(a.equip_id) FROM TAWOEQUIP a WHERE a.comp_no = '^param1' AND a.wkor_id = '^param4')
+and y.wkor_date is not null 
+and y.wo_status='C'
+order by y.wkor_date desc
+)z
+where rowNum<21
+/

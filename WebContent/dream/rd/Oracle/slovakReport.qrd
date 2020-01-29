@@ -1,0 +1,714 @@
+$
+SELECT 
+(SELECT key_name FROM TALANG WHERE key_no='bdAnalysis' AND key_type='LABEL' AND lang='^param4')||' - '||
+(SELECT key_name FROM TALANG WHERE key_no='month'||to_number(substr('^param3',6,2)) AND key_type='LABEL' AND lang='^param4')||' '||
+ substr('^param3',0,4) t1, 
+(SELECT key_name FROM TALANG WHERE key_no='annualResult' AND key_type='LABEL' AND lang='^param4') t2
+, TO_CHAR(sysdate,'YYYY/MM/DD HH24:MI:SS') t3 
+from dual
+/
+$
+SELECT 
+substr('^param3',0,4) yyyy,
+(SELECT key_name FROM TALANG WHERE key_no='bdAnalysis' AND key_type='LABEL' AND lang='^param4')||' - '||
+(SELECT key_name FROM TALANG WHERE key_no='month'||to_number(substr('^param3',6,2)) AND key_type='LABEL' AND lang='^param4')||' '||
+ substr('^param3',0,4) title, 
+(SELECT user_name FROM TAUSER WHERE user_id = '^param2') name
+from dual
+/
+$
+SELECT 
+(select to_char(to_Date(min(tday),'yyyymmdd'),'dd.mm.yyyy') ||' ~ ' ||to_char(to_Date(max(tday),'yyyymmdd'),'dd.mm.yyyy') from taday
+where tmonth = substr('^param3',0,4)||substr('^param3',6,2)) workdate, 
+(SELECT user_name FROM TAUSER WHERE user_id = '^param2') empname
+from dual
+/
+$
+SELECT * FROM (
+SELECT (SELECT description FROM TAEQLOC WHERE comp_no = x.comp_no AND eqloc_id = x.eqloc_id) eqLocDesc
+        ,sum(decode(x.yyyymm,substr('^param3',0,4)||'01',NVL(x.ma_stoptime,0),0)) mon1
+        ,sum(decode(x.yyyymm,substr('^param3',0,4)||'02',NVL(x.ma_stoptime,0),0)) mon2
+        ,sum(decode(x.yyyymm,substr('^param3',0,4)||'03',NVL(x.ma_stoptime,0),0)) mon3
+        ,sum(decode(x.yyyymm,substr('^param3',0,4)||'04',NVL(x.ma_stoptime,0),0)) mon4
+        ,sum(decode(x.yyyymm,substr('^param3',0,4)||'05',NVL(x.ma_stoptime,0),0)) mon5
+        ,sum(decode(x.yyyymm,substr('^param3',0,4)||'06',NVL(x.ma_stoptime,0),0)) mon6
+        ,sum(decode(x.yyyymm,substr('^param3',0,4)||'07',NVL(x.ma_stoptime,0),0)) mon7
+        ,sum(decode(x.yyyymm,substr('^param3',0,4)||'08',NVL(x.ma_stoptime,0),0)) mon8
+        ,sum(decode(x.yyyymm,substr('^param3',0,4)||'09',NVL(x.ma_stoptime,0),0)) mon9
+        ,sum(decode(x.yyyymm,substr('^param3',0,4)||'10',NVL(x.ma_stoptime,0),0)) mon10
+        ,sum(decode(x.yyyymm,substr('^param3',0,4)||'11',NVL(x.ma_stoptime,0),0)) mon11
+        ,sum(decode(x.yyyymm,substr('^param3',0,4)||'12',NVL(x.ma_stoptime,0),0)) mon12
+FROM TAKPIMLOCDN x
+WHERE x.yyyymm like substr('^param3',0,4)||'__'
+AND x.comp_no='^param1'
+AND x.plant = '^param5'
+AND x.eqloc_id in (SELECT eqloc_id FROM TAEQLOC WHERE comp_no = '^param1' and trim(description) IN  (trim('Assy line'),trim('ASRS Line'),trim('Foam pad line')))
+GROUP BY x.comp_no, x.eqloc_id
+ORDER BY (SELECT ord_no FROM TAEQLOC WHERE eqloc_id=x.eqloc_id)
+) aa
+union all
+select   (SELECT key_name FROM TALANG 
+            WHERE key_type='LABEL' 
+            AND key_no='result'
+            ANd lang='^param4')
+        ,sum(decode(x.yyyymm,substr('^param3',0,4)||'01',NVL(x.m_actual,0),0)) aa
+        ,sum(decode(x.yyyymm,substr('^param3',0,4)||'02',NVL(x.m_actual,0),0)) aa
+        ,sum(decode(x.yyyymm,substr('^param3',0,4)||'03',NVL(x.m_actual,0),0)) aa
+        ,sum(decode(x.yyyymm,substr('^param3',0,4)||'04',NVL(x.m_actual,0),0)) aa
+        ,sum(decode(x.yyyymm,substr('^param3',0,4)||'05',NVL(x.m_actual,0),0)) aa
+        ,sum(decode(x.yyyymm,substr('^param3',0,4)||'06',NVL(x.m_actual,0),0)) aa
+        ,sum(decode(x.yyyymm,substr('^param3',0,4)||'07',NVL(x.m_actual,0),0)) aa
+        ,sum(decode(x.yyyymm,substr('^param3',0,4)||'08',NVL(x.m_actual,0),0)) aa
+        ,sum(decode(x.yyyymm,substr('^param3',0,4)||'09',NVL(x.m_actual,0),0)) aa
+        ,sum(decode(x.yyyymm,substr('^param3',0,4)||'10',NVL(x.m_actual,0),0)) aa
+        ,sum(decode(x.yyyymm,substr('^param3',0,4)||'11',NVL(x.m_actual,0),0)) aa
+        ,sum(decode(x.yyyymm,substr('^param3',0,4)||'12',NVL(x.m_actual,0),0)) aa
+ from TAKPIMMPOINT x
+where x.comp_no='^param1'
+and x.comp_no='^param1'
+and x.kpi_mpoint='BD'
+and x.plant = '^param5'
+and x.yyyymm like substr('^param3',0,4)||'__'
+group by x.comp_no, x.kpi_mpoint, x.plant, substr('^param3',0,4)
+union all
+select 
+        (SELECT key_name FROM TALANG 
+            WHERE key_type='LABEL' 
+            AND key_no='target'
+            ANd lang='^param4')
+        ,sum(decode(x.yyyymm,substr('^param3',0,4)||'01',NVL(x.m_plan,0),0)) aa
+        ,sum(decode(x.yyyymm,substr('^param3',0,4)||'02',NVL(x.m_plan,0),0)) aa
+        ,sum(decode(x.yyyymm,substr('^param3',0,4)||'03',NVL(x.m_plan,0),0)) aa
+        ,sum(decode(x.yyyymm,substr('^param3',0,4)||'04',NVL(x.m_plan,0),0)) aa
+        ,sum(decode(x.yyyymm,substr('^param3',0,4)||'05',NVL(x.m_plan,0),0)) aa
+        ,sum(decode(x.yyyymm,substr('^param3',0,4)||'06',NVL(x.m_plan,0),0)) aa
+        ,sum(decode(x.yyyymm,substr('^param3',0,4)||'07',NVL(x.m_plan,0),0)) aa
+        ,sum(decode(x.yyyymm,substr('^param3',0,4)||'08',NVL(x.m_plan,0),0)) aa
+        ,sum(decode(x.yyyymm,substr('^param3',0,4)||'09',NVL(x.m_plan,0),0)) aa
+        ,sum(decode(x.yyyymm,substr('^param3',0,4)||'10',NVL(x.m_plan,0),0)) aa
+        ,sum(decode(x.yyyymm,substr('^param3',0,4)||'11',NVL(x.m_plan,0),0)) aa
+        ,sum(decode(x.yyyymm,substr('^param3',0,4)||'12',NVL(x.m_plan,0),0)) aa
+ from TAKPIMMPOINT x
+where x.comp_no='^param1'
+and x.kpi_mpoint='BD'
+and x.plant= '^param5'
+and x.yyyymm like substr('^param3',0,4)||'__'
+group by x.comp_no, x.kpi_mpoint, x.plant, substr('^param3',0,4)
+/
+$
+select (SELECT key_name FROM TALANG 
+            WHERE key_type='LABEL' 
+            AND key_no='month'||to_number(substr(x.tmonth,5,2))
+            ANd lang='^param4') month, 
+        NVL(y.m_actual,0) result,
+        NVL(y.m_plan,0) target
+FROM TAMONTH x, (SELECT * FROM TAKPIMMPOINT where  1=1
+and comp_no='^param1'
+and plant = '^param5'
+and kpi_mpoint='BD')
+y
+WHERE x.tmonth = y.yyyymm(+)
+and x.tyyyy= substr('^param3',0,4)
+order by x.tmonth
+/
+$
+SELECT eqLocDesc,type,
+         mon1,mon2,mon3,mon4,
+         mon5,mon6,mon7,mon8,
+         mon9,mon10,mon11,mon12  
+FROM (
+    SELECT * from (
+        SELECT (SELECT description FROM TAEQLOC 
+                     WHERE comp_no = x.comp_no AND eqloc_id = x.eqloc_id) eqLocDesc
+                    ,(SELECT key_name FROM TALANG WHERE key_no='mttrMin' AND key_type='LABEL' AND lang='^param4') type
+                    ,eqloc_id eqlocId
+                    ,sum(decode(x.yyyymm,substr('^param3',0,4)||'01',NVL(x.mttr,0),0)) mon1
+                    ,sum(decode(x.yyyymm,substr('^param3',0,4)||'02',NVL(x.mttr,0),0)) mon2
+                    ,sum(decode(x.yyyymm,substr('^param3',0,4)||'03',NVL(x.mttr,0),0)) mon3
+                    ,sum(decode(x.yyyymm,substr('^param3',0,4)||'04',NVL(x.mttr,0),0)) mon4
+                    ,sum(decode(x.yyyymm,substr('^param3',0,4)||'05',NVL(x.mttr,0),0)) mon5
+                    ,sum(decode(x.yyyymm,substr('^param3',0,4)||'06',NVL(x.mttr,0),0)) mon6
+                    ,sum(decode(x.yyyymm,substr('^param3',0,4)||'07',NVL(x.mttr,0),0)) mon7
+                    ,sum(decode(x.yyyymm,substr('^param3',0,4)||'08',NVL(x.mttr,0),0)) mon8
+                    ,sum(decode(x.yyyymm,substr('^param3',0,4)||'09',NVL(x.mttr,0),0)) mon9
+                    ,sum(decode(x.yyyymm,substr('^param3',0,4)||'10',NVL(x.mttr,0),0)) mon10
+                    ,sum(decode(x.yyyymm,substr('^param3',0,4)||'11',NVL(x.mttr,0),0)) mon11
+                    ,sum(decode(x.yyyymm,substr('^param3',0,4)||'12',NVL(x.mttr,0),0)) mon12
+            FROM TAKPIMLOCDN x
+            WHERE x.yyyymm like substr('^param3',0,4)||'__'
+            and x.comp_no='^param1'
+            AND x.plant = '^param5'
+            AND x.eqloc_id in (SELECT eqloc_id FROM TAEQLOC WHERE comp_no = '^param1' and trim(description) IN  (trim('Assy line'),trim('ASRS Line'),trim('Foam pad line')))
+            GROUP BY x.comp_no, x.eqloc_id
+            ORDER BY (SELECT ord_no FROM TAEQLOC WHERE eqloc_id=x.eqloc_id)
+            )
+        WHERE eqlocid in (SELECT eqloc_id FROM TAEQLOC where lvl=1)
+        UNION ALL
+    SELECT * FROM (
+        SELECT (SELECT description FROM TAEQLOC 
+                    WHERE comp_no = x.comp_no AND eqloc_id = x.eqloc_id) eqLocDesc
+                    ,(SELECT key_name FROM TALANG WHERE key_no='mtbfMin' AND key_type='LABEL' AND lang='^param4') type
+                    ,eqloc_id eqlocId
+                    ,sum(decode(x.yyyymm,substr('^param3',0,4)||'01',NVL(x.mtbf,0),0)) mon1
+                    ,sum(decode(x.yyyymm,substr('^param3',0,4)||'02',NVL(x.mtbf,0),0)) mon2
+                    ,sum(decode(x.yyyymm,substr('^param3',0,4)||'03',NVL(x.mtbf,0),0)) mon3
+                    ,sum(decode(x.yyyymm,substr('^param3',0,4)||'04',NVL(x.mtbf,0),0)) mon4
+                    ,sum(decode(x.yyyymm,substr('^param3',0,4)||'05',NVL(x.mtbf,0),0)) mon5
+                    ,sum(decode(x.yyyymm,substr('^param3',0,4)||'06',NVL(x.mtbf,0),0)) mon6
+                    ,sum(decode(x.yyyymm,substr('^param3',0,4)||'07',NVL(x.mtbf,0),0)) mon7
+                    ,sum(decode(x.yyyymm,substr('^param3',0,4)||'08',NVL(x.mtbf,0),0)) mon8
+                    ,sum(decode(x.yyyymm,substr('^param3',0,4)||'09',NVL(x.mtbf,0),0)) mon9
+                    ,sum(decode(x.yyyymm,substr('^param3',0,4)||'10',NVL(x.mtbf,0),0)) mon10
+                    ,sum(decode(x.yyyymm,substr('^param3',0,4)||'11',NVL(x.mtbf,0),0)) mon11
+                    ,sum(decode(x.yyyymm,substr('^param3',0,4)||'12',NVL(x.mtbf,0),0)) mon12
+            FROM TAKPIMLOCDN x
+            WHERE x.yyyymm like substr('^param3',0,4)||'__'
+            AND x.plant = '^param5'
+            and x.comp_no='^param1'
+            AND x.eqloc_id in (SELECT eqloc_id FROM TAEQLOC WHERE comp_no = '^param1' and trim(description) IN  (trim('Assy line'),trim('ASRS Line'),trim('Foam pad line')))
+            GROUP BY x.comp_no, x.eqloc_id
+            ORDER BY (SELECT ord_no FROM TAEQLOC WHERE eqloc_id=x.eqloc_id)
+            )
+        WHERE eqlocid in (SELECT eqloc_id FROM TAEQLOC where lvl=1)
+    )
+order by eqlocId, type desc
+/
+$
+select (SELECT key_name FROM TALANG 
+            WHERE key_type='LABEL' 
+            AND key_no='month'||to_number(substr(x.tmonth,5,2))
+            ANd lang='^param4') month
+            ,nvl((
+            select x.mttr from TAKPIMLOCDN x, TAEQLOC y
+                where x.comp_no = y.comp_no
+                and x.eqloc_id = y.eqloc_id
+                and x.comp_no='^param1'
+                and x.plant='^param5'
+                and x.yyyymm = x.tmonth
+                and trim(y.description) = trim('Assy line')),0) eq1
+            ,nvl((
+            select x.mttr from TAKPIMLOCDN x, TAEQLOC y
+                where x.comp_no = y.comp_no
+                and x.eqloc_id = y.eqloc_id
+                and x.comp_no='^param1'
+                and x.plant='^param5'
+                and x.yyyymm = x.tmonth
+                and trim(y.description) = trim('ASRS Line')),0) eq2
+            ,nvl((
+            select x.mttr from TAKPIMLOCDN x, TAEQLOC y
+                where x.comp_no = y.comp_no
+                and x.eqloc_id = y.eqloc_id
+                and x.comp_no='^param1'
+                and x.plant='^param5'
+                and x.yyyymm = x.tmonth
+                and trim(y.description) = trim('Foam pad line')),0) eq3
+FROM TAMONTH x
+where x.tyyyy = substr('^param3',0,4)
+order by x.tmonth
+/
+$
+select (SELECT key_name FROM TALANG 
+            WHERE key_type='LABEL' 
+            AND key_no='month'||to_number(substr(x.tmonth,5,2))
+            ANd lang='^param4') month
+            ,nvl((
+            select x.mtbf from TAKPIMLOCDN x, TAEQLOC y
+                where x.comp_no = y.comp_no
+                and x.eqloc_id = y.eqloc_id
+                and x.comp_no='^param1'
+                and x.plant='^param5'
+                and x.yyyymm = x.tmonth
+                and trim(y.description) = trim('Assy line')),0) eq1
+            ,nvl((
+            select x.mtbf from TAKPIMLOCDN x, TAEQLOC y
+                where x.comp_no = y.comp_no
+                and x.eqloc_id = y.eqloc_id
+                and x.comp_no='^param1'
+                and x.plant='^param5'
+                and x.yyyymm = x.tmonth
+                and trim(y.description) = trim('ASRS Line')),0) eq2
+            ,nvl((
+            select x.mtbf from TAKPIMLOCDN x, TAEQLOC y
+                where x.comp_no = y.comp_no
+                and x.eqloc_id = y.eqloc_id
+                and x.comp_no='^param1'
+                and x.plant='^param5'
+                and x.yyyymm = x.tmonth
+                and trim(y.description) = trim('Foam pad line')),0) eq3
+FROM TAMONTH x
+where x.tyyyy = substr('^param3',0,4)
+order by x.tmonth
+/
+$
+select to_char(to_date(x.tday,'yyyymmdd'),'dd.mm.yyyy') tday
+        , NVL((select a.d_worktime from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and trim(b.description) = trim('Assy line')),0) al_ppt
+        , NVL((select a.d_stoptime from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and trim(b.description) = trim('Assy line')),0) al_dt
+        , NVL((select a.d_stopfreq from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and trim(b.description) = trim('Assy line')),0) al_fq
+        , NVL((select a.d_worktime-nvl(d_stoptime,0) from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and trim(b.description) = trim('Assy line')),0) al_eot
+        , NVL((select rtrim(to_char(round((a.d_worktime-nvl(d_stoptime,0))/a.d_worktime*100,2),'FM9990D99'),'.')||'%' from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and trim(b.description) = trim('Assy line')),0||'%') al_av
+        , NVL((select rtrim(to_char(round(nvl(d_stoptime,0)/a.d_worktime*100,2),'FM9990D99'),'.')||'%' from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and trim(b.description) = trim('Assy line')),0||'%') al_efr
+        , NVL((select a.d_worktime from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and trim(b.description) = trim('ASRS Line')),0) as_ppt
+        , NVL((select a.d_stoptime from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and trim(b.description) = trim('ASRS Line')),0) as_dt
+        , NVL((select a.d_stopfreq from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and trim(b.description) = trim('ASRS Line')),0) as_fq
+        , NVL((select a.d_worktime-nvl(d_stoptime,0) from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and trim(b.description) = trim('ASRS Line')),0) as_eot
+        , NVL((select rtrim(to_char(round((a.d_worktime-nvl(d_stoptime,0))/a.d_worktime*100,2),'FM9990D99'),'.')||'%' from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and trim(b.description) = trim('ASRS Line')),0||'%') as_av
+        , NVL((select rtrim(to_char(round(nvl(d_stoptime,0)/a.d_worktime*100,2),'FM9990D99'),'.')||'%' from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and trim(b.description) = trim('ASRS Line')),0||'%') as_efr
+        , NVL((select a.d_worktime from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and trim(b.description) = trim('Foam pad line')),0) fp_ppt
+        , NVL((select a.d_stoptime from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and trim(b.description) = trim('Foam pad line')),0) fp_dt
+        , NVL((select a.d_stopfreq from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and trim(b.description) = trim('Foam pad line')),0) fp_fq
+        , NVL((select a.d_worktime-nvl(d_stoptime,0) from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and trim(b.description) = trim('Foam pad line')),0) fp_eot
+        , NVL((select rtrim(to_char(round((a.d_worktime-nvl(d_stoptime,0))/a.d_worktime*100,2),'FM9990D99'),'.')||'%' from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and trim(b.description) = trim('Foam pad line')),0||'%') fp_av
+        , NVL((select rtrim(to_char(round(nvl(d_stoptime,0)/a.d_worktime*100,2),'FM9990D99'),'.')||'%' from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and trim(b.description) = trim('Foam pad line')),0||'%') fp_efr
+         ,NVL((select  rtrim(to_char(round((sum(a.d_worktime)-nvl(sum(a.d_stoptime),0))/sum(a.d_worktime)*100,2),'FM9990D99'),'.')||'%'
+                 from TAKPIDLOCDN a, TAEQLOC b
+                where a.comp_no = b.comp_no
+                and a.eqloc_id = b.eqloc_id
+                and a.wrk_date  =x.tday
+                and a.plant = '^param5'
+                and a.comp_no = '^param1'
+                and trim(b.description) IN  (trim('Assy line'),trim('ASRS Line'),trim('Foam pad line'))
+                group by a.comp_no, a.wrk_date,a.plant),0||'%') aad
+         ,NVL((select  rtrim(to_char(round(nvl(sum(a.d_stoptime),0)/sum(a.d_worktime)*100,2),'FM9990D99'),'.')||'%'
+                 from TAKPIDLOCDN a, TAEQLOC b
+                where a.comp_no = b.comp_no
+                and a.eqloc_id = b.eqloc_id
+                and a.wrk_date  = x.tday
+                and a.plant = '^param5'
+                and a.comp_no = '^param1'
+                and trim(b.description) IN  (trim('Assy line'),trim('ASRS Line'),trim('Foam pad line'))
+                group by a.comp_no, a.wrk_date,a.plant),0||'%') ead
+         ,NVL((select  rtrim(to_char(round(nvl(sum(a.d_stoptime),0)/sum(a.d_worktime)*100,2),'FM9990D99'),'.')||'%'
+                 from TAKPIDLOCDN a, TAEQLOC b
+                where a.comp_no = b.comp_no
+                and a.eqloc_id = b.eqloc_id
+                and a.wrk_date  IN (SELECT aa.tday FROM TADAY aa where aa.tmonth = substr('^param3',0,4)||substr('^param3',6,2) and aa.week = x.week and aa.dow not in ('1','7')) 
+                and a.plant = '^param5'
+                and a.comp_no = '^param1'
+                and trim(b.description) IN  (trim('Assy line'),trim('ASRS Line'),trim('Foam pad line'))
+                group by a.comp_no, substr(a.wrk_date,0,6),a.plant),0||'%') eaw
+         ,NVL((select  rtrim(to_char(round(nvl(sum(a.d_stoptime),0)/sum(a.d_worktime)*100,2),'FM9990D99'),'.')||'%'
+                 from TAKPIDLOCDN a, TAEQLOC b
+                where a.comp_no = b.comp_no
+                and a.eqloc_id = b.eqloc_id
+                and a.wrk_date  like substr(x.tday,0,6)||'__'
+                and a.plant = '^param5'
+                and a.comp_no = '^param1'
+                and trim(b.description) IN  (trim('Assy line'),trim('ASRS Line'),trim('Foam pad line'))
+                group by a.comp_no, substr(a.wrk_date,0,6),a.plant),0||'%') eam
+FROM TADAY x
+where x.tmonth  = substr('^param3',0,4)||substr('^param3',6,2)
+and x.tday IN ( SELECT cal_date FROM TAWRKCALENDAR 
+				WHERE 1=1
+				AND cal_date like substr('^param3',0,4)||substr('^param3',6,2)||'__'
+				AND is_work = 'Y'
+            	AND plant = '^param5'
+            	AND comp_no = '^param1')
+order by x.tday
+/
+$
+select  'WEEK '||to_char(to_date(max(x.tday),'yyyymmdd'),'W') week,
+        (select m_plan FROM TAKPIMMPOINT where comp_no = '^param1' and plant='^param5' and yyyymm = x.tmonth and kpi_mpoint='BD' ),
+         NVL((select  round(nvl(sum(a.d_stoptime),0)/sum(a.d_worktime)*100,2)
+                 from TAKPIDLOCDN a, TAEQLOC b
+                where a.comp_no = b.comp_no
+                and a.eqloc_id = b.eqloc_id
+                and a.wrk_date  IN (SELECT aa.tday FROM TADAY aa where aa.tmonth = x.tmonth and aa.week = x.week and aa.dow not in ('1','7')) 
+                and a.plant = '^param5'
+                and a.comp_no = '^param1'
+                and trim(b.description) IN  (trim('Assy line'),trim('ASRS Line'),trim('Foam pad line'))
+                group by a.comp_no, substr(a.wrk_date,0,6),a.plant),0) eaw
+FROM TADAY x
+where x.tmonth  = substr('^param3',0,4)||substr('^param3',6,2)
+and x.tday IN ( SELECT cal_date FROM TAWRKCALENDAR 
+				WHERE 1=1
+				AND cal_date like substr('^param3',0,4)||substr('^param3',6,2)||'__'
+				AND is_work = 'Y'
+            	AND plant = '^param5'
+            	AND comp_no = '^param1')
+group by x.tmonth, x.week
+order by x.week
+/
+$
+select to_char(to_date(x.tday,'yyyymmdd'),'dd.mm.yyyy') workdate
+        , NVL((select a.d_worktime from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and trim(b.description) = trim('Assy line')),0) ppt
+        , NVL((select a.d_stoptime from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and trim(b.description) = trim('Assy line')),0) dt
+        , NVL((select a.d_stopfreq from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and trim(b.description) = trim('Assy line')),0) fq
+        , NVL((select a.d_worktime-nvl(d_stoptime,0) from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and trim(b.description) = trim('Assy line')),0) eot
+        , NVL((select rtrim(to_char(round((a.d_worktime-nvl(d_stoptime,0))/a.d_worktime*100,2),'FM9990D99'),'.')||'%' from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and trim(b.description) = trim('Assy line')),0||'%') av
+        , NVL((select rtrim(to_char(round(nvl(d_stoptime,0)/a.d_worktime*100,2),'FM9990D99'),'.')||'%' from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and trim(b.description) = trim('Assy line')),0||'%') efr
+FROM TADAY x
+where x.tmonth  = substr('^param3',0,4)||substr('^param3',6,2)
+and x.tday IN ( SELECT cal_date FROM TAWRKCALENDAR 
+				WHERE 1=1
+				AND cal_date like substr('^param3',0,4)||substr('^param3',6,2)||'__'
+				AND is_work = 'Y'
+            	AND plant = '^param5'
+            	AND comp_no = '^param1')
+order by x.tday
+/
+$
+SELECT ROW_NUMBER() OVER(ORDER BY y.lndn_work_time DESC) no
+        ,(SELECT description FROM TAEQUIPMENT WHERE comp_no = x.comp_no AND equip_id = (SELECT equip_id FROM TAWOEQUIP WHERE comp_no  =x.comp_no AND wkor_id = x.wkor_id AND rownum=1)) device
+        ,y.lndn_work_time||' min' downtime
+        ,(SELECT description FROM TAFAILURE WHERE comp_no =x.comp_no AND  fail_type='CA' AND failure_id = y.ca_cd) issue
+        ,(SELECT description FROM TAFAILURE WHERE comp_no =x.comp_no AND  fail_type='RE' AND failure_id = y.re_cd) action
+        ,y.re_desc countermeasure
+        ,(SELECT description FROM TADEPT WHERE comp_no = x.comp_no AND dept_id=x.dept_id) responsible
+        ,TO_CHAR(TO_DATE(x.close_date,'yyyymmdd'),'dd.mm.yyyy')||' Done' realisationdate
+FROM TAWORKORDER x, TAWOFAIL y
+WHERE x.comp_no = y.comp_no
+AND x.wkor_id = y.wkor_id
+AND x.comp_no = '^param1'
+AND x.wo_status='C'
+AND y.lndn_work_time is not null
+AND y.lndn_work_time != '0'
+AND x.wkor_date like substr('^param3',0,4)||substr('^param3',6,2)||'__'
+AND x.wkor_id IN (SELECT wkor_id 
+                            FROM TAWOEQUIP
+                            WHERE 1=1
+                            AND comp_no = '^param1'
+                            AND equip_id IN (SELECT equip_id
+                                                    FROM TAEQUIPMENT
+                                                    WHERE 1=1
+                                                    AND comp_no = '^param1'
+                                                    AND plant = '^param5'
+                                                    AND eqloc_id  IN (SELECT eqloc_id
+                                                                            FROM TAEQLOC
+                                                                            WHERE 1=1
+                                                                            AND comp_no = '^param1'
+                                                                            START WITH trim(description) = trim('Assy line')
+                                                                            CONNECT BY PRIOR eqloc_id = p_eqloc_id
+                                                                            )
+                                                   )
+                           )
+AND rownum<4
+ORDER BY y.lndn_work_time DESC
+/
+$
+select to_char(to_date(x.tday,'yyyymmdd'),'dd.mm.yyyy') workdate
+        , NVL((select a.d_worktime from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and trim(b.description) = trim('Foam pad line')),0) ppt
+        , NVL((select a.d_stoptime from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and trim(b.description) = trim('Foam pad line')),0) dt
+        , NVL((select a.d_stopfreq from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and trim(b.description) = trim('Foam pad line')),0) fq
+        , NVL((select a.d_worktime-nvl(d_stoptime,0) from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and trim(b.description) = trim('Foam pad line')),0) eot
+        , NVL((select rtrim(to_char(round((a.d_worktime-nvl(d_stoptime,0))/a.d_worktime*100,2),'FM9990D99'),'.')||'%' from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and trim(b.description) = trim('Foam pad line')),0||'%') av
+        , NVL((select rtrim(to_char(round(nvl(d_stoptime,0)/a.d_worktime*100,2),'FM9990D99'),'.')||'%' from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and trim(b.description) = trim('Foam pad line')),0||'%') efr
+FROM TADAY x
+where x.tmonth  = substr('^param3',0,4)||substr('^param3',6,2)
+and x.tday IN ( SELECT cal_date FROM TAWRKCALENDAR 
+				WHERE 1=1
+				AND cal_date like substr('^param3',0,4)||substr('^param3',6,2)||'__'
+				AND is_work = 'Y'
+            	AND plant = '^param5'
+            	AND comp_no = '^param1')
+order by x.tday
+/
+$
+SELECT ROW_NUMBER() OVER(ORDER BY y.lndn_work_time DESC) no
+        ,(SELECT description FROM TAEQUIPMENT WHERE comp_no = x.comp_no AND equip_id = (SELECT equip_id FROM TAWOEQUIP WHERE comp_no  =x.comp_no AND wkor_id = x.wkor_id AND rownum=1)) device
+        ,y.lndn_work_time||' min' downtime
+        ,(SELECT description FROM TAFAILURE WHERE comp_no =x.comp_no AND  fail_type='CA' AND failure_id = y.ca_cd) issue
+        ,(SELECT description FROM TAFAILURE WHERE comp_no =x.comp_no AND  fail_type='RE' AND failure_id = y.re_cd) action
+        ,y.re_desc countermeasure
+        ,(SELECT description FROM TADEPT WHERE comp_no = x.comp_no AND dept_id=x.dept_id) responsible
+        ,TO_CHAR(TO_DATE(x.close_date,'yyyymmdd'),'dd.mm.yyyy')||' Done' realisationdate
+FROM TAWORKORDER x, TAWOFAIL y
+WHERE x.comp_no = y.comp_no
+AND x.wkor_id = y.wkor_id
+AND x.comp_no = '^param1'
+AND x.wo_status='C'
+AND y.lndn_work_time is not null
+AND y.lndn_work_time != '0'
+AND x.wkor_date like substr('^param3',0,4)||substr('^param3',6,2)||'__'
+AND x.wkor_id IN (SELECT wkor_id 
+                            FROM TAWOEQUIP
+                            WHERE 1=1
+                            AND comp_no = '^param1'
+                            AND equip_id IN (SELECT equip_id
+                                                    FROM TAEQUIPMENT
+                                                    WHERE 1=1
+                                                    AND comp_no = '^param1'
+                                                    AND plant = '^param5'
+                                                    AND eqloc_id  IN (SELECT eqloc_id
+                                                                            FROM TAEQLOC
+                                                                            WHERE 1=1
+                                                                            AND comp_no = '^param1'
+                                                                            START WITH trim(description) = trim('Foam pad line')
+                                                                            CONNECT BY PRIOR eqloc_id = p_eqloc_id
+                                                                            )
+                                                   )
+                           )
+AND rownum<4
+ORDER BY y.lndn_work_time DESC
+/
+$
+select to_char(to_date(x.tday,'yyyymmdd'),'dd.mm.yyyy') workdate
+        , NVL((select a.d_worktime from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and trim(b.description) = trim('ASRS Line')),0) ppt
+        , NVL((select a.d_stoptime from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and trim(b.description) = trim('ASRS Line')),0) dt
+        , NVL((select a.d_stopfreq from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and trim(b.description) = trim('ASRS Line')),0) fq
+        , NVL((select a.d_worktime-nvl(d_stoptime,0) from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and trim(b.description) = trim('ASRS Line')),0) eot
+        , NVL((select rtrim(to_char(round((a.d_worktime-nvl(d_stoptime,0))/a.d_worktime*100,2),'FM9990D99'),'.')||'%' from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and trim(b.description) = trim('ASRS Line')),0||'%') av
+        , NVL((select rtrim(to_char(round(nvl(d_stoptime,0)/a.d_worktime*100,2),'FM9990D99'),'.')||'%' from TAKPIDLOCDN a, TAEQLOC b
+            where a.comp_no = b.comp_no
+            and a.eqloc_id = b.eqloc_id
+            and a.wrk_date  = x.tday
+            and a.plant = '^param5'
+            and a.comp_no = '^param1'
+            and trim(b.description) = trim('ASRS Line')),0||'%') efr
+FROM TADAY x
+where x.tmonth  = substr('^param3',0,4)||substr('^param3',6,2)
+and x.tday IN ( SELECT cal_date FROM TAWRKCALENDAR 
+				WHERE 1=1
+				AND cal_date like substr('^param3',0,4)||substr('^param3',6,2)||'__'
+				AND is_work = 'Y'
+            	AND plant = '^param5'
+            	AND comp_no = '^param1')
+order by x.tday
+/
+$
+SELECT ROW_NUMBER() OVER(ORDER BY y.lndn_work_time DESC) no
+        ,(SELECT description FROM TAEQUIPMENT WHERE comp_no = x.comp_no AND equip_id = (SELECT equip_id FROM TAWOEQUIP WHERE comp_no  =x.comp_no AND wkor_id = x.wkor_id AND rownum=1)) device
+        ,y.lndn_work_time||' min' downtime
+        ,(SELECT description FROM TAFAILURE WHERE comp_no =x.comp_no AND  fail_type='CA' AND failure_id = y.ca_cd) issue
+        ,(SELECT description FROM TAFAILURE WHERE comp_no =x.comp_no AND  fail_type='RE' AND failure_id = y.re_cd) action
+        ,y.re_desc countermeasure
+        ,(SELECT description FROM TADEPT WHERE comp_no = x.comp_no AND dept_id=x.dept_id) responsible
+        ,TO_CHAR(TO_DATE(x.close_date,'yyyymmdd'),'dd.mm.yyyy')||' Done' realisationdate
+FROM TAWORKORDER x, TAWOFAIL y
+WHERE x.comp_no = y.comp_no
+AND x.wkor_id = y.wkor_id
+AND x.comp_no = '^param1'
+AND x.wo_status='C'
+AND y.lndn_work_time is not null
+AND y.lndn_work_time != '0'
+AND x.wkor_date like substr('^param3',0,4)||substr('^param3',6,2)||'__'
+AND x.wkor_id IN (SELECT wkor_id 
+                            FROM TAWOEQUIP
+                            WHERE 1=1
+                            AND comp_no = '^param1'
+                            AND equip_id IN (SELECT equip_id
+                                                    FROM TAEQUIPMENT
+                                                    WHERE 1=1
+                                                    AND comp_no = '^param1'
+                                                    AND plant = '^param5'
+                                                    AND eqloc_id  IN (SELECT eqloc_id
+                                                                            FROM TAEQLOC
+                                                                            WHERE 1=1
+                                                                            AND comp_no = '^param1'
+                                                                            START WITH trim(description) = trim('ASRS Line')
+                                                                            CONNECT BY PRIOR eqloc_id = p_eqloc_id
+                                                                            )
+                                                   )
+                           )
+AND rownum<4
+ORDER BY y.lndn_work_time DESC
+/

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- DO NOT EDIT -->
+<!-- This file is automatically regenerated for each new XDoclet generation. -->
+<!-- Any changes you make to this file will be overwritten. If you want -->
+<!-- to edit this file, make a copy and rename it for your own use. -->
+
+<project name="monitor XDoclet Generation" default="WebDocletTask">
+	<property name="project.dir" value="./"></property>
+	<property name="lib.dir" value="${project.dir}/WebContent/WEB-INF/lib" />
+	<property name="exDB" value="Sql" /> <!--Oracle DB 사용-->
+	<!-- User Defind Config start -->
+	<property name="build.dir" value="build" />
+	<property name="extLibs.dir" value="libs">
+
+	</property>
+	<property name="src.dir" value="${project.dir}/JavaSource">
+	</property>
+	<!-- User Defind Config end -->
+	<path id="xdoclet.classpath">
+		<fileset dir="${lib.dir}">
+			<include name="*.jar" />
+		</fileset>
+		<fileset dir="${extLibs.dir}">
+			<include name="**/*.jar" />
+		</fileset>
+	</path>
+	<target name="WebDocletTask" description="Standard Web" depends="prepare">
+		<taskdef classpathref="xdoclet.classpath" classname="xdoclet.modules.web.WebDocletTask" name="webdoclet" />
+		<echo>############################################################</echo>
+		<echo>##                                                        ##</echo>
+		<echo>## Struts Config XML Generate!                            ##</echo>
+		<echo>##                                                        ##</echo>
+		<echo>############################################################</echo>
+		<webdoclet destDir="${project.dir}/WebContent/WEB-INF/config" verbose="true" force="true">
+			<fileset dir="${src.dir}" includes="**/*.java">
+			</fileset >
+			<strutsconfigxml version="1.1" xmlencoding="UTF-8" mergeDir="merge" destinationFile="struts-config.xml">
+			</strutsconfigxml>
+		</webdoclet>
+		<taskdef classpathref="xdoclet.classpath" classname="xdoclet.modules.spring.SpringDocletTask" name="springdoclet" />
+		<echo>############################################################</echo>
+		<echo>##                                                        ##</echo>
+		<echo>## Spring Context XML Generate!                           ##</echo>
+		<echo>##                                                        ##</echo>
+		<echo>############################################################</echo>
+		<springdoclet destdir="${project.dir}/WebContent/WEB-INF/config" verbose="true" mergeDir="merge" force="true">
+			<fileset dir="${src.dir}">
+				<include name="**/*.java"/>
+				<exclude name="**/*${exDB}*"/>
+			</fileset >
+			<springxml destinationFile="applicationContext-impl.xml">
+			</springxml>
+		</springdoclet>
+        <taskdef classpathref="xdoclet.classpath" classname="xdoclet.modules.spring_txbn.SpringDocletTask" name="springdoclet_tx" />
+        <echo>############################################################</echo>
+        <echo>##                                                        ##</echo>
+        <echo>## Spring Context(Transaction Bean) XML Generate!         ##</echo>
+        <echo>##                                                        ##</echo>
+        <echo>############################################################</echo>
+        <springdoclet_tx destdir="${project.dir}/WebContent/WEB-INF/config" verbose="true" mergeDir="merge" force="true">
+            <fileset dir="${src.dir}">
+            	<include name="**/*Impl.java"/>
+            	<exclude name="**/*${exDB}*"/>
+            </fileset >
+            <springxml destinationFile="applicationContext-txbn.xml">
+            </springxml>
+        </springdoclet_tx>
+	</target>
+	<target name="prepare">
+		<tstamp>
+			<format property="DSTAMP" pattern="yyyy-MM-dd" />
+			<format property="TSTAMP" pattern="HH:mm" />
+		</tstamp>
+		<echo message="Build started at : ${DSTAMP}-${TSTAMP}">
+		</echo>
+	</target>
+	
+</project>

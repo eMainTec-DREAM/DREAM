@@ -1,0 +1,110 @@
+$
+SELECT              
+                NVL((SELECT (SELECT f.description FROM TADEPT f WHERE f.comp_no = x.comp_no AND f.dept_id = h.usage_dept) 
+			           FROM TAEQUIPMENT h WHERE h.comp_no = x.comp_no AND h.equip_id 
+			                = b.p_equip_id  ),'N/A')||' / '||NVL((SELECT aa.description                                                                                                                                                              
+                    FROM TAEQLOC aa                                                                                                                                                               
+                    WHERE aa.comp_no='^param1'                                                              
+                    AND aa.eqloc_id=b.eqloc_id),'N/A')          dept  
+                ,NVL((SELECT aa.description FROM TAEQUIPMENT aa WHERE aa.equip_id=b.p_equip_id AND aa.comp_no = '^param1'),'N/A')||' / '||
+                    NVL((SELECT aa.item_no FROM TAEQUIPMENT aa WHERE aa.equip_id=b.p_equip_id AND aa.comp_no = '^param1'),'N/A')           equip    
+                ,NVL(b.description,'N/A')                                                                                                                              eqTool              
+                ,NVL(b.item_no,'N/A')                                                                                                                              eqToolNo                    
+                ,NVL(b.maker,'N/A')                                                                                                                              maker             
+                ,NVL(b.MODEL_no,'N/A')                                                                                                                              MODEL      
+                ,NVL((SELECT aa.all_range FROM TAEQTOOL aa WHERE aa.equip_id=b.equip_id AND aa.comp_no='^param1'),'N/A')||' / '||              
+                    NVL((SELECT aa.use_range FROM TAEQTOOL aa WHERE aa.equip_id=b.equip_id AND aa.comp_no='^param1'),'N/A')                      RANGE     
+                ,NVL(TO_CHAR((SELECT aa.min_unit_value FROM TAEQTOOL aa WHERE aa.equip_id=b.equip_id AND aa.comp_no='^param1')),'N/A') minUnitValue              
+                ,NVL(SFACODE_TO_DESC(y.calib_type,'CALIB_TYPE','SYS','','^param3'),'N/A')                                                           pmcType                     
+                ,NVL((SELECT bb.cycle||SFACODE_TO_DESC(bb.period_type,'PERIOD_TYPE','SYS','','^param3')                                                                
+                    FROM TAEQPMCYCLE aa INNER JOIN TAPMLST bb                                                                                                                       
+                    ON aa.pm_id=bb.pm_id AND aa.comp_no=bb.comp_no                                                                                                                  
+                    WHERE aa.comp_no ='^param1'                                                                                                                                     
+                    AND aa.equip_id=b.equip_id
+                    AND bb.is_deleted = 'N' 
+                    AND bb.is_last_version= 'Y'),'N/A')                                                                                                              cycle    
+                ,CASE WHEN x.wkor_date IS NOT NULL THEN
+                	SUBSTR(x.wkor_date,1,4)||'-'                                                                                                                                             
+                    ||SUBSTR(x.wkor_date,5,2)||'-'                                                                                                                                           
+                    ||SUBSTR(x.wkor_date,7,2)||''  ELSE '-' END                                                                schedDate     
+                ,NVL((SELECT SUBSTR(MIN(b.sched_date),1,4)||'-'||SUBSTR(MIN(b.sched_date),5,2)||'-'||SUBSTR(MIN(b.sched_date),7,2)
+                  FROM TAPMEQUIP A INNER JOIN TAPMSCHED b
+                  ON A.pm_id = b.pm_id AND b.pmsched_status <> 'C'
+                  WHERE A.pm_id = x.pm_id
+                       AND b.sched_date > x.wkor_date
+                 ) , 'N/A') nextSchedDate
+                ,(SELECT WM_CONCAT(SFACODE_TO_DESC(aa.sopdoc_no,'CALIB_SOPDOC_NO','USR','^param1','^param3')) 
+                        FROM tawocalibstdeq aa WHERE aa. comp_no='^param1' AND aa.wkor_id = x.wkor_id) sopNo  
+                ,'Form info.: HVQ03-001-F09 (Ver. 2.00)'         docNo        
+        FROM TAWORKORDER x LEFT OUTER JOIN TAWOCALIB y           
+          ON x.comp_no = y.comp_no     
+          AND x.wkor_id = y.wkor_id     
+        LEFT OUTER JOIN TAWOEQUIP a         
+          ON a.wkor_id = x.wkor_id                                                 
+          AND a.comp_no = x.comp_no             
+        LEFT OUTER JOIN TAEQUIPMENT b         
+          ON a.comp_no = b.comp_no                                                     
+          AND a.equip_id = b.equip_id                                                   
+        WHERE 1=1        
+        AND x.comp_no ='^param1'
+        AND x.wkor_id = ^param4
+/
+$
+SELECT NVL(y.description,'N/A') stdEq
+            ,NVL(y.item_no,'N/A') stdEqNo
+            ,NVL(y.serial_no,'N/A') serialNo
+            ,NVL(x.wo_no,'N/A') woNo
+            ,NVL2(next_plan_date,SUBSTR(x.next_plan_date,1,4)||'-'                                                                                                                                             
+                    ||SUBSTR(x.next_plan_date,5,2)||'-'                                                                                                                                           
+                    ||SUBSTR(x.next_plan_date,7,2)||'','N/A') nextSched
+FROM tawocalibstdeq x INNER JOIN taequipment y
+ON x.comp_no = y.comp_no
+AND x.equip_id =y.equip_id
+WHERE x.wkor_id=^param4
+AND x.comp_no='^param1'
+/
+$
+SELECT nvl(wm_concat(y.measure_unit),'N/A') uom
+FROM taeqtool y
+WHERE y.equip_id IN (SELECT x.equip_id 
+FROM tawoequip x
+WHERE x.wkor_id=^param4
+AND x.comp_no = '^param1')
+and y.comp_no = '^param1'
+/
+$
+SELECT                               
+               NVL(SFACODE_TO_DESC(calib_point_type,'CALIB_POINT_TYPE','SYS','','ko'),'N/A') gubun              
+               ,NVL(calib_point,'N/A') POINT                    
+               ,NVL(allow_value,'N/A') diff                    
+               ,NVL(asf_std_value,'N/A') asfBase                     
+               ,NVL(asf_cal_value,'N/A') asfVal                     
+               ,NVL(asf_diff_value,'N/A') asfDiff                   
+               ,NVL(asl_std_value,'N/A') aslBase                     
+               ,NVL(asl_cal_value,'N/A') aslVal                     
+               ,NVL(asl_diff_value,'N/A') aslDiff       
+        FROM   TAWOCALIBGNLVALUE     x                        
+        WHERE  1=1     
+		AND x.wkor_id=^param4
+		AND x.comp_no='^param1'
+		ORDER BY (SELECT a.ord_no FROM TACDSYSD a WHERE a.list_type = 'CALIB_POINT_TYPE' AND a.cdsysd_no =x.calib_point_type)
+/
+$
+SELECT
+            CASE WHEN y.calib_result_status='P' THEN '1' ELSE '0' END calibResult1
+            ,CASE WHEN y.calib_result_status='F' THEN '1' ELSE '0' END calibResult2
+            ,x.perform remark
+            ,(SELECT aa.emp_name FROM TAEMP aa WHERE aa.comp_no='^param1' AND aa.emp_id=x.emp_id) empName
+            ,SUBSTR(x.wkor_date,1,4) empYyyy                                                      
+            ,SUBSTR(x.wkor_date,5,2) empMm
+            ,SUBSTR(x.wkor_date,7,2) empDd         
+            ,(SELECT aa.user_name FROM TAUSER aa WHERE aa.comp_no='^param1' AND aa.user_id=x.close_id) comName      
+            ,SUBSTR(x.close_date,1,4) comYyyy                                                      
+            ,SUBSTR(x.close_date,5,2) comMm
+            ,SUBSTR(x.close_date,7,2) comDd           
+FROM TAWORKORDER x LEFT OUTER JOIN TAWOCALIB y
+ON x.comp_no = y.comp_no
+AND x.wkor_id = y.wkor_id
+WHERE x.wkor_id=^param4
+AND x.comp_no='^param1'
+/

@@ -1,0 +1,196 @@
+$
+select * from (
+SELECT * FROM (
+SELECT 
+    (SELECT (SELECT b.description FROM TADEPT b WHERE b.comp_no = A.comp_no AND b.dept_id = A.p_dept_id) || ' > ' || A.description FROM TADEPT A WHERE A.comp_no = x.comp_no AND A.dept_id = x.usage_dept) locDesc
+    , SUM(x.planMonth)             planMonth
+    , SUM(x.resultMonth)         resultMonth
+    , TO_CHAR(ROUND(NVL(SUM(x.resultMonth)/CASE SUM(x.planMonth) WHEN 0 THEN NULL ELSE SUM(x.planMonth) END,0)*100,2) ,'FM9999990D00')||'%'  resultMonthRate
+    , SUM(x.planYear)             planYear
+    , SUM(x.resultYear)         resultYear
+    , TO_CHAR( ROUND(NVL(SUM(x.resultYear)/CASE SUM(x.planYear) WHEN 0 THEN NULL ELSE SUM(x.planYear) END,0)*100,2) ,'FM9999990D00')||'%' resultYearRate
+    , SUM(x.planNext)             planNext
+    , SUBSTR('^param3',0,4) yyyy
+    , SUBSTR('^param3',6,2) mm
+    , TO_CHAR(ADD_MONTHS(TO_DATE('^param3'||'01','yyyy-mmdd'),1), 'mm') nextmm
+FROM (
+        SELECT 
+              x.comp_no 
+            , x.equip_id
+            ,  (SELECT c.dept_id
+                FROM TADEPT c
+                WHERE DEPT_CATEG = 'L2'
+                START WITH c.dept_id = x.usage_dept
+                CONNECT BY PRIOR p_dept_id = dept_id
+               ) usage_dept
+            ,(SELECT 
+                        COUNT(1) planMonth
+                FROM TAPMSCHED A INNER JOIN TAPMEQUIP aa
+                ON A.comp_no = aa.comp_no
+                INNER JOIN TAPMLST c ON A.pm_id = c.pm_id
+                AND A.pm_id = aa.pm_id
+                WHERE A.comp_no = '^param1'
+                AND c.wo_type = 'PMC'
+                AND A.sched_date LIKE SUBSTR('^param3',0,4)||SUBSTR('^param3',6,2)||'%'
+                AND aa.equip_id = x.equip_id) planMonth
+             ,(SELECT 
+                        COUNT(DECODE(A.pmsched_status,'C',1)) resultMonth
+                FROM TAPMSCHED A INNER JOIN TAPMEQUIP aa
+                ON A.comp_no = aa.comp_no
+                INNER JOIN TAPMLST c ON A.pm_id = c.pm_id
+                AND A.pm_id = aa.pm_id
+                WHERE A.comp_no = '^param1'
+                AND c.wo_type = 'PMC'
+                AND A.sched_date LIKE SUBSTR('^param3',0,4)||SUBSTR('^param3',6,2)||'%'
+                AND aa.equip_id = x.equip_id) resultMonth
+             ,(SELECT 
+                        COUNT(1) resultYear
+                FROM TAPMSCHED A INNER JOIN TAPMEQUIP aa
+                ON A.comp_no = aa.comp_no
+                INNER JOIN TAPMLST c ON A.pm_id = c.pm_id
+                AND A.pm_id = aa.pm_id
+                WHERE A.comp_no = '^param1'
+                AND c.wo_type = 'PMC'
+                AND A.sched_date LIKE SUBSTR('^param3',0,4)||'%'
+                AND aa.equip_id = x.equip_id) planYear
+            ,(SELECT 
+                        COUNT(DECODE(A.pmsched_status,'C',1)) resultYear
+                FROM TAPMSCHED A INNER JOIN TAPMEQUIP aa
+                ON A.comp_no = aa.comp_no
+                INNER JOIN TAPMLST c ON A.pm_id = c.pm_id
+                AND A.pm_id = aa.pm_id
+                WHERE A.comp_no = '^param1'
+                AND c.wo_type = 'PMC'
+                AND A.sched_date LIKE SUBSTR('^param3',0,4)||'%'
+                AND aa.equip_id = x.equip_id) resultYear
+            ,(SELECT 
+                        COUNT(1) resultYear
+                FROM TAPMSCHED A INNER JOIN TAPMEQUIP aa
+                ON A.comp_no = aa.comp_no
+                INNER JOIN TAPMLST c ON A.pm_id = c.pm_id
+                AND A.pm_id = aa.pm_id
+                WHERE A.comp_no = '^param1'
+                AND c.wo_type = 'PMC'
+                AND A.sched_date LIKE TO_CHAR(ADD_MONTHS(TO_DATE(SUBSTR('^param3',0,4)||SUBSTR('^param3',6,2),'yyyymm'), 1),'yyyymm')||'%'
+                AND aa.equip_id = x.equip_id) planNext
+FROM TAEQUIPMENT x
+WHERE 1=1
+AND x.plant = '^param5'
+AND x.comp_no = '^param1'
+)x
+WHERE 1=1
+AND x.usage_dept IS NOT NULL
+GROUP BY x.comp_no, x.usage_dept
+ORDER BY x.comp_no, x.usage_dept
+)
+UNION ALL
+SELECT '' locDesc
+        , SUM(x.planMonth)             planMonth
+        , SUM(x.resultMonth)         resultMonth
+        , TO_CHAR(ROUND(NVL(SUM(x.resultMonth)/CASE SUM(x.planMonth) WHEN 0 THEN NULL ELSE SUM(x.planMonth) END,0)*100,2) ,'FM9999990D00')||'%'  resultMonthRate
+        , SUM(x.planYear)             planYear
+        , SUM(x.resultYear)         resultYear
+        , TO_CHAR( ROUND(NVL(SUM(x.resultYear)/CASE SUM(x.planYear) WHEN 0 THEN NULL ELSE SUM(x.planYear) END,0)*100,2) ,'FM9999990D00')||'%' resultYearRate
+        , SUM(x.planNext)             planNext
+        , SUBSTR('^param3',0,4) yyyy
+        , SUBSTR('^param3',6,2) mm
+        , TO_CHAR(ADD_MONTHS(TO_DATE('^param3'||'01','yyyy-mmdd'),1), 'mm') nextmm
+FROM (
+        SELECT 
+              x.comp_no 
+            , x.equip_id
+            ,  (SELECT c.dept_id
+                FROM TADEPT c
+                WHERE DEPT_CATEG = 'L2'
+                START WITH c.dept_id = x.usage_dept
+                CONNECT BY PRIOR p_dept_id = dept_id
+               ) usage_dept
+            ,(SELECT 
+                        COUNT(1) planMonth
+                FROM TAPMSCHED A INNER JOIN TAPMEQUIP aa
+                ON A.comp_no = aa.comp_no
+                INNER JOIN TAPMLST c ON A.pm_id = c.pm_id
+                AND A.pm_id = aa.pm_id
+                WHERE A.comp_no = '^param1'
+                AND c.wo_type = 'PMC'
+                AND A.sched_date LIKE SUBSTR('^param3',0,4)||SUBSTR('^param3',6,2)||'%'
+                AND aa.equip_id = x.equip_id) planMonth
+             ,(SELECT 
+                        COUNT(DECODE(A.pmsched_status,'C',1)) resultMonth
+                FROM TAPMSCHED A INNER JOIN TAPMEQUIP aa
+                ON A.comp_no = aa.comp_no
+                INNER JOIN TAPMLST c ON A.pm_id = c.pm_id
+                AND A.pm_id = aa.pm_id
+                WHERE A.comp_no = '^param1'
+                AND c.wo_type = 'PMC'
+                AND A.sched_date LIKE SUBSTR('^param3',0,4)||SUBSTR('^param3',6,2)||'%'
+                AND aa.equip_id = x.equip_id) resultMonth
+             ,(SELECT 
+                        COUNT(1) resultYear
+                FROM TAPMSCHED A INNER JOIN TAPMEQUIP aa
+                ON A.comp_no = aa.comp_no
+                INNER JOIN TAPMLST c ON A.pm_id = c.pm_id
+                AND A.pm_id = aa.pm_id
+                WHERE A.comp_no = '^param1'
+                AND c.wo_type = 'PMC'
+                AND A.sched_date LIKE SUBSTR('^param3',0,4)||'%'
+                AND aa.equip_id = x.equip_id) planYear
+            ,(SELECT 
+                        COUNT(DECODE(A.pmsched_status,'C',1)) resultYear
+                FROM TAPMSCHED A INNER JOIN TAPMEQUIP aa
+                ON A.comp_no = aa.comp_no
+                INNER JOIN TAPMLST c ON A.pm_id = c.pm_id
+                AND A.pm_id = aa.pm_id
+                WHERE A.comp_no = '^param1'
+                AND c.wo_type = 'PMC'
+                AND A.sched_date LIKE SUBSTR('^param3',0,4)||'%'
+                AND aa.equip_id = x.equip_id) resultYear
+            ,(SELECT 
+                        COUNT(1) resultYear
+                FROM TAPMSCHED A INNER JOIN TAPMEQUIP aa
+                ON A.comp_no = aa.comp_no
+                INNER JOIN TAPMLST c ON A.pm_id = c.pm_id
+                AND A.pm_id = aa.pm_id
+                WHERE A.comp_no = '^param1'
+                AND c.wo_type = 'PMC'
+                AND A.sched_date LIKE TO_CHAR(ADD_MONTHS(TO_DATE(SUBSTR('^param3',0,4)||SUBSTR('^param3',6,2),'yyyymm'), 1),'yyyymm')||'%'
+                AND aa.equip_id = x.equip_id) planNext
+FROM TAEQUIPMENT x
+WHERE 1=1
+AND x.plant = '^param5'
+AND x.comp_no = '^param1'
+)x
+WHERE 1=1
+AND x.usage_dept IS NOT NULL
+GROUP BY x.comp_no
+)
+/
+$
+SELECT TO_CHAR(to_date(x.tmonth||'01','yyyymmdd'), 'YYYY-MM') MONTH
+           ,100 PLAN
+           ,TO_CHAR(NVL(ROUND(y.completeCnt/DECODE(y.planCnt,0,NULL,y.planCnt)*100,2),0),'FM9999990D00') result
+FROM TAMONTH x, (SELECT 
+                substr(a.sched_date,0,6) planMonth
+                ,count(1) planCnt
+                ,count(decode(a.wo_status,'C',1)) completeCnt
+                FROM tapmsched a INNER JOIN tapmequip aa
+                ON a.comp_no = aa.comp_no
+                AND a.pm_id = aa.pm_id
+                INNER JOIN tapmlst dd ON dd.pm_id = a.pm_id AND dd.comp_no = a.comp_no
+                WHERE a.comp_no = '^param1'
+                AND dd.wo_type = 'PMC'
+                AND a.sched_date LIKE substr('^param3',0,4)||'%'
+                AND aa.equip_id IN (
+                SELECT b.equip_id 
+                FROM taequipment b
+                WHERE b.eqloc_id IN (
+                        SELECT c.eqloc_id
+                           FROM taeqloc c 
+                           WHERE c.comp_no = '^param1'
+                           AND c.plant =  '^param5')
+                                           )
+   GROUP BY a.comp_no , substr(a.sched_date,0,6)) y
+WHERE x.tmonth = y.planMonth(+)
+AND x.tyyyy  = substr('^param3',0,4)
+ORDER BY x.tmonth
+/

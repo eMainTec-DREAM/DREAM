@@ -1,0 +1,31 @@
+$
+ SELECT x.ptemgissreq_no reqNo
+ 		,CONVERT(varchar(10),getdate(),120) printDate
+ 		,(SELECT a.emp_name FROM TAEMP a WHERE a.comp_no = x.comp_no AND a.emp_id = x.req_by) reqBy
+ 		,(SELECT a.description FROM TADEPT a WHERE a.comp_no = x.comp_no and a.dept_id = x.req_dept ) reqDept
+ 		,convert(varchar(10),CONVERT(datetime,x.req_date),120) reqDate
+		,x.description reqTitle
+ FROM TAPTEMGISSREQ x
+WHERE x.comp_no = '^param1'
+AND x.ptemgissreq_id = ^param4
+/
+$
+SELECT row_number() over(order by y.part_no asc) no
+		,y.full_desc  partNo
+		,x.req_qty qty
+		,y.uom uom
+		,(SELECT a.description FROM TAEQUIPMENT a WHERE a.comp_no = x.comp_no AND a.equip_id = x.equip_id) equip
+		,(SELECT a.full_desc FROM TAEQASMB a WHERE a.comp_no = x.comp_no AND a.eqasmb_id = x.eqasmb_id) eqasmb
+ FROM TAPTEMGISSLIST x INNER JOIN TAPARTS y
+ ON x.comp_no = y.comp_no
+ AND x.part_id = y.part_id
+ WHERE 1=1
+ AND x.comp_no = '^param1'
+ AND x.ptemgissreq_id = ^param4
+/
+$
+SELECT x.remark
+FROM TAPTEMGISSREQ x
+WHERE x.comp_no      = '^param1'
+AND x.ptemgissreq_id = ^param4
+/

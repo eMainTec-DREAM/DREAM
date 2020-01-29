@@ -1,0 +1,4 @@
+	<message-resources
+		parameter="common.message.DataBaseResource"
+		factory="common.message.DataBaseMessageResourcesFactory">
+	</message-resources>
